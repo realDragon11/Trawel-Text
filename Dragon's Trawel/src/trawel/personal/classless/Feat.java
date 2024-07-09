@@ -8,8 +8,9 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill.Type;
 
@@ -205,7 +206,7 @@ public enum Feat implements IHasSkills{
 		List<Feat> retList = new ArrayList<Feat>();
 		//totalRarity
 		for (int j = 0; j < amount && totalRarity > .1;j++) {//for rounding errors
-			double rarityRoll = totalRarity*extra.getRand().nextDouble();
+			double rarityRoll = totalRarity*Rand.getRand().nextDouble();
 			Feat f = null;
 			int i = 0;
 			for (i = 0; i < copyList.size();i++) {
@@ -286,7 +287,7 @@ public enum Feat implements IHasSkills{
 
 	@Override
 	public boolean goMenuItem() {
-		extra.println("n/a");
+		Print.println("n/a");
 		return false;
 	}
 

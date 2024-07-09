@@ -8,9 +8,10 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
+import trawel.core.Input;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -51,7 +52,7 @@ public class Lot extends Feature {
 	
 	@Override
 	public String getTitle() {
-		return getName() + (construct != null ? " ("+construct.realName+" in "+extra.F_WHOLE.format(getConstructTime())+" hours)":"");
+		return getName() + (construct != null ? " ("+construct.realName+" in "+Print.F_WHOLE.format(getConstructTime())+" hours)":"");
 	}
 	
 	@Override
@@ -150,12 +151,12 @@ public class Lot extends Feature {
 					if (f instanceof Lot) {
 						Lot la = (Lot)f;
 						if (la.construct != null && la.construct == this) {
-							extra.println("You already have "+nameString+" underway in "+t.getName()+"!");
+							Print.println("You already have "+nameString+" underway in "+t.getName()+"!");
 							return false;
 						}
 					}
 					if (f.getOwner() == Player.player && blockingType.isInstance(f)) {
-						extra.println("You already have "+nameString+" in "+t.getName()+"!");
+						Print.println("You already have "+nameString+" in "+t.getName()+"!");
 						return false;
 					}
 				}
@@ -167,32 +168,32 @@ public class Lot extends Feature {
 					if (!Player.player.getCanBuy(aether,money)) {
 						return false;
 					}
-					extra.println("Build "+nameString +" for "+aether + " Aether and "+World.currentMoneyDisplay(money)+"?");
+					Print.println("Build "+nameString +" for "+aether + " Aether and "+World.currentMoneyDisplay(money)+"?");
 				}else {
 					//just money no aether
 					int money = getMCost(tier);
 					if (Player.bag.getGold() < money) {
-						extra.println(TrawelColor.RESULT_ERROR+"Not Enough "+World.currentMoneyString() + ", have only " +Player.bag.getGold()+".");
+						Print.println(TrawelColor.RESULT_ERROR+"Not Enough "+World.currentMoneyString() + ", have only " +Player.bag.getGold()+".");
 						return false;
 					}
-					extra.println("Build "+nameString +" for "+World.currentMoneyDisplay(money)+"?");
+					Print.println("Build "+nameString +" for "+World.currentMoneyDisplay(money)+"?");
 				}
 			}else {
 				if (aCost != 0) {//just aether no money
 					int aether = getACost(tier);
 					if (Player.bag.getAether() < aether) {
-						extra.println(TrawelColor.RESULT_ERROR+"Not enough Aether, have only " + Player.bag.getAether()+".");
+						Print.println(TrawelColor.RESULT_ERROR+"Not enough Aether, have only " + Player.bag.getAether()+".");
 						return false;
 					}
-					extra.println("Build "+nameString +" for "+aether + " Aether?");
+					Print.println("Build "+nameString +" for "+aether + " Aether?");
 				}else {
 					//is free
-					extra.println("Build "+nameString+"?");
+					Print.println("Build "+nameString+"?");
 				}
 				
 			}
 			//displayed question prior
-			return extra.yesNo();
+			return Input.yesNo();
 		}
 	}
 	
@@ -244,9 +245,9 @@ public class Lot extends Feature {
 		construct = type;
 		type.create.doNow(this);
 		if (constructTime > 0) {
-			extra.println("Your "+type.realName + " will be built in " + extra.F_TWO_TRAILING.format(constructTime) + " hours.");
+			Print.println("Your "+type.realName + " will be built in " + Print.F_TWO_TRAILING.format(constructTime) + " hours.");
 		}else {
-			extra.println("Built: " + type.realName);
+			Print.println("Built: " + type.realName);
 		}
 		
 	}
@@ -254,7 +255,7 @@ public class Lot extends Feature {
 	@Override
 	public void go() {
 		if (construct == null) {
-			extra.menuGo(new ScrollMenuGenerator(LotType.values().length, "last <>", "next <>") {
+			Input.menuGo(new ScrollMenuGenerator(LotType.values().length, "last <>", "next <>") {
 				
 				@Override
 				public List<MenuItem> header() {
@@ -310,7 +311,7 @@ public class Lot extends Feature {
 				}
 			});
 		}else {
-			extra.println("Your " + construct.realName + " is being built. "+extra.F_TWO_TRAILING.format(constructTime)+" hours remain.");
+			Print.println("Your " + construct.realName + " is being built. "+Print.F_TWO_TRAILING.format(constructTime)+" hours remain.");
 		}
 	}
 

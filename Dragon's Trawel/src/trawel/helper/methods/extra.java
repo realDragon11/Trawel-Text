@@ -1,25 +1,11 @@
 package trawel.helper.methods;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Stack;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Stream;
 
-import com.github.tommyettinger.random.EnhancedRandom;
-import com.github.tommyettinger.random.WhiskerRandom;
-
-import derg.menus.MenuGenerator;
-import derg.menus.MenuGeneratorPaged;
-import derg.menus.MenuItem;
-import derg.menus.MenuLine;
-import derg.menus.MenuSelect;
-import derg.menus.ScrollMenuGenerator;
-import trawel.core.Networking;
-import trawel.core.mainGame;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.DummyPerson;
 import trawel.personal.Person;
@@ -29,28 +15,7 @@ import trawel.towns.contexts.World;
 import trawel.towns.data.WorldGen;
 
 public final class extra {
-	private static Boolean printMode = false;
-	//private static long lastMod = -1;
-	private static String printStuff = "";
-
-	private static Stack<Boolean> printStack = new Stack<Boolean>();
-
 	private static ReentrantLock mainThreadLock = new ReentrantLock();
-
-	private static final int debugChunkPer = 10;
-	private static boolean debugPrint = false;
-	private static int debugChunk = 0;
-	private static int backingQueue = 0;
-	
-	public static void kickOut() {
-		backingQueue = 10;
-	}
-
-	private static final ThreadLocal<EnhancedRandom> localRands = new ThreadLocal<EnhancedRandom>() {
-		@Override protected EnhancedRandom initialValue() {
-			return new WhiskerRandom();
-		}
-	};
 
 	private static final ThreadLocal<ThreadData> threadLocalData = new ThreadLocal<ThreadData>() {
 		@Override protected ThreadData initialValue() {
@@ -87,16 +52,6 @@ public final class extra {
 	}
 
 	/**
-	 * gets the rand instance for the current thread, should be used
-	 * instead of making your own.
-	 * @return
-	 */
-	public static final EnhancedRandom getRand() {
-		//https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html
-		return localRands.get();
-	}
-
-	/**
 	 * since each thread will only ever be dealing with one world at a time
 	 * this method lets you store that world to be accessed later
 	 * 
@@ -124,32 +79,6 @@ public final class extra {
 		return temp;
 	}
 
-	public static final float randFloat() {
-		return getRand().nextFloat();
-	}
-
-	/**
-	 * randomly returns one of the parameters
-	 * @param a variable amount of objects (Object)
-	 * @return (Object)
-	 */
-	/*public static Object choose(Object... options) {
-		return options[(int)(Math.random()*(double)options.length)];
-	}*/
-
-	/**
-	 * randomly returns one of the parameters
-	 * @param a variable amount of strings (String)
-	 * @return (String)
-	 */
-	public static String choose(String... options) {
-		return options[getRand().nextInt(options.length)];
-	}
-
-	public static <E> E choose(E... options) {
-		return options[getRand().nextInt(options.length)];
-	}
-
 	/**
 	 * Makes sure that something isn't less than zero, else it returns 0
 	 * @param i (int)
@@ -167,63 +96,6 @@ public final class extra {
 	public static final double zeroOut(double i) {
 		return Math.max(i,0);
 	}
-	/**
-	 * Has a (a) in (b) chance of returning true
-	 * @param a (int)
-	 * @param b (int)
-	 * @return (boolean)
-	 */
-	public static final boolean chanceIn(int a,int b) {
-		return (getRand().nextInt(b+1)+1 <= a);
-	}
-
-	/**
-	 * Takes a string and makes the first letter capital
-	 * @param str (String)
-	 * @return Str (String)
-	 */
-	public static final String capFirst(String str){
-		return str.substring(0, 1).toUpperCase() + str.substring(1);
-	}
-
-	/**
-	 * Decides whether to become 'are' or 'is' based on the guessed plurality of the input
-	 * @param str (String)
-	 * @return (String)
-	 */
-	public static final String pluralIs(String str) {
-		if (str.endsWith("s")){
-			return "are";
-		}else {
-			return "is";
-		}
-	}
-	/**
-	 * Decides whether to become 'are some' or 'is a' based on the guessed plurality of the input
-	 */
-	public static final String pluralIsA(String str) {
-		if (str.endsWith("s")){
-			return "are some";
-		}else {
-			return "is a";
-		}
-	}
-
-	/**
-	 * can set to true to disable normal outputs
-	 * some graphical functions still write, as well as most error messages
-	 */
-	public static final void changePrint(boolean disable) {
-		if (!isMainThread()) {
-			return;
-		}
-		printMode = disable;
-	}
-
-
-	public static final java.text.DecimalFormat F_TWO_TRAILING = new java.text.DecimalFormat("0.00");
-	public static final java.text.DecimalFormat F_WHOLE = new java.text.DecimalFormat("0");
-
 	/**
 	 * CHARACTER NOTES:
 	 * this can only be one width of DISPLAY
@@ -410,384 +282,6 @@ public final class extra {
 		//⛊⛨☠♨☥⛧⚚⛏⚀⸸
 	}
 
-	/**
-	 * Formats a double into a string that looks nicer.
-	 * @param str - (double)
-	 * @return (String)
-	 */
-	public static final String format(double str) {
-		return(F_TWO_TRAILING.format(str));
-	}
-
-	public static final String formatInt(double str) {
-		return(F_WHOLE.format(str));
-	}
-
-	//extra.linebreak();
-	public static final void linebreak() {
-		extra.println("------------");
-		//clear the synth
-	}
-
-	public static final boolean yesNo() {
-		if (backingQueue > 0) {
-			backingQueue--;
-			return false;
-		}
-		trawel.threads.BlockTaskManager.start();
-		while (true) {
-			extra.println("1 yes");
-			extra.println("9 no");
-			Networking.sendStrong("Entry|yesno|");//need to add this coloring behavior to normal inputs
-			//if ((Networking.connected() && mainGame.GUIInput)  || Networking.autoconnectSilence) {
-			//while(true) {
-			int ini = Networking.nextInt();
-			while(ini != 1 && ini != 9) {
-				if (ini == 0) {
-					Networking.sendStrong("Entry|Finish|");
-					return false;
-				}
-				if (ini == 10) {
-					backingQueue = 10;
-					Networking.sendStrong("Entry|Finish|");
-					return false;
-				}
-				Networking.sendStrong("Entry|Reset|");
-				extra.println("Please type 1 or 9.");
-				extra.println("1 yes");
-				extra.println("9 no");
-				ini=  Networking.nextInt();
-				if (ini == -99 || ini == -1) {
-					Networking.unConnect();
-					throw new RuntimeException("invalid input stream error");
-				}
-
-			}
-			Networking.sendStrong("Entry|Finish|");
-			extra.linebreak();
-			trawel.threads.BlockTaskManager.halt();
-			return ini == 1;
-
-			/*}else {
-
-					str = mainGame.scanner.next();
-					extra.linebreak();
-					str = str.toLowerCase();
-					//extra.println(str);
-					if (str.equals("yes") || str.equals("y")|| str.equals("1")) {
-						trawel.threads.BlockTaskManager.halt();
-						return true;
-					}
-					if (str.equals("no") || str.equals("n") || str.equals("0") || str.equals("9")) {
-						trawel.threads.BlockTaskManager.halt();
-						return false;
-					}
-					extra.println("Yes or No?");
-
-				}*/
-		}
-	}
-	public static final int randRange(int i, int j) {
-		//return (int)(Math.random()*(j+1-i))+i;
-		return getRand().nextInt((j+1)-i)+i;
-	}
-	public static final float randRange(float i, float j) {
-		return getRand().nextInclusiveFloat((j)-i)+i;
-	}
-
-	public static final int inInt(int max) {
-		return inInt(max,false,false);
-	}
-
-	/**
-	 * prevents the player from automatically backing out from one case to another
-	 * <br>
-	 * example: player might want to back out of drawbane selection, inventory selection, etc manually
-	 */
-	public static final void endBackingSegment() {
-		backingQueue = 0;
-	}
-
-	public static final int inInt(int max, boolean alwaysNine, boolean canBack) {
-		if (backingQueue > 0) {
-			if (canBack) {
-				backingQueue--;
-				Networking.sendStrong("Entry|Finish|");
-				return 9;
-			}else {
-				backingQueue = 0;
-			}
-		}
-		Networking.sendStrong("Entry|Activate|" + max + "|");
-		trawel.threads.BlockTaskManager.start();
-		int ini=  Networking.nextInt();
-		while((ini < 1 || ini > max)) {
-			if (alwaysNine && ini == 9) {
-				break;
-			}
-			if (canBack && ini == 10) {
-				backingQueue = 10;
-				ini = 9;
-				break;
-			}
-			if (canBack && ini == 0) {
-				ini = 9;
-				break;
-			}
-			if (ini != -2) {//silent loading
-				Networking.sendStrong("Entry|Reset|");
-				extra.println("Please type a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
-			}
-			ini = Networking.nextInt();
-
-			if (ini == -99) {
-				Networking.unConnect();
-				throw new RuntimeException("invalid input stream error");
-			}
-			if (ini == -1) {
-				Networking.unConnect();
-				throw new RuntimeException("input stream ended");
-			}
-		}
-		Networking.sendStrong("Entry|Finish|");
-		trawel.threads.BlockTaskManager.halt();
-		extra.linebreak();
-		return ini;
-	}
-
-	public static final void println() {
-		println("");
-	}
-
-	public static final void println(String str) {
-		if (!isMainThread()) {
-			return;
-		}
-		if (!printMode || debugPrint) {
-			//mainGame.log(str);
-			Networking.printlocalln(stripPrint(printStuff+str));
-			detectInputString(stripPrint(printStuff +str));
-			Networking.printlnTo(printStuff + str);
-			printStuff = "";
-
-			if (debugPrint) {
-				debugChunk++;
-				if (debugChunk > debugChunkPer) {
-					extra.inString();
-					debugChunk = 0;
-				}
-			}
-		}
-
-	}
-
-	public static final void print(String str) {
-		if (!isMainThread()) {
-			return;
-		}
-		if (!printMode) {
-			printStuff+=str;
-		}
-	}
-
-	private static final String stripPrint(String str) {
-		int index = str.indexOf('[');
-		while (index != -1) {
-			int lastindex = str.indexOf(']');
-			//str = str.substring(0, index) + str.substring(lastindex+1, str.length());
-			str = str.replace(str.substring(index,lastindex+1), "");
-			index = str.indexOf('[');
-		}
-		return str;
-	}
-
-	private static void detectInputString(String str) {
-		if (str.length() > 1) {
-			if (Character.isDigit(str.charAt(0)) && str.charAt(1) == " ".charAt(0)) {
-				Networking.send("Input|" + str.charAt(0) +"|"+str+"|");
-			}
-		}
-	}
-
-	public static String inString() {
-		return mainGame.scanner.nextLine().toLowerCase();
-	}
-
-	public static void inputContinue() {
-		extra.println("1 continue");
-		extra.inInt(1);
-	}
-
-	/**
-	 * true = do not print
-	 * <br>
-	 * false = can print
-	 * @return if you can't print
-	 */
-	public static final Boolean getPrint() {
-		if (!isMainThread()){
-			return true;
-		}
-		return printMode;
-	}
-	public static final java.text.DecimalFormat format1 = new java.text.DecimalFormat("0.0");
-	public static final java.text.DecimalFormat format2 = new java.text.DecimalFormat("0.00");
-	public static String format2(double d) {
-		String str = format2.format(d);
-		if (d > 0) {
-			str = "+" + str;
-		}
-		return(str);
-	}
-
-	/**
-	 * given by TEtt from squidsquad
-	 */
-	public static final double hrandom() {
-		return ((Long.bitCount(getRand().nextLong()) - 32. + getRand().nextDouble() - getRand().nextDouble()) / 66.0 + 0.5);
-	}
-	/**
-	 * given by TEtt from squidsquad
-	 */
-	public static final float hrandomFloat() {
-		return ((Long.bitCount(getRand().nextLong()) - 32f + getRand().nextFloat() - getRand().nextFloat()) / 66f + 0.5f);
-	}
-
-	/**
-	 * can only handle color codes and special printing options at start of string, and only one token per strs
-	 */
-	public static void specialPrint(int[] in,String...strs) {
-		for (int i = 0; i < strs.length;i++) {
-			String base = strs[i].trim();
-			if (!base.isEmpty() && base.charAt(0) == '[') {
-				print(base.substring(0,base.indexOf(']')+1));
-			}
-			String str = extra.stripPrint(strs[i]);
-			if (str.length() >= in[i]) {
-				print(str.substring(0,in[i]));
-			}else {
-				print(str);
-				for (int j = in[i]-str.length();j > 0;j--) {// > 0 because 0 is same length so we're good
-					print(" ");
-				}
-			}
-		}
-		/*for (int i = 0; i < strs.length;i++) {
-			String str = extra.stripPrint(strs[i]);
-			if (str.length() >= in[i]) {
-				print(str.substring(0,in[i]));
-			}else {
-				print(str);
-				for (int j = in[i]-str.length();j > 0;j--) {// > 0 because 0 is same length so we're good
-					print(" ");
-				}
-			}
-		}*/
-		/*
-		int j = 0;
-		while (j < in.length) {
-			while(!strs[j].isEmpty() && in[j] > 0) {
-				print(strs[j].substring(0, 1));
-				if (strs[j].length() > 1){
-					strs[j] = strs[j].substring(1,strs[j].length());
-				}else {
-					strs[j] = "";
-				}
-				in[j] -=1;
-			}
-			if (in[j] > 0 && j < in.length-1) {
-				while (in[j] > 0) {
-					if (strs[j].length() > 1){
-						strs[j] = strs[j].substring(1,strs[j].length());
-					}else {
-						strs[j] = "";
-					}
-					print(" ");
-					in[j] -=1;
-				}
-			}
-			j++;
-		}*/
-		extra.println(TrawelColor.PRE_WHITE);
-	}
-
-	public static String cutPadLenFront(int len, String str) {
-		if (len > str.length()) {
-			while (len > str.length()) {
-				str= str+" ";
-			}
-			return str;
-		}else {
-			return str.substring(0, len);
-		}
-	}
-
-	public static String cutPadLen(int len, String str) {
-		if (len > str.length()) {
-			while (len > str.length()) {
-				str= " "+str;//java 8 sadness, I think the better ways to do this without a stringbuilder are later
-			}
-			return str;
-		}else {
-			return str.substring(0, len);
-		}
-	}
-	public static String cutPadLenError(int len, String str) {
-		if (len == str.length()) {
-			return str;
-		}
-		if (len > str.length()) {
-			while (len > str.length()) {
-				str= " "+str;//java 8 sadness, I think the better ways to do this without a stringbuilder are later
-			}
-			return str;
-		}else {
-			str= "C"+str;//show that it's been cut
-			return str.substring(0, len);
-		}
-	}
-
-	public static void offPrintStack() {
-		if (!isMainThread()){
-			return;
-		}
-		printStack.push(printMode);
-		printMode = true;
-	}
-
-	public static void popPrintStack() {
-		if (!isMainThread()){
-			return;
-		}
-		printMode = printStack.pop();
-	}
-
-	public static <E> E randList(ArrayList<E> list) {
-		return list.get(getRand().nextInt(list.size()));
-	}
-
-	public static <E> E randList(List<E> list) {
-		return list.get(getRand().nextInt(list.size()));
-	}
-	public static <E> E randList(E[] list) {
-		return list[getRand().nextInt(list.length)];
-	}
-	/**
-	 * adapted from https://stackoverflow.com/a/68640122
-	 * <br>
-	 * will return null if couldn't find anything
-	 */
-	public static <E> E randCollection(Collection<E> collect) {
-		return collect.stream().skip(extra.getRand().nextInt(collect.size())).findAny().orElse(null);
-	}
-
-	/**
-	 * in most cases you might want to implement a better way with size yourself
-	 */
-	public static <E> E randStream(Stream<E> stream, int size) {
-		return stream.skip(extra.getRand().nextInt(size)).findAny().orElse(null);
-	}
-
 	public static final float clamp(float d, float min, float max) {
 		return Math.min(max, Math.max(d, min));
 	}
@@ -799,210 +293,6 @@ public final class extra {
 	}
 
 
-	//TODO: menuGoCategory that takes MenuItems that have categories- (up to 8 usually, but allows nesting)
-	//if a category (and it's nested categories) only have on option
-	//it is displayed directly, otherwise a new option that just lets you enter the category is created
-	//this will have different logic code but maintains the 'store menu until an actual option is picked'
-	//logic of menuGo
-	public static int menuGo(MenuGenerator mGen) {
-		List<MenuItem> mList = new ArrayList<MenuItem>();
-		int v;
-		boolean forceLast;
-		boolean canBack;
-		List<MenuItem> subList;
-		while (true) {
-			mGen.onRefresh();
-			mList = mGen.gen();
-			if (mList == null) {
-				return -1;//used for nodes so they can force interactions cleanly
-			}
-			v = 1;
-			forceLast = false;
-			canBack = false;
-			subList = new ArrayList<MenuItem>();
-			for (MenuItem m: mList) {
-				if (m.forceLast()) {
-					subList.add(m);
-					extra.println("9 " + m.title());
-					forceLast = true;
-					canBack = m.canBack();
-					//force last must be last, and pickable
-					//UPDATE: it works with other labels after it now
-					continue;
-				}else {
-					if (m.canClick()) {
-						assert forceLast == false;
-						extra.println(v + " " + m.title());
-						v++;
-						subList.add(m);
-					}else {
-						extra.println(m.title());
-					}
-				}
-			}
-
-			//mList.stream().filter(m -> m.canClick() == true).forEach(subList::add);
-			int val;
-			if (!forceLast) {
-				val = extra.inInt(subList.size())-1;
-			}else {
-				val = extra.inInt(subList.size()-1,true,canBack)-1;
-			}
-			boolean ret;
-			if (val < subList.size()) {
-				ret = subList.get(val).go();
-			}else {
-				ret = subList.get(subList.size()-1).go();
-			}
-			if (ret) {
-				if (mGen instanceof ScrollMenuGenerator) {
-					return ((ScrollMenuGenerator)mGen).getVal(val);
-				}
-				return val;
-			}
-		}
-	}
-
-	public static int menuGoPaged(MenuGeneratorPaged mGen) {
-		List<MenuItem> mList = new ArrayList<MenuItem>();
-		mList = mGen.gen();
-
-		mGen.page = 0;
-		while (true) {
-			mGen.lists.clear();
-			mGen.maxPage = 0;
-			int j = 0;
-			int count = 0;
-			int start = 0;
-			mList.add(new MenuLine() {//dummy node
-				@Override
-				public String title() {
-					return "end of pages";
-				}});
-			while (j < mList.size()) {
-
-				if (mList.get(j).canClick() == true) {
-					count++;
-					j++;
-				}else {
-					j++;
-					continue;
-				}
-				if (count == 8 && mList.size()-1 > 8) {
-					mList.add(j,new MenuLine() {
-
-						@Override
-						public String title() {
-							return (mGen.page+1) + "/" + (mGen.maxPage+1);
-						}});
-					j++;
-					mList.add(j,new MenuSelect() {
-
-						@Override
-						public String title() {
-							return "next page";
-						}
-
-						@Override
-						public boolean go() {
-							mGen.page++;
-							return false;
-						}});
-					count++; j++;
-					mGen.lists.add(new ArrayList<MenuItem>());
-					for (int k = 0;k < j;k++) {
-						mGen.lists.get(0).add(mList.get(k));
-					}
-					start = j;
-					mGen.maxPage++;
-					count+=2;
-				}else {
-					if (count > 10 && (count%9 == 0 || j == mList.size()-1)) {
-						mList.add(j,new MenuLine() {
-
-							@Override
-							public String title() {
-								return (mGen.page+1) + "/" + (mGen.maxPage+1);
-							}});
-						j++;
-						mList.add(j,new MenuSelect() {
-
-							@Override
-							public String title() {
-								return "last page";
-							}
-
-							@Override
-							public boolean go() {
-								mGen.page--;
-								return false;
-							}});
-						count++; j++;
-						if (true == true) {//figure out a last page condition
-							mList.add(j,new MenuSelect() {
-
-								@Override
-								public String title() {
-									return "next page";
-								}
-
-								@Override
-								public boolean go() {
-									mGen.page++;
-									return false;
-								}});
-							count++; j++;
-							//int start = 1+mList.indexOf(mGen.lists.get(mGen.maxPage-1).get(mGen.lists.get(mGen.maxPage-1).size()-1));
-							mGen.lists.add(new ArrayList<MenuItem>());
-
-							for (int k = start;k < j;k++) {
-								mGen.lists.get(mGen.maxPage).add(mList.get(k));
-							}
-							//if (count%9==0) {//doesn't work in every case
-							mGen.maxPage++;//}
-							start = j;
-						}
-					}
-
-				}
-
-			}
-
-			if (mGen.maxPage == 0) {
-				mGen.lists.add(new ArrayList<MenuItem>());
-				for (int k = 0;k < j;k++) {
-					mGen.lists.get(0).add(mList.get(k));
-				}
-			}
-
-			if (start == j-1) {
-				mGen.maxPage--;
-				mGen.lists.get(mGen.maxPage).remove(mGen.lists.get(mGen.maxPage).size()-1);
-			}
-			mGen.page = extra.clamp(mGen.page,0,mGen.maxPage);
-			if (mGen.header != null) {
-				extra.println(mGen.header.title());
-			}
-			int v = 1;
-			List<MenuItem> subList = new ArrayList<MenuItem>();
-			for (int i = 0;i < mGen.lists.get(mGen.page).size();i++)
-				if (mGen.lists.get(mGen.page).get(i).canClick() == true) {
-					subList.add(mGen.lists.get(mGen.page).get(i));
-					extra.println(v + " " +mGen.lists.get(mGen.page).get(i).title());
-					v++;
-				}else {
-					extra.println(mGen.lists.get(mGen.page).get(i).title());
-				}
-			int val = extra.inInt(subList.size())-1;
-			boolean ret = subList.get(val).go();
-			if (ret) {
-				return val;
-			}
-			mList = mGen.gen();
-
-		}
-	}
-
 	public static final float lerp(float a, float b, float f) 
 	{
 		return (a * (1.0f - f)) + (b * f);
@@ -1013,18 +303,13 @@ public final class extra {
 		return (a * (1.0 - f)) + (b * f);
 	}
 
-	public static String formatPerSubOne(double percent) {
-		String str = F_TWO_TRAILING.format(percent);
-		return "%"+str.substring(1);
-	}
-
 	/**
 	 * https://stackoverflow.com/a/13091759
 	 * @param a - How deep the curve is - 0 <-> 1
 	 * @return
 	 */
 	public static float bellCurve(float a){
-		double x = extra.getRand().nextDouble();
+		double x = Rand.getRand().nextDouble();
 		return (float) (4*a*Math.pow(x,3) - 6*a*Math.pow(x,2) + 2*a*x + x);//TODO fix
 	}
 
@@ -1053,28 +338,10 @@ public final class extra {
 		}*/
 
 	public static final double upDamCurve(double depth, double midpoint) {
-		double x = 1-(2*Math.abs(extra.getRand().nextDouble()-midpoint));
+		double x = 1-(2*Math.abs(Rand.getRand().nextDouble()-midpoint));
 		x = extra.clamp(x,0,1);
 		return (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);
 	}
-
-	public static String spaceBuffer(int size) {
-		// TODO upgrade to java 11 with " ".repeat() and just do that everywhere this is used
-		return String.join("", Collections.nCopies(size," "));
-	}
-
-	/*
-		public static <E> E randSet(Set<E> set) {
-			assert !set.isEmpty();
-			int i = extra.getRand().nextInt(set.size());
-			for (E e: set) {
-				if (i <= 0) {
-					return e;
-				}
-				i--;
-			}
-			throw new RuntimeException("Wrong randset size");
-		}*/
 
 	/**
 	 * must be non empty
@@ -1086,13 +353,6 @@ public final class extra {
 			}
 		}
 		return peeps.get(0);
-	}
-
-	public static String padIf(String str) {
-		if (str != "") {
-			return str+" ";
-		}
-		return str;
 	}
 
 }

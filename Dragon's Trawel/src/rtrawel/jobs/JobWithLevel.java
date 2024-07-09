@@ -2,7 +2,8 @@ package rtrawel.jobs;
 
 import rtrawel.TestRunner;
 import rtrawel.unit.RPlayer;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
+import trawel.core.Print;
 
 public class JobWithLevel implements java.io.Serializable {
 
@@ -103,7 +104,7 @@ public class JobWithLevel implements java.io.Serializable {
 	
 	private void addLevel(RPlayer r) {
 		level++;
-		extra.println(r.getName() + " levels up!");
+		Print.println(r.getName() + " levels up!");
 		if (level < 5) {//(3*2)+(30*3)+(30*2)+(35) + 9
 			addPathPoints(2,r);
 		}else {
@@ -133,19 +134,19 @@ public class JobWithLevel implements java.io.Serializable {
 	public void addPathPoints(int p, RPlayer r) {
 		Job j = JobFactory.getJobByName(jobName);
 		while (p > 0) {
-			extra.println("You have " + p +" points to allocate.");
-			extra.println("1 " + j.getPath1() + ": "+ r.progression.pathLevel(j.getPath1()));
-			extra.println("2 " + j.getPath2() + ": "+ r.progression.pathLevel(j.getPath2()));
-			extra.println("3 " + j.getPath3() + ": "+ r.progression.pathLevel(j.getPath3()));
+			Print.println("You have " + p +" points to allocate.");
+			Print.println("1 " + j.getPath1() + ": "+ r.progression.pathLevel(j.getPath1()));
+			Print.println("2 " + j.getPath2() + ": "+ r.progression.pathLevel(j.getPath2()));
+			Print.println("3 " + j.getPath3() + ": "+ r.progression.pathLevel(j.getPath3()));
 			int aLeft;
 			int in;
-			switch (extra.inInt(3)) {
+			switch (Input.inInt(3)) {
 			case 1:
 				aLeft = 100-r.progression.pathLevel(j.getPath1());
 				if (aLeft > 0) {
 					int take = Math.min(aLeft,p);
-					extra.println("Allocate how many? (max "+ take+")");
-					in = extra.inInt(take);
+					Print.println("Allocate how many? (max "+ take+")");
+					in = Input.inInt(take);
 					r.progression.addPathPoints(j.getPath1(), in,r);
 					p-=in;
 				}
@@ -154,8 +155,8 @@ public class JobWithLevel implements java.io.Serializable {
 				aLeft = 100-r.progression.pathLevel(j.getPath2());
 				if (aLeft > 0) {
 					int take = Math.min(aLeft,p);
-					extra.println("Allocate how many? (max "+ take+")");
-					in = extra.inInt(take);
+					Print.println("Allocate how many? (max "+ take+")");
+					in = Input.inInt(take);
 					r.progression.addPathPoints(j.getPath2(), in,r);
 					p-=in;
 				}
@@ -164,8 +165,8 @@ public class JobWithLevel implements java.io.Serializable {
 				aLeft = 100-r.progression.pathLevel(j.getPath3());
 				if (aLeft > 0) {
 					int take = Math.min(aLeft,p);
-					extra.println("Allocate how many? (max "+ take+")");
-					in = extra.inInt(take);
+					Print.println("Allocate how many? (max "+ take+")");
+					in = Input.inInt(take);
 					r.progression.addPathPoints(j.getPath3(), in,r);
 					p-=in;
 				}

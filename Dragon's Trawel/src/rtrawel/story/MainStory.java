@@ -1,6 +1,6 @@
 package rtrawel.story;
 
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class MainStory implements Story {
 
@@ -9,12 +9,12 @@ public class MainStory implements Story {
 		switch (flag) {
 		case "new_game":
 			if (at == 1) {
-				extra.println("You've been hired to clear out the homan well. A large squid has been plaguing the town.");
+				Print.println("You've been hired to clear out the homan well. A large squid has been plaguing the town.");
 			}
 			break;
 		case "homa_unun_boss":
 			if (at == 1) {
-				extra.println("You should travel back to unun to try to find more party members.");
+				Print.println("You should travel back to unun to try to find more party members.");
 			}
 			break;
 		}

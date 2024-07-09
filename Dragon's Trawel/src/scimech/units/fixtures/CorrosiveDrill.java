@@ -9,7 +9,7 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Fixture;
 import scimech.mech.TurnSubscriber;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class CorrosiveDrill extends Fixture {
 
@@ -33,7 +33,7 @@ public class CorrosiveDrill extends Fixture {
 		}
 		if (!t.isDummy()) {
 			currentMount.takeHeat(2);
-			extra.print("The Corrosive Drill attacks! " + hits + " hits! ");
+			Print.print("The Corrosive Drill attacks! " + hits + " hits! ");
 		}
 	}
 

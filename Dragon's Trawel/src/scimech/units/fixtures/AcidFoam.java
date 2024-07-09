@@ -10,7 +10,7 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Fixture;
 import scimech.mech.TurnSubscriber;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class AcidFoam extends Fixture {
 
@@ -29,7 +29,7 @@ public class AcidFoam extends Fixture {
 		t.takeDamage().suffer(DamageEffect.ACID,hits*5, t);
 		if (!t.isDummy()) {
 			//currentMount.takeHeat(5);
-			extra.print("The Acid Foamer attacks! " + (hits*5) + "% effective! ");
+			Print.print("The Acid Foamer attacks! " + (hits*5) + "% effective! ");
 		}
 	}
 

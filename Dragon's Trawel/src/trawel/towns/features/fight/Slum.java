@@ -9,11 +9,13 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.factions.HostileTask;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -116,28 +118,28 @@ public class Slum extends Store implements QuestBoardLocation{
 	@Override
 	public void generateSideQuest() {
 		if (sideQuests.size() >= 3) {
-			sideQuests.remove(extra.randList(sideQuests));
+			sideQuests.remove(Rand.randList(sideQuests));
 		}
-		switch (extra.randRange(1,5)) {
+		switch (Rand.randRange(1,5)) {
 		case 1:
-			if (extra.randFloat() > .90f) {//10% for merchant
+			if (Rand.randFloat() > .90f) {//10% for merchant
 				sideQuests.add(FetchSideQuest.generate(this,FetchType.MERCHANT));
 				break;
 			}
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.CRIME));
 			break;
 		case 2:
-			if (extra.randFloat() > .95f) {//5% for heroism
+			if (Rand.randFloat() > .95f) {//5% for heroism
 				sideQuests.add(FetchSideQuest.generate(this,FetchType.HERO));
 				break;
 			}
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.COMMUNITY));
 			break;
 		case 3:
-			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.BANDIT)));
+			sideQuests.add(CleanseSideQuest.generate(this,Rand.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.BANDIT)));
 			break;
 		case 4: case 5:
-			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .4f));//60% chance to be a murder quest
+			sideQuests.add(KillSideQuest.generate(this,Rand.randFloat() > .4f));//60% chance to be a murder quest
 			break;
 		}
 	}
@@ -146,7 +148,7 @@ public class Slum extends Store implements QuestBoardLocation{
 	public void go() {
 		Slum sl = this;
 		int removecost = (int) (((crimeRating*5)+(tier*10))/2f);
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -160,7 +162,7 @@ public class Slum extends Store implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
-						extra.menuGo(modernStoreFront());
+						Input.menuGo(modernStoreFront());
 						return false;
 					}});
 				mList.add(new MenuSelect() {
@@ -224,9 +226,9 @@ public class Slum extends Store implements QuestBoardLocation{
 									town.laterReplace(Slum.this,replacer.generate(Slum.this));
 									return true;
 								}
-								extra.println("You pay for the reform programs.");
+								Print.println("You pay for the reform programs.");
 								String formerly = " (formerly '"+sl.getName()+"')";
-								switch (extra.randRange(0,3)) {
+								switch (Rand.randRange(0,3)) {
 								case 0: case 1:
 									town.laterReplace(sl,new WitchHut("Chemist Business"+formerly,sl.town));
 									break;
@@ -239,7 +241,7 @@ public class Slum extends Store implements QuestBoardLocation{
 								}
 								return true;
 							}else {
-								extra.println("You can't afford to uplift the slum out of poverty, and no one else who could seems to care.");
+								Print.println("You can't afford to uplift the slum out of poverty, and no one else who could seems to care.");
 							}
 							return false;
 						}
@@ -266,12 +268,12 @@ public class Slum extends Store implements QuestBoardLocation{
 				crimeLord.onlyGoal(AgentGoal.OWN_SOMETHING);
 			}else {
 				//if has crime lord
-				timePassed = 12+(extra.randFloat()*24);
+				timePassed = 12+(Rand.randFloat()*24);
 				if (town.getPersonableOccupants().count() == 0) {
 					return null;
 				}
 				Agent sp = town.getRandPersonableOccupant();
-				if (sp.getPerson().hTask == HostileTask.MUG && sp.getPerson().getLevel() > crimeLord.getPerson().getLevel() && extra.chanceIn(1,3)) {
+				if (sp.getPerson().hTask == HostileTask.MUG && sp.getPerson().getLevel() > crimeLord.getPerson().getLevel() && Rand.chanceIn(1,3)) {
 					//replace crime lord
 					crimeLord.onlyGoal(AgentGoal.NONE);
 					town.addOccupant(crimeLord);
@@ -292,7 +294,7 @@ public class Slum extends Store implements QuestBoardLocation{
 	}
 	
 	private void backroom() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -311,7 +313,7 @@ public class Slum extends Store implements QuestBoardLocation{
 	
 	private void crime() {
 		//Slum sl = this;
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -326,57 +328,57 @@ public class Slum extends Store implements QuestBoardLocation{
 					@Override
 					public boolean go() {
 						int potionCost = tier;
-						extra.println(Player.player.getFlask() != null ? "You already have a potion, buying one will replace it." : "Quality not assured.");
-						extra.println("You have "+Player.showGold()+".");
-						switch (extra.randRange(1, 3)) {
+						Print.println(Player.player.getFlask() != null ? "You already have a potion, buying one will replace it." : "Quality not assured.");
+						Print.println("You have "+Player.showGold()+".");
+						switch (Rand.randRange(1, 3)) {
 						case 1:
-							extra.println("Buy a low-quality potion? ("+World.currentMoneyDisplay(potionCost)+")");
-							if (extra.yesNo()) {
+							Print.println("Buy a low-quality potion? ("+World.currentMoneyDisplay(potionCost)+")");
+							if (Input.yesNo()) {
 								if (Player.player.getGold() < potionCost) {
-									extra.println("You cannot afford this. (You have "+Player.showGold()+".)");
+									Print.println("You cannot afford this. (You have "+Player.showGold()+".)");
 									return false;
 								}
 								Player.player.addGold(-potionCost);
-								if (extra.chanceIn(1, 3)) {
-									Player.player.setFlask(new Potion(Effect.CURSE,extra.randRange(2, 3)));
+								if (Rand.chanceIn(1, 3)) {
+									Player.player.setFlask(new Potion(Effect.CURSE,Rand.randRange(2, 3)));
 								}else {
-									Player.player.setFlask(new Potion(extra.randList(Arrays.asList(Effect.estimEffects)),extra.randRange(2, 3)));	
+									Player.player.setFlask(new Potion(Rand.randList(Arrays.asList(Effect.estimEffects)),Rand.randRange(2, 3)));	
 								}
-								extra.println("You buy the potion.");
+								Print.println("You buy the potion.");
 							}
 							break;
 						case 2:
 							potionCost *=2;
-							extra.println("Buy a medium-quality potion? ("+World.currentMoneyDisplay(potionCost)+")");
-							if (extra.yesNo()) {
+							Print.println("Buy a medium-quality potion? ("+World.currentMoneyDisplay(potionCost)+")");
+							if (Input.yesNo()) {
 								if (Player.player.getGold() < potionCost) {
-									extra.println("You cannot afford this. (You have "+Player.showGold()+".)");
+									Print.println("You cannot afford this. (You have "+Player.showGold()+".)");
 									return false;
 								}
 								Player.player.addGold(-potionCost);
-								if (extra.chanceIn(1, 4)) {
-									Player.player.setFlask(new Potion(Effect.CURSE,extra.randRange(3, 4)));
+								if (Rand.chanceIn(1, 4)) {
+									Player.player.setFlask(new Potion(Effect.CURSE,Rand.randRange(3, 4)));
 								}else {
-									Player.player.setFlask(new Potion(extra.randList(Arrays.asList(Effect.estimEffects)),extra.randRange(3, 4)));	
+									Player.player.setFlask(new Potion(Rand.randList(Arrays.asList(Effect.estimEffects)),Rand.randRange(3, 4)));	
 								}
-								extra.println("You buy the potion.");
+								Print.println("You buy the potion.");
 							}
 							break;
 						case 3:
 							potionCost *=4;
-							extra.println("Buy a high-quality potion? ("+World.currentMoneyDisplay(potionCost)+")");
-							if (extra.yesNo()) {
+							Print.println("Buy a high-quality potion? ("+World.currentMoneyDisplay(potionCost)+")");
+							if (Input.yesNo()) {
 								if (Player.player.getGold() < potionCost) {
-									extra.println("You cannot afford this. (You have "+Player.showGold()+" gold.)");
+									Print.println("You cannot afford this. (You have "+Player.showGold()+" gold.)");
 									return false;
 								}
 								Player.player.addGold(-potionCost);
-								if (extra.chanceIn(1, 6)) {
-									Player.player.setFlask(new Potion(Effect.CURSE,extra.randRange(3, 5)));
+								if (Rand.chanceIn(1, 6)) {
+									Player.player.setFlask(new Potion(Effect.CURSE,Rand.randRange(3, 5)));
 								}else {
-									Player.player.setFlask(new Potion(extra.randList(Arrays.asList(Effect.estimEffects)),extra.randRange(3, 5)));	
+									Player.player.setFlask(new Potion(Rand.randList(Arrays.asList(Effect.estimEffects)),Rand.randRange(3, 5)));	
 								}
-								extra.println("You buy the potion.");
+								Print.println("You buy the potion.");
 							}
 							break;
 						}
@@ -394,7 +396,7 @@ public class Slum extends Store implements QuestBoardLocation{
 	
 						@Override
 						public boolean go() {
-							extra.println("You wait around and find a mugger.");
+							Print.println("You wait around and find a mugger.");
 							Player.addTime(2);
 							TrawelTime.globalPassTime();
 							Combat c = Player.player.fightWith(RaceFactory.makeMugger(tier));
@@ -417,7 +419,7 @@ public class Slum extends Store implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
-						extra.println("You wait around and find someone to rob.");
+						Print.println("You wait around and find someone to rob.");
 						Player.addTime(1);
 						TrawelTime.globalPassTime();
 						Combat c = Player.player.fightWith(RaceFactory.makePeace(tier));
@@ -437,18 +439,18 @@ public class Slum extends Store implements QuestBoardLocation{
 	
 	private void killCrime() {
 		Person p = crimeLord.getPerson();
-		extra.println(TrawelColor.PRE_BATTLE +"Attack " + p.getName() + "?");
-		if (extra.yesNo()) {
+		Print.println(TrawelColor.PRE_BATTLE +"Attack " + p.getName() + "?");
+		if (Input.yesNo()) {
 			Combat c = Player.player.fightWith(p);
 			if (c.playerWon() > 0) {
-				extra.println("You kill the crime lord!");
+				Print.println("You kill the crime lord!");
 				wins++;
 				//reduce crime by 3x crimelord eLevel and 1x player eLevel, compared to only 1x player eLevel of mugger
 				crimeRating -= 3*crimeLord.getPerson().getUnEffectiveLevel();
 				crimeRating -= Player.player.getPerson().getUnEffectiveLevel();
 				crimeLord = null;
 			}else {
-				extra.println("The crime lord kills you.");
+				Print.println("The crime lord kills you.");
 			}
 		}
 		

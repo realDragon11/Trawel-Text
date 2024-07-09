@@ -8,8 +8,9 @@ import java.util.regex.Pattern;
 import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.battle.attacks.Wound;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.battle.attacks.ImpairedAttack.DamageType;
-import trawel.helper.methods.extra;
 
 public class TargetFactory {
 
@@ -1375,14 +1376,14 @@ public class TargetFactory {
 		public TargetReturn randTarget(TargetType config) {
 			int val;
 			if (config == null) {
-				return tRets.get(tables[0].random(extra.getRand()));//0 is the global table
+				return tRets.get(tables[0].random(Rand.getRand()));//0 is the global table
 			}
 			for (val = types.length-1; val >= 0;val--) {
 				if (config == types[val]) {
 					break;//we found what list we're in, it's stored now
 				}
 			}
-			return tRets.get(tables[val+1].random(extra.getRand()));//0 is the global table, so offset
+			return tRets.get(tables[val+1].random(Rand.getRand()));//0 is the global table, so offset
 		}
 		
 		public String spotName(int spot) {
@@ -1406,12 +1407,12 @@ public class TargetFactory {
 	
 	public static void dispPlan(TypeBody plan) {
 		for (int i = 0; i < plan.getPartCount();i++) {
-			extra.println(i + " m" + plan.getMap(i) + " a: " +plan.getAttach(i) + " " + plan.spotName(i));
+			Print.println(i + " m" + plan.getMap(i) + " a: " +plan.getAttach(i) + " " + plan.spotName(i));
 		}
 	}
 	
 	public static Target randTarget(TargetType targetType) {
-		return handler.targetList.get(targetTypeTable.get(targetType).random(extra.getRand()));
+		return handler.targetList.get(targetTypeTable.get(targetType).random(Rand.getRand()));
 	}
 	
 	public static int totalNeededVariants(TargetType type, int attach) {

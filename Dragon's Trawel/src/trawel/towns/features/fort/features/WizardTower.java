@@ -8,8 +8,9 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import derg.menus.MenuSelectNumber;
+import trawel.core.Input;
+import trawel.core.Print;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -59,10 +60,10 @@ public class WizardTower extends FortFeature {
 	@Override
 	public void go() {
 		if (this.getOwner() != Player.player) {
-			extra.println("You do not own this fort.");
+			Print.println("You do not own this fort.");
 			return;
 		}
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -93,7 +94,7 @@ public class WizardTower extends FortFeature {
 		return null;
 	}
 	public void skills() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -163,7 +164,7 @@ public class WizardTower extends FortFeature {
 	}
 	
 	public void pickDownTime(){
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 		@Override
 		public List<MenuItem> gen() {
 			List<MenuItem> mList = new ArrayList<MenuItem>();
@@ -186,8 +187,8 @@ public class WizardTower extends FortFeature {
 
 					@Override
 					public boolean go() {
-						extra.println(pickList.get(number).name + ": " + pickList.get(number).desc + " Buy?");
-						if (extra.yesNo()){
+						Print.println(pickList.get(number).name + ": " + pickList.get(number).desc + " Buy?");
+						if (Input.yesNo()){
 							downTimeSkill=(pickList.get(number));
 							pickList.clear();
 							return true;
@@ -204,7 +205,7 @@ public class WizardTower extends FortFeature {
 	});
 	}
 	public void pickBattle(){
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 		@Override
 		public List<MenuItem> gen() {
 			List<MenuItem> mList = new ArrayList<MenuItem>();
@@ -227,8 +228,8 @@ public class WizardTower extends FortFeature {
 
 					@Override
 					public boolean go() {
-						extra.println(pickList.get(number).name + ": " + pickList.get(number).desc + " Buy?");
-						if (extra.yesNo()){
+						Print.println(pickList.get(number).name + ": " + pickList.get(number).desc + " Buy?");
+						if (Input.yesNo()){
 							battleSkill=(pickList.get(number));
 							pickList.clear();
 							return true;

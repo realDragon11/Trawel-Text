@@ -1,6 +1,6 @@
 package trawel.personal.item;
 
-import trawel.helper.methods.extra;
+import trawel.core.Rand;
 
 public enum Seed {
 	EMPTY(""),
@@ -41,7 +41,7 @@ public enum Seed {
 		name = n;
 	}
 	public static Seed randSeed() {
-		return extra.choose(SEED_GARLIC,SEED_APPLE,SEED_PUMPKIN,SEED_EGGCORN,SEED_TRUFFLE);
+		return Rand.choose(SEED_GARLIC,SEED_APPLE,SEED_PUMPKIN,SEED_EGGCORN,SEED_TRUFFLE);
 	}
 	
 	@Override

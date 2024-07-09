@@ -14,6 +14,8 @@ import trawel.battle.attacks.ImpairedAttack;
 import trawel.core.Networking;
 import trawel.core.mainGame;
 import trawel.core.Networking.BattleType;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.battle.attacks.Wound;
 import trawel.battle.targets.TargetFactory;
 import trawel.battle.targets.TargetFactory.BloodType;
@@ -124,9 +126,9 @@ public class Combat {
 		defender = manOne;
 		setAttack(manTwo,manOne);
 		setAttack(manOne,manTwo);
-		if (!extra.getPrint()) {
-			extra.println("");
-			extra.println(extra.choose("Our two fighters square off...","They look tense.","It's time to fight.","They look ready to fight.","The battle has begun."));
+		if (!Print.getPrint()) {
+			Print.println("");
+			Print.println(Rand.choose("Our two fighters square off...","They look tense.","It's time to fight.","They look ready to fight.","The battle has begun."));
 			
 		}
 		do {//combat loop
@@ -184,9 +186,9 @@ public class Combat {
 			}
 		}
 		killData(defender,attacker);
-		if (!extra.getPrint()) {
-			extra.println(extra.choose("The dust settles...","The body drops to the floor.","Death has come.","The battle is over."));
-			extra.println(defender.getName() + extra.choose(" lies dead..."," walks the earth no more..."," has been slain."));
+		if (!Print.getPrint()) {
+			Print.println(Rand.choose("The dust settles...","The body drops to the floor.","Death has come.","The battle is over."));
+			Print.println(defender.getName() + Rand.choose(" lies dead..."," walks the earth no more..."," has been slain."));
 		}
 		survivors = Collections.singletonList(attacker);
 		killed = Collections.singletonList(defender);
@@ -287,15 +289,15 @@ public class Combat {
 			if (sk.resetTime > 0) {
 				sk.timer-=timePassed;
 				while (sk.timer <= 0) {
-					sk.timer += sk.resetTime*extra.lerp(.8f,1.2f,extra.randFloat());//intentionally not perfect times
+					sk.timer += sk.resetTime*extra.lerp(.8f,1.2f,Rand.randFloat());//intentionally not perfect times
 					doTimes++;
 				}	
 			}
 			for (;doTimes > 0; doTimes--) {
 				switch (sk.base) {
 				case WITHER:
-					if (!extra.getPrint()) {
-						extra.println("The battlefield starts to wither!");
+					if (!Print.getPrint()) {
+						Print.println("The battlefield starts to wither!");
 					}
 					float mult;
 					if (sk.power > 50) {
@@ -316,8 +318,8 @@ public class Combat {
 					}
 					break;
 				case FIREBALLS:
-					if (!extra.getPrint()) {
-						extra.println("The very air beings to boil! Armor melts away!");
+					if (!Print.getPrint()) {
+						Print.println("The very air beings to boil! Armor melts away!");
 					}
 					float burnMult;
 					if (sk.power > 50) {
@@ -337,11 +339,11 @@ public class Combat {
 					break;
 				case SCRY:
 				case WATCH:
-					if (!extra.getPrint()) {
+					if (!Print.getPrint()) {
 						if (sk.base == SkillBase.SCRY) {
-							extra.println("A path is seen!");
+							Print.println("A path is seen!");
 						}else {
-							extra.println("A plan is scouted!");
+							Print.println("A plan is scouted!");
 						}
 					}
 					float timeDiscount;
@@ -355,8 +357,8 @@ public class Combat {
 					}
 					break;
 				case BLOCKADE:
-					if (!extra.getPrint()) {
-						extra.println("The barricades are holding!");
+					if (!Print.getPrint()) {
+						Print.println("The barricades are holding!");
 					}
 					float holdTime;
 					if (sk.power > 50) {
@@ -382,9 +384,9 @@ public class Combat {
 						}else {
 							fateTime = extra.lerp(5f,35f,sk.power/50f);
 						}
-						Person p = extra.randList(list);
-						if (!extra.getPrint()) {
-							extra.println("It looks like fate is on " + p.getNameNoTitle()+"'s side!");
+						Person p = Rand.randList(list);
+						if (!Print.getPrint()) {
+							Print.println("It looks like fate is on " + p.getNameNoTitle()+"'s side!");
 						}
 						p.applyDiscount(fateTime);
 						p.addEffect(Effect.ADVANTAGE_STACK);//stack of advantage
@@ -495,7 +497,7 @@ public class Combat {
 
 			Person defender = quickest.getNextAttack().getDefender();
 			if (!mainGame.displayOtherCombat && !(quickest.isPlayer() || defender.isPlayer())) {
-				extra.offPrintStack();
+				Print.offPrintStack();
 			}
 			boolean wasAlive = defender.isAlive();
 			dataMap.get(defender).lastAttacker = quickest;
@@ -511,8 +513,8 @@ public class Combat {
 							Person newDef = getDefenderForConfusion(defender);
 							if (defender.getNextAttack().getDefender().isSameTargets(newDef)) {
 								defender.getNextAttack().setDefender(newDef);
-								if (!extra.getPrint()) {
-									extra.println(defender.getNameNoTitle() + " confuses who they're attacking!");
+								if (!Print.getPrint()) {
+									Print.println(defender.getNameNoTitle() + " confuses who they're attacking!");
 								}
 							}else {
 								//targets don't match, need new attack.
@@ -520,8 +522,8 @@ public class Combat {
 								double discount = -Math.max(0,((defender.getTime()-defender.getNextAttack().getWarmup()))/2.0);
 								setAttack(defender,newDef);
 								defender.applyDiscount(discount);
-								if (!extra.getPrint()) {
-									extra.println(defender.getNameNoTitle() + " looks around for a new target in confusion!");
+								if (!Print.getPrint()) {
+									Print.println(defender.getNameNoTitle() + " looks around for a new target in confusion!");
 								}
 							}
 						}
@@ -536,7 +538,7 @@ public class Combat {
 			}
 			
 			if (!mainGame.displayOtherCombat && !(quickest.isPlayer() || defender.isPlayer())) {
-				extra.popPrintStack();
+				Print.popPrintStack();
 			}
 
 			int sidesLeft = 0;
@@ -627,12 +629,12 @@ public class Combat {
 			data.nextTarget = null;
 			return t;
 		}
-		return extra.randList(targetLists.get(data.side));
+		return Rand.randList(targetLists.get(data.side));
 	}
 	
 	private Person getDefenderForConfusion(Person attacker) {
 		//will attempt to target anyone, but if that fails and targets self, revert to old way
-		Person defender = extra.randList(tempList);
+		Person defender = Rand.randList(tempList);
 		if (defender == attacker || defender.hasSkill(Skill.PLOT_ARMOR)) {//plot armor (npcs for now but would work on player sorta) have a reduced chance to get targeted
 			return getDefenderFor(attacker);
 		}
@@ -667,9 +669,9 @@ public class Combat {
 		boolean changed = killRemovePerson(dead);
 		if (changed) {
 			if (bledOut) {
-				extra.println(dead.getName() + " falls to the ground, dead!");
+				Print.println(dead.getName() + " falls to the ground, dead!");
 			}else {
-				extra.println(dead.getName() + " dies!");
+				Print.println(dead.getName() + " dies!");
 			}
 			killData(dead,killer);
 		}
@@ -687,24 +689,24 @@ public class Combat {
 		}
 		if (dead.hasSkill(Skill.CURSE_MAGE)) {
 			if (killer.hasSkill(Skill.NO_HOSTILE_CURSE)) {
-				if (!extra.getPrint()) {
-					extra.println(TrawelColor.RESULT_WARN+dead.getName() + " curses the name of " +killer.getNameNoTitle()+", but they seem unaffected.");
+				if (!Print.getPrint()) {
+					Print.println(TrawelColor.RESULT_WARN+dead.getName() + " curses the name of " +killer.getNameNoTitle()+", but they seem unaffected.");
 				}
 			}else {
-				if (!extra.getPrint()) {
-					extra.println(TrawelColor.RESULT_WARN+dead.getName() + " curses the name of " +killer.getNameNoTitle()+"!");
+				if (!Print.getPrint()) {
+					Print.println(TrawelColor.RESULT_WARN+dead.getName() + " curses the name of " +killer.getNameNoTitle()+"!");
 				}
 				killer.addEffect(Effect.CURSE);
 			}
 		}
 		if (killer.hasSkill(Skill.CONDEMN_SOUL)) {
 			if (dead.hasSkill(Skill.NO_HOSTILE_CURSE)) {
-				if (!extra.getPrint()) {
-					extra.println(TrawelColor.RESULT_WARN+killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+", but they seem unaffected.");
+				if (!Print.getPrint()) {
+					Print.println(TrawelColor.RESULT_WARN+killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+", but they seem unaffected.");
 				}
 			}else {
-				if (!extra.getPrint()) {
-					extra.println(TrawelColor.RESULT_WARN+killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+"!");
+				if (!Print.getPrint()) {
+					Print.println(TrawelColor.RESULT_WARN+killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+"!");
 				}
 				dead.addEffect(Effect.CURSE);
 			}
@@ -718,15 +720,15 @@ public class Combat {
 		if (killer.hasSkill(Skill.KILLHEAL)){
 			int restore = IEffectiveLevel.cleanLHP(Math.min(2+killer.getLevel(),dead.getLevel()),.05);
 			killer.addHp(restore);
-			if (!extra.getPrint()) {
-				extra.println(killer.getName() + " heals " + restore+" from the kill!");
+			if (!Print.getPrint()) {
+				Print.println(killer.getName() + " heals " + restore+" from the kill!");
 			}
 		}
 		if (killer.hasSkill(Skill.NO_QUARTER)) {
 			killer.addEffect(Effect.PLANNED_TAKEDOWN);
 			killer.addEffectCount(Effect.ADVANTAGE_STACK,2);
-			if (!extra.getPrint()) {
-				extra.println(killer.getName() + " will give no quarter!");
+			if (!Print.getPrint()) {
+				Print.println(killer.getName() + " will give no quarter!");
 			}
 		}
 		FBox.repCalc(killer,dead);
@@ -741,7 +743,7 @@ public class Combat {
 		
 		boolean wasDead = false;
 		int wLevel = att.getLevel();
-		boolean canDisp = isReal && !extra.getPrint();
+		boolean canDisp = isReal && !Print.getPrint();
 		
 		if (att.isTacticOnly()) {
 			ret= new AttackReturn(ATK_ResultCode.NOT_ATTACK,"",att,null);
@@ -756,7 +758,7 @@ public class Combat {
 			off = DummyInventory.dummyAttackInv;
 		}
 		if (canDisp) {
-			if (extra.chanceIn(1, 4)) {
+			if (Rand.chanceIn(1, 4)) {
 				Networking.send("PlayDelayPitch|"+SoundBox.getSound(off.getRace().voice,SoundBox.Type.SWING) + "|1|" +attacker.getPitch() +"|");
 			}
 			if (!defender.isAlive()) {
@@ -770,8 +772,8 @@ public class Combat {
 		double dodgeBase = def.getDodge()*defender.getWoundDodgeCalc();
 		double hitBase = att.getHitMult();
 		
-		double dodgeRoll = dodgeBase*extra.getRand().nextDouble();
-		double hitRoll = hitBase*extra.getRand().nextDouble();
+		double dodgeRoll = dodgeBase*Rand.getRand().nextDouble();
+		double hitRoll = hitBase*Rand.getRand().nextDouble();
 		
 		if (defender.hasEffect(Effect.DUCKING) || defender.hasEffect(Effect.ROLLING)) {
 			dodgeRoll+=0.2;
@@ -902,13 +904,13 @@ public class Combat {
 					//only picks one
 					Wound runeWound = null;
 					if (rune.getFireMod() > 0) {//if ignite enchanted
-						runeWound =  extra.randList(TargetFactory.fireWounds);
+						runeWound =  Rand.randList(TargetFactory.fireWounds);
 					}else {
 						if (rune.getFreezeMod() > 0) {//if frost enchanted
-							runeWound =  extra.randList(TargetFactory.freezeWounds);
+							runeWound =  Rand.randList(TargetFactory.freezeWounds);
 						}else {
 							if (rune.getShockMod() > 0) {//if elec enchanted
-								runeWound =  extra.randList(TargetFactory.shockWounds);
+								runeWound =  Rand.randList(TargetFactory.shockWounds);
 							}//else fails
 						}
 					}
@@ -1054,8 +1056,8 @@ public class Combat {
 			double earm = weight_arm;//*def.getElecMult(att.getSlot());
 			
 			//double guess = ((rawdam+weight_arm)/weight_arm)-1;
-			float def_roll = extra.lerp(.05f+(.05f*def.qualityCount(ArmorQuality.RELIABLE)),1f,extra.hrandomFloat());
-			float att_roll = extra.lerp(.7f,1f,extra.hrandomFloat());
+			float def_roll = extra.lerp(.05f+(.05f*def.qualityCount(ArmorQuality.RELIABLE)),1f,Rand.hrandomFloat());
+			float att_roll = extra.lerp(.7f,1f,Rand.hrandomFloat());
 			double global_roll = (att_roll*rawdam)/(def_roll*weight_arm);
 			//if our random damage roll was less than 40% of the armor roll, negate
 			if (global_roll < .4+(.02*def.qualityCount(ArmorQuality.BLOCKING))) {
@@ -1100,7 +1102,7 @@ public class Combat {
 					}
 				}
 				
-				if (!extra.getPrint() && mainGame.advancedCombatDisplay) {
+				if (!Print.getPrint() && mainGame.advancedCombatDisplay) {
 					addNote("rawdam: " +rawdam +"("+sdam+"/"+bdam+"/"+pdam+ " " + idam+"/"+fdam+"/"+edam+")"
 				+ " rawarm: " + rawarm + "("+sarm+"/"+barm+"/"+parm+" " +iarm+"/"+farm+"/"+earm+")"
 							+ " weight_a: " + weight_arm + " groll: " + global_roll 
@@ -1236,8 +1238,8 @@ public class Combat {
 				attacker.removeEffect(Effect.RECOVERING);
 				int recover_amount = IEffectiveLevel.cleanLHP(attacker.getLevel(), .1);
 				attacker.healHP(recover_amount);
-				if (!extra.getPrint()) {
-					extra.println(indent +attacker.getName() + " recovers "+ recover_amount +" HP.");
+				if (!Print.getPrint()) {
+					Print.println(indent +attacker.getName() + " recovers "+ recover_amount +" HP.");
 				}
 			}
 			if (attacker.hasEffect(Effect.EXHAUSTED)) {
@@ -1246,16 +1248,16 @@ public class Combat {
 			if (attacker.hasEffect(Effect.ROLLING)) {
 				attacker.removeEffectAll(Effect.ROLLING);
 				attacker.addEffect(Effect.EXHAUSTED);
-				if (!extra.getPrint()) {
-					extra.println(indent+attacker.getName()+" finishes their roll.");
+				if (!Print.getPrint()) {
+					Print.println(indent+attacker.getName()+" finishes their roll.");
 				}
 			}
 			if (attacker.hasEffect(Effect.DUCKING)) {
 				attacker.removeEffectAll(Effect.DUCKING);
 				attacker.addEffect(Effect.ROLLING);
 				attacker.addEffect(Effect.BRISK);
-				if (!extra.getPrint()) {
-					extra.println(indent+attacker.getName()+" starts to roll.");
+				if (!Print.getPrint()) {
+					Print.println(indent+attacker.getName()+" starts to roll.");
 				}
 			}
 			
@@ -1264,8 +1266,8 @@ public class Combat {
 			if (attacker.hasEffect(Effect.BREATHING)) {//only uses one at a time
 				attacker.removeEffect(Effect.BREATHING);
 				attacker.addEffect(Effect.RECOVERING);
-				if (!extra.getPrint()) {
-					extra.println(indent +attacker.getName() + " is breathing heavily...");
+				if (!Print.getPrint()) {
+					Print.println(indent +attacker.getName() + " is breathing heavily...");
 				}
 			}
 			return new AttackReturn();
@@ -1295,21 +1297,21 @@ public class Combat {
 			defender.addEffect(Effect.I_BLEED);
 			attacker.addEffect(Effect.I_BLEED);
 		}
-		if (!extra.getPrint() && mainGame.displayFlavorText && attacker.getPersonType() != PersonType.NO_SPEAK && extra.chanceIn(1,4)) {
-			if (extra.chanceIn(1,3)) {
+		if (!Print.getPrint() && mainGame.displayFlavorText && attacker.getPersonType() != PersonType.NO_SPEAK && Rand.chanceIn(1,4)) {
+			if (Rand.chanceIn(1,3)) {
 					String bark = BarkManager.getBoast(attacker,true);
 					if (bark != null) {
-						extra.println(indent+bark);
+						Print.println(indent+bark);
 					}
 			}else {
 				if (attacker.isPersonable() && //must but fully personable to be racist for now
-						((attacker.isAngry() && defender.getBag().getRace().racialType == RaceType.BEAST) || (attacker.isRacist() && !attacker.getBag().getRace().equals(defender.getBag().getRace()))) && extra.chanceIn(1,3)) 
+						((attacker.isAngry() && defender.getBag().getRace().racialType == RaceType.BEAST) || (attacker.isRacist() && !attacker.getBag().getRace().equals(defender.getBag().getRace()))) && Rand.chanceIn(1,3)) 
 				{
-					extra.println(indent+attacker.getName() + " "+extra.choose("shouts","screams","taunts")+ " \"" +defender.getBag().getRace().randomInsult()+"\"");
+					Print.println(indent+attacker.getName() + " "+Rand.choose("shouts","screams","taunts")+ " \"" +defender.getBag().getRace().randomInsult()+"\"");
 				}else {
 					String bark = BarkManager.getTaunt(attacker,defender);
 					if (bark != null) {
-						extra.println(indent+bark);
+						Print.println(indent+bark);
 					}
 				}				
 			}
@@ -1322,7 +1324,7 @@ public class Combat {
 			percent = damageDone/(float)defender.getMaxHp();
 			//armor quality handling
 			//defender.getBag().armorQualDam(percent);
-			if (!extra.getPrint() && extra.chanceIn((int)(percent*140) + (defender.getHp() <= 0 ? 20 : 0), 120)) {
+			if (!Print.getPrint() && Rand.chanceIn((int)(percent*140) + (defender.getHp() <= 0 ? 20 : 0), 120)) {
 				Networking.send("PlayDelayPitch|"+SoundBox.getSound(defender.getBag().getRace().voice,SoundBox.Type.GRUNT) + "|4|"+ defender.getPitch()+"|");
 			}
 			//blood
@@ -1354,7 +1356,7 @@ public class Combat {
 				defender.getNextAttack().multiplyHit(1 + (percent));
 			}
 			
-			if (!extra.getPrint()) {
+			if (!Print.getPrint()) {
 				//extra.print(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)));
 				if (defender.isPlayer()) {
 					int splashes =(damageDone*100)/defender.getMaxHp();
@@ -1388,7 +1390,7 @@ public class Combat {
 			if (atr.code == ATK_ResultCode.KILL) {//if force kill
 				//might not actually be final death, but this is fine to say
 				doForceKill = true;
-				if (!extra.getPrint()) {
+				if (!Print.getPrint()) {
 					atr.addNote("Execute!");
 				}
 				//extra.println(attacker.getName() + " executes " + defender.getName() +"!");
@@ -1401,7 +1403,7 @@ public class Combat {
 				;
 				int blood_heal = attacker.healHP(
 						IEffectiveLevel.cleanLHP(Math.min(defender.getLevel(),attacker.getLevel()),.01));
-				if (!extra.getPrint()) {
+				if (!Print.getPrint()) {
 					atr.addNote("Bloodthirst Heal: "+blood_heal);
 					//extra.println(attacker.getName()+ " heals " + blood_heal + " from their bloodthirst!");
 				}
@@ -1432,7 +1434,7 @@ public class Combat {
 			if (defender.hasSkill(Skill.MESMER_ARMOR)) {
 				if (defender.contestedRoll(attacker,defender.getClarity(),attacker.getHighestAttribute()) >= 0){
 					attacker.addEffect(Effect.CONFUSED_TARGET);
-					if (!extra.getPrint()) {
+					if (!Print.getPrint()) {
 						atr.addNote("Mesmer Armor!");
 						//extra.println(indent+defender.getName()+ "'s illusory armor mesmerizes "+attacker.getName() +"...");
 					}
@@ -1451,8 +1453,8 @@ public class Combat {
 							defender.getStrength(), attacker.getHighestAttribute())>=0)
 							){
 						defender.resistDeath(0f);
-						if (!extra.getPrint()) {
-							extra.print(
+						if (!Print.getPrint()) {
+							Print.print(
 									prettyHPColors(atr.stringer+"[C] {"+prettyHPDamage(percent)+damageDone+" damage[C]}"
 										+woundStr+" But they're made of sterner stuff!"
 									, TrawelColor.ATTACK_DAMAGED, attacker, defender));
@@ -1460,16 +1462,16 @@ public class Combat {
 						}
 					}
 				}
-				if (!didDisplay && !extra.getPrint()) {
-					extra.print(
+				if (!didDisplay && !Print.getPrint()) {
+					Print.print(
 							prettyHPColors(atr.stringer+"[C] {"+prettyHPDamage(percent)+damageDone+" damage[C]}"
 							+woundStr,TrawelColor.ATTACK_KILL, attacker, defender));
 					didDisplay = true;
 				}
 			}else {
-				if (!extra.getPrint()) {
+				if (!Print.getPrint()) {
 					boolean armorDamage = atr.code == ATK_ResultCode.ARMOR;
-					extra.print(prettyHPColors(atr.stringer+" {"+prettyHPDamage(percent)+damageDone+" damage[C]}"
+					Print.print(prettyHPColors(atr.stringer+" {"+prettyHPDamage(percent)+damageDone+" damage[C]}"
 							+woundStr
 							+ (armorDamage ? " The armor curbs the blow!": "")
 							,
@@ -1483,16 +1485,16 @@ public class Combat {
 		//impact is now more directly if wounds/special effects happen
 		switch (atr.code) {
 		case NOT_ATTACK:
-			if (!extra.getPrint() && !didDisplay) {
-				extra.print(prettyHPColors(atr.stringer +woundStr,TrawelColor.TIMID_MAGENTA, attacker, defender));
+			if (!Print.getPrint() && !didDisplay) {
+				Print.print(prettyHPColors(atr.stringer +woundStr,TrawelColor.TIMID_MAGENTA, attacker, defender));
 			}
 			
 			break;
 		case DODGE: case MISS:
-			if (!extra.getPrint() && !didDisplay) {
-				extra.print(prettyHPColors(atr.stringer +woundStr,TrawelColor.ATTACK_MISS, attacker, defender));
+			if (!Print.getPrint() && !didDisplay) {
+				Print.print(prettyHPColors(atr.stringer +woundStr,TrawelColor.ATTACK_MISS, attacker, defender));
 				Networking.sendStrong("PlayMiss|" + "todo" + "|");
-				extra.print(" "+TrawelColor.AFTER_ATTACK_MISS+randomLists.attackMissFluff(atr.code)+TrawelColor.ATTACK_MISS);
+				Print.print(" "+TrawelColor.AFTER_ATTACK_MISS+randomLists.attackMissFluff(atr.code)+TrawelColor.ATTACK_MISS);
 			}
 			if (atr.code == ATK_ResultCode.DODGE) {
 				if (defender.hasSkill(Skill.SPEEDDODGE)) {
@@ -1515,21 +1517,21 @@ public class Combat {
 			
 			if (defender.hasEffect(Effect.BEE_SHROUD)) {
 				if (attacker.hasEffect(Effect.BEES)) {
-					if (!extra.getPrint()) {
-						extra.println(TrawelColor.inlineColor(TrawelColor.colorMix(Color.PINK,Color.WHITE,.2f))+" The bees buzz back!");
+					if (!Print.getPrint()) {
+						Print.println(TrawelColor.inlineColor(TrawelColor.colorMix(Color.PINK,Color.WHITE,.2f))+" The bees buzz back!");
 					}
 				}else {
 					attacker.addEffect(Effect.BEES);
-					if (!extra.getPrint()) {
-						extra.println(TrawelColor.inlineColor(TrawelColor.colorMix(Color.PINK,Color.WHITE,.2f))+" The bees swarm "+attacker.getName()+"!");
+					if (!Print.getPrint()) {
+						Print.println(TrawelColor.inlineColor(TrawelColor.colorMix(Color.PINK,Color.WHITE,.2f))+" The bees swarm "+attacker.getName()+"!");
 					}
 				}
 			}
 			break;
 		case ARMOR:
-			if (!extra.getPrint() && !didDisplay) {
-				extra.print(prettyHPColors(atr.stringer +woundStr,TrawelColor.ATTACK_BLOCKED, attacker, defender));
-				extra.print(TrawelColor.AFTER_ATTACK_BLOCKED+" "+randomLists.attackNegateFluff()+TrawelColor.ATTACK_BLOCKED);
+			if (!Print.getPrint() && !didDisplay) {
+				Print.print(prettyHPColors(atr.stringer +woundStr,TrawelColor.ATTACK_BLOCKED, attacker, defender));
+				Print.print(TrawelColor.AFTER_ATTACK_BLOCKED+" "+randomLists.attackNegateFluff()+TrawelColor.ATTACK_BLOCKED);
 			}
 			if (defender.hasSkill(Skill.ARMORHEART) && defender.getHp() < defender.getMaxHp()) {
 				int armorHeal = IEffectiveLevel.cleanLHP(Math.min(defender.getLevel()+4,attacker.getLevel()),.02);
@@ -1551,11 +1553,11 @@ public class Combat {
 		}
 		
 		
-		if (!extra.getPrint()) {
-			extra.println("");
+		if (!Print.getPrint()) {
+			Print.println("");
 			if (mainGame.combatFeedbackNotes) {
 				if (atr.getNotes() != null) {
-					extra.println(" "+atr.getNotes());
+					Print.println(" "+atr.getNotes());
 				}
 			}
 			if (canWait && mainGame.delayWaits) {
@@ -1606,11 +1608,11 @@ public class Combat {
 			switch (rid) {
 			case B_MIMIC_CLOSED:
 				if (hpRatio > .6f) {//if healthy, prefer closed, if damaged, prefer open and swap more in general
-					if (extra.randFloat() < .2) {
+					if (Rand.randFloat() < .2) {
 						defender.getBag().setRace(RaceID.B_MIMIC_OPEN);
 					}
 				}else {
-					if (extra.randFloat() < .9) {
+					if (Rand.randFloat() < .9) {
 						defender.getBag().setRace(RaceID.B_MIMIC_OPEN);
 					}
 				}
@@ -1619,11 +1621,11 @@ public class Combat {
 				break;
 			case B_MIMIC_OPEN:
 				if (hpRatio > .6f) {//if healthy, prefer closed, if damaged, prefer open and swap more in general
-					if (extra.randFloat() < .6) {
+					if (Rand.randFloat() < .6) {
 						defender.getBag().setRace(RaceID.B_MIMIC_CLOSED);
 					}
 				}else {
-					if (extra.randFloat() < .5) {
+					if (Rand.randFloat() < .5) {
 						defender.getBag().setRace(RaceID.B_MIMIC_CLOSED);
 					}
 				}
@@ -1653,24 +1655,24 @@ public class Combat {
 		if (effectCount > 0) {
 			bleed += bleedDam(attacker,defender)*effectCount;
 		}
-		if (bleed > 0 && !extra.getPrint()) {
+		if (bleed > 0 && !Print.getPrint()) {
 			int totalBleed = (int) Math.ceil(bleed);
 			attacker.takeDamage(totalBleed);
 			float leech = (defender.hasEffect(Effect.B_MARY) ? 2 : 0) + (defender.hasSkill(Skill.BLOODDRINKER) ? 0.5f : 0);
 			if (leech > 0) {
 				int final_blood = Math.round(totalBleed*leech);
 				defender.addHp(final_blood);
-				extra.println(indent+defender.getName() + " absorbs "
+				Print.println(indent+defender.getName() + " absorbs "
 				+ attacker.getNameNoTitle() + "'s blood, healing " + final_blood + " HP off of "
 				+ (totalBleed) + " damage!");
 			}else {
-				extra.println(indent+attacker.getName() + " bleeds for " + totalBleed + " HP.");
+				Print.println(indent+attacker.getName() + " bleeds for " + totalBleed + " HP.");
 			}
 		}
-		if (attacker.hasEffect(Effect.BEES) && extra.chanceIn(1,5)) {
-			int bee_damage = extra.randRange(1,IEffectiveLevel.cleanLHP(attacker.getLevel(), .04));
-			if (!extra.getPrint()) {
-				extra.println(indent+"The bees sting "+attacker.getName()+" for "+bee_damage+"!");
+		if (attacker.hasEffect(Effect.BEES) && Rand.chanceIn(1,5)) {
+			int bee_damage = Rand.randRange(1,IEffectiveLevel.cleanLHP(attacker.getLevel(), .04));
+			if (!Print.getPrint()) {
+				Print.println(indent+"The bees sting "+attacker.getName()+" for "+bee_damage+"!");
 			}
 			attacker.takeDamage(bee_damage);
 		}
@@ -1693,7 +1695,7 @@ public class Combat {
 			}
 		}*/
 		
-		if (defender.hasEffect(Effect.SINGLED_OUT) && defender.isAlive() && dataMap.get(attacker).side != dataMap.get(defender).side && extra.chanceIn(2,3)) {
+		if (defender.hasEffect(Effect.SINGLED_OUT) && defender.isAlive() && dataMap.get(attacker).side != dataMap.get(defender).side && Rand.chanceIn(2,3)) {
 			dataMap.get(attacker).nextTarget = defender;
 		}
 		
@@ -1718,8 +1720,8 @@ public class Combat {
 			case CHALLENGE:
 				//doesn't work on tactics
 				if (defender.isAttacking() && defender.getNextAttack().isTacticOnly()) {
-					if (!extra.getPrint() && !didDisplay) {
-						extra.print(" But they were using a tactic so it didn't work...");
+					if (!Print.getPrint() && !didDisplay) {
+						Print.print(" But they were using a tactic so it didn't work...");
 					}
 					break;
 				}
@@ -1789,11 +1791,11 @@ public class Combat {
 			}
 			assert defender2 != null;
 			if (!w.bypass) {
-				if ((defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 )) {
+				if ((defender2.hasSkill(Skill.TA_NAILS) && Rand.randRange(1,5) == 1 )) {
 					retu.addNote("Negate: "+TrawelColor.ATK_WOUND_NEGATE+"Tough as Nails "+w.name+TrawelColor.PRE_WHITE);
 					return false;
 				}
-				if (defender2.hasEffect(Effect.PADDED) && extra.chanceIn(defender2.effectCount(Effect.PADDED),5)) {
+				if (defender2.hasEffect(Effect.PADDED) && Rand.chanceIn(defender2.effectCount(Effect.PADDED),5)) {
 					defender2.removeEffect(Effect.PADDED);
 					retu.addNote("Negate: "+TrawelColor.ATK_WOUND_NEGATE+"Padded "+w.name+TrawelColor.PRE_WHITE);
 					return false;
@@ -1806,7 +1808,7 @@ public class Combat {
 			}
 			
 			String desc = null;//null means don't bother adding
-			if (!extra.getPrint()) {//only really need to care if play can see
+			if (!Print.getPrint()) {//only really need to care if play can see
 				desc = ((w.injury ? "Injury: ":"Wound: ")+w.getColor()+w.name+TrawelColor.PRE_WHITE);
 			}
 			switch (w) {
@@ -2173,8 +2175,8 @@ public class Combat {
 					break;
 				case ROLL:
 					attacker.addEffect(Effect.DUCKING);
-					if (!extra.getPrint()) {
-						extra.println(prettyHPPerson("[HP]"+attacker.getNameNoTitle()+" ducks!",TrawelColor.TIMID_MAGENTA, attacker));
+					if (!Print.getPrint()) {
+						Print.println(prettyHPPerson("[HP]"+attacker.getNameNoTitle()+" ducks!",TrawelColor.TIMID_MAGENTA, attacker));
 					}
 					break;
 				case SINGLE_OUT:
@@ -2268,7 +2270,7 @@ public class Combat {
 			res = extra.DAM_I_KILL;
 			break;
 		}
-		return TrawelColor.inlineColor(TrawelColor.colorMix(Color.white, Color.red,extra.clamp(damagePerOfMax,0,1f)))+ extra.padIf(res);
+		return TrawelColor.inlineColor(TrawelColor.colorMix(Color.white, Color.red,extra.clamp(damagePerOfMax,0,1f)))+ Print.padIf(res);
 	}
 	public static String prettyHPDamage(float damage, Person defender) {
 		return prettyHPDamage(damage/defender.getMaxHp());
@@ -2325,11 +2327,11 @@ public class Combat {
 			second_man.getBag().graphicalDisplay(1,second_man);
 			Networking.setBattle(Networking.BattleType.NORMAL);
 			Player.player.getStory().startFight(false);
-			extra.println("You are dueling " +second_man.getName()+".");
+			Print.println("You are dueling " +second_man.getName()+".");
 			hasPlayer = true;
 		}else {
-			if (!extra.getPrint()) {
-				extra.println(first_man.getName()+" is dueling " +second_man.getName()+".");
+			if (!Print.getPrint()) {
+				Print.println(first_man.getName()+" is dueling " +second_man.getName()+".");
 			}
 		}
 		
@@ -2358,7 +2360,7 @@ public class Combat {
 			//player cannot be looted
 		}else{
 			//player didn't lose, if they were in fight
-			extra.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
+			Print.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
 			if (first_man.isPlayer()) {
 				AIClass.playerLoot(second_man.getBag(), true);
 				//clean up after looting
@@ -2398,8 +2400,8 @@ public class Combat {
 					int pKills = second_man.getPlayerKills();
 					//max revive chance decreases the more they die, even if they have infinite kills on you, to reduce annoyance
 					if (
-							(deaths == 1 && extra.randFloat() > .97)//~3% chance if this is our only death
-							|| (pKills > 0 && deaths < 4 && extra.chanceIn(Math.min((4*deaths)+pKills,(pKills*2)+1), pKills+(5*deaths)))
+							(deaths == 1 && Rand.randFloat() > .97)//~3% chance if this is our only death
+							|| (pKills > 0 && deaths < 4 && Rand.chanceIn(Math.min((4*deaths)+pKills,(pKills*2)+1), pKills+(5*deaths)))
 							//killing the player is effective
 							//we can at most get a (X-1)/x chance
 							//can cheat death a max of 3 times
@@ -2588,12 +2590,12 @@ public class Combat {
 				}
 				int giveGold = moneyLootList.size() > 0 ? gold/moneyLootList.size() : 0;
 				int giveAether = aether/lives.size();
-				if (!extra.getPrint()) {
+				if (!Print.getPrint()) {
 					if (giveGold > 0) {
-						extra.println("The remaining " +World.currentMoneyDisplay(gold) +" is divvied up, "+giveGold +" each.");
+						Print.println("The remaining " +World.currentMoneyDisplay(gold) +" is divvied up, "+giveGold +" each.");
 					}
 					if (giveAether > 0) {
-						extra.println("The remaining " + aether +" aether is divvied up, "+giveAether +" each.");
+						Print.println("The remaining " + aether +" aether is divvied up, "+giveAether +" each.");
 					}
 				}
 				
@@ -2614,11 +2616,11 @@ public class Combat {
 				if (lives.size() > 0) {
 					Person looter = lives.get(0);
 					if (gold > 0 && (looter.isPersonable() || looter.getFlag(PersonFlag.HAS_WEALTH))) {
-						extra.println(looter.getName() + " claims the remaining " +World.currentMoneyDisplay(gold) +".");
+						Print.println(looter.getName() + " claims the remaining " +World.currentMoneyDisplay(gold) +".");
 						looter.getBag().addGold(gold);
 					}
 					if (aether > 0) {
-						extra.println(looter.getName() + " claims the remaining " +aether +" aether.");
+						Print.println(looter.getName() + " claims the remaining " +aether +" aether.");
 						looter.getBag().addAether(aether);
 					}
 	

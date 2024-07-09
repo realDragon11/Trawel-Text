@@ -3,9 +3,9 @@ package trawel.personal.classless;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import trawel.battle.attacks.AttackBonus;
+import trawel.core.Print;
 import trawel.helper.constants.StringTip;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
 
@@ -319,7 +319,7 @@ public enum Skill{
 		public Type getType() {return type;}
 
 		public void display() {
-			extra.println(name + ": " + desc);
+			Print.println(name + ": " + desc);
 		}
 		
 		public String disp() {

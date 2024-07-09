@@ -7,8 +7,8 @@ import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
+import trawel.core.Input;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -60,7 +60,7 @@ public class FortFoundation extends FortFeature {
 	@Override
 	public void go() {
 
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {

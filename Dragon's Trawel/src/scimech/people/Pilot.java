@@ -1,6 +1,7 @@
 package scimech.people;
 
-import trawel.helper.methods.extra;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.methods.randomLists;
 
 public class Pilot {
@@ -14,8 +15,8 @@ public class Pilot {
 	}
 	
 	public void statistics() {
-		extra.println(name);
-		extra.println(keeper.toString());
+		Print.println(name);
+		Print.println(keeper.toString());
 	}
 	
 	public Pilot() {
@@ -29,10 +30,10 @@ public class Pilot {
 	}
 	
 	public Trait randStartingTrait() {
-		return extra.choose(Trait.HARDENED,Trait.DUELIST,Trait.GUN_NUT,Trait.LASER_SPEC,Trait.LASER_SPEC,Trait.LOBBER,Trait.GREASE_MONKEY);
+		return Rand.choose(Trait.HARDENED,Trait.DUELIST,Trait.GUN_NUT,Trait.LASER_SPEC,Trait.LASER_SPEC,Trait.LOBBER,Trait.GREASE_MONKEY);
 	}
 	public Trait randCapstoneTrait() {
-		return extra.choose(Trait.ACCURATE,Trait.MOBILE,Trait.TOUGH,Trait.EVASIVE);
+		return Rand.choose(Trait.ACCURATE,Trait.MOBILE,Trait.TOUGH,Trait.EVASIVE);
 	}
 	
 	public int getTrait(Trait t) {

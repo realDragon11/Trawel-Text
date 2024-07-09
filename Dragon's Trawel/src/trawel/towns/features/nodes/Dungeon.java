@@ -11,9 +11,11 @@ import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.battle.Combat.SkillCon;
 import trawel.core.mainGame;
+import trawel.core.Input;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Agent;
@@ -96,9 +98,9 @@ public class Dungeon extends NodeFeature {
 	public void go() {
 		if (hasHelpers()) {
 			if (left_helpers.size() > 0) {
-				extra.println("While you were away, the following party members left:");
+				Print.println("While you were away, the following party members left:");
 				while (!left_helpers.isEmpty()) {
-					extra.println(left_helpers.remove(0));
+					Print.println(left_helpers.remove(0));
 				}
 			}
 			for (Agent a: delve_helpers) {
@@ -112,7 +114,7 @@ public class Dungeon extends NodeFeature {
 					return;
 				}
 			}
-			extra.menuGo(new MenuGenerator() {
+			Input.menuGo(new MenuGenerator() {
 
 				@Override
 				public List<MenuItem> gen() {
@@ -158,7 +160,7 @@ public class Dungeon extends NodeFeature {
 								}else {
 									size = delve_helpers.size();
 								}
-								extra.menuGo(new ScrollMenuGenerator(size,"last <>","next <>") {
+								Input.menuGo(new ScrollMenuGenerator(size,"last <>","next <>") {
 		
 									@Override
 									public List<MenuItem> forSlot(int i) {
@@ -175,7 +177,7 @@ public class Dungeon extends NodeFeature {
 
 												@Override
 												public boolean go() {
-													extra.menuGo(new MenuGenerator() {
+													Input.menuGo(new MenuGenerator() {
 
 														@Override
 														public List<MenuItem> gen() {
@@ -207,8 +209,8 @@ public class Dungeon extends NodeFeature {
 
 																@Override
 																public boolean go() {
-																	extra.println(TrawelColor.PRE_RED+"Really dismiss " + per.getName() + " ("+per.getLevel()+")?");
-																	if (extra.yesNo()) {
+																	Print.println(TrawelColor.PRE_RED+"Really dismiss " + per.getName() + " ("+per.getLevel()+")?");
+																	if (Input.yesNo()) {
 																		sper.onlyGoal(AgentGoal.NONE);
 																		town.addOccupant(sper);
 																		delve_helpers.remove(sper);
@@ -234,17 +236,17 @@ public class Dungeon extends NodeFeature {
 												public boolean go() {
 													List<Agent> people = new ArrayList<Agent>();
 													town.getPersonableOccupants().forEach(people::add);
-													extra.println("Spend a few hours attempting to recruit from the around "+people.size()+" townsfolk?");
-													if (extra.yesNo()) {
-														Player.addTime(2f+(extra.randFloat()*3f));
+													Print.println("Spend a few hours attempting to recruit from the around "+people.size()+" townsfolk?");
+													if (Input.yesNo()) {
+														Player.addTime(2f+(Rand.randFloat()*3f));
 														TrawelTime.globalPassTime();
 														people.removeIf(p -> !p.hasGoal(AgentGoal.NONE) || p.getPerson().getLevel()-1 > Player.player.getPerson().getLevel());
 														if (people.size() == 0) {
-															extra.println("You could not find anyone willing to help you.");
+															Print.println("You could not find anyone willing to help you.");
 															return true;
 														}
 														Collections.shuffle(people);
-														extra.menuGo(new ScrollMenuGenerator(Math.min(4,people.size()),"prior <> recruits","next <> recruits") {
+														Input.menuGo(new ScrollMenuGenerator(Math.min(4,people.size()),"prior <> recruits","next <> recruits") {
 															
 															@Override
 															public List<MenuItem> header() {
@@ -263,7 +265,7 @@ public class Dungeon extends NodeFeature {
 
 																	@Override
 																	public boolean go() {
-																		extra.menuGo(new MenuGenerator() {
+																		Input.menuGo(new MenuGenerator() {
 
 																			@Override
 																			public List<MenuItem> gen() {
@@ -297,11 +299,11 @@ public class Dungeon extends NodeFeature {
 																					@Override
 																					public boolean go() {
 																						if (p.getLevel() > Player.player.getGold()) {
-																							extra.println("You can't afford them!");
+																							Print.println("You can't afford them!");
 																							return false;
 																						}
-																						extra.println("Really recruit?");
-																						if (extra.yesNo()) {
+																						Print.println("Really recruit?");
+																						if (Input.yesNo()) {
 																							Player.player.addGold(-cost);
 																							Agent a = people.get(i);
 																							a.addGold(cost);//hehe

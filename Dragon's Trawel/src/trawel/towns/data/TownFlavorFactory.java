@@ -2,8 +2,9 @@ package trawel.towns.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.factions.FBox.FSub;
-import trawel.helper.methods.extra;
 import trawel.factions.Faction;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
@@ -26,18 +27,18 @@ public class TownFlavorFactory {
 		TownFlavor b = new TownFlavor() {
 			@Override
 			public void activate(Town t) {
-				switch (extra.randRange(1,4)) {
+				switch (Rand.randRange(1,4)) {
 				case 1:
-					extra.println("A group of adventurers is gathered on the fringes of the town, planning their next expedition.");
+					Print.println("A group of adventurers is gathered on the fringes of the town, planning their next expedition.");
 					break;
 				case 2:
-					extra.println("Two mercenaries walk through town, looking for a place to unload their goods from their last adventure.");
+					Print.println("Two mercenaries walk through town, looking for a place to unload their goods from their last adventure.");
 					break;
 				case 3:
-					extra.println("A few of the town guard are talking with some adventurers, sharing stories back and forth.");
+					Print.println("A few of the town guard are talking with some adventurers, sharing stories back and forth.");
 					break;
 				case 4:
-					extra.println("Some drunk adventurers are partying in the street.");
+					Print.println("Some drunk adventurers are partying in the street.");
 					break;
 				}
 			}
@@ -48,7 +49,7 @@ public class TownFlavorFactory {
 		b = new TownFlavor() {
 			@Override
 			public void activate(Town t) {
-				extra.println("Three small children are playing tag on a small street inside the town.");
+				Print.println("Three small children are playing tag on a small street inside the town.");
 			}
 		};
 		b.responses.add(new Response(TownTag.SMALL_TOWN,2));
@@ -58,15 +59,15 @@ public class TownFlavorFactory {
 		b = new TownFlavor() {
 			@Override
 			public void activate(Town t) {
-				switch (extra.randRange(1,3)) {
+				switch (Rand.randRange(1,3)) {
 				case 1:
-					extra.println("A merchant is ordering laborers to move crates in an alleyway.");
+					Print.println("A merchant is ordering laborers to move crates in an alleyway.");
 					break;
 				case 2:
-					extra.println("A caravan of merchants has arrived in town, and are unloading their goods.");
+					Print.println("A caravan of merchants has arrived in town, and are unloading their goods.");
 					break;
 				case 3:
-					extra.println("Some town guards are overseeing a trade dispute.");
+					Print.println("Some town guards are overseeing a trade dispute.");
 					break;
 				}
 			}
@@ -77,12 +78,12 @@ public class TownFlavorFactory {
 		b = new TownFlavor() {
 			@Override
 			public void activate(Town t) {
-				switch (extra.randRange(1,2)) {
+				switch (Rand.randRange(1,2)) {
 				case 1:
-					extra.println("A town guard turns their eye as a thief robs a merchant in blind daylight.");
+					Print.println("A town guard turns their eye as a thief robs a merchant in blind daylight.");
 					break;
 				case 2:
-					extra.println("The town guards are eyeing you with hungry looks, aimed at your coin purse.");
+					Print.println("The town guards are eyeing you with hungry looks, aimed at your coin purse.");
 					break;
 				}
 			}
@@ -95,19 +96,19 @@ public class TownFlavorFactory {
 			public void activate(Town t) {
 				FSub sub =Player.player.getPerson().facRep.getFacRep(Faction.HEROIC);
 				if (sub == null) {
-					extra.println("Some adventurers eye you before deciding you're not worth their time.");
+					Print.println("Some adventurers eye you before deciding you're not worth their time.");
 					return;
 				}
 				int total = (int) (sub.forFac-sub.againstFac);
 				if (total > IEffectiveLevel.unclean(t.getTier())*2f) {
-					extra.println("Some adventurers ask for your autograph.");
+					Print.println("Some adventurers ask for your autograph.");
 					return;
 				}
 				if (total > 0) {
-					extra.println("Some adventurers chat with you about your heroic deeds.");
+					Print.println("Some adventurers chat with you about your heroic deeds.");
 					return;
 				}
-				extra.println("Some adventurers eye you warily.");
+				Print.println("Some adventurers eye you warily.");
 			}
 		};
 		b.responses.add(new Response(TownTag.ADVENTURE,2));
@@ -118,19 +119,19 @@ public class TownFlavorFactory {
 			public void activate(Town t) {
 				FSub sub =Player.player.getPerson().facRep.getFacRep(Faction.MERCHANT);
 				if (sub == null) {
-					extra.println("Some merchants eye you before deciding you're not worth their time.");
+					Print.println("Some merchants eye you before deciding you're not worth their time.");
 					return;
 				}
 				int total = (int) (sub.forFac-sub.againstFac);
 				if (total > IEffectiveLevel.unclean(t.getTier())*2f) {
-					extra.println("Some merchants salute you.");
+					Print.println("Some merchants salute you.");
 					return;
 				}
 				if (total > 0) {
-					extra.println("Some merchants look at you before carrying on with their business.");
+					Print.println("Some merchants look at you before carrying on with their business.");
 					return;
 				}
-				extra.println("Some merchants eye you warily.");
+				Print.println("Some merchants eye you warily.");
 			}
 		};
 		b.responses.add(new Response(TownTag.MERCHANT,2));
@@ -139,7 +140,7 @@ public class TownFlavorFactory {
 		b = new TownFlavor() {
 			@Override
 			public void activate(Town t) {
-				extra.println("Some tourists are asking the town guards the best spots to sightsee at.");
+				Print.println("Some tourists are asking the town guards the best spots to sightsee at.");
 			}
 		};
 		b.responses.add(new Response(TownTag.TRAVEL,.5));
@@ -150,7 +151,7 @@ public class TownFlavorFactory {
 		b = new TownFlavor() {
 			@Override
 			public void activate(Town t) {
-				extra.println("You hear wild howls in the distance.");
+				Print.println("You hear wild howls in the distance.");
 			}
 		};
 		b.responses.add(new Response(TownTag.DRUIDIC,1));
@@ -160,7 +161,7 @@ public class TownFlavorFactory {
 		b = new TownFlavor() {
 			@Override
 			public void activate(Town t) {
-				extra.println("A merchant is attempting to haggle with a local farmer for better prices.");
+				Print.println("A merchant is attempting to haggle with a local farmer for better prices.");
 			}
 		};
 		b.responses.add(new Response(TownTag.FARMS,2));
@@ -170,7 +171,7 @@ public class TownFlavorFactory {
 		b = new TownFlavor() {
 			@Override
 			public void activate(Town t) {
-				extra.println("A scribe is examining the area and jotting down some notes.");
+				Print.println("A scribe is examining the area and jotting down some notes.");
 			}
 		};
 		b.responses.add(new Response(TownTag.HISTORY,2));
@@ -181,7 +182,7 @@ public class TownFlavorFactory {
 		b = new TownFlavor() {
 			@Override
 			public void activate(Town t) {
-				extra.println("A beggar signals a hidden thief on a profitable mark.");
+				Print.println("A beggar signals a hidden thief on a profitable mark.");
 			}
 		};
 		b.responses.add(new Response(TownTag.DISPARITY,1));
@@ -191,15 +192,15 @@ public class TownFlavorFactory {
 		b = new TownFlavor() {//high travel density
 			@Override
 			public void activate(Town t) {
-				switch (extra.randRange(1,3)) {
+				switch (Rand.randRange(1,3)) {
 				case 1:
-					extra.println("A group of travelers is trying to find a place to stay.");
+					Print.println("A group of travelers is trying to find a place to stay.");
 					break;
 				case 2:
-					extra.println("A lone wanderer walks inside the town, giving everyone else a wide berth.");
+					Print.println("A lone wanderer walks inside the town, giving everyone else a wide berth.");
 					break;
 				case 3:
-					extra.println("A caravan is unloading the travelers it contains near the town border.");
+					Print.println("A caravan is unloading the travelers it contains near the town border.");
 					break;
 				}
 			}
@@ -214,7 +215,7 @@ public class TownFlavorFactory {
 		b = new TownFlavor() {//law + travel
 			@Override
 			public void activate(Town t) {
-				extra.println("Some town guards are checking a traveler's papers.");
+				Print.println("Some town guards are checking a traveler's papers.");
 			}
 		};
 		b.responses.add(new Response(TownTag.TRAVEL,1));
@@ -225,7 +226,7 @@ public class TownFlavorFactory {
 		b = new TownFlavor() {//brewing
 			@Override
 			public void activate(Town t) {
-				extra.println("A brewer is testing out a potion in the street.");
+				Print.println("A brewer is testing out a potion in the street.");
 			}
 		};
 		b.responses.add(new Response(TownTag.ALCHEMY,1));
@@ -234,15 +235,15 @@ public class TownFlavorFactory {
 		b = new TownFlavor() {//mining
 			@Override
 			public void activate(Town t) {
-				switch (extra.randRange(1,3)) {
+				switch (Rand.randRange(1,3)) {
 				case 1:
-					extra.println("Miners coated in dust trudge back to their homes.");
+					Print.println("Miners coated in dust trudge back to their homes.");
 					break;
 				case 2:
-					extra.println("A group of miners is playing cards on break.");
+					Print.println("A group of miners is playing cards on break.");
 					break;
 				case 3:
-					extra.println("A foreman oversees the training of some miners in picking out profitable ores.");
+					Print.println("A foreman oversees the training of some miners in picking out profitable ores.");
 					break;
 				}
 			}
@@ -269,7 +270,7 @@ public class TownFlavorFactory {
 		List<TownFlavor> bumps;
 		bumps = bumperList;
 		for (TownFlavor b: bumps) {
-			d = b.calculate(t)*extra.randFloat();//fully random to avoid constantly showing the same ones
+			d = b.calculate(t)*Rand.randFloat();//fully random to avoid constantly showing the same ones
 			if (d > highest) {
 				highest = d;
 				highestB = b;

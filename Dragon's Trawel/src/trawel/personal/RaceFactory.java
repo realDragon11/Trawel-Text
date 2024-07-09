@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import trawel.battle.targets.TargetFactory;
+import trawel.core.Rand;
 import trawel.factions.Faction;
 import trawel.factions.HostileTask;
 import trawel.helper.methods.extra;
@@ -1046,12 +1047,12 @@ public class RaceFactory {
 		double totalRarity = 0;
 		Race mat;
 		do {
-			mat = extra.randList(copyList);
+			mat = Rand.randList(copyList);
 			copyList2.add(mat);
 			totalRarity += mat.rarity;
 			copyList.remove(mat);
 		}while(!copyList.isEmpty());
-		totalRarity*= extra.getRand().nextDouble();
+		totalRarity*= Rand.getRand().nextDouble();
 		do {
 			mat = copyList2.get(0);
 			if (totalRarity > mat.rarity) {
@@ -1105,7 +1106,7 @@ public class RaceFactory {
 		p.setPersonType(PersonType.GRIZZLED);
 		p.setTitle(randomLists.randomOldTitle());
 		p.hTask = HostileTask.DUEL;
-		if (extra.chanceIn(1,8)) {
+		if (Rand.chanceIn(1,8)) {
 			//stronger, better loot and tougher
 			p.cleanSetSkillHas(Perk.NPC_PROMOTED);//immune to instadeath and cheese
 			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);//the bonus reward
@@ -1128,7 +1129,7 @@ public class RaceFactory {
 	public static Person makeWolf(int level) {
 		Person w = Person.animal(level, RaceID.B_WOLF, MaterialFactory.getMat("hide"), false);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
-		if (extra.chanceIn(2,5)) {
+		if (Rand.chanceIn(2,5)) {
 			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
 		w.setFirstName(randomLists.randomWolfName());
@@ -1220,10 +1221,10 @@ public class RaceFactory {
 		addWealth(WEALTH_WORKER,.3f, w);
 		//w.setScar(biteFor(w.getBag().getRace().raceID()));//TODO: readd bites as some larger 'added image' mechanism
 		w.getBag().addDrawBaneSilently(DrawBane.GRAVE_DUST);
-		if (extra.chanceIn(1,10)) {
+		if (Rand.chanceIn(1,10)) {
 			w.getBag().addDrawBaneSilently(DrawBane.BLOOD);
 		}else {
-			if (extra.chanceIn(1,6)) {
+			if (Rand.chanceIn(1,6)) {
 				w.getBag().addDrawBaneSilently(DrawBane.GRAVE_DIRT);
 			}
 		}
@@ -1249,7 +1250,7 @@ public class RaceFactory {
 		Person w = Person.animal(level, RaceID.B_BAT, MaterialFactory.getMat("hide"), false);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		w.getBag().addDrawBaneSilently(DrawBane.BAT_WING);
-		if (extra.chanceIn(1,7)) {
+		if (Rand.chanceIn(1,7)) {
 			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
 		w.setFirstName(randomLists.randomBatName());
@@ -1263,7 +1264,7 @@ public class RaceFactory {
 	public static Person makeSwarmBat(int level) {
 		Person w = Person.animal(level, RaceID.B_SWARMBAT, MaterialFactory.getMat("hide"), false);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
-		if (extra.chanceIn(1,3)) {
+		if (Rand.chanceIn(1,3)) {
 			w.getBag().addDrawBaneSilently(DrawBane.BAT_WING);
 		}
 		w.setFirstName(randomLists.randomBatName());
@@ -1308,13 +1309,13 @@ public class RaceFactory {
 		w.setFlag(PersonFlag.CAN_LEARN,true);
 		w.setPersonType(PersonType.HARPY_GENERIC);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TALONS_GENERIC));
-		if (extra.chanceIn(1,6)) {
+		if (Rand.chanceIn(1,6)) {
 			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
-		if (extra.chanceIn(1,50)) {
+		if (Rand.chanceIn(1,50)) {
 			w.getBag().addDrawBaneSilently(DrawBane.GOLD);
 		}
-		if (extra.chanceIn(1,20)) {
+		if (Rand.chanceIn(1,20)) {
 			w.getBag().addDrawBaneSilently(DrawBane.SILVER);
 		}
 		w.setFirstName(randomLists.randomFirstName());
@@ -1332,10 +1333,10 @@ public class RaceFactory {
 		w.setPersonType(PersonType.HARPY_GENERIC);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TALONS_GENERIC));
 		w.liteSetSkillHas(Perk.NPC_PROMOTED);
-		if (extra.chanceIn(1,4)) {
+		if (Rand.chanceIn(1,4)) {
 			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
-		if (extra.chanceIn(1,5)) {
+		if (Rand.chanceIn(1,5)) {
 			w.getBag().addDrawBaneSilently(DrawBane.GOLD);
 			w.addFeatPoint();//bonus feat for having gold
 		}else {
@@ -1350,16 +1351,16 @@ public class RaceFactory {
 	
 	public static Person makeDrudgerStock(int level) {
 		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("fishscales"), false);
-		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","rusty iron","iron")),WeaponType.FISH_SPEAR));
+		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat(Rand.choose("rusty iron","rusty iron","iron")),WeaponType.FISH_SPEAR));
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
 		w.setFlag(PersonFlag.CAN_LEARN,true);
 		w.setPersonType(PersonType.DRUDGER_GENERIC);
 		for (byte i=0;i<5;i++) {
-			if (extra.chanceIn(1,8)) {
+			if (Rand.chanceIn(1,8)) {
 				w.getBag().swapArmorSlot(new Armor(level,i,MaterialFactory.getMat("rusty iron"),null),i);
 			}
 		}
-		if (extra.chanceIn(1,6)) {
+		if (Rand.chanceIn(1,6)) {
 			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
 		w.setFirstName(randomLists.randomWaterName());
@@ -1373,10 +1374,10 @@ public class RaceFactory {
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
 		w.setPersonType(PersonType.DRUDGER_GENERIC);
 		w.cleanSetSkillHas(Perk.STAND_TALL);//added to their 'fish tall' so they have some base strength
-		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","iron")),WeaponType.FISH_ANCHOR));
+		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat(Rand.choose("rusty iron","iron")),WeaponType.FISH_ANCHOR));
 		w.getBag().swapArmorSlot(new Armor(level,(byte)2,MaterialFactory.getMat("rusty iron"),null),2);
 		w.getBag().addDrawBaneSilently(DrawBane.MEAT);
-		if (extra.chanceIn(1,2)) {
+		if (Rand.chanceIn(1,2)) {
 			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
 		w.setFirstName(randomLists.randomWaterName());
@@ -1398,7 +1399,7 @@ public class RaceFactory {
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("rusty iron"),WeaponType.NULL_WAND));//not a weapon
 		w.getBag().swapArmorSlot(new Armor(level,(byte)0,ArmorStyle.GEM.getMatFor(),ArmorStyle.GEM),0);//gem helmet for some reason
 		for (byte i=1;i<5;i++) {
-			if (extra.chanceIn(1,2)) {
+			if (Rand.chanceIn(1,2)) {
 				w.getBag().swapArmorSlot(new Armor(level,i,ArmorStyle.FABRIC.getMatFor(),ArmorStyle.FABRIC),i);
 			}
 		}
@@ -1414,7 +1415,7 @@ public class RaceFactory {
 	public static Person makeMugger(int level) {
 		int findMult;
 		Person w;
-		switch (extra.randRange(1,4)) {
+		switch (Rand.randRange(1,4)) {
 			case 1: default://desperate random guy
 				w = new Person(level);
 				addWealth(WEALTH_SMALL,.3f,w);
@@ -1466,11 +1467,11 @@ public class RaceFactory {
 		w.cleanseType = (byte)CleanseSideQuest.CleanseType.BANDIT.ordinal();
 		
 		//lucky finds chances
-		if (extra.chanceIn(findMult,100)) {
+		if (Rand.chanceIn(findMult,100)) {
 			w.getBag().addDrawBaneSilently(DrawBane.GOLD);
 			addWealth(WEALTH_WELL_OFF,.7f, w);
 		}
-		if (extra.chanceIn(findMult,50)) {
+		if (Rand.chanceIn(findMult,50)) {
 			w.getBag().addDrawBaneSilently(DrawBane.SILVER);
 			addWealth(WEALTH_STANDARD,.7f, w);
 		}
@@ -1481,7 +1482,7 @@ public class RaceFactory {
 	
 	public static Person getDueler(int level) {
 		Person w = new Person(level,AIJob.DUELER);
-		w.setFacLevel(Faction.DUEL,extra.randRange(10,20), 0);
+		w.setFacLevel(Faction.DUEL,Rand.randRange(10,20), 0);
 		w.hTask = HostileTask.DUEL;
 		addWealth(WEALTH_STANDARD,.3f, w);
 		w.finishGeneration();
@@ -1545,10 +1546,10 @@ public class RaceFactory {
 			if (w.isAngry()) {
 				w.hTask = HostileTask.DUEL;
 			}else {
-				if (extra.chanceIn(1,2)) {
+				if (Rand.chanceIn(1,2)) {
 					w.hTask = HostileTask.PEACE;
 				}else {//50% chance to change to other type instead so rewards are more accessible on kill
-					if (extra.chanceIn(1,2)) {
+					if (Rand.chanceIn(1,2)) {
 						//turn racist
 						w.setRacism(true);
 						w.hTask = HostileTask.RACIST;
@@ -1560,17 +1561,17 @@ public class RaceFactory {
 				}
 			}
 		}
-		w.setTitle(randomLists.randomTitleFormat(extra.choose("Beachcomber","Scavenger","Scrounger","Gatherer","Rummager","Hoarder","Searcher")));
+		w.setTitle(randomLists.randomTitleFormat(Rand.choose("Beachcomber","Scavenger","Scrounger","Gatherer","Rummager","Hoarder","Searcher")));
 		//beachcomber drawbane as reward for interacting/fluff that they found
-		if (extra.chanceIn(2,5)) {//rare finds
-			if (extra.chanceIn(1,5)) {//rarest finds
-				w.getBag().addDrawBaneSilently(extra.choose(DrawBane.CEON_STONE,DrawBane.ENT_CORE,DrawBane.GOLD,DrawBane.PROTECTIVE_WARD));
+		if (Rand.chanceIn(2,5)) {//rare finds
+			if (Rand.chanceIn(1,5)) {//rarest finds
+				w.getBag().addDrawBaneSilently(Rand.choose(DrawBane.CEON_STONE,DrawBane.ENT_CORE,DrawBane.GOLD,DrawBane.PROTECTIVE_WARD));
 				w.addFeatPoint();//free feat point
 			}else {//rare find
-				w.getBag().addDrawBaneSilently(extra.choose(DrawBane.TELESCOPE,DrawBane.UNICORN_HORN,DrawBane.SILVER,DrawBane.REPEL));
+				w.getBag().addDrawBaneSilently(Rand.choose(DrawBane.TELESCOPE,DrawBane.UNICORN_HORN,DrawBane.SILVER,DrawBane.REPEL));
 			}
 		}else {//normal find (likely wood)
-			w.getBag().addDrawBaneSilently(extra.choose(DrawBane.WOOD,DrawBane.WOOD,DrawBane.WOOD,DrawBane.CLOTH));
+			w.getBag().addDrawBaneSilently(Rand.choose(DrawBane.WOOD,DrawBane.WOOD,DrawBane.WOOD,DrawBane.CLOTH));
 			w.useFeatPoint();//less feat points
 		}
 		w.finishGeneration();
@@ -1655,11 +1656,11 @@ public class RaceFactory {
 		w.setFacLevel(Faction.MERCHANT,10,0);
 		List<DrawBane> dbs = w.getBag().getDrawBanes();
 		dbs.add(DrawBane.draw(DrawList.COLLECTOR));
-		if (extra.chanceIn(2,3)) {
+		if (Rand.chanceIn(2,3)) {
 			dbs.add(DrawBane.draw(DrawList.COLLECTOR));
 			w.addFeatPoint();//free feat point for having more loot
 		}
-		if (extra.chanceIn(2,4)) {
+		if (Rand.chanceIn(2,4)) {
 			dbs.add(DrawBane.draw(DrawList.COLLECTOR));
 			w.addFeatPoint();//free feat point for having more loot
 		}
@@ -1681,12 +1682,12 @@ public class RaceFactory {
 		Person w;
 		List<DrawBane> list;
 		int rarityMult;
-		if (extra.chanceIn(3,4)) {
+		if (Rand.chanceIn(3,4)) {
 			//comes here often
 			w = new Person(level,AIJob.GRAVER);
 			list = w.getBag().getDrawBanes();
 			w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);
-			if (extra.chanceIn(1,3)) {
+			if (Rand.chanceIn(1,3)) {
 				list.add(DrawBane.SILVER);
 			}else {
 				list.add(DrawBane.GRAVE_DIRT);
@@ -1696,9 +1697,9 @@ public class RaceFactory {
 			addWealth(WEALTH_WORKER,.5f, w);
 		}else {
 			//more generic robber
-			if (extra.chanceIn(1,2)) {
+			if (Rand.chanceIn(1,2)) {
 				//higher cut of thief
-				w = new Person(level,extra.chanceIn(1,3) ? AIJob.THUG : AIJob.ROGUE);
+				w = new Person(level,Rand.chanceIn(1,3) ? AIJob.THUG : AIJob.ROGUE);
 				w.setFacLevel(Faction.ROGUE,20, 0);
 				rarityMult = 3;
 				addWealth(WEALTH_WELL_OFF,.5f, w);
@@ -1715,8 +1716,8 @@ public class RaceFactory {
 		w.hTask = HostileTask.MUG;
 		w.cleanseType = (byte)CleanseSideQuest.CleanseType.BANDIT.ordinal();
 		w.setFacLevel(Faction.HEROIC,0,10);
-		if (extra.chanceIn(rarityMult,8)) {
-			if (extra.chanceIn(rarityMult,20)) {
+		if (Rand.chanceIn(rarityMult,8)) {
+			if (Rand.chanceIn(rarityMult,20)) {
 				list.add(DrawBane.GOLD);
 			}else {
 				list.add(DrawBane.SILVER);
@@ -1733,7 +1734,7 @@ public class RaceFactory {
 		w.hTask = HostileTask.PEACE;
 		List<DrawBane> list = w.getBag().getDrawBanes();
 		list.add(DrawBane.GRAVE_DIRT);
-		if (extra.chanceIn(1,8)) {//can afford full protection
+		if (Rand.chanceIn(1,8)) {//can afford full protection
 			list.add(DrawBane.PROTECTIVE_WARD);
 			w.setFacLevel(Faction.HUNTER,10,0);
 			w.setFacLevel(Faction.MERCHANT,10,0);
@@ -1741,8 +1742,8 @@ public class RaceFactory {
 			w.setTitle(randomLists.randomCollectorName());
 			addWealth(WEALTH_WELL_OFF,.5f, w);
 		}else {
-			if (extra.chanceIn(3,4)) {//undead tool for protection
-				if (extra.chanceIn(1,3)) {//combatative hunter
+			if (Rand.chanceIn(3,4)) {//undead tool for protection
+				if (Rand.chanceIn(1,3)) {//combatative hunter
 					list.add(DrawBane.SILVER);
 					list.add(DrawBane.GRAVE_DUST);
 					w.addBlood(2);
@@ -1756,7 +1757,7 @@ public class RaceFactory {
 					//normal protected graverobber
 					list.add(DrawBane.GARLIC);
 				}
-				if (extra.chanceIn(1,2)) {
+				if (Rand.chanceIn(1,2)) {
 					list.add(DrawBane.GARLIC);//chance of more for either outcome
 				}
 				addWealth(WEALTH_WORKER,.4f, w);
@@ -1778,7 +1779,7 @@ public class RaceFactory {
 		w.hTask = HostileTask.HUNT;
 		w.setTitle(randomLists.randomHunterTitle());
 		List<DrawBane> list = w.getBag().getDrawBanes();
-		switch (extra.getRand().nextInt(6)) {
+		switch (Rand.getRand().nextInt(6)) {
 		case 0: case 1://geared hunter
 			list.add(DrawBane.SILVER);
 			list.add(DrawBane.GARLIC);
@@ -1810,7 +1811,7 @@ public class RaceFactory {
 		w.getBag().addDrawBaneSilently(DrawBane.GRAVE_DUST);
 		w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);
 		w.hTask = HostileTask.GUARD_DUNGEON;
-		if (extra.chanceIn(1,30)) {//MUCH higher chance of gold than normal, but no chance of silver
+		if (Rand.chanceIn(1,30)) {//MUCH higher chance of gold than normal, but no chance of silver
 			w.bag.addDrawBaneSilently(DrawBane.GOLD);
 		}
 		w.setTitle(randomLists.randomTitleFormat(randomLists.randomPirateName()));
@@ -1824,7 +1825,7 @@ public class RaceFactory {
 		w.setFacLevel(Faction.ROGUE,15, 0);
 		w.setFacLevel(Faction.HEROIC,0, 10);
 		w.hTask = HostileTask.MUG;
-		if (extra.chanceIn(1,40)) {//higher chance of gold than normal, but no chance of silver
+		if (Rand.chanceIn(1,40)) {//higher chance of gold than normal, but no chance of silver
 			w.bag.addDrawBaneSilently(DrawBane.GOLD);
 		}
 		w.setTitle(randomLists.randomTitleFormat(randomLists.randomPirateName()));
@@ -1847,8 +1848,8 @@ public class RaceFactory {
 	public static int scarFor(RaceID race) {
 		switch (race) {
 		case HUMAN:
-			if (extra.chanceIn(1, 3)) {
-				return extra.randRange(0,scarMap.get(RaceID.HUMAN).size()-1);
+			if (Rand.chanceIn(1, 3)) {
+				return Rand.randRange(0,scarMap.get(RaceID.HUMAN).size()-1);
 			}
 			break;
 		}
@@ -1858,7 +1859,7 @@ public class RaceFactory {
 	public static String biteFor(RaceID race) {
 		switch (race) {
 		case HUMAN:
-				return extra.choose("H_vampbite1","H_vampbite2","H_vampbite3","H_vampbite4","H_vampbite5");
+				return Rand.choose("H_vampbite1","H_vampbite2","H_vampbite3","H_vampbite4","H_vampbite5");
 		}
 		return "";
 	}
@@ -1891,7 +1892,7 @@ public class RaceFactory {
 	 */
 	public static int addWealth(float magnitude, float reliable, Person p) {
 		//if <1 might not add it
-		if (magnitude < 1f || extra.randFloat() > magnitude) {
+		if (magnitude < 1f || Rand.randFloat() > magnitude) {
 			return 0;
 		}
 		int gold = IEffectiveLevel.cleanRangeReward(p.getLevel(),Math.max(1f,magnitude),reliable);
@@ -1906,7 +1907,7 @@ public class RaceFactory {
 			return null;
 		}//FIXME: this is still making bad assumptions about level being worth one person, but it should still be better than the old ways
 		int maxNumLevel = (int) Math.max(1,power/(mookWorthMult*maxMooks));//don't let us make so many mooks they fall under the threshold
-		int levelRoll = extra.randRange(minNumLevel,maxNumLevel);
+		int levelRoll = Rand.randRange(minNumLevel,maxNumLevel);
 		//now we need to round the level roll to the nearest mook amount that fits it
 		int amount = Math.round((mookWorthMult*levelRoll)/power);
 		levelRoll = (int) (power/(mookWorthMult*amount));

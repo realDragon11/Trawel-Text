@@ -1,5 +1,6 @@
 package trawel.personal.classless;
 
+import trawel.core.Rand;
 import trawel.helper.methods.extra;
 
 public interface IEffectiveLevel {
@@ -97,6 +98,6 @@ public interface IEffectiveLevel {
 	 * @return 
 	 */
 	public static int cleanRangeReward(int level, float amountMult, float lowPer) {
-		return Math.round(extra.lerp(1,amountMult*IEffectiveLevel.unclean(level),extra.lerp(lowPer,1,extra.randFloat())));
+		return Math.round(extra.lerp(1,amountMult*IEffectiveLevel.unclean(level),extra.lerp(lowPer,1,Rand.randFloat())));
 	}
 }

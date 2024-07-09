@@ -8,9 +8,11 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent.AgentGoal;
@@ -67,7 +69,7 @@ public class Arena extends Feature{
 	@Override
 	public void go() {
 		getRematch();
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -78,7 +80,7 @@ public class Arena extends Feature{
 
 						@Override
 						public String title() {
-							return TrawelColor.PRE_BATTLE+"Participate in the " + getRewardTitle() + " tournament in " + extra.format(getTimeLeft()) + " hours.";
+							return TrawelColor.PRE_BATTLE+"Participate in the " + getRewardTitle() + " tournament in " + Print.format(getTimeLeft()) + " hours.";
 						}
 
 						@Override
@@ -88,7 +90,7 @@ public class Arena extends Feature{
 							TrawelTime.globalPassTime();
 							Person winner = doTourny(Player.player.getPerson());
 							if (winner == Player.player.getPerson()) {
-								extra.println("You win the tournment!");
+								Print.println("You win the tournment!");
 								Player.player.addGroupedAchieve(Arena.this, getName(), ""+timesDone);
 							}
 							playerActive = false;
@@ -103,7 +105,7 @@ public class Arena extends Feature{
 
 						@Override
 						public String title() {
-							return "Upcoming " +getRewardTitle() + " tournament is "+extra.format(getTimeLeft()) + " hours away." ;
+							return "Upcoming " +getRewardTitle() + " tournament is "+Print.format(getTimeLeft()) + " hours away." ;
 						}});
 				}
 				//this will be 2 or 1, so mashing 1 will start fights either way
@@ -116,9 +118,9 @@ public class Arena extends Feature{
 
 					@Override
 					public boolean go() {
-						Player.addTime(23d+extra.randRange(.5f,2.5f));
+						Player.addTime(23d+Rand.randRange(.5f,2.5f));
 						TrawelTime.globalPassTime();
-						extra.println("It is " +Calender.dateFull(town)+".");
+						Print.println("It is " +Calender.dateFull(town)+".");
 						return false;
 					}});
 				//now also includes people who won when you weren't involved
@@ -176,7 +178,7 @@ public class Arena extends Feature{
 	
 	private Person getOrGen(int tier) {
 		if (winners.size() > 2) {
-			Person p = winners.remove(extra.getRand().nextInt(winners.size()));
+			Person p = winners.remove(Rand.getRand().nextInt(winners.size()));
 			//only allow one tier higher
 			if (p.getLevel() > tier+1) {
 				town.addOccupant(p.setOrMakeAgentGoal(AgentGoal.NONE));
@@ -201,14 +203,14 @@ public class Arena extends Feature{
 		World w = town.getIsland().getWorld();
 		for (int i = 1;i <= rounds;i++) {
 			if (fore.isPlayer() && i > 1) {
-				extra.popPrintStack();//turned off below
+				Print.popPrintStack();//turned off below
 			}
 			Combat c = Combat.CombatTwo(fore, other,w);
 			fore = c.getNonSummonSurvivors().get(0);
 			if (i < rounds) {
 				if (fore.isPlayer()) {
-					extra.println("You move on to the next round of the tournament.");
-					extra.offPrintStack();
+					Print.println("You move on to the next round of the tournament.");
+					Print.offPrintStack();
 				}
 				//get the other branch on this part of the tree
 				other = doBranch(i,w);
@@ -292,7 +294,7 @@ public class Arena extends Feature{
 					time = 0;
 				}else {
 					time -=timeLeft;
-					extra.offPrintStack();
+					Print.offPrintStack();
 					doTourny(null);
 					//look into freeing winners
 					for (int i = winners.size()-1;i >= 0;i--) {
@@ -305,7 +307,7 @@ public class Arena extends Feature{
 							winners.get(i).addXp(tier/2);
 						}
 					}
-					extra.popPrintStack();
+					Print.popPrintStack();
 				}
 			}
 		}

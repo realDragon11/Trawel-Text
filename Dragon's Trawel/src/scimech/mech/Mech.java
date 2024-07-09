@@ -25,6 +25,9 @@ import scimech.mech.Systems.MenuSystem;
 import scimech.people.Pilot;
 import scimech.people.Trait;
 import scimech.people.TraitKeeper;
+import trawel.core.Input;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.methods.extra;
 
 public abstract class Mech extends MechPart implements TurnSubscriber, Target, Savable{
@@ -97,7 +100,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 	public void roundStart() {
 		energy = 0;
 		dodgeBonus = -slow;
-		speed = extra.randRange(0,SPEED_DIE)-slow;
+		speed = Rand.randRange(0,SPEED_DIE)-slow;
 		for (Systems ss: systems) {
 			ss.roundStart();
 		}
@@ -119,7 +122,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
 		if (this.playerControlled) {
-			extra.menuGo(new MenuGenerator() {
+			Input.menuGo(new MenuGenerator() {
 
 				@Override
 				public List<MenuItem> gen() {
@@ -193,7 +196,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 			while (energy > 0 && MechCombat.mc.twoSided()) {
 				boolean activated = false;
 				for (int i = 0; i < 5;i++) {
-					if (mounts.get(extra.randRange(0,mounts.size()-1)).aiFire()) {
+					if (mounts.get(Rand.randRange(0,mounts.size()-1)).aiFire()) {
 						activated = true;
 						break;
 					}
@@ -206,7 +209,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 	}
 	
 	public void mountSelect() {
-		extra.menuGoPaged(new MenuGeneratorPaged() {
+		Input.menuGoPaged(new MenuGeneratorPaged() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -239,7 +242,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 	}
 	
 	public void systemsSelect() {
-		extra.menuGoPaged(new MenuGeneratorPaged() {
+		Input.menuGoPaged(new MenuGeneratorPaged() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -325,7 +328,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 		}}
 	
 	public boolean targetMenu(MenuMechTarget menuMechTarget, Mount mount) {
-		extra.menuGoPaged(new MenuGeneratorPaged() {
+		Input.menuGoPaged(new MenuGeneratorPaged() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -466,16 +469,16 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 			}};
 	}
 	public void takeSystemDamage(int dam) {
-		int mDam = extra.randRange(0,dam);
+		int mDam = Rand.randRange(0,dam);
 		int sDam = dam-mDam;
 		int[] arr = new int[mounts.size()];
 		for (int i = 0; i < arr.length;i++) {
 			arr[i] = 0;
 		}
 		for (int i = 0; i < mDam;i++) {
-			int v = extra.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
-			if (extra.chanceIn(2,3) && mounts.get(v).checkFire()) {
-				if (extra.chanceIn(1,3)){
+			int v = Rand.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
+			if (Rand.chanceIn(2,3) && mounts.get(v).checkFire()) {
+				if (Rand.chanceIn(1,3)){
 					i--;
 					}
 			}else {
@@ -490,8 +493,8 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 			arr[i] = 0;
 		}
 		for (int i = 0; i < sDam;i++) {
-			int v = extra.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
-			if (extra.chanceIn(2,3) && systems.get(v).damage == 100) {
+			int v = Rand.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
+			if (Rand.chanceIn(2,3) && systems.get(v).damage == 100) {
 				i--;
 			}else {
 				arr[v]++;
@@ -504,14 +507,14 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 	}
 	
 	public void takeEMPDamage(int dam) {
-		int mDam = extra.randRange(0,dam);
+		int mDam = Rand.randRange(0,dam);
 		int sDam = dam-mDam;
 		int[] arr = new int[mounts.size()];
 		for (int i = 0; i < arr.length;i++) {
 			arr[i] = 0;
 		}
 		for (int i = 0; i < mDam;i++) {
-			int v = extra.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
+			int v = Rand.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
 			arr[v]++;
 		}
 		for (int i = 0; i < arr.length;i++) {
@@ -522,7 +525,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 			arr[i] = 0;
 		}
 		for (int i = 0; i < sDam;i++) {
-			int v = extra.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
+			int v = Rand.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
 				arr[v]++;
 		}
 		for (int i = 0; i < arr.length;i++) {
@@ -561,7 +564,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 	public boolean addMount(Mount m) {
 		m.currentMech = this;
 		if (m.getComplexity() > hardComplexityCap()-totalComplexity()) {
-			extra.println("Hit complexity cap.");
+			Print.println("Hit complexity cap.");
 			return false;
 		}
 		
@@ -571,12 +574,12 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 	public boolean addSystem(Systems s) {
 		s.currentMech = this;
 		if (s.getComplexity() > hardComplexityCap()-totalComplexity()) {
-			extra.println("Hit complexity cap.");
+			Print.println("Hit complexity cap.");
 			return false;
 		}
 		
 		if (s.getComplexity() > hardComplexityCap()-totalComplexity()) {
-			extra.println("Hit complexity cap.");
+			Print.println("Hit complexity cap.");
 			return false;
 		}
 		
@@ -589,7 +592,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 		}
 		
 		if (count >= s.installLimit()) {
-			extra.println("Hit install cap.");
+			Print.println("Hit install cap.");
 			return false;	
 		}
 		this.systems.add(s);
@@ -597,12 +600,12 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 	}
 	
 	public void statistics() {
-		extra.println(callsign + " ("+getName()+")" + "/"+pilot.getName() +" HP: " + hp + "/" + getMaxHP() +" Energy: " + energy + " Heat: " + heat+ "/" + heatCap());
-		extra.println("Weight: " + this.totalWeight() + "/" + this.weightCap + " Complexity: "+ this.totalComplexity() + "/" +this.complexityCap);
-		extra.println("Mounts: " + this.mounts.size() + " Systems: " + this.systems.size() + " Fixtures: " + this.totalFixtures());
-		extra.println("Speed: " + this.getSpeed() + " Dodge: " + this.dodgeValue() +" Saved: " + this.getLockedComplexity() + "/"+this.baseComplexity());
-		extra.println(keeper.toString());
-		extra.println();
+		Print.println(callsign + " ("+getName()+")" + "/"+pilot.getName() +" HP: " + hp + "/" + getMaxHP() +" Energy: " + energy + " Heat: " + heat+ "/" + heatCap());
+		Print.println("Weight: " + this.totalWeight() + "/" + this.weightCap + " Complexity: "+ this.totalComplexity() + "/" +this.complexityCap);
+		Print.println("Mounts: " + this.mounts.size() + " Systems: " + this.systems.size() + " Fixtures: " + this.totalFixtures());
+		Print.println("Speed: " + this.getSpeed() + " Dodge: " + this.dodgeValue() +" Saved: " + this.getLockedComplexity() + "/"+this.baseComplexity());
+		Print.println(keeper.toString());
+		Print.println();
 		pilot.statistics();
 	}
 	public int totalFixtures() {

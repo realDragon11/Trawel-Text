@@ -17,7 +17,8 @@ import rtrawel.unit.RMonster;
 import rtrawel.unit.RPlayer;
 import rtrawel.unit.RUnit;
 import rtrawel.unit.RUnit.RaceType;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
+import trawel.core.Print;
 import rtrawel.unit.TargetGroup;
 
 public class Menu implements Content {
@@ -27,11 +28,11 @@ public class Menu implements Content {
 		int in = 0;
 		while (in != 1) {
 			Party.party.displayQuick();
-			extra.println("1 back");
-			extra.println("2 inventory");
-			extra.println("3 beast-iary");
-			extra.println("4 use abilities and spells");
-			in = extra.inInt(4);
+			Print.println("1 back");
+			Print.println("2 inventory");
+			Print.println("3 beast-iary");
+			Print.println("4 use abilities and spells");
+			in = Input.inInt(4);
 			switch (in) {
 			case 2:
 				doInv();
@@ -45,16 +46,16 @@ public class Menu implements Content {
 	}
 
 	private void spells() {
-		extra.println("Who wants to do an action?");
+		Print.println("Who wants to do an action?");
 		RPlayer p = (RPlayer)Party.party.getUnit();
 		while (true) {
 			Party.party.displayQuick();
-			extra.println("1 back");
+			Print.println("1 back");
 			List<Action> doable = p.getOOCAbs();
 			for (int i = 0; i < doable.size();i++) {
-				extra.println((i+2) + " " + doable.get(i).getName() + ": " + doable.get(i).getDesc() + (doable.get(i).canCast(p) ? "" : " (locked)" ));
+				Print.println((i+2) + " " + doable.get(i).getName() + ": " + doable.get(i).getDesc() + (doable.get(i).canCast(p) ? "" : " (locked)" ));
 			}
-			int in = extra.inInt( doable.size()+1);
+			int in = Input.inInt( doable.size()+1);
 			if (in == 1) {
 				return;
 			}
@@ -66,34 +67,34 @@ public class Menu implements Content {
 
 	private void beast() {
 		while (true) {
-			extra.println("Type in the name of the monster you want to examine, or 'back' to leave.");
-			String str = extra.inString();
+			Print.println("Type in the name of the monster you want to examine, or 'back' to leave.");
+			String str = Input.inString();
 			if (str.equals("back")) {
 				return;
 			}
 			try {
 				MonsterData r = MonsterFactory.getMonsterByName(str);
 				if (r == null) {
-					extra.println("Beast not found.");
+					Print.println("Beast not found.");
 					continue;
 				}
 				if (Party.party.getKillCount(str) > 0) {
-					extra.println(str + " Hp: " + r.getMaxHp());
+					Print.println(str + " Hp: " + r.getMaxHp());
 					if (Party.party.getKillCount(str) >= r.getKillsTilKnown()) {
 						String sub = "";
 						for (RaceType rt: new RMonster(str,0).getRaceTypes()) {
 							sub+= rt.toString().toLowerCase() + ", ";
 						}
-						extra.println(r.getDesc() + " types: " + sub);
+						Print.println(r.getDesc() + " types: " + sub);
 						if (Party.party.getKillCount(str) >= r.getKillsTilVeryKnown()) {
-							extra.println("Common Drop: " + r.getDrop() + " Rare Drop: " + r.getRareDrop());
+							Print.println("Common Drop: " + r.getDrop() + " Rare Drop: " + r.getRareDrop());
 							}
 					}
 				}else {
-					extra.println("You don't know anything about this beast yet.");
+					Print.println("You don't know anything about this beast yet.");
 				}
 			}catch (Exception e) {
-				extra.println("Beast not found.");
+				Print.println("Beast not found.");
 			}
 		}
 		
@@ -102,13 +103,13 @@ public class Menu implements Content {
 	private void doInv() {
 		int in2 = 0;
 		while (in2 != 1) {
-			extra.println("gold: " + Party.party.gold);
-			extra.println("1 back");
-			extra.println("2 bag");
-			extra.println("3 assign items");
-			extra.println("4 de-equip");
-			extra.println("5 view all");
-			in2 = extra.inInt(5);
+			Print.println("gold: " + Party.party.gold);
+			Print.println("1 back");
+			Print.println("2 bag");
+			Print.println("3 assign items");
+			Print.println("4 de-equip");
+			Print.println("5 view all");
+			in2 = Input.inInt(5);
 			switch (in2) {
 			case 2:
 				doBag();
@@ -130,20 +131,20 @@ public class Menu implements Content {
 	}
 
 	private void deEquip() {
-		extra.println("Who to de-equip?");
+		Print.println("Who to de-equip?");
 		RPlayer p = (RPlayer)Party.party.getUnit();
 		while (true) {
 			Item i = null;
-			extra.println("1 back");
-			extra.println("2 helm (" + (p.head == null ? "nothing" : p.head.getName())+")" );
-			extra.println("3 torso (" + (p.torso == null ? "nothing" : p.torso.getName())+")" );
-			extra.println("4 arms (" + (p.arms == null ? "nothing" : p.arms.getName())+")" );
-			extra.println("5 pants (" + (p.pants == null ? "nothing" : p.head.getName())+")" );
-			extra.println("6 feet (" + (p.feet == null ? "nothing" : p.feet.getName())+")" );
-			extra.println("7 asc1 (" + (p.assec1 == null ? "nothing" : p.assec1.getName())+")" );
-			extra.println("8 asc2 (" + (p.assec2 == null ? "nothing" : p.assec2.getName())+")" );
-			extra.println("9 shield (" + (p.shield == null ? "nothing" : p.shield.getName())+")" );
-			int in = extra.inInt(8)-1;
+			Print.println("1 back");
+			Print.println("2 helm (" + (p.head == null ? "nothing" : p.head.getName())+")" );
+			Print.println("3 torso (" + (p.torso == null ? "nothing" : p.torso.getName())+")" );
+			Print.println("4 arms (" + (p.arms == null ? "nothing" : p.arms.getName())+")" );
+			Print.println("5 pants (" + (p.pants == null ? "nothing" : p.head.getName())+")" );
+			Print.println("6 feet (" + (p.feet == null ? "nothing" : p.feet.getName())+")" );
+			Print.println("7 asc1 (" + (p.assec1 == null ? "nothing" : p.assec1.getName())+")" );
+			Print.println("8 asc2 (" + (p.assec2 == null ? "nothing" : p.assec2.getName())+")" );
+			Print.println("9 shield (" + (p.shield == null ? "nothing" : p.shield.getName())+")" );
+			int in = Input.inInt(8)-1;
 			if (in==0) {
 				return;
 			}
@@ -161,7 +162,7 @@ public class Menu implements Content {
 	}
 
 	private void assignItems() {
-		extra.println("Assign items for who?");
+		Print.println("Assign items for who?");
 		RPlayer wielder = (RPlayer)Party.party.getUnit();
 		while (wielder.assignItems());
 	}
@@ -169,15 +170,15 @@ public class Menu implements Content {
 	private void doBag() {
 		Party.party.refreshItemKeys();
 		if (Party.party.itemKeys.size() == 0) {
-			extra.println("Your bag is empty!");
+			Print.println("Your bag is empty!");
 			return;
 		}
 		int in2 = 0;
 		while (in2 != (Party.party.itemKeys.size()+1)) {
 			Party.party.refreshItemKeys();
 			Party.party.displayItems();
-			extra.println((Party.party.itemKeys.size()+1) + " back");
-			in2 = extra.inInt(Party.party.itemKeys.size()+1);
+			Print.println((Party.party.itemKeys.size()+1) + " back");
+			in2 = Input.inInt(Party.party.itemKeys.size()+1);
 			if (in2 <= Party.party.itemKeys.size()) {
 				goItem(in2);
 			}
@@ -188,7 +189,7 @@ public class Menu implements Content {
 		Item item = RCore.getItemByName(str);
 		switch (item.getItemType()) {
 		case ARMOR:
-			extra.println("Who wants to equip this armor?");
+			Print.println("Who wants to equip this armor?");
 			RPlayer armer = (RPlayer)Party.party.getUnit();
 			if (JobFactory.getJobByName(armer.getJob()).armorClasses().contains(((Armor)item).getArmorClass())) {
 				item = armer.swapArmor((Armor)item);
@@ -200,29 +201,29 @@ public class Menu implements Content {
 			}
 			break;
 		case CONSUMABLE:
-			extra.println("Who wants to apply the item?");
+			Print.println("Who wants to apply the item?");
 			RUnit one = Party.party.getUnit();
-			extra.println("Who wants to get the item applied to them?");
+			Print.println("Who wants to get the item applied to them?");
 			RUnit two = Party.party.getUnit();
 			((Consumable)item).getAction().go(one,new TargetGroup(two));
 			break;
 		case NONE:
-			extra.println("This item is material-only.");
+			Print.println("This item is material-only.");
 			Party.party.addItem(item.getName(),1);
 			break;
 		case WEAPON:
-			extra.println("Who wants to equip this weapon?");
+			Print.println("Who wants to equip this weapon?");
 			RPlayer wielder = (RPlayer)Party.party.getUnit();
 			if (JobFactory.getJobByName(wielder.getJob()).weaponTypes().contains(((Weapon)item).getWeaponType())) {
 				if (((Weapon)item).getWeaponType().equals(WeaponType.SHIELD)) {
 					if (wielder.shield == null) {
-						extra.println("You wield the " + item.getName() + ".");
+						Print.println("You wield the " + item.getName() + ".");
 					}else {
-					extra.println("You swap out your " + wielder.getWeapon().getName() + " for your " + item.getName() + ".");
+					Print.println("You swap out your " + wielder.getWeapon().getName() + " for your " + item.getName() + ".");
 					Party.party.addItem(wielder.shield.getName(),1);}
 					wielder.shield = (Weapon)item;
 				}else {
-				extra.println("You swap out your " + wielder.getWeapon().getName() + " for your " + item.getName() + ".");
+				Print.println("You swap out your " + wielder.getWeapon().getName() + " for your " + item.getName() + ".");
 				Party.party.addItem(wielder.getWeapon().getName(),1);
 				wielder.setWeapon((Weapon)item);
 				}

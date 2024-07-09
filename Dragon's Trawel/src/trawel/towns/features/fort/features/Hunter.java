@@ -2,8 +2,8 @@ package trawel.towns.features.fort.features;
 
 import java.util.List;
 
+import trawel.core.Print;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -58,10 +58,10 @@ public class Hunter extends FortFeature {
 	@Override
 	public void go() {
 		if (this.getOwner() != Player.player) {
-			extra.println("You do not own this fort.");
+			Print.println("You do not own this fort.");
 			return;
 		}
-		extra.println("The hunters are out hunting.");
+		Print.println("The hunters are out hunting.");
 		
 	}
 

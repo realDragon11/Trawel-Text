@@ -10,7 +10,7 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Fixture;
 import scimech.mech.TurnSubscriber;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class ArcThrower extends Fixture {
 
@@ -29,7 +29,7 @@ public class ArcThrower extends Fixture {
 			}
 		if (!t.isDummy()) {
 			currentMount.takeHeat(5);
-			extra.print("The Arc Thrower attacks! " + hits + " hits! ");
+			Print.print("The Arc Thrower attacks! " + hits + " hits! ");
 		}
 
 	}

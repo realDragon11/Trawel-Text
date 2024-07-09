@@ -12,8 +12,8 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.core.Input;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.Feat.FeatType;
 
@@ -117,7 +117,7 @@ public interface IHasSkills {
 
 			@Override
 			public boolean go() {
-				extra.menuGo(new MenuGenerator() {
+				Input.menuGo(new MenuGenerator() {
 
 					@Override
 					public List<MenuItem> gen() {

@@ -1,7 +1,8 @@
 package trawel.towns.features.nodes;
 import com.github.yellowstonegames.core.WeightedTable;
 
-import trawel.helper.methods.extra;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.time.TimeContext;
@@ -45,7 +46,7 @@ public class CaveNode implements NodeType{
 	
 	@Override
 	public int rollRegrow() {
-		return 1+caveRegrowRoller.random(extra.getRand());
+		return 1+caveRegrowRoller.random(Rand.getRand());
 	}
 	
 	@Override
@@ -54,10 +55,10 @@ public class CaveNode implements NodeType{
 		switch (guessDepth) {
 		case 0://start
 		case 1://entry
-			idNum+=caveEntryRoller.random(extra.getRand());
+			idNum+=caveEntryRoller.random(Rand.getRand());
 			break;
 		default:
-			idNum+=caveBasicRoller.random(extra.getRand());
+			idNum+=caveBasicRoller.random(Rand.getRand());
 			break;
 		}
 		
@@ -96,7 +97,7 @@ public class CaveNode implements NodeType{
 		}
 		for (int i = 0; i < split;i++) {
 			int tempLevel = tier;
-			if (extra.chanceIn(1,5)) {//much higher chance to level up
+			if (Rand.chanceIn(1,5)) {//much higher chance to level up
 				tempLevel++;
 			}
 			int n = generate(holder,made,sizePer,tempLevel);
@@ -130,7 +131,7 @@ public class CaveNode implements NodeType{
 	public boolean interact(NodeConnector holder,int node) {
 		switch(holder.getEventNum(node)) {
 		case 1:
-			extra.println("The cave entrance is damp.");
+			Print.println("The cave entrance is damp.");
 			break;
 		}
 		return false;

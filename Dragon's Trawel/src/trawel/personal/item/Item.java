@@ -2,8 +2,8 @@ package trawel.personal.item;
 
 import java.awt.Color;
 
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.solid.Material;
 import trawel.personal.people.Player;
@@ -20,7 +20,7 @@ public abstract class Item implements java.io.Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	protected int level;
-	public int bloodSeed = extra.randRange(0,2000);
+	public int bloodSeed = Rand.randRange(0,2000);
 	private float bloodCount = 0;
 
 	//abstracted instance methods
@@ -112,7 +112,7 @@ public abstract class Item implements java.io.Serializable{
 	}
 	
 	public void wash() {
-		bloodSeed = extra.randRange(0,2000);
+		bloodSeed = Rand.randRange(0,2000);
 		bloodCount = 0;
 	}
 	

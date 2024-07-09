@@ -7,7 +7,7 @@ import java.util.List;
 import rtrawel.unit.RMonster;
 import rtrawel.unit.RUnit;
 import rtrawel.unit.TargetGroup;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class Battle {
 
@@ -41,7 +41,7 @@ public class Battle {
 		for (RUnit f: foes) {
 			bt.targets.add(f);
 		}
-		extra.println("A battle begins! (" + bt.toString() + ")");
+		Print.println("A battle begins! (" + bt.toString() + ")");
 		for (RUnit r: global) {
 			r.cleanUp();
 			r.curBattle = this;
@@ -102,7 +102,7 @@ public class Battle {
 			totalxp += ((RMonster)r).getXpWorth();
 			((RMonster)r).loot();
 		}
-		extra.println("You got " + totalxp + " xp and " + totalg + " gold!");
+		Print.println("You got " + totalxp + " xp and " + totalg + " gold!");
 		totalxp/=Party.party.list.size();
 		Party.party.gold += totalg; 
 		for (RUnit p: Party.party.list) {
@@ -116,7 +116,7 @@ public class Battle {
 	}
 	
 	public void kill(RUnit r) {
-		extra.println(r.getName() + " dies!");
+		Print.println(r.getName() + " dies!");
 		r.alive = false;
 		if (!killList.contains(r)) {
 			killList.add(r);

@@ -5,7 +5,7 @@ import scimech.combat.Target;
 import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Mount;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class Hoof extends Mount {
 
@@ -46,7 +46,7 @@ public class Hoof extends Mount {
 	public void bonusEffect(Target t, int damage) {
 		float bonus = Math.max(2.5f-(this.currentMech.totalWeight()/100f),0);
 		this.currentMech.addDodgeBonus(bonus);
-		extra.println("Hoof Dodge: "+extra.format(bonus)+"!");
+		Print.println("Hoof Dodge: "+Print.format(bonus)+"!");
 	}
 	
 	public static Savable deserialize(String s) throws Exception {

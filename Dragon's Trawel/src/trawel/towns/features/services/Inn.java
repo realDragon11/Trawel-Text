@@ -10,10 +10,12 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.battle.BarkManager;
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent;
@@ -83,14 +85,14 @@ public class Inn extends Feature implements QuestBoardLocation{
 		name = n;
 		tier = t;
 		town = twn;
-		timePassed = extra.randRange(1,30);
-		resident = (byte) extra.randRange(1,RES_COUNT);
-		nextReset = extra.randRange(4,30);
+		timePassed = Rand.randRange(1,30);
+		resident = (byte) Rand.randRange(1,RES_COUNT);
+		nextReset = Rand.randRange(4,30);
 		rentTime = 0;
 		tutorialText = "Inn";
 		this.owner = owner;
-		beerCount = extra.randRange(2,4);
-		beerCost = (int) (getUnEffectiveLevel() +extra.randRange(0,2));
+		beerCount = Rand.randRange(2,4);
+		beerCost = (int) (getUnEffectiveLevel() +Rand.randRange(0,2));
 		area_type = Area.INN;
 	}
 	
@@ -112,19 +114,19 @@ public class Inn extends Feature implements QuestBoardLocation{
 	@Override
 	public void generateSideQuest() {
 		if (sideQuests.size() >= 3) {
-			sideQuests.remove(extra.randList(sideQuests));
+			sideQuests.remove(Rand.randList(sideQuests));
 		}
-		switch (extra.randRange(1,3)) {
+		switch (Rand.randRange(1,3)) {
 		case 1:
-			if (extra.randFloat() > .85f) {//15% for crime
+			if (Rand.randFloat() > .85f) {//15% for crime
 				sideQuests.add(FetchSideQuest.generate(this,FetchType.CRIME));
 				break;
 			}
-			if (extra.randFloat() > .95f) {//5% for heroism
+			if (Rand.randFloat() > .95f) {//5% for heroism
 				sideQuests.add(FetchSideQuest.generate(this,FetchType.HERO));
 				break;
 			}
-			if (extra.randFloat() > .65f) {//35% for merchant
+			if (Rand.randFloat() > .65f) {//35% for merchant
 				sideQuests.add(FetchSideQuest.generate(this,FetchType.MERCHANT));
 				break;
 			}
@@ -132,17 +134,17 @@ public class Inn extends Feature implements QuestBoardLocation{
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.COMMUNITY));
 			break;
 		case 2:
-			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.BANDIT,CleanseType.MONSTERS)));
+			sideQuests.add(CleanseSideQuest.generate(this,Rand.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.BANDIT,CleanseType.MONSTERS)));
 			break;
 		case 3:
-			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .8f));//20% chance to be a murder quest
+			sideQuests.add(KillSideQuest.generate(this,Rand.randFloat() > .8f));//20% chance to be a murder quest
 			break;
 		}
 	}
 
 	@Override
 	public void go() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -196,12 +198,12 @@ public class Inn extends Feature implements QuestBoardLocation{
 								return TrawelColor.SERVICE_FREE+"Your Room (Owned Inn)";
 							}
 							//special payment is the time you already bought
-							return TrawelColor.SERVICE_SPECIAL_PAYMENT+"Your Room ("+extra.F_TWO_TRAILING.format(rentTime)+" hours left)";
+							return TrawelColor.SERVICE_SPECIAL_PAYMENT+"Your Room ("+Print.F_TWO_TRAILING.format(rentTime)+" hours left)";
 						}
 
 						@Override
 						public boolean go() {
-							extra.menuGo(new MenuGenerator() {
+							Input.menuGo(new MenuGenerator() {
 
 								@Override
 								public List<MenuItem> gen() {
@@ -213,7 +215,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 											if (playerOwns) {
 												return Calender.dateFull(town);
 											}
-											return Calender.dateFull(town)+": ("+extra.F_TWO_TRAILING.format(rentTime)+" hours left)";
+											return Calender.dateFull(town)+": ("+Print.F_TWO_TRAILING.format(rentTime)+" hours left)";
 										}});
 									if (rentTime > 1 || playerOwns) {
 										list.add(new MenuSelect() {
@@ -241,7 +243,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 											@Override
 											public String title() {
-												return (playerOwns ? TrawelColor.SERVICE_FREE : TrawelColor.SERVICE_SPECIAL_PAYMENT)+"Wait " + extra.F_TWO_TRAILING.format(rentTime)+" hours.";
+												return (playerOwns ? TrawelColor.SERVICE_FREE : TrawelColor.SERVICE_SPECIAL_PAYMENT)+"Wait " + Print.F_TWO_TRAILING.format(rentTime)+" hours.";
 											}
 
 											@Override
@@ -326,7 +328,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return TrawelColor.SERVICE_FREE+"Watch duel (" + extra.format(nextReset-timePassed+1) + " hours)";
+						return TrawelColor.SERVICE_FREE+"Watch duel (" + Print.format(nextReset-timePassed+1) + " hours)";
 					}
 
 					@Override
@@ -349,7 +351,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 	private void backroom() {
 		Inn inn = this;
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -385,7 +387,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 		double mult = Math.max(5,town.getPersonableOccupants().limit(20).count())/5.0;
 		//if <=5 people, occurs at normal rate, otherwise frequency increases, up to 4x
 		//minimum of 4 hours, then 24-48 hours that does get hit by the mult, so final band of 10 to 52 between duels
-		return 4 + ((24 +extra.getRand().nextDouble(24))/mult);
+		return 4 + ((24 +Rand.getRand().nextDouble(24))/mult);
 	}
 	/**
 	 * a duel requires that time pass
@@ -394,19 +396,19 @@ public class Inn extends Feature implements QuestBoardLocation{
 		List<SuperPerson> spList = new ArrayList<SuperPerson>();
 		town.getPersonableOccupants().forEach(spList::add);
 		if (spList.size() >= 3){
-			SuperPerson sp1 = extra.randList(spList);
+			SuperPerson sp1 = Rand.randList(spList);
 			spList.remove(sp1);
-			SuperPerson sp2 = extra.randList(spList);
-			if (!playerwatching) { extra.offPrintStack();}
+			SuperPerson sp2 = Rand.randList(spList);
+			if (!playerwatching) { Print.offPrintStack();}
 			//summons not allowed
 			assert sp1 != null;
 			assert sp2 != null;
 			Combat c = Combat.CombatTwo(sp1.getPerson(),sp2.getPerson(),town.getIsland().getWorld());
 			town.removeAllKilled(c.killed);
-			if (!playerwatching) {extra.popPrintStack();}
+			if (!playerwatching) {Print.popPrintStack();}
 		}else {
 			if (playerwatching) {
-				extra.println("But no one came.");
+				Print.println("But no one came.");
 			}
 		}
 	}
@@ -414,7 +416,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 	private void collectTimeStorage() {
 		//one currency per 6 hours times uneffective, better than arena
 		moneyEarned +=getUnEffectiveLevel()*(timePassed/6d);
-		resident = (byte)extra.randRange(1,RES_COUNT);
+		resident = (byte)Rand.randRange(1,RES_COUNT);
 		if (canQuest) {this.generateSideQuest();}
 		nextReset = nextDuelTime();
 		timePassed = 0;
@@ -451,7 +453,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 	}
 	
 	private void goAgent(Agent agent) {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -492,22 +494,22 @@ public class Inn extends Feature implements QuestBoardLocation{
 					public boolean go() {
 						String str;
 						//these boasts and taunts are not considered reduced flavor, because they are the reason to do this
-						if (extra.chanceIn(2,3)) {
+						if (Rand.chanceIn(2,3)) {
 							str = (BarkManager.getBoast(Player.player.getPerson(),true));
 						}else {
 							str = (BarkManager.getTaunt(Player.player.getPerson(),agent.getPerson()));
 						}
 						if (str != null) {
-							extra.println(str);
+							Print.println(str);
 						}
 						str = null;
-						if (extra.chanceIn(2,3)) {
+						if (Rand.chanceIn(2,3)) {
 							str = (BarkManager.getBoast(agent.getPerson(), true));
 						}else {
 							str = (BarkManager.getTaunt(agent.getPerson(),Player.player.getPerson()));
 						}
 						if (str != null) {
-							extra.println(str);
+							Print.println(str);
 						}
 						return false;
 					}});
@@ -519,34 +521,34 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 	private void buyBeer() {
 		if (Player.player.getGold() >= beerCost) {
-			extra.println("Pay "+World.currentMoneyDisplay(beerCost)+" for "+beerCount+" beers?");
-			if (extra.yesNo()) {
+			Print.println("Pay "+World.currentMoneyDisplay(beerCost)+" for "+beerCount+" beers?");
+			if (Input.yesNo()) {
 				Player.player.beer += beerCount;
 				Player.player.addGold(beerCost);
-				extra.println("You buy " +beerCount+" mugs worth. (New total "+Player.player.beer+")");
+				Print.println("You buy " +beerCount+" mugs worth. (New total "+Player.player.beer+")");
 				Networking.unlockAchievement("tavern1");
 			}
 		}else {
-			extra.println("You can't afford that! ("+World.currentMoneyDisplay(beerCost)+")");
+			Print.println("You can't afford that! ("+World.currentMoneyDisplay(beerCost)+")");
 		}
 	}
 	
 	private void goOldFighter() {
 		int playerWon = ExploreFeature.oldFighter("a bench"," It is pleasant here.",this);
 		if (playerWon > 0) {//only remove if they won
-			extra.println("The old fighters leave.");
+			Print.println("The old fighters leave.");
 			resident = 0;//so they can't farm feat fragments
 		}
 	}
 	
 	private void goDancers() {
-		extra.println("There are some dancers dancing excellently.");
-		extra.println("They put on a good show.");
+		Print.println("There are some dancers dancing excellently.");
+		Print.println("They put on a good show.");
 	}
 	
 	private void goOracle() {
-		extra.println("There's an oracle staying at the inn.");
-		extra.menuGo(new MenuGenerator() {
+		Print.println("There's an oracle staying at the inn.");
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -560,10 +562,10 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
-						Player.addTime(1+extra.randFloat());
+						Player.addTime(1+Rand.randFloat());
 						TrawelTime.globalPassTime();
 						Networking.unlockAchievement("oracle1");
-						extra.println("\""+Oracle.tipRandomOracle(town.getName())+"\"");
+						Print.println("\""+Oracle.tipRandomOracle(town.getName())+"\"");
 						return true;
 					}});
 				list.add(new MenuBack());
@@ -573,11 +575,11 @@ public class Inn extends Feature implements QuestBoardLocation{
 	
 	private void barFight() {
 		if (Player.player.getPerson().getLevel()+1 < tier) {//to prevent higher up loot
-			extra.println("You try to start a barfight, but get knocked out easily.");
+			Print.println("You try to start a barfight, but get knocked out easily.");
 			return;
 		}
-		extra.println(TrawelColor.PRE_BATTLE+"There is no resident, but there is room for a barfight... start one?");
-		if (extra.yesNo()) {
+		Print.println(TrawelColor.PRE_BATTLE+"There is no resident, but there is room for a barfight... start one?");
+		if (Input.yesNo()) {
 			List<List<Person>> list = new ArrayList<List<Person>>();
 			list.add(Player.player.getAllies());
 			for (int i = 0; i < 3; i++) {
@@ -617,7 +619,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 	}
 	
 	private void rent() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {

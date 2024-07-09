@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class BlockTaskManager extends ThreadPoolExecutor {
 	
@@ -204,16 +204,16 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 				curtime = System.currentTimeMillis();
 			}
 			if (handler.lastNewTasks > handler.completedTasks.get()) {
-				extra.println("Task Mismatch: " + handler.lastNewTasks +" new; " + handler.completedTasks.get() + "done");
+				Print.println("Task Mismatch: " + handler.lastNewTasks +" new; " + handler.completedTasks.get() + "done");
 			}
 			long timeSpan = (curtime-expiretime);//this is the time left before HALT_TIMEOUT, but negative;
 			if (timeSpan > 0) {//if we timed out
-				extra.println("Threads took >3 seconds to complete and timed out- you may encounter broken behavior and should treat this as an error. You can disable threads with the '-nothreads' argument if you keep encountering this.");
+				Print.println("Threads took >3 seconds to complete and timed out- you may encounter broken behavior and should treat this as an error. You can disable threads with the '-nothreads' argument if you keep encountering this.");
 			}else {
 				if (HALT_TIMEOUT+timeSpan > WARN_TIMEOUT) {//timeSpan is negative, for example 3000+(1000-3000) > 500 for 1 second going over .5 seconds of warn
 					if (!handler.hasWarned) {
 						handler.hasWarned = true;
-						extra.println("Threadstop took "+(HALT_TIMEOUT+timeSpan)+ " milliseconds. You are experiencing at least minor multithreading issues. You can disable threads with the '-nothreads' argument if this is causing lag- this warning will only display once per game.");
+						Print.println("Threadstop took "+(HALT_TIMEOUT+timeSpan)+ " milliseconds. You are experiencing at least minor multithreading issues. You can disable threads with the '-nothreads' argument if this is causing lag- this warning will only display once per game.");
 					}
 				}
 			}

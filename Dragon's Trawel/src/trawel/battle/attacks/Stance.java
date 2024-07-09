@@ -6,7 +6,8 @@ import java.util.List;
 import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.battle.attacks.WeaponAttackFactory.AttackMaker;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Skill;
@@ -112,7 +113,7 @@ public class Stance{
 	public void display(int style) {
 		if (style == 1) {
 			for(Attack i: attacks) {
-				extra.print("-");
+				Print.print("-");
 				i.display(0);
 			}
 		}
@@ -135,7 +136,7 @@ public class Stance{
 	public List<ImpairedAttack> randAtts(int count, Weapon weapon, Person attacker, Person defender) {
 		List<ImpairedAttack> a = new ArrayList<ImpairedAttack>();
 		while (a.size() < count) {
-			a.add(attacks.get(roller.random(extra.getRand())).impair(attacker, weapon,defender));
+			a.add(attacks.get(roller.random(Rand.getRand())).impair(attacker, weapon,defender));
 		}
 		return a;
 	}

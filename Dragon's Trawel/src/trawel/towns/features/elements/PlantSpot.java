@@ -9,9 +9,11 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -38,7 +40,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 		contains = starting;
 	}
 	public void go() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -83,7 +85,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 								}
 								timer-=20;
 								Player.bag.addNewDrawBanePlayer(DrawBane.APPLE);
-								if (extra.chanceIn(1,3)) {
+								if (Rand.chanceIn(1,3)) {
 									Player.bag.addSeed(Seed.SEED_APPLE);
 								}
 								if (timer <= 0) {
@@ -109,7 +111,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 								}
 								timer-=35;
 								Player.bag.addNewDrawBanePlayer(DrawBane.PUMPKIN);
-								if (extra.chanceIn(1,3)) {
+								if (Rand.chanceIn(1,3)) {
 									Player.bag.addSeed(Seed.SEED_PUMPKIN);
 								}
 								if (timer <= 0) {
@@ -131,14 +133,14 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 							@Override
 							public boolean go() {
 								timer= -20;//flat
-								switch (extra.randRange(1,6)) {
+								switch (Rand.randRange(1,6)) {
 								case 1:
-									extra.println(TrawelColor.RESULT_BAD+"The bees sting!");
+									Print.println(TrawelColor.RESULT_BAD+"The bees sting!");
 									Player.player.getPerson().addEffect(Effect.BEES);
 									Networking.unlockAchievement("bees_hive");
 									break;
 								case 2:
-									extra.println(TrawelColor.RESULT_FAIL+"You escape unscathed but with wounded pride.");
+									Print.println(TrawelColor.RESULT_FAIL+"You escape unscathed but with wounded pride.");
 									break;
 								case 3:
 									Player.bag.addNewDrawBanePlayer(DrawBane.WAX);
@@ -210,7 +212,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 			Player.bag.addNewDrawBanePlayer(DrawBane.WAX);
 			Player.bag.addSeed(Seed.SEED_BEE);
 			
-			extra.println("The bees sting!");
+			Print.println("The bees sting!");
 			Player.player.getPerson().addEffect(Effect.BEES);
 			Networking.unlockAchievement("bees_hive");
 		break;
@@ -249,10 +251,10 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 			Player.bag.addNewDrawBanePlayer(DrawBane.TRUFFLE);
 		break;
 		case SEED_TRUFFLE:
-			if (extra.chanceIn(1,4)) {
+			if (Rand.chanceIn(1,4)) {
 				Player.bag.addSeed(Seed.SEED_TRUFFLE);
 			}else {
-				extra.println(TrawelColor.RESULT_FAIL+"You are unable to gather the spores.");
+				Print.println(TrawelColor.RESULT_FAIL+"You are unable to gather the spores.");
 			}
 			;break;
 		case SEED_FAE:
@@ -262,21 +264,21 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 			Player.bag.addNewDrawBanePlayer(DrawBane.UNICORN_HORN);
 			break;
 		case SEED_FUNGUS:
-			if (extra.chanceIn(1,3)) {
+			if (Rand.chanceIn(1,3)) {
 				Player.bag.addSeed(Seed.SEED_FUNGUS);
 			}else {
-				extra.println(TrawelColor.RESULT_FAIL+"You are unable to gather the spores.");
+				Print.println(TrawelColor.RESULT_FAIL+"You are unable to gather the spores.");
 			}
 			break;
 		case GROWN_FUNGUS:
-			if (extra.chanceIn(1,6)) {
+			if (Rand.chanceIn(1,6)) {
 				Player.bag.addNewDrawBanePlayer(DrawBane.GRAVE_DUST);
 			}else {
 				Player.bag.addNewDrawBanePlayer(DrawBane.GRAVE_DIRT);
 			}
 			break;
 		case EMPTY:
-			extra.println("EMPTY ERROR");
+			Print.println("EMPTY ERROR");
 			break;
 		}
 		contains = Seed.EMPTY;
@@ -313,7 +315,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 		case GROWN_FUNGUS:
 			if (timer > 200) {
 				//fungus lets other plant grow if not taken for grave dirt
-				contains = extra.choose(Seed.SEED_GARLIC,Seed.SEED_TRUFFLE,Seed.SEED_PUMPKIN,Seed.SEED_APPLE);
+				contains = Rand.choose(Seed.SEED_GARLIC,Seed.SEED_TRUFFLE,Seed.SEED_PUMPKIN,Seed.SEED_APPLE);
 				timer = 0;
 			}
 		break;

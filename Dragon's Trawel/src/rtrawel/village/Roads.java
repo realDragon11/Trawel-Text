@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rtrawel.battle.Party;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
+import trawel.core.Print;
 
 public class Roads implements Content {
 
@@ -13,15 +14,15 @@ public class Roads implements Content {
 	@Override
 	public boolean go() {
 		int i = 1;
-		extra.println(i++ + " back");
-		extra.println(i++ + " wander around");
+		Print.println(i++ + " back");
+		Print.println(i++ + " wander around");
 		for (Connection c: connects) {
-			extra.println(i + " " + c.name(Party.party.curVillage));
+			Print.println(i + " " + c.name(Party.party.curVillage));
 			i++;
 		}
 		
 		
-		int in = extra.inInt(i);
+		int in = Input.inInt(i);
 		i = 1;
 		if (in == i) {
 			return true;

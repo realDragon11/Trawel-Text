@@ -1,6 +1,6 @@
 package trawel.personal.item.body;
 
-import trawel.helper.methods.extra;
+import trawel.core.Rand;
 
 public class SoundBox {
 	
@@ -15,9 +15,9 @@ public class SoundBox {
 		case FEMALE_BASIC:
 			switch (t) {
 			case GRUNT:
-				return "sound_fgrunt"+ extra.randRange(1, 15);
+				return "sound_fgrunt"+ Rand.randRange(1, 15);
 			case SWING:
-				return "sound_hiya"+ extra.randRange(1, 5);
+				return "sound_hiya"+ Rand.randRange(1, 5);
 			default:
 				return null;
 			
@@ -26,7 +26,7 @@ public class SoundBox {
 			switch (t) {
 			case GRUNT:
 			case SWING:
-				return "sound_bear"+ extra.randRange(1, 5);
+				return "sound_bear"+ Rand.randRange(1, 5);
 			default:
 				return null;
 			
@@ -45,7 +45,7 @@ public class SoundBox {
 			switch (t) {
 			case GRUNT:
 			case SWING:
-				return "sound_splat"+ extra.randRange(1, 4);
+				return "sound_splat"+ Rand.randRange(1, 4);
 			default:
 				return null;
 			
@@ -63,7 +63,7 @@ public class SoundBox {
 			switch (t) {
 			case GRUNT:
 			case SWING:
-				return "sound_bat"+ extra.randRange(1, 2);
+				return "sound_bat"+ Rand.randRange(1, 2);
 			default:
 				return null;
 			}
@@ -71,14 +71,14 @@ public class SoundBox {
 			switch (t) {
 			case GRUNT:
 			case SWING:
-				return "sound_uncanny_scream"+ extra.randRange(1, 5);
+				return "sound_uncanny_scream"+ Rand.randRange(1, 5);
 			default:
 				return null;
 			}
 		case MONSTER1:
 			switch (t) {
 			case GRUNT:
-				return "sound_monster_hiss"+ extra.randRange(1, 2);
+				return "sound_monster_hiss"+ Rand.randRange(1, 2);
 			case SWING:
 				return "sound_monster_hiss_attack";
 			default:
@@ -88,7 +88,7 @@ public class SoundBox {
 			switch (t) {
 			case GRUNT:
 			case SWING:
-				return "sound_horse"+ extra.randRange(1, 3);
+				return "sound_horse"+ Rand.randRange(1, 3);
 			default:
 				return null;
 			}

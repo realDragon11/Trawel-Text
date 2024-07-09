@@ -14,7 +14,10 @@ import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.Stance;
+import trawel.core.Input;
 import trawel.core.Networking;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.core.mainGame;
 import trawel.core.mainGame.GraphicStyle;
 import trawel.helper.constants.TrawelColor;
@@ -82,15 +85,15 @@ public class Inventory implements java.io.Serializable{
 		}
 		if (type == Race.RaceType.PERSONABLE) {
 			if (job != null) {
-				ArmorStyle matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
+				ArmorStyle matType2 = job.amatType[Rand.randRange(0,job.amatType.length-1)];
 				armorSlots[0] = new Armor(level,(byte) 0,null,matType2);
-				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
+				matType2 = job.amatType[Rand.randRange(0,job.amatType.length-1)];
 				armorSlots[1] = new Armor(level,(byte) 1,null,matType2);
-				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
+				matType2 = job.amatType[Rand.randRange(0,job.amatType.length-1)];
 				armorSlots[2] = new Armor(level,(byte) 2,null,matType2);
-				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
+				matType2 = job.amatType[Rand.randRange(0,job.amatType.length-1)];
 				armorSlots[3] = new Armor(level,(byte) 3,null,matType2);
-				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
+				matType2 = job.amatType[Rand.randRange(0,job.amatType.length-1)];
 				armorSlots[4] = new Armor(level,(byte) 4,null,matType2);
 				hand = new Weapon(level,job.randWeap());
 			}else {
@@ -504,16 +507,16 @@ public class Inventory implements java.io.Serializable{
 		//hand.getMartialStance().display(1);
 	
 		if (owner.getSuper() != null) {
-			extra.println("Local Currency: "+ owner.getSuper().getGoldDisp() +". All: " + owner.getSuper().allGoldDisp()+".");
+			Print.println("Local Currency: "+ owner.getSuper().getGoldDisp() +". All: " + owner.getSuper().allGoldDisp()+".");
 			if (owner.getSuper().hasFlask()) {
 				if (owner.getSuper().knowsPotion()) {
-					extra.println(owner.getSuper().peekFlask().getName()+TrawelColor.PRE_WHITE+" potion with " +TrawelColor.ITEM_WANT_HIGHER+ owner.getSuper().getFlaskUses() +TrawelColor.PRE_WHITE+ " uses left.");
+					Print.println(owner.getSuper().peekFlask().getName()+TrawelColor.PRE_WHITE+" potion with " +TrawelColor.ITEM_WANT_HIGHER+ owner.getSuper().getFlaskUses() +TrawelColor.PRE_WHITE+ " uses left.");
 				}else {
-					extra.println("Potion with " +TrawelColor.ITEM_WANT_HIGHER+ owner.getSuper().getFlaskUses() +TrawelColor.PRE_WHITE+ " uses left.");
+					Print.println("Potion with " +TrawelColor.ITEM_WANT_HIGHER+ owner.getSuper().getFlaskUses() +TrawelColor.PRE_WHITE+ " uses left.");
 				}
 			}
 		}else {
-			extra.println("Local Currency: "+ World.currentMoneyDisplay(money) +".");
+			Print.println("Local Currency: "+ World.currentMoneyDisplay(money) +".");
 		}
 	
 	}
@@ -962,10 +965,10 @@ public class Inventory implements java.io.Serializable{
 	public DrawBane addNewDrawBanePlayer(DrawBane d) {
 		switch (d) {
 		case KNOW_FRAG:
-			extra.println("You found a Feat Fragment!");
+			Print.println("You found a Feat Fragment!");
 			Player.player.currentKFrags++;
 			if (Player.player.currentKFrags >= Player.player.fragmentReq) {
-				extra.println("Bring your Feat Fragments to a library to gain a feat point!");
+				Print.println("Bring your Feat Fragments to a library to gain a feat point!");
 			}
 			//consume fragment
 			return null;
@@ -976,14 +979,14 @@ public class Inventory implements java.io.Serializable{
 	public DrawBane handleDrawBane(DrawBane d, boolean offering, String text) {
 		int oldSize = dbs.size();
 		if (d != null) {
-			extra.println("You found - " + d.getName() + ": " + d.getFlavor());
+			Print.println("You found - " + d.getName() + ": " + d.getFlavor());
 			if (Player.player.hasTrigger("db:"+d.name())) {
-				extra.println("You have a quest for this DrawBane, discarding it will grant progress.");
+				Print.println("You have a quest for this DrawBane, discarding it will grant progress.");
 			}
 			dbs.add(d);//add immediately
 		}
 		final DrawBane[] ret = new DrawBane[] {null};
-		extra.menuGo(new ScrollMenuGenerator(oldSize, "previous <> drawbanes", "next <> drawbanes") {
+		Input.menuGo(new ScrollMenuGenerator(oldSize, "previous <> drawbanes", "next <> drawbanes") {
 
 			@Override
 			public List<MenuItem> forSlot(int i) {
@@ -993,7 +996,7 @@ public class Inventory implements java.io.Serializable{
 
 					@Override
 					public String title() {
-						return extra.capFirst(text)+" " +b.getName() + " ("+b.getValue()+"): " + b.getFlavor();
+						return Print.capFirst(text)+" " +b.getName() + " ("+b.getValue()+"): " + b.getFlavor();
 					}
 
 					@Override
@@ -1037,14 +1040,14 @@ public class Inventory implements java.io.Serializable{
 							}});
 					}
 					
-					list.add(new MenuBack(extra.capFirst(text)+" nothing."));
+					list.add(new MenuBack(Print.capFirst(text)+" nothing."));
 				}else {
 					//clear the back queue if what the player is looking at changes
 					list.add(new MenuBack() {
 	
 						@Override
 						public String title() {
-							return (offering ? extra.capFirst(text) : "Discard")
+							return (offering ? Print.capFirst(text) : "Discard")
 									+" new " + d.getName()+" ("+d.getValue()+").";
 						}
 	
@@ -1083,7 +1086,7 @@ public class Inventory implements java.io.Serializable{
 			return;
 		}
 		if (rejectText != null) {
-			extra.println(rejectText.replaceAll(Pattern.quote("%"),d.getName()));
+			Print.println(rejectText.replaceAll(Pattern.quote("%"),d.getName()));
 		}
 		dbs.add(d);
 	}
@@ -1180,16 +1183,16 @@ public class Inventory implements java.io.Serializable{
 
 	public Seed getSeed() {
 		if (seeds == null || seeds.size() == 0) {
-			extra.println("You don't have any seeds!");
+			Print.println("You don't have any seeds!");
 			return null;
 		}
 		displaySeeds();
 		int in;
 		if (seeds.size() <= 6) {
-			extra.println("9 keep");
-			in = extra.inInt(seeds.size(),true,true);
+			Print.println("9 keep");
+			in = Input.inInt(seeds.size(),true,true);
 		}else {
-			in = extra.inInt(seeds.size());
+			in = Input.inInt(seeds.size());
 		}
 		if (in >= seeds.size()+1) {
 			return null;
@@ -1204,7 +1207,7 @@ public class Inventory implements java.io.Serializable{
 			return;
 		}
 		for (int i = 0; i < seeds.size(); i++) {
-			extra.println((i+1) + " " + seeds.get(i).toString().toLowerCase());
+			Print.println((i+1) + " " + seeds.get(i).toString().toLowerCase());
 		}
 		
 	}
@@ -1221,9 +1224,9 @@ public class Inventory implements java.io.Serializable{
 			}
 			return;
 		}
-		extra.println("You got the " + e.toString().toLowerCase() + "!");
+		Print.println("You got the " + e.toString().toLowerCase() + "!");
 		while (seeds.size() > 6) {
-			extra.println("You have too many seeds. Choose one to remove!");
+			Print.println("You have too many seeds. Choose one to remove!");
 			getSeed();
 		}
 		

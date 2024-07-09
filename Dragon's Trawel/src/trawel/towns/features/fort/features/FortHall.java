@@ -11,9 +11,11 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
+import trawel.core.Input;
 import trawel.core.Networking;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.AIClass;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -100,10 +102,10 @@ public class FortHall extends FortFeature {
 		if (this.getOwner() != Player.player) {
 			final float levelMult = getUnEffectiveLevel();
 			int cost = (int) ((1000*levelMult)+(aetherBank*Player.NORMAL_AETHER_RATE));
-			extra.println(TrawelColor.SERVICE_CURRENCY+"Buy this for fort for "+cost+" "+World.currentMoneyString()+"? (You have " + Player.player.getGold()+")");
-			if (extra.yesNo()) {
+			Print.println(TrawelColor.SERVICE_CURRENCY+"Buy this for fort for "+cost+" "+World.currentMoneyString()+"? (You have " + Player.player.getGold()+")");
+			if (Input.yesNo()) {
 				if (Player.player.getGold() < cost) {
-					extra.println("You can't afford to buy this fort.");
+					Print.println("You can't afford to buy this fort.");
 				}else {
 					Networking.unlockAchievement("fort1");
 					Player.player.addGold(-cost);
@@ -120,7 +122,7 @@ public class FortHall extends FortFeature {
 		}
 		if (this.getOwner() == Player.player) {
 			
-			extra.menuGo(new MenuGenerator() {
+			Input.menuGo(new MenuGenerator() {
 				@Override
 				public List<MenuItem> gen() {
 					List<MenuItem> mList = new ArrayList<MenuItem>();
@@ -144,7 +146,7 @@ public class FortHall extends FortFeature {
 								Player.player.addGold(-getSoldierCost());
 								allies.add(RaceFactory.getDueler(tier));
 							}else {
-								extra.println("You can't afford another soldier.");
+								Print.println("You can't afford another soldier.");
 							}
 							return false;
 						}
@@ -193,7 +195,7 @@ public class FortHall extends FortFeature {
 		final int expensive = (int) (levelMult * 50);
 		final int medium = (int) (levelMult * 30);
 		final int cheap = (int) (levelMult * 20);
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
@@ -220,7 +222,7 @@ public class FortHall extends FortFeature {
 								Player.addTime(.5f);
 								TrawelTime.globalPassTime();
 							}else {
-								extra.println("You can't afford a new large foundation.");
+								Print.println("You can't afford a new large foundation.");
 							}
 							return false;
 						}
@@ -243,7 +245,7 @@ public class FortHall extends FortFeature {
 								Player.addTime(.5f);
 								TrawelTime.globalPassTime();
 							}else {
-								extra.println("You can't afford a new medium foundation.");
+								Print.println("You can't afford a new medium foundation.");
 							}
 							return false;
 						}
@@ -266,7 +268,7 @@ public class FortHall extends FortFeature {
 								Player.addTime(.5f);
 								TrawelTime.globalPassTime();
 							}else {
-								extra.println("You can't afford a new small foundation.");
+								Print.println("You can't afford a new small foundation.");
 							}
 							return false;
 						}
@@ -288,19 +290,19 @@ public class FortHall extends FortFeature {
 		
 		forgeTimer -= (time*getSkillCount(SubSkill.SMITHING))/10.0;
 		if (forgeTimer <=0) {
-			extra.offPrintStack();
+			Print.offPrintStack();
 			forgeTimer = 24.0*7;
 			Inventory inv = new Inventory(tier, Race.RaceType.PERSONABLE, null, null,null);//TODO probably make custom inv type
 			inv.deEnchant();
 			for (Person p: allies) {
 				AIClass.loot(p.getBag(), inv, false,p,false);
 			}
-			extra.popPrintStack();
+			Print.popPrintStack();
 		}
 		enchantTimer -= (time*getSkillCount(SubSkill.ENCHANTING))/3.0;
 		if (enchantTimer <=0 && allies.size() > 0) {
 			enchantTimer = 24.0*7;
-			allies.get(extra.randRange(0,allies.size()-1)).getBag().getArmorSlot(extra.randRange(0,4)).improveEnchantChance(tier);
+			allies.get(Rand.randRange(0,allies.size()-1)).getBag().getArmorSlot(Rand.randRange(0,4)).improveEnchantChance(tier);
 		}
 		if (owner != Player.player) {
 			while (allies.size() < 5) {
@@ -358,12 +360,12 @@ public class FortHall extends FortFeature {
 	}
 	
 	public void defenseFight(List<Person> attackers) {
-		extra.offPrintStack();
+		Print.offPrintStack();
 		List<List<Person>> listlist = new ArrayList<List<Person>>();
 		List<Person> allies = getAllies();
 		if (allies.size() == 0) {
 			aetherBank = 0;
-			extra.popPrintStack();
+			Print.popPrintStack();
 			return;
 		}
 		listlist.add(allies);
@@ -391,7 +393,7 @@ public class FortHall extends FortFeature {
 		}else {
 			this.aetherBank = 0;
 		}
-		extra.popPrintStack();
+		Print.popPrintStack();
 	}
 
 	private List<Person> getAllies() {

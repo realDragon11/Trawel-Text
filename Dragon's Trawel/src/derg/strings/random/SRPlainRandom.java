@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import derg.strings.fluffer.StringNum;
-import trawel.helper.methods.extra;
+import trawel.core.Rand;
 
 public class SRPlainRandom extends StringNum {
 
@@ -25,7 +25,7 @@ public class SRPlainRandom extends StringNum {
 	
 	@Override
 	public String next() {
-		return contents.get(extra.getRand().nextInt(contents.size()));
+		return contents.get(Rand.getRand().nextInt(contents.size()));
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class SRPlainRandom extends StringNum {
 
 	@Override
 	public int getNum() {
-		return extra.getRand().nextInt(contents.size());
+		return Rand.getRand().nextInt(contents.size());
 	}
 
 	@Override

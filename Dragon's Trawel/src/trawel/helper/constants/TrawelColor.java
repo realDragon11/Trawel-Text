@@ -2,6 +2,7 @@ package trawel.helper.constants;
 
 import java.awt.Color;
 
+import trawel.core.Print;
 import trawel.helper.methods.extra;
 
 public class TrawelColor {
@@ -127,7 +128,7 @@ public class TrawelColor {
 		return "[#"+Integer.toHexString(col.getRGB()).substring(2)+"]";
 	}
 	public static String colorBasedAtOne(double number, String plus, String minus, String empty) {
-		String str = extra.format2.format(number);
+		String str = Print.format2.format(number);
 		if (number < 1) {
 			return minus+str;
 		}
@@ -159,24 +160,24 @@ public class TrawelColor {
 	 */
 	public static final String hardColorDelta2(double to, double was) {
 		if (to > was) {
-			return PRE_GREEN+"+"+extra.format2.format(to-was);
+			return PRE_GREEN+"+"+Print.format2.format(to-was);
 		}
 		if (to == was) {
 			return PRE_WHITE+"=0.00";
 		}
-		return PRE_RED+"-"+extra.format2.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
+		return PRE_RED+"-"+Print.format2.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
 	}
 	/**
 	 * this variant will display a white = is equal, and nothing else
 	 */
 	public static final String hardColorDelta2Elide(double to, double was) {
 		if (to > was) {
-			return PRE_GREEN+"+"+extra.format2.format(to-was);
+			return PRE_GREEN+"+"+Print.format2.format(to-was);
 		}
 		if (to == was) {
 			return PRE_WHITE+"=";
 		}
-		return PRE_RED+"-"+extra.format2.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
+		return PRE_RED+"-"+Print.format2.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
 	}
 	/**
 	 * 
@@ -186,24 +187,24 @@ public class TrawelColor {
 	 */
 	public static final String hardColorDelta1(double to, double was) {
 		if (to > was) {
-			return PRE_GREEN+"+"+extra.format1.format(to-was);
+			return PRE_GREEN+"+"+Print.format1.format(to-was);
 		}
 		if (to == was) {
 			return PRE_WHITE+"=0.0";
 		}
-		return PRE_RED+"-"+extra.format1.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
+		return PRE_RED+"-"+Print.format1.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
 	}
 	/**
 	 * this variant will display a white = if equal, and nothing else
 	 */
 	public static final String hardColorDelta1Elide(double to, double was) {
 		if (to > was) {
-			return PRE_GREEN+"+"+extra.format1.format(to-was);
+			return PRE_GREEN+"+"+Print.format1.format(to-was);
 		}
 		if (to == was) {
 			return PRE_WHITE+"=";
 		}
-		return PRE_RED+"-"+extra.format1.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
+		return PRE_RED+"-"+Print.format1.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
 	}
 	/**
 	 * integer,
@@ -222,12 +223,12 @@ public class TrawelColor {
 	}
 	public static final String softColorDelta2Elide(double to, double was) {
 		if (to > was) {
-			return TIMID_GREEN+"+"+extra.format2.format(to-was);
+			return TIMID_GREEN+"+"+Print.format2.format(to-was);
 		}
 		if (to == was) {
 			return PRE_WHITE+"=";
 		}
-		return TIMID_RED+"-"+extra.format2.format(was-to);
+		return TIMID_RED+"-"+Print.format2.format(was-to);
 	}
 	/**
 	 * integer, Reversed from normal, so positive is bad and negative is good

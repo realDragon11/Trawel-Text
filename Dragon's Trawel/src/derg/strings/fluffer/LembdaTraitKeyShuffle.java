@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import trawel.core.Rand;
 import trawel.helper.methods.extra;
 
 
@@ -95,7 +96,7 @@ public class LembdaTraitKeyShuffle implements CanLembdaUpdate{
 		if (list.isEmpty()) {
 			throw new RuntimeException("could not find Lembda in list " + this.toString() + " for forward " + forword);
 		}
-		StringLembda sl = extra.randList(list);
+		StringLembda sl = Rand.randList(list);
 		sl.updateAll();
 		return sl.variants.get((int)forword);
 		//search the tree from bottom to top, trying to get 3 choices to choose from in each layer
@@ -111,7 +112,7 @@ public class LembdaTraitKeyShuffle implements CanLembdaUpdate{
 	 */
 	public String next(char forword) {
 		assert extra.isMainThread();
-		StringLembda sl = tree.get(treeSize-extra.getRand().nextInt(depthChunk));
+		StringLembda sl = tree.get(treeSize-Rand.getRand().nextInt(depthChunk));
 		sl.updateAll();
 		return sl.variants.get((int)forword);
 	}

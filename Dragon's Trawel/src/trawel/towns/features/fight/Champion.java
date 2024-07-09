@@ -6,8 +6,9 @@ import java.util.List;
 import trawel.battle.Combat;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent;
@@ -59,14 +60,14 @@ public class Champion  extends Feature{
 			people = mainGame.HugeBattle(t.getIsland().getWorld(),people1,people2);
 		}*/
 		//no longer teamfights
-		extra.offPrintStack();
+		Print.offPrintStack();
 		List<List<Person>> people = new ArrayList<List<Person>>();
 		while(people.size() < battleSize) {
 			people.add(Collections.singletonList(RaceFactory.getDueler(level)));
 		}
 		
 		person = Combat.HugeBattle(t.getIsland().getWorld(),people).getNonSummonSurvivors().get(0);
-		extra.popPrintStack();
+		Print.popPrintStack();
 		this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 		
 	}
@@ -81,15 +82,15 @@ public class Champion  extends Feature{
 		if (person.reallyFight("Really Challenge")) {
 			Combat c = Player.player.fightWith(person);
 			if (c.playerWon() > 0) {
-				extra.println("You defeat the champion!");
+				Print.println("You defeat the champion!");
 				//we don't want to store the person for real, they can get deleted
 				//we're also fine with this getting overwritten if two people share the same name
-				Player.player.addGroupedAchieve(town.townHash()+"_champs","Champions of "+town.getName()+": ", person.getName() + " " + extra.choose("slayer","killer","champion-killer","champion"));
+				Player.player.addGroupedAchieve(town.townHash()+"_champs","Champions of "+town.getName()+": ", person.getName() + " " + Rand.choose("slayer","killer","champion-killer","champion"));
 				person = null;
 				Networking.unlockAchievement("beat_champion");
 			}else {
 				this.name = person.getName() + " (Level " + person.getLevel()+")" ;
-				extra.println("You lose the bout. Perhaps you should explore other towns to level up before fighting them?");
+				Print.println("You lose the bout. Perhaps you should explore other towns to level up before fighting them?");
 				Networking.unlockAchievement("die_to_champion");
 				if (tutorialText == "Champion {Taken Title}") {
 					tutorialText = "Champion";
@@ -102,7 +103,7 @@ public class Champion  extends Feature{
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		if (person == null) {
 			timeElapsed+=time;
-			if (timeElapsed > extra.randRange(24, 60)) {
+			if (timeElapsed > Rand.randRange(24, 60)) {
 				Agent delete = town.getPersonableOccupants()
 						.filter(a -> a.getPerson().getLevel() == town.getTier())
 						.findFirst().orElse(null);

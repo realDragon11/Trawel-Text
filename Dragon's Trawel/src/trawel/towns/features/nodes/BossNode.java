@@ -6,6 +6,7 @@ import java.util.List;
 import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
 import trawel.core.Networking;
+import trawel.core.Print;
 import trawel.factions.Faction;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
@@ -186,7 +187,7 @@ public class BossNode{
 	
 	
 	private static boolean fatespinner(NodeConnector holder,int node) {
-		extra.println(TrawelColor.PRE_BATTLE+"You challenge the Fatespinner!");
+		Print.println(TrawelColor.PRE_BATTLE+"You challenge the Fatespinner!");
 		List<Person> fated = (List<Person>) holder.getStorageFirstClass(node,List.class);
 		List<Person> playerSide = holder.parent.getHelpFighters();
 		playerSide.addAll(Player.player.getAllies());
@@ -204,8 +205,8 @@ public class BossNode{
 		if (c.playerWon() > 0) {
 			if (c.playerWon() < 2) {
 				//player must survive battle for it to stick
-				extra.println("Fate will not allow this... It seems like this Fatespinner's thread winds on.");
-				extra.println("You wake up at the base of the tower, a storm passing by overhead.");
+				Print.println("Fate will not allow this... It seems like this Fatespinner's thread winds on.");
+				Print.println("You wake up at the base of the tower, a storm passing by overhead.");
 				//this is the list that is already stored
 				refillFatespinnerList(fated,survs,holder.getLevel(node));
 				return true;
@@ -224,12 +225,12 @@ public class BossNode{
 			//now they need to be killed all at once, could also sort out the adds if dead
 			if (survs.size() != fated.size()) {
 				if (!survs.contains(spinner)) {
-					extra.println("The Spinner's Fate is not so easily changed. You have the sinking feeling you haven't seen the last of them.");
+					Print.println("The Spinner's Fate is not so easily changed. You have the sinking feeling you haven't seen the last of them.");
 				}else {
-					extra.println("The Spinner admires good help. The mimics slain are likely already replaced.");
+					Print.println("The Spinner admires good help. The mimics slain are likely already replaced.");
 				}
 			}else {
-				extra.println("The Spinner cannot weave you fate, but it seems they are still in control of their own.");
+				Print.println("The Spinner cannot weave you fate, but it seems they are still in control of their own.");
 			}
 			//this is the list that is already stored
 			refillFatespinnerList(fated,survs,holder.getLevel(node));
@@ -238,7 +239,7 @@ public class BossNode{
 	}
 	
 	private static boolean hellbaron(NodeConnector holder,int node) {
-		extra.println(TrawelColor.PRE_BATTLE+"You challenge the Hell Baron!");
+		Print.println(TrawelColor.PRE_BATTLE+"You challenge the Hell Baron!");
 		List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
 		Combat c = Player.player.massFightWith(list);
 		if (c.playerWon() > 0) {
@@ -258,7 +259,7 @@ public class BossNode{
 	}
 	
 	private static boolean yore(NodeConnector holder,int node) {
-		extra.println(TrawelColor.PRE_BATTLE+"You challenge a legend!");
+		Print.println(TrawelColor.PRE_BATTLE+"You challenge a legend!");
 		List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
 		List<List<Person>> battleList = new ArrayList<List<Person>>();
 		battleList.add(Player.player.getAllies());
@@ -284,7 +285,7 @@ public class BossNode{
 	}
 	
 	private static boolean oldQueen(NodeConnector holder,int node) {
-		extra.println(TrawelColor.PRE_BATTLE+"You challenge the Ancient Queen!");
+		Print.println(TrawelColor.PRE_BATTLE+"You challenge the Ancient Queen!");
 		List<Person> queens = (List<Person>) holder.getStorageFirstClass(node,List.class);
 		List<Person> playerSide = holder.parent.getHelpFighters();
 		playerSide.addAll(Player.player.getAllies());
@@ -300,7 +301,7 @@ public class BossNode{
 		if (c.playerWon() > 0) {
 			if (c.playerWon() < 2) {
 				//player must survive battle for it to stick
-				extra.println("It would seem your associates were able to finish the battle but not kill of the Queen for good.");
+				Print.println("It would seem your associates were able to finish the battle but not kill of the Queen for good.");
 				//this is the list that is already stored
 				refillOldQueenList(queens,survs,holder.getLevel(node));
 				return true;
@@ -318,12 +319,12 @@ public class BossNode{
 		}else {
 			if (survs.size() != queens.size()) {
 				if (!survs.contains(queen)) {
-					extra.println("The Queen has died many times. But without the right ritual, it's never stuck.");
+					Print.println("The Queen has died many times. But without the right ritual, it's never stuck.");
 				}else {
-					extra.println("The Queen has likely mustered new bodyguards already.");
+					Print.println("The Queen has likely mustered new bodyguards already.");
 				}
 			}else {
-				extra.println("The Queen's defenses have proven steadfast. Perhaps this is how she has survived so long.");
+				Print.println("The Queen's defenses have proven steadfast. Perhaps this is how she has survived so long.");
 			}
 			//this is the list that is already stored
 			refillOldQueenList(queens,survs,holder.getLevel(node));
@@ -333,7 +334,7 @@ public class BossNode{
 	
 	private static boolean variableBlockerBoss(NodeConnector holder,int node) {
 		List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
-		extra.println(TrawelColor.PRE_BATTLE+"You attack "+list.get(0).getName()+"!");
+		Print.println(TrawelColor.PRE_BATTLE+"You attack "+list.get(0).getName()+"!");
 		Combat c = Player.player.massFightWith(list);
 		if (c.playerWon() > 0) {
 			holder.setForceGo(node,false);

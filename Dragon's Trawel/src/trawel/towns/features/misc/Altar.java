@@ -6,10 +6,12 @@ import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
+import trawel.core.Input;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.classless.Perk;
 import trawel.personal.item.Seed;
 import trawel.personal.item.solid.DrawBane;
@@ -41,7 +43,7 @@ public class Altar extends Feature{
 	
 	@Override
 	public void go() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -71,7 +73,7 @@ public class Altar extends Feature{
 
 					@Override
 					public boolean go() {
-						extra.println("Nothing happens. Nothing ever could happen. You spend an hour staring at your hands, lost in thought.");
+						Print.println("Nothing happens. Nothing ever could happen. You spend an hour staring at your hands, lost in thought.");
 						Player.addTime(1);
 						TrawelTime.globalPassTime();
 						return false;
@@ -111,10 +113,10 @@ public class Altar extends Feature{
 	private void examine() {
 		switch (force) {
 		case SKY:
-			extra.println("You examine the altar. It's long and flat, and made out of a dark, black stone that reflects the sky.");
+			Print.println("You examine the altar. It's long and flat, and made out of a dark, black stone that reflects the sky.");
 			break;
 		case FOREST:
-			extra.println("You examine the altar. Brambles with sharp thorns cluster around a seemingly natural heartwood chair.");
+			Print.println("You examine the altar. Brambles with sharp thorns cluster around a seemingly natural heartwood chair.");
 			break;
 		}
 	}
@@ -128,8 +130,8 @@ public class Altar extends Feature{
 			case BEATING_HEART:
 				if (force == AltarForce.SKY) {
 					addRelation(8);
-					int aReward = (int) ((getRelation()*100)+extra.randRange(4000,5000));
-					extra.println(TrawelColor.RESULT_GOOD+"You spend hours upon hours preparing your great sacrifice, and stab the heart when the time is right. The very heavens seem to look down upon you with favor, and a storm brews... aether rains from the sky. +"+aReward + " aether.");
+					int aReward = (int) ((getRelation()*100)+Rand.randRange(4000,5000));
+					Print.println(TrawelColor.RESULT_GOOD+"You spend hours upon hours preparing your great sacrifice, and stab the heart when the time is right. The very heavens seem to look down upon you with favor, and a storm brews... aether rains from the sky. +"+aReward + " aether.");
 					Player.addTime(40);
 					Player.bag.addAether(aReward);
 					specialInteraction = true;
@@ -137,7 +139,7 @@ public class Altar extends Feature{
 				}
 				if (force == AltarForce.FOREST) {
 					addRelation(10);
-					extra.println(TrawelColor.RESULT_GOOD+"You spend hours upon hours preparing your great sacrifice, and stab the heart when the time is right. Knowledge spills into your mind, and the Forest willingly gives its own flesh to record eldritch lore, in recognition of an equal trade- blood for blood, sap for sap.");
+					Print.println(TrawelColor.RESULT_GOOD+"You spend hours upon hours preparing your great sacrifice, and stab the heart when the time is right. Knowledge spills into your mind, and the Forest willingly gives its own flesh to record eldritch lore, in recognition of an equal trade- blood for blood, sap for sap.");
 					Player.addTime(40);
 					Player.player.getPerson().addXp(4);
 					Player.bag.addNewDrawBanePlayer(DrawBane.KNOW_FRAG);
@@ -146,18 +148,18 @@ public class Altar extends Feature{
 					break;
 				}
 				//cannot give special gift back rn
-				extra.println("The "+getForceName()+" seems very unsure of itself...");
+				Print.println("The "+getForceName()+" seems very unsure of itself...");
 				addRelation(5);
 				//accepted = false;
 				break;
 			case BLOOD: case MEAT:
 				addRelation(0.1f);
-				extra.println("You offer the gift of flesh- in any form.");
+				Print.println("You offer the gift of flesh- in any form.");
 				Player.addTime(1);
 				break;
 			case CEON_STONE:
 				addRelation(1);
-				extra.println("You offer the gift of decay, unreason, and insane change.");
+				Print.println("You offer the gift of decay, unreason, and insane change.");
 				Player.addTime(1);
 				break;
 			case ENT_CORE:
@@ -166,34 +168,34 @@ public class Altar extends Feature{
 					break;
 				}
 				addRelation(2);
-				extra.println("You offer the gift of primal life.");
+				Print.println("You offer the gift of primal life.");
 				Player.addTime(1);
 				break;
 			case TRUFFLE: case PUMPKIN: case GARLIC: case HONEY: case APPLE: case EGGCORN:
 				addRelation(0.1f);
-				extra.println("You offer a gift of the harvest.");
+				Print.println("You offer a gift of the harvest.");
 				Player.addTime(.2);
 				if (force == AltarForce.FOREST) {
-					extra.println(TrawelColor.RESULT_GOOD+"The Forest gives you a seed, that you may continue the cycle of life.");
+					Print.println(TrawelColor.RESULT_GOOD+"The Forest gives you a seed, that you may continue the cycle of life.");
 					Player.bag.addSeed(Seed.randSeed());
 					specialInteraction = true;
 				}
 				break;
 			case GOLD: case SILVER:
 				addRelation(0.5f);
-				extra.println("You offer a gift of the earthly viscera, painful taken from the deep bowels of the soil below.");
+				Print.println("You offer a gift of the earthly viscera, painful taken from the deep bowels of the soil below.");
 				Player.addTime(.2);
 				break;
 			case VIRGIN:
 				addRelation(4);
-				extra.println(TrawelColor.RESULT_GOOD+"You spend hours preparing your great sacrifice, and stab the innocent when the time is right. The "+getForceName()+" gives a gift back... but the unspoken message that it would accept this gift for itself lingers in your mind.");
+				Print.println(TrawelColor.RESULT_GOOD+"You spend hours preparing your great sacrifice, and stab the innocent when the time is right. The "+getForceName()+" gives a gift back... but the unspoken message that it would accept this gift for itself lingers in your mind.");
 				Player.addTime(24);
 				Player.bag.addNewDrawBanePlayer(DrawBane.BEATING_HEART);
 				specialInteraction = true;
 				break;
 			case WAX: case WOOD:
 				addRelation(0.02f);
-				extra.println("You offer a gift of the primal forces, a minor piece of a greater whole.");
+				Print.println("You offer a gift of the primal forces, a minor piece of a greater whole.");
 				Player.addTime(.05);
 				break;
 			case GRAVE_DIRT:
@@ -202,12 +204,12 @@ public class Altar extends Feature{
 					break;
 				}
 				addRelation(1f);
-				extra.println("You offer a gift of nourishment, that the soil may feast on the succor from fruit it has bourne.");
+				Print.println("You offer a gift of nourishment, that the soil may feast on the succor from fruit it has bourne.");
 				Player.addTime(.2);
 				break;
 			case GRAVE_DUST:
 				addRelation(0.5f);
-				extra.println("You offer proof that the primal forces have been respected, that their laws have been enforced.");
+				Print.println("You offer proof that the primal forces have been respected, that their laws have been enforced.");
 				Player.addTime(0.05f);
 				break;
 			default:
@@ -229,7 +231,7 @@ public class Altar extends Feature{
 					Networking.unlockAchievement("bless1");
 					Player.player.getPerson().setPerk(Perk.FOREST_BLESS_1);
 					Player.player.addAchieve("altar_forest", "Forest's Chosen");
-					extra.println(TrawelColor.RESULT_GOOD+"Your skin tenses briefly. You feel blessed.");
+					Print.println(TrawelColor.RESULT_GOOD+"Your skin tenses briefly. You feel blessed.");
 					specialInteraction = true;
 				}
 				
@@ -238,7 +240,7 @@ public class Altar extends Feature{
 					Networking.unlockAchievement("bless2");
 					Player.player.getPerson().setPerk(Perk.FOREST_BLESS_2);
 					Player.player.addAchieve("altar_forest", "Forest's Avatar");
-					extra.println(TrawelColor.RESULT_GOOD+"Your skin hardens before becoming supple once more. You feel very blessed.");
+					Print.println(TrawelColor.RESULT_GOOD+"Your skin hardens before becoming supple once more. You feel very blessed.");
 					specialInteraction = true;
 				}
 				break;
@@ -248,7 +250,7 @@ public class Altar extends Feature{
 					Networking.unlockAchievement("bless1");
 					Player.player.getPerson().setPerk(Perk.SKY_BLESS_1);
 					Player.player.addAchieve("altar_sky", "Sky's Chosen");
-					extra.println(TrawelColor.RESULT_GOOD+"The world seems to slow down around you for a brief moment. You feel blessed.");
+					Print.println(TrawelColor.RESULT_GOOD+"The world seems to slow down around you for a brief moment. You feel blessed.");
 					specialInteraction = true;
 				}
 				
@@ -257,7 +259,7 @@ public class Altar extends Feature{
 					Networking.unlockAchievement("bless2");
 					Player.player.getPerson().setPerk(Perk.SKY_BLESS_2);
 					Player.player.addAchieve("altar_sky", "Sky's Avatar");
-					extra.println(TrawelColor.RESULT_GOOD+"Your vision swims before returning sharper than ever. You feel very blessed.");
+					Print.println(TrawelColor.RESULT_GOOD+"Your vision swims before returning sharper than ever. You feel very blessed.");
 					specialInteraction = true;
 				}
 				break;
@@ -265,7 +267,7 @@ public class Altar extends Feature{
 			
 			
 			if (specialInteraction == false) {
-				extra.println(TrawelColor.RESULT_PASS+"The gift disappears, but nothing else happens.");
+				Print.println(TrawelColor.RESULT_PASS+"The gift disappears, but nothing else happens.");
 			}
 		}
 	}
@@ -302,7 +304,7 @@ public class Altar extends Feature{
 	
 	@Override
 	public String getIntro() {
-		float rel = getRelation()*extra.randFloat();
+		float rel = getRelation()*Rand.randFloat();
 		if (rel < 2f) {
 			return null;// no response
 		}

@@ -7,7 +7,7 @@ import scimech.combat.Target;
 import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Mount;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class Handcannon extends Mount {
 
@@ -49,7 +49,7 @@ public class Handcannon extends Mount {
 		if (damage > 2) {
 			int before = t.getHP();
 			t.takeDamage().take(DamageTypes.KINETIC, DamageMods.AP,3,t);
-			extra.println("Handcannon: " + (before-t.getHP()) + " bonus damage!");
+			Print.println("Handcannon: " + (before-t.getHP()) + " bonus damage!");
 		}
 	}
 	

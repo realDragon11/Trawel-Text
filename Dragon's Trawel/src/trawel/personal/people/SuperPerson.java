@@ -12,7 +12,9 @@ import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.battle.Combat;
 import trawel.battle.attacks.WeaponAttackFactory;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;
@@ -57,7 +59,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	}
 	
 	public void displayAchieve() {
-		extra.println("They have no accomplishments.");
+		Print.println("They have no accomplishments.");
 	}
 	
 	public Town getLocation() {
@@ -136,7 +138,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 			attConfs = new SkillAttackConf[6];
 		}
 		int max = maxSpecialAttacks();
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -183,7 +185,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	
 	protected void createConfig() {
 		List<Skill> skills = unusedSpecialAttackSkills();
-		extra.menuGo(new ScrollMenuGenerator(skills.size(),"previous <> skills","next <> skills") {
+		Input.menuGo(new ScrollMenuGenerator(skills.size(),"previous <> skills","next <> skills") {
 
 			@Override
 			public List<MenuItem> forSlot(int i) {
@@ -237,7 +239,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	}
 	
 	protected void setupConfig(Skill s, List<IHasSkills> hases) {
-		extra.menuGo(new ScrollMenuGenerator(hases.size(),"previous <> sources","next <> sources") {
+		Input.menuGo(new ScrollMenuGenerator(hases.size(),"previous <> sources","next <> sources") {
 
 			@Override
 			public List<MenuItem> forSlot(int i) {
@@ -297,8 +299,8 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		@Override
 		public boolean go() {
 			currentEditing = index;
-			extra.println("Delete the " + config.getText() + " config?");
-			if (extra.yesNo()) {
+			Print.println("Delete the " + config.getText() + " config?");
+			if (Input.yesNo()) {
 				sAttCount--;
 				for (int i = index;i < attConfs.length-1;i++) {
 					SkillAttackConf up = attConfs[i+1];
@@ -385,7 +387,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 				if (!p.isPlayer()) {
 					return false;
 				}
-				extra.println("Not enough " + World.currentMoneyString()+"!");
+				Print.println("Not enough " + World.currentMoneyString()+"!");
 				return false;
 			}else {
 				if (money > 0) {//if we're not in a place, gold = 0 so we don't run this
@@ -399,13 +401,13 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 				if (!p.isPlayer()) {
 					return false;
 				}
-				extra.println("Not enough aether or " + World.currentMoneyString()+"!");
+				Print.println("Not enough aether or " + World.currentMoneyString()+"!");
 				return false;
 			}else {
 				if (!p.isPlayer()) {
 					return false;
 				}
-				extra.println("Not enough aether!");
+				Print.println("Not enough aether!");
 				return false;
 			}
 		}
@@ -420,7 +422,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 				if (!p.isPlayer()) {
 					return false;
 				}
-				extra.println("Not enough " + World.currentMoneyString()+"!");
+				Print.println("Not enough " + World.currentMoneyString()+"!");
 				return false;
 			}else {
 				return true;
@@ -430,13 +432,13 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 				if (!p.isPlayer()) {
 					return false;
 				}
-				extra.println("Not enough aether or " + World.currentMoneyString()+"!");
+				Print.println("Not enough aether or " + World.currentMoneyString()+"!");
 				return false;
 			}else {
 				if (!p.isPlayer()) {
 					return false;
 				}
-				extra.println("Not enough aether!");
+				Print.println("Not enough aether!");
 				return false;
 			}
 		}
@@ -662,7 +664,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		//need to retain all on the person's list, even though this likely results in more iteration, because
 		//the getSources we aren't allowed to modify, and copying stuff would take even more time
 		base.retainAll(WeaponAttackFactory.getSources(skill.getAliasOrSelf()));
-		attConfs[sAttCount] = new SkillAttackConf(skill,extra.randList(base));
+		attConfs[sAttCount] = new SkillAttackConf(skill,Rand.randList(base));
 		sAttCount++;
 	}
 }

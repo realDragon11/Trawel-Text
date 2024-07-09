@@ -8,7 +8,8 @@ import rtrawel.unit.RPlayer;
 import rtrawel.unit.RUnit;
 import rtrawel.village.Village;
 import rtrawel.village.VillageFactory;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
+import trawel.core.Print;
 
 public class TestRunner {
 	
@@ -21,8 +22,8 @@ public class TestRunner {
 	public static void run() {
 		RCore.init();
 		
-		extra.println("Start new game?");
-		if (extra.yesNo()) {
+		Print.println("Start new game?");
+		if (Input.yesNo()) {
 			Party.party.list.add(new RPlayer("jess","warrior"));
 			((RPlayer)Party.party.list.get(0)).cleanAbs();
 			Party.party.list.add(new RPlayer("trish","ranger"));

@@ -7,11 +7,13 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.core.Input;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.factions.Faction;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.DrawBane;
@@ -45,7 +47,7 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 		tier = _tier;
 		tutorialText = "Hunter's Guild";
 		area_type = Area.MISC_SERVICE;
-		activityTimer = 24f+extra.randFloat()*24f;
+		activityTimer = 24f+Rand.randFloat()*24f;
 	}
 	
 	@Override
@@ -60,7 +62,7 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 	
 	@Override
 	public void go() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -70,7 +72,7 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 					@Override
 					public String title() {
 						FSub sub = Player.player.getPerson().facRep.getFacRep(Faction.HUNTER);
-						return "Current Hunter Reputation: " + (sub == null ? "Unknown" : ""+extra.format2(sub.forFac-sub.againstFac));
+						return "Current Hunter Reputation: " + (sub == null ? "Unknown" : ""+Print.format2(sub.forFac-sub.againstFac));
 					}
 				});
 				int gemAmount = Math.round(5f*IEffectiveLevel.unclean(tier));
@@ -86,14 +88,14 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 						while (true) {
 							float cost = 10*gemAmount;//amount is scaled by level
 							float spenda = FBox.getSpendableFor(Faction.HUNTER);
-							extra.println("Request "+gemAmount+" "+(gemAmount == 1 ? Gem.AMBER.name : Gem.AMBER.plural)+"? cost: " +cost + " of "+extra.format2(spenda));
-							if (extra.yesNo()) {
+							Print.println("Request "+gemAmount+" "+(gemAmount == 1 ? Gem.AMBER.name : Gem.AMBER.plural)+"? cost: " +cost + " of "+Print.format2(spenda));
+							if (Input.yesNo()) {
 								if (cost <= spenda) {
 									Player.player.factionSpent.addFactionRep(Faction.HUNTER,cost,0);
 									Gem.AMBER.changeGem(gemAmount);
-									extra.println(TrawelColor.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.AMBER.name : Gem.AMBER.plural)+", new total: " + Gem.AMBER.getGem()+".");
+									Print.println(TrawelColor.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.AMBER.name : Gem.AMBER.plural)+", new total: " + Gem.AMBER.getGem()+".");
 								}else {
-									extra.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
+									Print.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
 									break;
 								}
 							}else {
@@ -112,7 +114,7 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
+						Input.menuGo(new MenuGenerator() {
 
 							@Override
 							public List<MenuItem> gen() {
@@ -139,7 +141,7 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 		if (canQuest) {
 			activityTimer-=time;
 			if (activityTimer <= 0) {
-				activityTimer+=12f+(36f*extra.randFloat());
+				activityTimer+=12f+(36f*Rand.randFloat());
 				generateSideQuest();
 			}
 		}
@@ -154,11 +156,11 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 	@Override
 	public void generateSideQuest() {
 		if (sideQuests.size() >= 3) {
-			sideQuests.remove(extra.randList(sideQuests));
+			sideQuests.remove(Rand.randList(sideQuests));
 		}
-		switch (extra.randRange(1,5)) {
+		switch (Rand.randRange(1,5)) {
 		case 1:
-			if (extra.randFloat() > .8f) {//20% chance for hero fetch
+			if (Rand.randFloat() > .8f) {//20% chance for hero fetch
 				sideQuests.add(FetchSideQuest.generate(this,FetchType.HERO));
 			}else {
 				sideQuests.add(FetchSideQuest.generate(this,FetchType.HUNTER));
@@ -166,14 +168,14 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 			break;
 		case 2: case 3:
 			//special creature cleanse
-			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.VAMPIRE,CleanseType.VAMPIRE,CleanseType.VAMPIRE,CleanseType.HARPY,CleanseType.HARPY,CleanseType.UNICORN,CleanseType.MONSTERS)));
+			sideQuests.add(CleanseSideQuest.generate(this,Rand.choose(CleanseType.VAMPIRE,CleanseType.VAMPIRE,CleanseType.VAMPIRE,CleanseType.HARPY,CleanseType.HARPY,CleanseType.UNICORN,CleanseType.MONSTERS)));
 			break;
 		case 4:
 			//more normal cleanse
-			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.VAMPIRE,CleanseType.BANDIT,CleanseType.ANIMALS,CleanseType.MONSTERS)));
+			sideQuests.add(CleanseSideQuest.generate(this,Rand.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.VAMPIRE,CleanseType.BANDIT,CleanseType.ANIMALS,CleanseType.MONSTERS)));
 			break;
 		case 5:
-			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .75f));//25% chance to be a murder quest
+			sideQuests.add(KillSideQuest.generate(this,Rand.randFloat() > .75f));//25% chance to be a murder quest
 			break;
 		}
 	}

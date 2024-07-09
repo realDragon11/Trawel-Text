@@ -8,8 +8,8 @@ import java.util.Set;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
+import trawel.core.Rand;
 import trawel.personal.item.solid.Armor.ArmorQuality;
-import trawel.helper.methods.extra;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 
@@ -174,6 +174,6 @@ public enum ArmorStyle {
 	}
 	
 	public Material getMatFor() {
-		return MaterialFactory.getMat(matTable.random(extra.getRand()));
+		return MaterialFactory.getMat(matTable.random(Rand.getRand()));
 	}
 }

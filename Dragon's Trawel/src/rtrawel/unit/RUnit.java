@@ -5,6 +5,7 @@ import java.util.List;
 
 import rtrawel.battle.Battle;
 import rtrawel.items.Weapon;
+import trawel.core.Print;
 import trawel.helper.methods.extra;
 
 public abstract class RUnit {
@@ -179,7 +180,7 @@ public abstract class RUnit {
 		double d = (i * (100.0+dexterity))/(100.0);
 		int oldhp = hp;
 		hp = (int)extra.clamp(hp+d,0,this.getMaxHp());
-		extra.println(hp-oldhp + " healed.");
+		Print.println(hp-oldhp + " healed.");
 	}
 	public boolean isAlive() {
 		return alive;
@@ -195,7 +196,7 @@ public abstract class RUnit {
 	public boolean knockStun(double stunChance, int knockAmount) {
 		if (Math.random() < stunChance*this.dmm.getMult(DamageType.STUN)) {
 			coolDown = knockAmount;
-			extra.println(this.getName() + " is stunned!");
+			Print.println(this.getName() + " is stunned!");
 			warmUp = 0;
 			return true;
 		}else {
@@ -224,7 +225,7 @@ public abstract class RUnit {
 	public void restoreMana(int manaDrain) {
 		int oldhp = hp;
 		hp = (int)extra.clamp(hp+manaDrain,0,this.getMaxHp());
-		extra.println(hp-oldhp + " mp restored.");
+		Print.println(hp-oldhp + " mp restored.");
 		
 	}
 }

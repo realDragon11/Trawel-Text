@@ -16,11 +16,13 @@ import derg.menus.MenuSelectFeature;
 import derg.menus.MenuSelectNumber;
 import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
+import trawel.core.Input;
 import trawel.core.Networking;
 import trawel.core.mainGame;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.AIClass;
 import trawel.personal.NPCMutator;
@@ -169,7 +171,7 @@ public class Town extends TContextOwner{
 	}
 	
 	public void addPerson() {
-		Agent o = RaceFactory.getDueler(Math.max(1,getTier()+extra.randRange(-2,2))).setOrMakeAgentGoal(AgentGoal.NONE);
+		Agent o = RaceFactory.getDueler(Math.max(1,getTier()+Rand.randRange(-2,2))).setOrMakeAgentGoal(AgentGoal.NONE);
 		addOccupant(o);
 	}
 	
@@ -246,7 +248,7 @@ public class Town extends TContextOwner{
 	}
 	
 	public static Town generate(int tier, Island island, byte x, byte y) {
-		String name = extra.capFirst(extra.choose(randomLists.randomElement(),randomLists.randomColor()));
+		String name = Print.capFirst(Rand.choose(randomLists.randomElement(),randomLists.randomColor()));
 		switch (tier) {
 		case 1:name+= " Enclave";break;
 		case 2:name+= " District";break;
@@ -310,7 +312,7 @@ public class Town extends TContextOwner{
 		Player.updateWorld(w);
 		if (Player.player.lastTown != this) { 
 			if (visited < 2 && mainGame.displayFlavorText && loreText != null) {
-				extra.println(loreText);
+				Print.println(loreText);
 			}
 		}
 		townProcess();//works because the menu generator below always backs out
@@ -326,18 +328,18 @@ public class Town extends TContextOwner{
 			visited = 2;
 		}
 		if (mainGame.displayLocationalText) {
-			extra.println(visitColor+"You are in " + extra.capFirst(name) + ", on the " +island.getWorld().getCalender().dateName() + ". " + island.getWorld().getCalender().stringLocalTime(this)+".");
+			Print.println(visitColor+"You are in " + Print.capFirst(name) + ", on the " +island.getWorld().getCalender().dateName() + ". " + island.getWorld().getCalender().stringLocalTime(this)+".");
 		}
 		Networking.richDesc("Adventuring in " + name);
 		Networking.setArea(Networking.Area.TOWN);
 		Networking.updateTime();
 		Networking.charUpdate();
-		if (mainGame.displayFlavorText && Player.player.townEventTimer <=0 && extra.chanceIn(2,3)) {
+		if (mainGame.displayFlavorText && Player.player.townEventTimer <=0 && Rand.chanceIn(2,3)) {
 			if (TownFlavorFactory.go(.5,this)) {
-				Player.player.townEventTimer = extra.randRange(18,24*5);
+				Player.player.townEventTimer = Rand.randRange(18,24*5);
 			}
 		}
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -474,7 +476,7 @@ public class Town extends TContextOwner{
 	
 
 	private void doFort() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -521,22 +523,22 @@ public class Town extends TContextOwner{
 	}
 	private void buyLot() {
 		if (Player.getTutorial()) {
-			extra.println("You can build buildings on lots you own, extending the facilities of the town.");	
+			Print.println("You can build buildings on lots you own, extending the facilities of the town.");	
 		}
 		int cost = (int) (IEffectiveLevel.unclean(getTier())*150);
 		String moneyname = World.currentMoneyString();
-		extra.println(TrawelColor.SERVICE_CURRENCY+"Buy a lot? "+ cost + " "+moneyname+". You have "
+		Print.println(TrawelColor.SERVICE_CURRENCY+"Buy a lot? "+ cost + " "+moneyname+". You have "
 		+ Player.showGold());
-		if (extra.yesNo()) {
+		if (Input.yesNo()) {
 			if (Player.player.getGold()> cost) {
 				Player.player.addGold(-cost);
-				extra.println("You buy a lot.");
+				Print.println("You buy a lot.");
 				visited = 3;
 				Networking.unlockAchievement("buy_lot");
 				laterAdd(new Lot(this));
 				helpCommunity(1);
 			}else {
-				extra.println("Not enough "+moneyname+".");
+				Print.println("Not enough "+moneyname+".");
 			}
 
 		}
@@ -553,7 +555,7 @@ public class Town extends TContextOwner{
 
 			@Override
 			public boolean go() {
-				goConnect(c,1+extra.randFloat()+extra.randFloat()+extra.randFloat());
+				goConnect(c,1+Rand.randFloat()+Rand.randFloat()+Rand.randFloat());
 				return true;
 			}};
 	}
@@ -567,22 +569,22 @@ public class Town extends TContextOwner{
 				TrawelTime.globalPassTime();
 			}
 			if (mainGame.displayTravelText) {
-				extra.print("You start to travel to " + t.getName()+"... ");
+				Print.print("You start to travel to " + t.getName()+"... ");
 				if (Networking.connected()) {
-					extra.println();//have to do this to make it show up since it only prints new lines
+					Print.println();//have to do this to make it show up since it only prints new lines
 				}
 			}
-			double wayMark = extra.randFloat()*c.getRawTime();
+			double wayMark = Rand.randFloat()*c.getRawTime();
 			Player.addTime(wayMark);
 			TrawelTime.globalPassTime();
 			//will get interrupted at random time
-			if (extra.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
+			if (Rand.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
 				wander(threshold,0);
 			}
 			Player.addTime(c.getRawTime()-wayMark);
 			TrawelTime.globalPassTime();
 			if (mainGame.displayTravelText) {
-				extra.println("You arrive in " + t.getName()+".");
+				Print.println("You arrive in " + t.getName()+".");
 			}
 			if (c.getType().endTime > 0) {
 				Player.addTime(c.getType().endTime);
@@ -595,22 +597,22 @@ public class Town extends TContextOwner{
 				TrawelTime.globalPassTime();
 			}
 			if (mainGame.displayTravelText) {
-				extra.print("You start to sail to " + t.getName() +"... ");
+				Print.print("You start to sail to " + t.getName() +"... ");
 				if (Networking.connected()) {
-					extra.println();//have to do this to make it show up since it only prints new lines
+					Print.println();//have to do this to make it show up since it only prints new lines
 				}
 			}
 			//will get interrupted at random time
-			double wayMarkS = extra.randFloat()*c.getRawTime();
+			double wayMarkS = Rand.randFloat()*c.getRawTime();
 			Player.addTime(wayMarkS);
 			TrawelTime.globalPassTime();
-			if (extra.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
+			if (Rand.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
 				wander(threshold,1);
 			}
 			Player.addTime(c.getRawTime()-wayMarkS);
 			TrawelTime.globalPassTime();
 			if (mainGame.displayTravelText) {
-				extra.println("You arrive in " + t.getName()+".");
+				Print.println("You arrive in " + t.getName()+".");
 			}
 			if (c.getType().endTime > 0) {
 				Player.addTime(c.getType().endTime);
@@ -623,7 +625,7 @@ public class Town extends TContextOwner{
 				TrawelTime.globalPassTime();
 			}
 			if (mainGame.displayTravelText) {
-				extra.println("You teleport to " + t.getName()+".");
+				Print.println("You teleport to " + t.getName()+".");
 			}
 			Networking.sendStrong("PlayDelay|sound_teleport|1|");
 			Player.addTime(c.getRawTime());
@@ -655,7 +657,7 @@ public class Town extends TContextOwner{
 			Networking.setArea(Area.MISC_SERVICE);
 			break;
 		}
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -680,7 +682,7 @@ public class Town extends TContextOwner{
 							if (!wander(1,0)) {
 								//attempt a flavor event
 								if (!TownFlavorFactory.go(.2f,Town.this)) {
-									extra.println("Nothing interesting happens.");
+									Print.println("Nothing interesting happens.");
 								}
 							}
 							return false;
@@ -700,7 +702,7 @@ public class Town extends TContextOwner{
 							if (!wander(1,1)) {
 								//attempt a flavor event
 								if (!TownFlavorFactory.go(.2f,Town.this)) {
-									extra.println("Nothing interesting happens.");
+									Print.println("Nothing interesting happens.");
 								}
 							}
 							return false;
@@ -746,18 +748,18 @@ public class Town extends TContextOwner{
 			
 			if (occupants.size() < occupantDesire) {
 				//at less than half capacity, will always add
-				if (extra.randFloat() < occupantNeed()+.5) {
+				if (Rand.randFloat() < occupantNeed()+.5) {
 					addPerson();
 				}
 				//check in 0-100 hours
-				timePassed = extra.randFloat()*100;
+				timePassed = Rand.randFloat()*100;
 			}else {
 				//will potentially fill to double but not more, 50% chance at 1
-				if (extra.randFloat() < occupantNeed()*2) {
+				if (Rand.randFloat() < occupantNeed()*2) {
 					addPerson();
 				}
 				//check in 24-124 hours
-				timePassed = 24+(extra.randFloat()*100);
+				timePassed = 24+(Rand.randFloat()*100);
 			}
 		}
 		for (Feature f: features) {
@@ -817,7 +819,7 @@ public class Town extends TContextOwner{
 	}
 	
 	public Agent popAnyOccupant(Agent occupant) {
-		return occupants.remove(extra.randRange(0,occupants.size()-1));
+		return occupants.remove(Rand.randRange(0,occupants.size()-1));
 	}
 	
 	public void addOccupant(Agent occupant) {//MAYBELATER: a time based variant add 'laterAddOccupant'
@@ -860,7 +862,7 @@ public class Town extends TContextOwner{
 	public Agent getRandPersonableOccupant() {
 		List<Agent> agentList = new ArrayList<Agent>();
 		occupants.stream().filter(SuperPerson::isPersonable).forEach(agentList::add);
-		return extra.randList(agentList);
+		return Rand.randList(agentList);
 	}
 	
 	public void resetOpenSlots(){
@@ -907,7 +909,7 @@ public class Town extends TContextOwner{
 		
 		//deathcheater appear
 		//only appears on land
-		if (type == 0 && world.getEncounterTick() > 3 && extra.chanceIn(1,3)) {
+		if (type == 0 && world.getEncounterTick() > 3 && Rand.chanceIn(1,3)) {
 			Agent sp = world.getDeathCheater();
 			if (sp != null) {
 				world.resetEncounterTick();
@@ -915,42 +917,42 @@ public class Town extends TContextOwner{
 				Person p = sp.getPerson();
 				int pLevel = Player.player.getPerson().getLevel();
 				if (p.getLevel() < pLevel) {
-					extra.offPrintStack();
+					Print.offPrintStack();
 					p.forceLevelUp(pLevel);
 					AIClass.loot(p.getBag(), new Inventory(pLevel, Race.RaceType.PERSONABLE, null, null, null), false,p,false);
-					extra.popPrintStack();
+					Print.popPrintStack();
 				}
-				int part1 = extra.randRange(0, 1);
+				int part1 = Rand.randRange(0, 1);
 				switch (part1) {
 				case 0:
-					extra.print(TrawelColor.PRE_BATTLE+p.getName() +" charges you out of nowhere! They're back for more, and this time they're not fighting fair! ");
+					Print.print(TrawelColor.PRE_BATTLE+p.getName() +" charges you out of nowhere! They're back for more, and this time they're not fighting fair! ");
 					p.setSkillHas(Feat.AMBUSHER);
 					break;
 				case 1:
-					extra.print(TrawelColor.PRE_BATTLE+p.getName() +" charges you, screaming bloody murder! Their thirst for blood has not yet been satiated! ");
+					Print.print(TrawelColor.PRE_BATTLE+p.getName() +" charges you, screaming bloody murder! Their thirst for blood has not yet been satiated! ");
 					p.setSkillHas(Feat.HEMOVORE);
 					break;
 				default:
-					extra.print(TrawelColor.PRE_BATTLE+p.getName() + " is back!");
+					Print.print(TrawelColor.PRE_BATTLE+p.getName() + " is back!");
 					break;
 				}
-				switch (extra.randRange(0, 1)) {
+				switch (Rand.randRange(0, 1)) {
 				case 0:
 					if (p.getPersonType() == PersonType.COWARDLY) {
-						extra.println("\"I was once weak and broken... no more! I will be better! I shall not break again!\"");
-						p.setTitle(extra.choose("the Unbreakable","the Unfettered"));
+						Print.println("\"I was once weak and broken... no more! I will be better! I shall not break again!\"");
+						p.setTitle(Rand.choose("the Unbreakable","the Unfettered"));
 					}else {
-						extra.println("\"You may have broken my body, but not my spirit!\"");
-						p.setTitle(extra.choose("the Unbroken","the Unfettered"));
+						Print.println("\"You may have broken my body, but not my spirit!\"");
+						p.setTitle(Rand.choose("the Unbroken","the Unfettered"));
 					}
 					p.setFeat(Feat.UNBREAKABLE);
 					p.setPersonType(PersonType.DEATHCHEATED);
 					break;
 				case 1:
 					if (part1 == 1) {
-						extra.println("\"Primal forces demand I take back what you took from me!\"");
+						Print.println("\"Primal forces demand I take back what you took from me!\"");
 					}else {
-						extra.println("\"I fell, but they picked me back up! Now I stand beside life itself against you!\"");
+						Print.println("\"I fell, but they picked me back up! Now I stand beside life itself against you!\"");
 					}
 					NPCMutator.primal_Random(p);
 					break;
@@ -967,12 +969,12 @@ public class Town extends TContextOwner{
 		}
 		//spooky appear
 		//only appears on land
-		if (type == 0 && world.getEncounterTick() > 5 && extra.chanceIn(1,5)) {
+		if (type == 0 && world.getEncounterTick() > 5 && Rand.chanceIn(1,5)) {
 			Agent sp = world.getStalker();
 			//does not level up automatically
 			if (sp != null) {
 				world.resetEncounterTick();
-				extra.println(TrawelColor.PRE_BATTLE + sp.getPerson().getName() + " appears to haunt you!");
+				Print.println(TrawelColor.PRE_BATTLE + sp.getPerson().getName() + " appears to haunt you!");
 				Combat c = Player.player.fightWith(sp.getPerson());
 				if (c.playerWon() > 0) {
 					world.removeReoccuringSuperPerson(sp);
@@ -982,7 +984,7 @@ public class Town extends TContextOwner{
 		}
 		//world encounter, also needs ticker
 		//can appear over water
-		if (world.getEncounterTick() > 8 && extra.chanceIn(1,3)) {
+		if (world.getEncounterTick() > 8 && Rand.chanceIn(1,3)) {
 			world.resetEncounterTick();//reset always as is highest world encounter
 			Agent sp = island.getWorld().getWorldEncounter(Player.player.getPerson().getLevel()+1);
 			//does not level up automatically
@@ -1165,7 +1167,7 @@ public class Town extends TContextOwner{
 		assert connectFlow < connects.size();
 	}
 	public void postInit() {
-		int j = Math.max(3,(int) (occupantDesire+extra.randRange(-3,3)));
+		int j = Math.max(3,(int) (occupantDesire+Rand.randRange(-3,3)));
 		int i = 0;
 		while (i < j) {
 			addPerson();

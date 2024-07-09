@@ -1,9 +1,9 @@
 package trawel.quests.types;
 
 import trawel.core.Networking;
+import trawel.core.Print;
 import trawel.factions.FBox;
 import trawel.factions.Faction;
-import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.Gem;
@@ -117,7 +117,7 @@ public class CleanseSideQuest extends BasicSideQuest {
 				//also grants amber
 				int a_reward = IEffectiveLevel.cleanRangeReward(atLevel,Gem.AMBER.reward(2f,true),.6f);
 				Gem.AMBER.changeGem(a_reward);
-				extra.println("You gained " +a_reward+" amber.");
+				Print.println("You gained " +a_reward+" amber.");
 			}
 			if (qKeywords.contains(QKey.GIVE_HERO_GUILD)) {//hero source
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*FBox.bonusFavored,0);
@@ -146,7 +146,7 @@ public class CleanseSideQuest extends BasicSideQuest {
 				reward = IEffectiveLevel.cleanRangeReward(atLevel,1f,.6f);
 			}
 			Player.player.addGold(reward);
-			extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+			Print.println("Gained "+World.currentMoneyDisplay(reward)+".");
 			
 			Networking.unlockAchievement("huntquest1");
 			complete();

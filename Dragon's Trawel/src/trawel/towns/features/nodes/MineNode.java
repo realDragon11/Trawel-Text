@@ -11,7 +11,10 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.arc.misc.Deaths;
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
@@ -154,23 +157,23 @@ public class MineNode implements NodeType{
 	
 	@Override
 	public int rollRegrow() {
-		return 1+mineRegrowRoller.random(extra.getRand());
+		return 1+mineRegrowRoller.random(Rand.getRand());
 	}
 	
 	private int getNodeTypeForParentShape(NodeConnector holder,int guessDepth) {
 		switch (guessDepth) {
 		case 0://start
 			//smaller list of things only the starting node can be
-			return startRolls[extra.randRange(0,startRolls.length-1)];
+			return startRolls[Rand.randRange(0,startRolls.length-1)];
 		case 1: case 2://entry
-			return 1+entryMineRoller.random(extra.getRand());
+			return 1+entryMineRoller.random(Rand.getRand());
 		}
 		switch (holder.parent.getShape()) {
 		case ELEVATOR:
-			return 1+hellMineRoller.random(extra.getRand());
+			return 1+hellMineRoller.random(Rand.getRand());
 		default:
 		case NONE:
-			return 1+noneMineRoller.random(extra.getRand());
+			return 1+noneMineRoller.random(Rand.getRand());
 		}
 	}
 	
@@ -189,8 +192,8 @@ public class MineNode implements NodeType{
 			return genShaft(holder,from,size,tier,10);
 			//shafts will also auto terminate if they run out
 		}
-		if (extra.chanceIn(1,3)) {//mineshaft splitting
-			return genShaft(holder,from,size,tier,extra.randRange(2,5));
+		if (Rand.chanceIn(1,3)) {//mineshaft splitting
+			return genShaft(holder,from,size,tier,Rand.randRange(2,5));
 		}
 		int made = getNode(holder,from,from == 0 ? 0 : holder.getFloor(from)+1,tier);
 		size--;
@@ -201,7 +204,7 @@ public class MineNode implements NodeType{
 			sizeLeft = 0;
 			size = 0;
 		}else {
-			split = new int[extra.randRange(3,Math.min(size,5))];
+			split = new int[Rand.randRange(3,Math.min(size,5))];
 			size-=split.length;
 			sizeLeft = (size)/(split.length+2);
 		}
@@ -210,12 +213,12 @@ public class MineNode implements NodeType{
 		}
 		sizeLeft = size-(split.length*split.length);
 		while (sizeLeft > 0) {
-			split[extra.randRange(0,split.length-1)]+=1;
+			split[Rand.randRange(0,split.length-1)]+=1;
 			sizeLeft--;
 		}
 		for (int j = 0; j < split.length;j++) {
 			int tempLevel = tier;
-			if (extra.chanceIn(1,20)) {//less likely to tier up without mineshafts
+			if (Rand.chanceIn(1,20)) {//less likely to tier up without mineshafts
 				tempLevel++;
 			}
 			int n = generate(holder,made,split[j],tempLevel);
@@ -259,7 +262,7 @@ public class MineNode implements NodeType{
 			for (int i = 1;i < size;i++) {
 				expectedLevel = tier+(i/10);
 				//non linear growth, but will be force caught up and can't get too far ahead
-				currentLevel = extra.clamp(currentLevel+extra.randRange(0,1),expectedLevel-1,expectedLevel+2);
+				currentLevel = extra.clamp(currentLevel+Rand.randRange(0,1),expectedLevel-1,expectedLevel+2);
 				newNode = getNode(start,lastNode,i,tier+(i/10));
 				start.setFloor(newNode,i);
 				if (i != 1) {
@@ -285,12 +288,12 @@ public class MineNode implements NodeType{
 		switch (holder.getEventNum(madeNode)) {
 		case 1:
 			Person p = RaceFactory.getDueler(holder.getLevel(madeNode));
-			String warName = extra.capFirst(randomLists.randomWarrior());
+			String warName = Print.capFirst(randomLists.randomWarrior());
 			p.setTitle(randomLists.randomTitleFormat(warName));
 			GenericNode.setSimpleDuelPerson(holder,madeNode, p,warName,"Approach " +p.getNameNoTitle() +".","Challenge");
 			break;
 		case 2: 
-			holder.setStorage(madeNode, extra.choose("river","pond","lake","stream"));
+			holder.setStorage(madeNode, Rand.choose("river","pond","lake","stream"));
 			break;
 		case 3: //common minerals
 			GenericNode.applyGenericVein(holder, madeNode,2);
@@ -314,7 +317,7 @@ public class MineNode implements NodeType{
 			int cultLevel = holder.getLevel(madeNode)+2;
 			int mookLevel = Math.max(1,cultLevel-4);
 			holder.setLevel(madeNode, cultLevel);
-			int cultAmount = extra.randRange(3, 4);
+			int cultAmount = Rand.randRange(3, 4);
 			List<Person> cultPeeps = new ArrayList<Person>();
 			for (int i = 0;i < cultAmount;i++) {
 				if (i == 0) {
@@ -330,7 +333,7 @@ public class MineNode implements NodeType{
 		case 10:
 			Person mugger = RaceFactory.makeMugger(holder.getLevel(madeNode));
 			String mugName = randomLists.extractTitleFormat(mugger.getTitle());
-			GenericNode.setBasicRagePerson(holder,madeNode, mugger,mugName,"The "+extra.capFirst(mugName) + " attacks you!");
+			GenericNode.setBasicRagePerson(holder,madeNode, mugger,mugName,"The "+Print.capFirst(mugName) + " attacks you!");
 			break;
 		case 11://trapped treasure chamber
 			GenericNode.applyTrappedChamber(holder,madeNode);
@@ -346,7 +349,7 @@ public class MineNode implements NodeType{
 	public boolean interact(NodeConnector holder,int node) {
 		switch(holder.getEventNum(node)) {
 		case 2:
-			extra.println("You wash yourself in the "+holder.getStorageFirstClass(node,String.class)+".");
+			Print.println("You wash yourself in the "+holder.getStorageFirstClass(node,String.class)+".");
 			Player.player.getPerson().washAll();
 			Player.player.getPerson().bathEffects();
 			break;
@@ -360,15 +363,15 @@ public class MineNode implements NodeType{
 			break;
 		case 6: 
 			String cColor = holder.getStorageFirstClass(node,String.class);
-			extra.println("You examine the " + cColor+ " crystals"+TrawelColor.COLOR_RESET+". They are very pretty.");
+			Print.println("You examine the " + cColor+ " crystals"+TrawelColor.COLOR_RESET+". They are very pretty.");
 			holder.findBehind(node,cColor+ " crystals"+TrawelColor.COLOR_RESET);
 			break;
 		case 7: 
-			extra.println("You examine the iron minecart. It is on the tracks that travel throughout the mine.");
+			Print.println("You examine the iron minecart. It is on the tracks that travel throughout the mine.");
 			holder.findBehind(node,"minecart");
 			break;
 		case 8: 
-			extra.println("You traverse the ladder. This place is like a maze!");
+			Print.println("You traverse the ladder. This place is like a maze!");
 			Networking.sendStrong("PlayDelay|sound_footsteps|1|");
 			holder.findBehind(node,"ladder");
 			break;
@@ -402,7 +405,7 @@ public class MineNode implements NodeType{
 			leader.getBag().graphicalDisplay(1, leader);
 		}
 		if (state == 1 && partOfCult) {
-			extra.println("The cultists eye you warily, but they sense a kinship within you...");
+			Print.println("The cultists eye you warily, but they sense a kinship within you...");
 			holder.setForceGo(node,false);
 			holder.setStateNum(node,5);
 			state = 5;
@@ -416,14 +419,14 @@ public class MineNode implements NodeType{
 				holder.setForceGo(node,false);
 				return false;
 			}else {
-				extra.println("They desecrate your corpse.");
+				Print.println("They desecrate your corpse.");
 				state = 1;
 				holder.setStateNum(node,1);
 				return true;
 			}
 		}
 		if (state == 0) {
-			extra.println("The cultists welcome you to their private (friends welcome) altar of blood. It's small, but you sense a power here.");
+			Print.println("The cultists welcome you to their private (friends welcome) altar of blood. It's small, but you sense a power here.");
 			state = 2;
 			holder.setStateNum(node,2);
 		}
@@ -432,7 +435,7 @@ public class MineNode implements NodeType{
 			holder.setStateNum(node,5);
 		}
 		
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -466,11 +469,11 @@ public class MineNode implements NodeType{
 							public boolean go() {
 								List<Person> cultists = holder.getStorageFirstClass(node,List.class);
 								Person leader = extra.getNonAddOrFirst(cultists);
-								extra.println(leader.getName() +" exclaims: 'Just perform a small blood rite for us, and we can set you up good with our gods!'");
-								if (extra.yesNo()) {
-									extra.println("You are stabbed to death.");
+								Print.println(leader.getName() +" exclaims: 'Just perform a small blood rite for us, and we can set you up good with our gods!'");
+								if (Input.yesNo()) {
+									Print.println("You are stabbed to death.");
 									Deaths.die("You rise from the altar!");
-									extra.println("The cultists praise you as the second coming of flagjaij! You feel sick, but powerful.");
+									Print.println("The cultists praise you as the second coming of flagjaij! You feel sick, but powerful.");
 									Player.player.getPerson().addEffect(Effect.CURSE);
 									Player.unlockPerk(Perk.CULT_CHOSEN_BLOOD);
 									Player.player.hasCult = true;
@@ -494,7 +497,7 @@ public class MineNode implements NodeType{
 						@Override
 						public boolean go() {
 							if (!holder.findBehind(node,"altar")) {
-								extra.println("It's bloody, but not much else.");
+								Print.println("It's bloody, but not much else.");
 							}
 							return false;
 						}});
@@ -508,7 +511,7 @@ public class MineNode implements NodeType{
 						@Override
 						public boolean go() {
 							if (!holder.findBehind(node,"scarred bodies")) {
-								extra.println("Their bodies show signs of scarification and bloodletting.");
+								Print.println("Their bodies show signs of scarification and bloodletting.");
 							}
 							return false;
 						}});
@@ -523,11 +526,11 @@ public class MineNode implements NodeType{
 						@Override
 						public boolean go() {
 							if (holder.getStateNum(node) == 7) {
-								extra.println("They are silent.");
+								Print.println("They are silent.");
 								return false;
 							}
-							if (extra.chanceIn(1,3)) {
-								extra.println("Their faces are sullen, and they do not speak much. Perhaps it is best for you to leave.");
+							if (Rand.chanceIn(1,3)) {
+								Print.println("Their faces are sullen, and they do not speak much. Perhaps it is best for you to leave.");
 								holder.setStateNum(node,7);
 							}else {
 								Oracle.tip("cult");
@@ -558,11 +561,11 @@ public class MineNode implements NodeType{
 				List<Person> cultists = holder.getStorageFirstClass(node,List.class);
 				Person leader = extra.getNonAddOrFirst(cultists);
 				if (cultists.size() > 1) {
-					extra.println(TrawelColor.PRE_BATTLE + "Attack " + leader.getName() +" and their "+(cultists.size()-1)+" devout acolytes?");
+					Print.println(TrawelColor.PRE_BATTLE + "Attack " + leader.getName() +" and their "+(cultists.size()-1)+" devout acolytes?");
 				}else {
-					extra.println(TrawelColor.PRE_BATTLE + "Attack " + leader.getName() +"?");
+					Print.println(TrawelColor.PRE_BATTLE + "Attack " + leader.getName() +"?");
 				}
-				if (extra.yesNo()) {
+				if (Input.yesNo()) {
 					holder.setStateNum(node,6);//angy cultists are very madge
 					holder.setForceGo(node, true);
 					return true;

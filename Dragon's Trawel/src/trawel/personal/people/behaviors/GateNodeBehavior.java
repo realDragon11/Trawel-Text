@@ -3,8 +3,9 @@ package trawel.personal.people.behaviors;
 import java.util.List;
 
 import trawel.core.Networking;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Behavior;
@@ -27,7 +28,7 @@ public class GateNodeBehavior extends Behavior {
 	}
 	
 	public GateNodeBehavior(Agent user, NodeFeature location) {
-		this.type = extra.randRange(0,1);
+		this.type = Rand.randRange(0,1);
 		owner = user;
 		this.location = location;
 		opened = false;
@@ -120,30 +121,30 @@ public class GateNodeBehavior extends Behavior {
 	}
 	
 	public void printChallengeAgent() {
-		extra.print(TrawelColor.PRE_BATTLE);
+		Print.print(TrawelColor.PRE_BATTLE);
 		switch (type) {
 			default:
-				extra.println(owner.getPerson().getName() + " appears to challenge you!");break;
+				Print.println(owner.getPerson().getName() + " appears to challenge you!");break;
 			case 0:
-				extra.println(owner.getPerson().getName() + " tests if you are worthy of the booty!");break;
+				Print.println(owner.getPerson().getName() + " tests if you are worthy of the booty!");break;
 			case 1:
-				extra.println(owner.getPerson().getName() + " has come to collect treasure!");break;
+				Print.println(owner.getPerson().getName() + " has come to collect treasure!");break;
 			case 2:
-				extra.println(owner.getPerson().getName() + " wants your shinies for their nest!");break;
+				Print.println(owner.getPerson().getName() + " wants your shinies for their nest!");break;
 		}
 	}
 	
 	public void printSlayAgent() {
-		extra.print(location.getName() + " in " + location.getTown().getName() + " has a new secret for you: ");
+		Print.print(location.getName() + " in " + location.getTown().getName() + " has a new secret for you: ");
 		switch (type) {
 			default:
-				extra.println("ERROR");break;
+				Print.println("ERROR");break;
 			case 0:
-				extra.println("A Bone Barrier will now open for you.");break;
+				Print.println("A Bone Barrier will now open for you.");break;
 			case 1:
-				extra.println("This map will reveal which hole to dig up.");break;
+				Print.println("This map will reveal which hole to dig up.");break;
 			case 2:
-				extra.println("This key will show a secret door in a harpy nest.");break;
+				Print.println("This key will show a secret door in a harpy nest.");break;
 		}
 	}
 	

@@ -1,7 +1,7 @@
 package rtrawel.village;
 
 import rtrawel.battle.Fight;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class BossContent implements Content{
 
@@ -19,7 +19,7 @@ public class BossContent implements Content{
 	@Override
 	public boolean go() {
 		if (village.wanderCombo < wanders) {
-			extra.println("You haven't traveled to the boss yet.");
+			Print.println("You haven't traveled to the boss yet.");
 			return false;
 		}
 		if (fight.go()) {

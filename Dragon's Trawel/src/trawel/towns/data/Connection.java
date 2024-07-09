@@ -1,6 +1,6 @@
 package trawel.towns.data;
+import trawel.core.Print;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.classless.Skill;
 import trawel.personal.people.Player;
 import trawel.towns.contexts.Town;
@@ -108,18 +108,18 @@ public class Connection implements java.io.Serializable{
 		case 2: visitColor = TrawelColor.VISIT_BEEN;break;
 		case 3: visitColor = TrawelColor.VISIT_OWN;break;
 		}
-		extra.println(visitColor + getName() + " to " + ot.getName() + " {Tier: "+ot.getTier()+"} ("+dir(town1,ot)+")");
+		Print.println(visitColor + getName() + " to " + ot.getName() + " {Tier: "+ot.getTier()+"} ("+dir(town1,ot)+")");
 		if (Player.hasSkill(Skill.TOWNSENSE)) {
-			extra.println(ot.getName() + " has " + ot.getConnects().size() + " connections.");
+			Print.println(ot.getName() + " has " + ot.getConnects().size() + " connections.");
 		}
 		if (Player.hasSkill(Skill.TELESENSE) && ot.hasTeleporters()) {
-			extra.println(ot.getName() + " has a teleport shop.");
+			Print.println(ot.getName() + " has a teleport shop.");
 		}
 		if (Player.hasSkill(Skill.SHIPSENSE) && ot.hasPort()) {
-			extra.println(ot.getName() + " has a shipyard.");
+			Print.println(ot.getName() + " has a shipyard.");
 		}
 		if (Player.hasSkill(Skill.TIERSENSE)) {
-			extra.println(ot.getName() + " is level "+ ot.getTier() + ".");
+			Print.println(ot.getName() + " is level "+ ot.getTier() + ".");
 		}
 		if (Player.hasSkill(Skill.SHOPSENSE)){
 			Boolean doIt = false;
@@ -130,7 +130,7 @@ public class Connection implements java.io.Serializable{
 				}
 			}
 			if (doIt) {
-			extra.println(ot.getName() + " has a shop.");
+			Print.println(ot.getName() + " has a shop.");
 			}
 		}
 		
@@ -143,7 +143,7 @@ public class Connection implements java.io.Serializable{
 				}
 			}
 			if (doIt) {
-			extra.println(ot.getName() + " has an arena.");
+			Print.println(ot.getName() + " has an arena.");
 			}
 		}
 	}

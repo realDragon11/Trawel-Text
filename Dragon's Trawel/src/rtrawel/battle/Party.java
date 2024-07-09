@@ -11,7 +11,8 @@ import rtrawel.unit.RCore;
 import rtrawel.unit.RPlayer;
 import rtrawel.unit.RUnit;
 import rtrawel.village.Village;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
+import trawel.core.Print;
 
 public class Party {
 
@@ -61,7 +62,7 @@ public class Party {
 
 	public void displayItems() {
 		for (int i = 0;i < itemKeys.size();i++) {
-			extra.println((i+1)+ " " + itemKeys.get(i) + ": " + items.get(itemKeys.get(i)) + "\n" + RCore.getItemByName(itemKeys.get(i)).display());
+			Print.println((i+1)+ " " + itemKeys.get(i) + ": " + items.get(itemKeys.get(i)) + "\n" + RCore.getItemByName(itemKeys.get(i)).display());
 		}
 	}
 	
@@ -92,9 +93,9 @@ public class Party {
 
 	public RUnit getUnit() {
 		for (int i = 0;i < list.size();i++) {
-			extra.println( (i +1) + " " + list.get(i).getName());
+			Print.println( (i +1) + " " + list.get(i).getName());
 		}
-		return list.get(extra.inInt(list.size())-1);
+		return list.get(Input.inInt(list.size())-1);
 	}
 
 	public Item getPersonItem() {
@@ -108,11 +109,11 @@ public class Party {
 		}
 		int i;
 		for (i = 0; i < canTake.size();i++) {
-			extra.println((i + 1) + " " + canTake.get(i).getName());
+			Print.println((i + 1) + " " + canTake.get(i).getName());
 		}
 		i++;//extra i++;
-		extra.println(i + " nothing");
-		int in = extra.inInt(i);
+		Print.println(i + " nothing");
+		int in = Input.inInt(i);
 		if (in == i) {
 		return null;
 		}
@@ -178,6 +179,6 @@ public class Party {
 		for (RUnit r: list) {
 			str += r.getName() + " " + r.getHp() + "/" + r.getMaxHp() + "h " + r.getMana() + "/" + r.getMaxMana() + "m,";
 		}
-		extra.println(str);
+		Print.println(str);
 	}
 }

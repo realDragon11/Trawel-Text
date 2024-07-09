@@ -10,7 +10,8 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Fixture;
 import scimech.mech.TurnSubscriber;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
+import trawel.core.Rand;
 
 public class ZeusRifle extends Fixture{
 
@@ -26,11 +27,11 @@ public class ZeusRifle extends Fixture{
 				hits++;
 			}
 			
-			acc=Math.max(acc-extra.randRange(2,4),1);
+			acc=Math.max(acc-Rand.randRange(2,4),1);
 		}
 		if (!t.isDummy()) {
 			currentMount.takeHeat(8);
-			extra.print("The Zeus Rifle attacks! " + hits + " hits! ");
+			Print.print("The Zeus Rifle attacks! " + hits + " hits! ");
 		}
 		
 	}

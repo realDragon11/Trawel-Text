@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import trawel.helper.methods.extra;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.quests.events.QuestReactionFactory;
@@ -61,18 +62,18 @@ public abstract class BasicSideQuest implements Quest{
 	public void fail() {
 		cleanup();
 		Player.player.sideQuests.remove(this);
-		extra.println("You abandoned "+name()+".");
+		Print.println("You abandoned "+name()+".");
 	}
 	
 	public void announceUpdate() {
-		extra.println(desc);
+		Print.println(desc);
 	}
 	
 	@Override
 	public void complete() {
 		cleanup();
 		Player.player.sideQuests.remove(this);
-		extra.println("You completed "+name()+"!");
+		Print.println("You completed "+name()+"!");
 	}
 	
 	protected void resolveDest(Feature locationF) {
@@ -117,11 +118,11 @@ public abstract class BasicSideQuest implements Quest{
 	
 	public static DrawBane attemptCollectAlign(QKey align,float odds,int amount) {
 		if (Player.player.getFindTime() > 1 && Player.player.sideQuests.size() > 0) {
-			if (extra.randFloat() < odds) {
+			if (Rand.randFloat() < odds) {
 				List<Quest> list = new ArrayList<Quest>();
 				Player.player.sideQuests.stream().filter(q -> q.getKeys().contains(align)).forEach(list::add);
 				if (list.size() > 0) {
-					Quest q = extra.randList(list);
+					Quest q = Rand.randList(list);
 					List<String> triggers = q.triggers();
 					for (String str: triggers) {
 						if (str.startsWith("db:")) {

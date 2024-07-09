@@ -2,9 +2,9 @@ package trawel.quests.types;
 
 import trawel.battle.Combat;
 import trawel.core.Networking;
+import trawel.core.Print;
 import trawel.factions.FBox;
 import trawel.factions.Faction;
-import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -94,7 +94,7 @@ public class KillSideQuest extends BasicSideQuest {
 			if (qKeywords.contains(QKey.GIVE_HUNT_GUILD)) {//hunter guild
 				int amber = IEffectiveLevel.cleanRangeReward(target.getLevel(),Gem.AMBER.reward(.5f,true),.7f);
 				Gem.AMBER.changeGem(amber);
-				extra.println("Gained "+amber+" amber.");
+				Print.println("Gained "+amber+" amber.");
 			}
 			if (qKeywords.contains(QKey.GIVE_ROGUE_GUILD)) {//rogue guild
 				//more money only
@@ -116,7 +116,7 @@ public class KillSideQuest extends BasicSideQuest {
 				endFeature.getTown().helpCommunity(2);
 			}
 			Player.player.addGold(reward);
-			extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+			Print.println("Gained "+World.currentMoneyDisplay(reward)+".");
 			
 			Networking.unlockAchievement("huntquest1");
 			complete();

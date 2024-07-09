@@ -11,10 +11,12 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.core.mainGame;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.AIClass;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -62,7 +64,7 @@ public abstract class ExploreFeature extends Feature{
 
 	@Override
 	protected void go() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -106,7 +108,7 @@ public abstract class ExploreFeature extends Feature{
 	public void explore(){
 		if (exhausted) {
 			if (mainGame.doTutorial) {
-				extra.println("Exploration features have a limited amount of interesting things, which replenishes over time. You should pass in game time by doing other things before returning here.");
+				Print.println("Exploration features have a limited amount of interesting things, which replenishes over time. You should pass in game time by doing other things before returning here.");
 			}
 			onNoGo();
 			return;
@@ -114,12 +116,12 @@ public abstract class ExploreFeature extends Feature{
 		explores++;
 		exhaust++;
 		if (exhaust > 5) {
-			if (extra.randFloat() > exhaust/30f) {
+			if (Rand.randFloat() > exhaust/30f) {
 				exahust();
 				return;
 			}
 		}
-		Player.addTime(.1 + (extra.randFloat()*.5));
+		Player.addTime(.1 + (Rand.randFloat()*.5));
 		TrawelTime.globalPassTime();
 		rollTempLevel();
 		subExplore(roll());
@@ -135,7 +137,7 @@ public abstract class ExploreFeature extends Feature{
 	public abstract void subExplore(int id);
 	protected abstract WeightedTable roller();
 	protected int roll() {
-		return roller().random(extra.getRand());
+		return roller().random(Rand.getRand());
 	}
 	public List<MenuItem> extraMenu(){
 		return null;
@@ -144,7 +146,7 @@ public abstract class ExploreFeature extends Feature{
 	public abstract String nameOfType();
 	@Override
 	public String getTutorialText() {
-		return extra.capFirst(nameOfType())+".";
+		return Print.capFirst(nameOfType())+".";
 	}
 	
 	/**
@@ -158,7 +160,7 @@ public abstract class ExploreFeature extends Feature{
 	 * call each explore to roll an encounter level
 	 */
 	protected void rollTempLevel() {
-		tempLevel = extra.randRange(Math.max(1,tier-1),tier+1);
+		tempLevel = Rand.randRange(Math.max(1,tier-1),tier+1);
 	}
 	
 	/**
@@ -170,10 +172,10 @@ public abstract class ExploreFeature extends Feature{
 	 */
 	public static int oldFighter(String restingOn, String warning, Feature location) {
 		int[] ret = new int[] {0};
-		extra.println("You find an old fighter resting on "+restingOn+".");
+		Print.println("You find an old fighter resting on "+restingOn+".");
 		Person old = RaceFactory.makeOld(location.getLevel()+4);//doesn't use temp level
 		old.getBag().graphicalDisplay(1, old);
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -193,7 +195,7 @@ public abstract class ExploreFeature extends Feature{
 
 					@Override
 					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
+						Input.menuGo(new MenuGenerator() {
 
 							@Override
 							public List<MenuItem> gen() {
@@ -225,7 +227,7 @@ public abstract class ExploreFeature extends Feature{
 
 									@Override
 									public boolean go() {
-										extra.println("\"We are at " + location.getName() + " in "+location.getTown().getName()+"."+warning+"\"");
+										Print.println("\"We are at " + location.getName() + " in "+location.getTown().getName()+"."+warning+"\"");
 										return false;
 									}});
 								list.add(new MenuBack());
@@ -247,7 +249,7 @@ public abstract class ExploreFeature extends Feature{
 							ret[0] = c.playerWon();
 							return true;
 						}else {
-							extra.println("You leave the fighter alone.");
+							Print.println("You leave the fighter alone.");
 						}
 						return false;
 					}});
@@ -266,7 +268,7 @@ public abstract class ExploreFeature extends Feature{
 		if (optionalWolfQualifier == null) {
 			optionalWolfQualifier = " "+nameOfType();
 		}
-		extra.println("A"+optionalWolfQualifier+" wolf is poking over a dead corpse... and it looks like their equipment is intact!");
+		Print.println("A"+optionalWolfQualifier+" wolf is poking over a dead corpse... and it looks like their equipment is intact!");
 		Person loot = RaceFactory.makeLootBody(getTempLevel());
 		loot.getBag().graphicalDisplay(1,loot);
 		Person wolf = RaceFactory.makeAlphaWolf(getTempLevel());
@@ -277,34 +279,34 @@ public abstract class ExploreFeature extends Feature{
 		}
 		Combat c = Player.player.fightWith(wolf);
 		if (c.playerWon() < 0) {
-			extra.println("The wolf drags the body away.");
+			Print.println("The wolf drags the body away.");
 			return;
 		}
 		AIClass.playerLoot(loot.getBag(),true);
 	}
 	
 	protected void mugger_other_person() {
-		extra.println(TrawelColor.PRE_BATTLE+"You see someone being robbed! Help?");
+		Print.println(TrawelColor.PRE_BATTLE+"You see someone being robbed! Help?");
 		Person robber =  RaceFactory.makeMugger(getTempLevel());
 		robber.getBag().graphicalDisplay(1, robber);
-		if (extra.yesNo()) {
+		if (Input.yesNo()) {
 			Combat c = Player.player.fightWith(robber);
 			if (c.playerWon() > 0) {
 				int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),2.5f,.5f);
-				extra.println("They give you a reward of " +World.currentMoneyDisplay(gold) + " in thanks for saving them.");
+				Print.println("They give you a reward of " +World.currentMoneyDisplay(gold) + " in thanks for saving them.");
 				Player.player.addGold(gold);
 			}else {
 				Player.player.stealCurrencyLeveled(robber,0.5f);
 				Player.placeAsOccupant(robber);
 			}
 		}else {
-			extra.println("You walk away.");
+			Print.println("You walk away.");
 			Networking.clearSide(1);
 		}
 	}
 	
 	protected void mugger_ambush() {
-		extra.println(TrawelColor.PRE_BATTLE+"You see a mugger charge at you! Prepare for battle!");
+		Print.println(TrawelColor.PRE_BATTLE+"You see a mugger charge at you! Prepare for battle!");
 		Person p = RaceFactory.makeMugger(getTempLevel());
 		Combat c = Player.player.fightWith(p);
 		if (c.playerWon() > 0) {
@@ -315,29 +317,29 @@ public abstract class ExploreFeature extends Feature{
 	}
 	
 	protected void risky_gold(String intro,String failText, String ignoreText) {
-		extra.println(intro);
-		Boolean result = extra.yesNo();
+		Print.println(intro);
+		Boolean result = Input.yesNo();
 		if (result) {
 			if (Math.random() > .4) {
-				extra.println(TrawelColor.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
+				Print.println(TrawelColor.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
 				Combat c = Player.player.fightWith(RaceFactory.makeMugger(getTempLevel()));
 				if (c.playerWon() > 0) {
 					if (c.playerWon() == 1) {
-						extra.println("You wake up and examine the loot...");
+						Print.println("You wake up and examine the loot...");
 					}
 					int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),3.5f,.6f);
-					extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
+					Print.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
 					Player.player.addGold(gold);
 				}else {
-					extra.println(failText);
+					Print.println(failText);
 				}
 			}else {
 				int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),1.5f,.2f);
-				extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
+				Print.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
 				Player.player.addGold(gold);
 			}
 		}else {
-			extra.println(ignoreText);
+			Print.println(ignoreText);
 		}
 	}
 

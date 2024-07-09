@@ -11,7 +11,10 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.arc.misc.Deaths;
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
@@ -184,7 +187,7 @@ public class GenericNode implements NodeType {
 		case RICH_GUARD:
 			return goRichGuard(holder,node);
 		case EMPTY_FOR_REGROW:
-			extra.println("There is nothing here.");
+			Print.println("There is nothing here.");
 			return false;
 		case TRAPPED_CHAMBER:
 			return trappedChamber(holder, node);
@@ -206,7 +209,7 @@ public class GenericNode implements NodeType {
 			PlantSpot pspot = ((PlantSpot)holder.getStorage(node));
 			if (pspot.timer > 40f) {
 				if (pspot.contains == Seed.EMPTY) {//if we have nothing
-					if (extra.chanceIn(2, 5)) {//add something
+					if (Rand.chanceIn(2, 5)) {//add something
 						pspot.timer = 0;//reset timer
 						switch (NodeType.getTypeEnum(holder.getTypeNum(node))) {
 						case CAVE:
@@ -219,14 +222,14 @@ public class GenericNode implements NodeType {
 							pspot.contains = Seed.SEED_GARLIC;
 							break;
 						case GROVE:
-							if (extra.chanceIn(1,15)) {
+							if (Rand.chanceIn(1,15)) {
 								pspot.contains = Seed.SEED_ENT;
 								break;
 							}
-							if (extra.chanceIn(1,6)) {//remove plantspot instead to keep the grove in flux
+							if (Rand.chanceIn(1,6)) {//remove plantspot instead to keep the grove in flux
 								emptyANode(holder,node);
 							}
-							pspot.contains = extra.choose(Seed.SEED_BEE,Seed.SEED_APPLE,Seed.SEED_APPLE,Seed.SEED_PUMPKIN);
+							pspot.contains = Rand.choose(Seed.SEED_BEE,Seed.SEED_APPLE,Seed.SEED_APPLE,Seed.SEED_PUMPKIN);
 							break;
 						case MINE:
 							pspot.contains = Seed.SEED_TRUFFLE;
@@ -236,7 +239,7 @@ public class GenericNode implements NodeType {
 							break;
 						}
 					}else {
-						if (extra.chanceIn(1, 5)) {
+						if (Rand.chanceIn(1, 5)) {
 							//small chance to reroll into another node so plant spots aren't perma
 							//note: only happens if empty, and they have a larger chance to refill
 							//than to be removed
@@ -276,14 +279,14 @@ public class GenericNode implements NodeType {
 	protected static boolean regenNode(NodeConnector holder, int node, boolean force) {
 		switch (NodeType.getTypeEnum(holder.getTypeNum(node))) {
 		case CAVE:
-			if (force || extra.chanceIn(1,3)) {
+			if (force || Rand.chanceIn(1,3)) {
 				resetNode(holder,node,NodeType.NodeTypeNum.CAVE.singleton.rollRegrow());
 				holder.globalTimer-=16;
 				return true;
 			}
 			break;
 		case DUNGEON:
-			if (force || extra.chanceIn(1,3)) {
+			if (force || Rand.chanceIn(1,3)) {
 				resetNode(holder,node,NodeType.NodeTypeNum.DUNGEON.singleton.rollRegrow());
 				holder.globalTimer-=12;
 				return true;
@@ -292,7 +295,7 @@ public class GenericNode implements NodeType {
 		case GRAVEYARD://can't easily, lifeless + shadowy stuff
 			return false;
 		case GROVE:
-			if (force || extra.chanceIn(2,3)) {
+			if (force || Rand.chanceIn(2,3)) {
 				//groves are meant to be living, so this only rolls stuff that can likely regrow (or turn into a plant spot)
 				resetNode(holder,node,NodeType.NodeTypeNum.GROVE.singleton.rollRegrow());
 				holder.globalTimer-=8;
@@ -300,7 +303,7 @@ public class GenericNode implements NodeType {
 			}
 			break;
 		case MINE:
-			if (force || extra.chanceIn(1,3)) {
+			if (force || Rand.chanceIn(1,3)) {
 				//veins can grow, but not regrow
 				resetNode(holder,node,NodeType.NodeTypeNum.MINE.singleton.rollRegrow());
 				holder.globalTimer-=24;
@@ -308,7 +311,7 @@ public class GenericNode implements NodeType {
 			}
 			break;
 		case BEACH:
-			if (force || extra.chanceIn(1,3)) {
+			if (force || Rand.chanceIn(1,3)) {
 				//avoids rolling things that can't regrow
 				resetNode(holder,node,NodeType.NodeTypeNum.BEACH.singleton.rollRegrow());
 				holder.globalTimer-=8;
@@ -489,7 +492,7 @@ public class GenericNode implements NodeType {
 	}
 	
 	private boolean basicRager(NodeConnector holder,int node) {
-		extra.println(TrawelColor.PRE_BATTLE+holder.getStorageAsArray(node)[2]);
+		Print.println(TrawelColor.PRE_BATTLE+holder.getStorageAsArray(node)[2]);
 		Person p = holder.getStorageFirstPerson(node);
 		Combat c = Player.player.fightWith(p);
 		if (c.playerWon() > 0) {
@@ -516,7 +519,7 @@ public class GenericNode implements NodeType {
 	
 	private boolean simpleDeadString(NodeConnector holder,int node) {
 		String str = holder.getStorageFirstClass(node, String.class);
-		extra.println(extra.choose("The " + str + " is dead.","The "+str+" lies here, dead."));//TODO use inserts in a global dead body fluffer
+		Print.println(Rand.choose("The " + str + " is dead.","The "+str+" lies here, dead."));//TODO use inserts in a global dead body fluffer
 		holder.findBehind(node,"body parts");
 		return false;
 	}
@@ -524,11 +527,11 @@ public class GenericNode implements NodeType {
 	private boolean simpleDeadPerson(NodeConnector holder,int node) {
 		Person p = holder.getStorageFirstPerson(node);
 		if (p.getSuper() != null && p.getSuper().everDeathCheated()) {
-			extra.println("There was a body here, but now it's gone!");
+			Print.println("There was a body here, but now it's gone!");
 			return false;
 		}
 		
-		extra.println(p.getName() + " is dead.");
+		Print.println(p.getName() + " is dead.");
 		holder.findBehind(node,p.getName() +"'s corpse");
 		return false;
 	}
@@ -538,7 +541,7 @@ public class GenericNode implements NodeType {
 	private boolean miscStringTotal(NodeConnector holder,int node) {
 		Object[] objs = holder.getStorageAsArray(node);
 		String str = objs[2].toString();//third
-		extra.println(str);
+		Print.println(str);
 		if (objs[3] != null) {
 			holder.findBehind(node,objs[3].toString());
 		}
@@ -548,7 +551,7 @@ public class GenericNode implements NodeType {
 	private boolean simpleDeadRaceID(NodeConnector holder,int node) {
 		Integer i = holder.getStorageFirstClass(node, Integer.class);
 		String str = RaceID.values()[i].name;
-		extra.println(extra.choose("The " + str + " is dead.","The "+str+" lies here, dead."));//TODO use inserts in a global dead body fluffer
+		Print.println(Rand.choose("The " + str + " is dead.","The "+str+" lies here, dead."));//TODO use inserts in a global dead body fluffer
 		holder.findBehind(node,"body parts");
 		return false;
 	}
@@ -571,38 +574,38 @@ public class GenericNode implements NodeType {
 		holder.addVein();//gem veins count now
 		String mineral = null;
 		if (maxValueTier > 0) {
-			if (extra.chanceIn(1, 6)) {
-				mineral = extra.choose("emerald","emerald","ruby","sapphire");//more likely to apply emerald
+			if (Rand.chanceIn(1, 6)) {
+				mineral = Rand.choose("emerald","emerald","ruby","sapphire");//more likely to apply emerald
 			}else {
 				switch (maxValueTier) {
 				case 1:
-					if (extra.chanceIn(1,3)) {
-						mineral = extra.choose("tin","copper","iron","silver","gold","platinum");
+					if (Rand.chanceIn(1,3)) {
+						mineral = Rand.choose("tin","copper","iron","silver","gold","platinum");
 					}else {
-						mineral = extra.choose("tin","copper","iron");
+						mineral = Rand.choose("tin","copper","iron");
 					}
 					break;
 				case 2:
-					if (extra.chanceIn(1,3)) {
-						mineral = extra.choose("iron","silver","gold","platinum","moonsilver");
+					if (Rand.chanceIn(1,3)) {
+						mineral = Rand.choose("iron","silver","gold","platinum","moonsilver");
 					}else {
-						mineral = extra.choose("tin","copper","iron","silver");
+						mineral = Rand.choose("tin","copper","iron","silver");
 					}
 					break;
 				case 3:
-					if (extra.chanceIn(1,3)) {
-						mineral = extra.choose("silver","gold","platinum","moonsilver","mythril","adamantine");
+					if (Rand.chanceIn(1,3)) {
+						mineral = Rand.choose("silver","gold","platinum","moonsilver","mythril","adamantine");
 					}else {
-						mineral = extra.choose("tin","copper","iron","silver","gold");
+						mineral = Rand.choose("tin","copper","iron","silver","gold");
 					}
 					break;
 				}
 			}
 		}else {
-			if (extra.chanceIn(1,3)) {
-				mineral = extra.choose("tin","copper","iron","silver","gold");
+			if (Rand.chanceIn(1,3)) {
+				mineral = Rand.choose("tin","copper","iron","silver","gold");
 			}else {
-				mineral = extra.choose("tin","copper","iron");
+				mineral = Rand.choose("tin","copper","iron");
 			}
 		}
 		holder.setStorage(node, new Object[]{mineral});
@@ -613,7 +616,7 @@ public class GenericNode implements NodeType {
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.VEIN_MINERAL.ordinal());
 		holder.addVein();
-		holder.setStorage(node, new Object[]{extra.choose("emerald","emerald","ruby","sapphire")});//more likely to apply emerald
+		holder.setStorage(node, new Object[]{Rand.choose("emerald","emerald","ruby","sapphire")});//more likely to apply emerald
 	}
 	
 	private boolean genericVein(NodeConnector holder,int node) {
@@ -638,20 +641,20 @@ public class GenericNode implements NodeType {
 			default:
 				int reward = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),2*m.veinReward, .6f);
 				Player.player.addGold(reward);
-				extra.println("You mine the vein of "+ World.currentMoneyDisplay(reward)+ " worth of "+m.color+matName+TrawelColor.COLOR_RESET+".");
+				Print.println("You mine the vein of "+ World.currentMoneyDisplay(reward)+ " worth of "+m.color+matName+TrawelColor.COLOR_RESET+".");
 				break;
 			}
 			if (gem != null) {
 				int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),gem.reward(1.5f, themed), .5f);
 				gem.changeGem(gemAmount);
-				extra.println("You mine the vein and claim "+gemAmount+" "+m.color+(gemAmount == 0 ? gem.name : gem.plural)+TrawelColor.COLOR_RESET+"!");
+				Print.println("You mine the vein and claim "+gemAmount+" "+m.color+(gemAmount == 0 ? gem.name : gem.plural)+TrawelColor.COLOR_RESET+"!");
 			}
 			holder.setStateNum(node,1);
 			holder.removeVein();
 			
 			holder.findBehind(node,"empty "+m.color+matName+"vein"+TrawelColor.COLOR_RESET);//instant chance so they want to mine more
 		}else {
-			extra.println("The "+m.color+matName+TrawelColor.COLOR_RESET+" has already been mined.");
+			Print.println("The "+m.color+matName+TrawelColor.COLOR_RESET+" has already been mined.");
 			holder.findBehind(node,"empty "+m.color+matName+"vein"+TrawelColor.COLOR_RESET);
 		}
 		return false;
@@ -667,7 +670,7 @@ public class GenericNode implements NodeType {
 	public static boolean goCollector(NodeConnector holder,int node) {
 		Person p = holder.getStorageFirstPerson(node);
 		p.getBag().graphicalDisplay(1, p);
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> list = new ArrayList<MenuItem>();
@@ -685,15 +688,15 @@ public class GenericNode implements NodeType {
 
 					@Override
 					public boolean go() {
-						if (extra.chanceIn(1,30)) {
-							extra.println(TrawelColor.PRE_BATTLE +"\"Enough of your games!\"");
+						if (Rand.chanceIn(1,30)) {
+							Print.println(TrawelColor.PRE_BATTLE +"\"Enough of your games!\"");
 							setBasicRagePerson(holder, node, p, "A very angry "+TrawelColor.PRE_BATTLE+p.getName(),TrawelColor.PRE_BATTLE+p.getName() + " attacks you!");
 							return true;//out of menu
 						}
-						if (extra.chanceIn(1,3)) {
+						if (Rand.chanceIn(1,3)) {
 							Oracle.tip("old");
 						}
-						extra.println("They ignore you.");
+						Print.println("They ignore you.");
 						return false;
 					}});
 				list.add(new MenuSelect() {
@@ -722,24 +725,24 @@ public class GenericNode implements NodeType {
 		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.LOCKDOOR.ordinal());
-		holder.setStorage(node,extra.choose("Locked Door","Barricaded Door","Padlocked Door"));
+		holder.setStorage(node,Rand.choose("Locked Door","Barricaded Door","Padlocked Door"));
 		holder.setForceGo(node, true);
 	}
 	
 	private boolean goLockedDoor(NodeConnector holder,int node) {
 		if (holder.isForceGo(node)) {
 			if (holder.parent.getOwner() == Player.player) {
-				extra.println("You find the keyhole and then unlock the "+holder.getStorageFirstClass(node,String.class)+".");
+				Print.println("You find the keyhole and then unlock the "+holder.getStorageFirstClass(node,String.class)+".");
 				holder.setStateNum(node,1);//unlocked once
 				holder.findBehind(node,"unlocked door");
 			}else {
 				final String name = holder.getStorageFirstClass(node,String.class);
 				if (holder.getStateNum(node) == 1){//if you owned this prior
-					extra.println("Looks like they changed the locks!");
+					Print.println("Looks like they changed the locks!");
 					holder.setStateNum(node,0);//set back to locked so it doesn't say this again on this node
 				}
 				//only applies burnout on fail to prevent further attempts, no other penalty
-				extra.menuGo(new MenuGenerator() {
+				Input.menuGo(new MenuGenerator() {
 
 					@Override
 					public List<MenuItem> gen() {
@@ -771,7 +774,7 @@ public class GenericNode implements NodeType {
 										Player.player.getPerson().getStrength(), IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node)))
 										>=0){
 										//broke down door
-										extra.println(TrawelColor.RESULT_PASS+"You bash open the "+name+".");
+										Print.println(TrawelColor.RESULT_PASS+"You bash open the "+name+".");
 										holder.setStateNum(node,2);//broken open
 										holder.setForceGo(node, false);
 										String newName = "Broken " +name;
@@ -780,7 +783,7 @@ public class GenericNode implements NodeType {
 									}else {
 										//failed
 										Player.player.getPerson().addEffect(Effect.BURNOUT);
-										extra.println(TrawelColor.RESULT_FAIL+"You fail to bash open the "+name+".");
+										Print.println(TrawelColor.RESULT_FAIL+"You fail to bash open the "+name+".");
 									}
 									return true;
 								}});
@@ -797,7 +800,7 @@ public class GenericNode implements NodeType {
 										Player.player.getPerson().getDexterity(), IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node)))
 										>=0){
 										//lockpicked door
-										extra.println(TrawelColor.RESULT_PASS+"You pick open the "+name+".");
+										Print.println(TrawelColor.RESULT_PASS+"You pick open the "+name+".");
 										holder.setStateNum(node,3);//picked
 										holder.setForceGo(node, false);
 										String newName = "Picked " +name;
@@ -806,7 +809,7 @@ public class GenericNode implements NodeType {
 									}else {
 										//failed
 										Player.player.getPerson().addEffect(Effect.BURNOUT);
-										extra.println(TrawelColor.RESULT_FAIL+"You fail to lockpick the "+name+".");
+										Print.println(TrawelColor.RESULT_FAIL+"You fail to lockpick the "+name+".");
 									}
 									return true;
 								}});
@@ -823,7 +826,7 @@ public class GenericNode implements NodeType {
 										Player.player.getPerson().getClarity(), IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node)))
 										>=0){
 										//lockpicked door
-										extra.println(TrawelColor.RESULT_PASS+"You open the "+name+" with a Knock cantrip.");
+										Print.println(TrawelColor.RESULT_PASS+"You open the "+name+" with a Knock cantrip.");
 										holder.setStateNum(node,4);//opened
 										holder.setForceGo(node, false);
 										String newName = "Opened " +name;
@@ -832,7 +835,7 @@ public class GenericNode implements NodeType {
 									}else {
 										//failed
 										Player.player.getPerson().addEffect(Effect.BURNOUT);
-										extra.println(TrawelColor.RESULT_FAIL+"Your Knock cantrip on the "+name+" fizzles.");
+										Print.println(TrawelColor.RESULT_FAIL+"Your Knock cantrip on the "+name+" fizzles.");
 									}
 									return true;
 								}});
@@ -841,7 +844,7 @@ public class GenericNode implements NodeType {
 						return list;
 					}});
 				if (holder.getStateNum(node) <= 1) {//if still locked
-					extra.println(TrawelColor.RESULT_ERROR+"The door forces you to turn around.");
+					Print.println(TrawelColor.RESULT_ERROR+"The door forces you to turn around.");
 					NodeConnector.setKickGate();
 					return false;
 				}
@@ -850,12 +853,12 @@ public class GenericNode implements NodeType {
 			}
 		}else {
 			if (holder.parent.getOwner() == Player.player) {
-				extra.println("You relock the door every time you go by it, but you know where the hole is now so that's easy.");
+				Print.println("You relock the door every time you go by it, but you know where the hole is now so that's easy.");
 			}else {
 				switch (holder.getStateNum(node)) {
 				case 2://broken
-					extra.println(
-							extra.choose(
+					Print.println(
+							Rand.choose(
 							"The door is broken."
 							,"The door is smashed to bits."
 							,"The metal on the door is hanging off the splinters."
@@ -864,8 +867,8 @@ public class GenericNode implements NodeType {
 							);
 					break;
 				case 3://lockpicked
-					extra.println(
-							extra.choose(
+					Print.println(
+							Rand.choose(
 							"The lock has been picked."
 							,"The lock here has been tampered with."
 							,"The tumblers have been stuck together, rendering the lock useless."
@@ -874,8 +877,8 @@ public class GenericNode implements NodeType {
 							);
 					break;
 				case 4://opened with knock
-					extra.println(
-							extra.choose(
+					Print.println(
+							Rand.choose(
 							"The lock has been opened with a cantrip."
 							,"The lock here has been enchanted open."
 							,"The tumblers magically slide back to open, rendering the lock useless."
@@ -898,7 +901,7 @@ public class GenericNode implements NodeType {
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.PLANT_SPOT.ordinal());
 		if (starting == null) {
-			starting = extra.choose(Seed.GROWN_APPLE,Seed.GROWN_BEE,Seed.GROWN_EGGCORN);
+			starting = Rand.choose(Seed.GROWN_APPLE,Seed.GROWN_BEE,Seed.GROWN_EGGCORN);
 		}
 		holder.setStorage(node,new PlantSpot(holder.getLevel(node),starting));
 	}
@@ -918,7 +921,7 @@ public class GenericNode implements NodeType {
 		p.getBag().graphicalDisplay(1, p);
 		boolean racist = p.isRacist();
 		final RaceID r = p.getBag().getRaceID();
-		final String name = extra.capFirst(r.name);
+		final String name = Print.capFirst(r.name);
 		if (racist && holder.getStateNum(node) >= 10) {//pissed off but can recover
 			if (r == Player.bag.getRaceID()) {
 				//racist won't attack person of same race first
@@ -926,14 +929,14 @@ public class GenericNode implements NodeType {
 				holder.setStateNum(node,9);
 				holder.setForceGo(node,false);
 				//this 'shady figure' was you before species store
-				extra.println("The "+name+" pulls you aside and tells you to watch for shady figures around here.");
+				Print.println("The "+name+" pulls you aside and tells you to watch for shady figures around here.");
 			}else {
 				//racist is committing hate crimes, continue to basic rager code
 				//do rant
-				extra.println("\"" +extra.capFirst(
+				Print.println("\"" +Print.capFirst(
 						Oracle.tipStringExt("racistAttack", "a",r.name,r.namePlural,r.adjective,holder.parent.getTown().getName(),Player.bag.getRace().badNameList())
 						+"\""));
-				extra.println(TrawelColor.PRE_BATTLE+"The racist "+name+" attacks you!");
+				Print.println(TrawelColor.PRE_BATTLE+"The racist "+name+" attacks you!");
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() > 0) {
 					GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
@@ -943,7 +946,7 @@ public class GenericNode implements NodeType {
 				}
 			}
 		}
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> list = new ArrayList<MenuItem>();
@@ -966,13 +969,13 @@ public class GenericNode implements NodeType {
 							if (r == Player.bag.getRaceID()) {
 								//meeting a player to be racist with calms them down
 								holder.setStateNum(node,Math.max(0,--anger));
-								extra.println("\"" +extra.capFirst(
+								Print.println("\"" +Print.capFirst(
 										Oracle.tipStringExt("racistPraise", "a",r.name,r.namePlural,r.adjective, holder.parent.getTown().getName(),Player.bag.getRace().badNameList())
 										)+"\"");
 							}else {
 								//if not same species and angry is at least 2, X in 6 chance to try to assault/murder the player
 								//do before processing other triggers so that we can play the attack line instead of the other ones
-								if (anger >= 2 && extra.chanceIn(holder.getStateNum(node),6)) {
+								if (anger >= 2 && Rand.chanceIn(holder.getStateNum(node),6)) {
 									//attack line is handled by code after forcego 
 									/*
 									extra.println("\"" +extra.capFirst(
@@ -984,37 +987,37 @@ public class GenericNode implements NodeType {
 									holder.setStateNum(node,20);//set full anger
 									return true;//out of menu, not area
 								}
-								if (extra.chanceIn(4,5)) {//40% chance to do generic Tips
-									if (extra.chanceIn(1,3)) {//33% chance to play up self and calm down a bit
+								if (Rand.chanceIn(4,5)) {//40% chance to do generic Tips
+									if (Rand.chanceIn(1,3)) {//33% chance to play up self and calm down a bit
 										holder.setStateNum(node,Math.max(0,--anger));
-										extra.println("\"" +extra.capFirst(
+										Print.println("\"" +Print.capFirst(
 												Oracle.tipStringExt("racistPraise", "a",r.name,r.namePlural,r.adjective, holder.parent.getTown().getName(),Player.bag.getRace().badNameList())
 												)+"\"");
 									}else {//66% chance to do wide insult and get angrier
 										holder.setStateNum(node,++anger);
-										extra.println("\"" +extra.capFirst(
+										Print.println("\"" +Print.capFirst(
 												Oracle.tipStringExt("racistShun", "a",r.name,r.namePlural,r.adjective,holder.parent.getTown().getName(),Player.bag.getRace().badNameList())
 												+"\""));
 									}
 								}else {
 									//20% chance to do racially charged insult and get angrier
 									holder.setStateNum(node,++anger);
-									extra.println("\"" + Player.bag.getRace().randomInsult() +"\"");
+									Print.println("\"" + Player.bag.getRace().randomInsult() +"\"");
 								}
 							}
 						}else {
 							if (p.isAngry()) {
-								extra.println("They seem really mad about everything.");
+								Print.println("They seem really mad about everything.");
 								//always gets angry
 								holder.setStateNum(node,++anger);
 								//doesn't have initial gate so could happen right away, but lower starting chance
-								if (extra.chanceIn(anger,8)) {
+								if (Rand.chanceIn(anger,8)) {
 									//set into fighter forever
 									setBasicRagePerson(holder, node, p, "An angry "+TrawelColor.PRE_BATTLE +name,TrawelColor.PRE_BATTLE+"The "+name + " attacks you!");
 									return true;//out of menu, not area
 								}
 							}else {
-								extra.println("\""+Oracle.tipString("equality")+"\"");
+								Print.println("\""+Oracle.tipString("equality")+"\"");
 							}
 						}
 						return false;
@@ -1072,12 +1075,12 @@ public class GenericNode implements NodeType {
 		final Person leader = extra.getNonAddOrFirst(peeps);
 		if (state > 1) {//if attacking by default
 			if (leader.getFlag(PersonFlag.IS_MOOK)) {
-				extra.println(TrawelColor.PRE_BATTLE+"The bodyguard attacks you!");
+				Print.println(TrawelColor.PRE_BATTLE+"The bodyguard attacks you!");
 			}else {
 				if (peeps.size() > 1) {
-					extra.println(TrawelColor.PRE_BATTLE+"Their bodyguard swoops in to assist!");
+					Print.println(TrawelColor.PRE_BATTLE+"Their bodyguard swoops in to assist!");
 				}else {
-					extra.println(TrawelColor.PRE_BATTLE+"They attack without backup!");
+					Print.println(TrawelColor.PRE_BATTLE+"They attack without backup!");
 				}
 				
 			}
@@ -1088,7 +1091,7 @@ public class GenericNode implements NodeType {
 				return false;
 			}else {
 				Person aleader = extra.getNonAddOrFirst(c.getNonSummonSurvivors());//need to keep leader effectively final sadly
-				if (aleader.getFlag(PersonFlag.IS_MOOK) && extra.chanceIn(1,3)) {
+				if (aleader.getFlag(PersonFlag.IS_MOOK) && Rand.chanceIn(1,3)) {
 					//if rich is dead, 33% chance to leave
 					GenericNode.setSimpleDeadString(holder, node,"body");
 				}else {
@@ -1101,7 +1104,7 @@ public class GenericNode implements NodeType {
 		leader.getBag().graphicalDisplay(1,leader);
 		assert !leader.getFlag(PersonFlag.IS_MOOK);
 		//boolean is_add = leader.getFlag(PersonFlag.IS_ADD);//can't be an add at this point
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> list = new ArrayList<MenuItem>();
@@ -1121,12 +1124,12 @@ public class GenericNode implements NodeType {
 					public boolean go() {
 						List<String> poorNames = Arrays.asList(new String[] {"serf","peasant","peon","menial","slave","servant","barbarian","pleb","commoner","poor"});
 						if (Player.player.getGold() > leader.getBag().getGold()*10) {//you're so much richer than them that they see you as part of their bigotry
-							extra.println("\"" +extra.capFirst(
+							Print.println("\"" +Print.capFirst(
 									Oracle.tipStringExt("racistPraise", "a","merchant","merchants","merchant", holder.parent.getTown().getName(),poorNames)
 									)+"\"");
 						}else {
-							extra.println("\"" +extra.capFirst(
-									Oracle.tipStringExt(extra.choose("racistShun","racistPraise"), "a","merchant","merchants","merchant",holder.parent.getTown().getName(),poorNames)
+							Print.println("\"" +Print.capFirst(
+									Oracle.tipStringExt(Rand.choose("racistShun","racistPraise"), "a","merchant","merchants","merchant",holder.parent.getTown().getName(),poorNames)
 									)+"\"");
 						};
 						return false;
@@ -1164,35 +1167,35 @@ public class GenericNode implements NodeType {
 		Object[] tchamberArray = new Object[2];
 		byte[] lootData = new byte[4];
 		//0 = str, 1 = dex, 3 = cla
-		lootData[0] = (byte) extra.randRange(0,2);//attrib value of what type of chamber it is, used to scan for traps early
+		lootData[0] = (byte) Rand.randRange(0,2);//attrib value of what type of chamber it is, used to scan for traps early
 		//if you fail to scan it throws you into a random trap and you discover that trap but must endure it
 		//if you then fail to endure it you suffer the burnout + penalty
 		//either way the trap gets revealed which makes it easier in the future
 		//if you pass you learn an unlearnt trap in order
-		lootData[1] = (byte) extra.randRange(0,2);//reward type
+		lootData[1] = (byte) Rand.randRange(0,2);//reward type
 		//lootData[2] = 0;//reward subtype
 		switch (lootData[1]) {
 			default: case 0://money
 				lootData[2] = 0;
 				break;
 			case 1://guild cache
-				lootData[2] = (byte) extra.randRange(0,3);//merchant, hero, rogue, hunter
+				lootData[2] = (byte) Rand.randRange(0,3);//merchant, hero, rogue, hunter
 				break;
 			case 2://aether well with side reward
-				lootData[2] = (byte) extra.randRange(0,6);//0 to 6 flavors and drawbanes
+				lootData[2] = (byte) Rand.randRange(0,6);//0 to 6 flavors and drawbanes
 				break;
 		}
-		lootData[3] = (byte) extra.randRange(0,trapChamberType[lootData[0]].length-1);//chamber type fluff offset
+		lootData[3] = (byte) Rand.randRange(0,trapChamberType[lootData[0]].length-1);//chamber type fluff offset
 		//reward amount scale is determined by number of traps, 2/3/4
-		int trapNumber = extra.randRange(2,4);
+		int trapNumber = Rand.randRange(2,4);
 		byte[][] trapArray = new byte[trapNumber][];
 		//each trap needs a byte attribute for stat type
 		//each trap uses a random offset value and modulos fluff from that
 		//each trap stores if it's revealed or not
 		for (int i = 0; i < trapNumber;i++) {
 			trapArray[i] = new byte[3];
-			trapArray[i][0] = (byte) extra.randRange(0,2);//0 = str, 1 = dex, 3 = cla
-			trapArray[i][1] = (byte) extra.randRange(0,trapList[trapArray[i][0]].length-1);
+			trapArray[i][0] = (byte) Rand.randRange(0,2);//0 = str, 1 = dex, 3 = cla
+			trapArray[i][1] = (byte) Rand.randRange(0,trapList[trapArray[i][0]].length-1);
 			trapArray[i][2] = 0;
 		}
 		tchamberArray[0] = lootData;
@@ -1210,7 +1213,7 @@ public class GenericNode implements NodeType {
 		 * 2 = all traps revealed
 		 * 3 = looted
 		 */
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -1243,7 +1246,7 @@ public class GenericNode implements NodeType {
 							public boolean go() {
 								for (int i = 0; i < trapArray.length;i++) {
 									if (!handleTrap(holder,node,trapArray[i])){
-										extra.println("You failed at looting the "+tChamberLookup(lootArray[0],lootArray[3])[0]+".");
+										Print.println("You failed at looting the "+tChamberLookup(lootArray[0],lootArray[3])[0]+".");
 										return false;
 									}
 								}
@@ -1259,7 +1262,7 @@ public class GenericNode implements NodeType {
 								
 								switch (lootArray[1]) {
 								case 0: default://gold heavy vault
-									extra.println(TrawelColor.RESULT_GOOD+"The vault is filled with money!");
+									Print.println(TrawelColor.RESULT_GOOD+"The vault is filled with money!");
 									//8-16 above and 20-40 here, so 28-56 before level scaling and drop off
 									gold += IEffectiveLevel.cleanRangeReward(level,10*trapArray.length,.8f);
 									break;
@@ -1292,8 +1295,8 @@ public class GenericNode implements NodeType {
 										gem = Gem.SAPPHIRE;
 										bonusDrawBanes = new ArrayList<DrawBane>();
 										//'wealthy' drawbanes
-										bonusDrawBanes.add(extra.choose(DrawBane.GOLD,DrawBane.SILVER));
-										bonusDrawBanes.add(extra.choose(DrawBane.GOLD,DrawBane.SILVER));
+										bonusDrawBanes.add(Rand.choose(DrawBane.GOLD,DrawBane.SILVER));
+										bonusDrawBanes.add(Rand.choose(DrawBane.GOLD,DrawBane.SILVER));
 										themed = true;
 										break;
 									case 3://hunter
@@ -1307,8 +1310,8 @@ public class GenericNode implements NodeType {
 									}
 									//+= since above can give more gems for some
 									gemCount += IEffectiveLevel.cleanRangeReward(level,gem.reward(trapArray.length/2.0f, themed),.8f);
-									extra.println(TrawelColor.RESULT_GOOD+"The vault contains a "+gType + " guild cache!");
-									extra.println(TrawelColor.RESULT_PASS+"You find " + gemCount + " " + (gemCount == 1 ? gem.name : gem.plural)+"!");
+									Print.println(TrawelColor.RESULT_GOOD+"The vault contains a "+gType + " guild cache!");
+									Print.println(TrawelColor.RESULT_PASS+"You find " + gemCount + " " + (gemCount == 1 ? gem.name : gem.plural)+"!");
 									gem.changeGem(gemCount);
 									if (bonusDrawBanes != null) {
 										for (int i = 0; i < bonusDrawBanes.size(); i++) {
@@ -1357,13 +1360,13 @@ public class GenericNode implements NodeType {
 											drawAdd = DrawBane.CEON_STONE;
 											break;
 									}
-									extra.println(TrawelColor.RESULT_GOOD+aetherFluff+" +"+aetherAdd+ " Aether.");
+									Print.println(TrawelColor.RESULT_GOOD+aetherFluff+" +"+aetherAdd+ " Aether.");
 									Player.bag.addAether(aetherAdd);
 									Player.bag.addNewDrawBanePlayer(drawAdd);
 									break;
 								}
 								Player.player.addGold(gold);
-								extra.println(TrawelColor.RESULT_PASS+"You loot " + World.currentMoneyDisplay(gold)+"!");
+								Print.println(TrawelColor.RESULT_PASS+"You loot " + World.currentMoneyDisplay(gold)+"!");
 								return false;
 							}});
 						if (state < 2) {
@@ -1385,19 +1388,19 @@ public class GenericNode implements NodeType {
 										for (int i = 0; i < trapArray.length;i++) {
 											if (trapArray[i][2] == 0) {//if trap is not revealed
 												trapArray[i][2] = 1;//reveal it
-												extra.println(TrawelColor.RESULT_PASS+tChamberLookup(lootArray[0],lootArray[3])[2] +": "+ trapLookup(trapArray[i][0],trapArray[i][1])[4] + " " + AttributeBox.getStatHintByIndex(trapArray[i][0]));//print reveal fluff
+												Print.println(TrawelColor.RESULT_PASS+tChamberLookup(lootArray[0],lootArray[3])[2] +": "+ trapLookup(trapArray[i][0],trapArray[i][1])[4] + " " + AttributeBox.getStatHintByIndex(trapArray[i][0]));//print reveal fluff
 												break;//stop revealing
 											}
 											if (i == trapArray.length-1) {//if the last trap is already revealed
 												holder.setStateNum(node,2);//set state which will get refreshed above
 												//this ensures they know there's no more traps, but to do so they have to successfully pass
 												//while already having all traps.
-												extra.println("You can find no more traps here!");
+												Print.println("You can find no more traps here!");
 											}
 										}
 									}else {
 										//failed, thrown into entirely random trap
-										boolean survived = handleTrap(holder,node,trapArray[extra.randRange(0,trapArray.length-1)]);
+										boolean survived = handleTrap(holder,node,trapArray[Rand.randRange(0,trapArray.length-1)]);
 									}
 									return false;
 								}});
@@ -1445,44 +1448,44 @@ public class GenericNode implements NodeType {
 			Player.addTime(.5);//half an hour of passing time
 			TrawelTime.globalPassTime();
 			//passed check
-			extra.println(TrawelColor.RESULT_NO_CHANGE_GOOD+trapFluff[3] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
+			Print.println(TrawelColor.RESULT_NO_CHANGE_GOOD+trapFluff[3] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
 			return true;
 		}else {
 			Player.addTime(1);//full hour of failing time
 			TrawelTime.globalPassTime();
 			//failed check, suffer burnout
 			Player.player.getPerson().addEffect(Effect.BURNOUT);
-			extra.println(TrawelColor.RESULT_FAIL+trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
+			Print.println(TrawelColor.RESULT_FAIL+trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
 			TrapPunishment punishment = trapFluff[1] == null ? null : TrapPunishment.valueOf(trapFluff[1]);
 			switch (punishment) {//type of trap punishment
 			default:
-				extra.println("Unknown trap punishment type!");
+				Print.println("Unknown trap punishment type!");
 				break;
 			case DAMAGE_KILL:
 				Deaths.die("You revive outside the trapped chamber.");
-				extra.println(TrawelColor.RESULT_FAIL+"Your equipment is damaged!");
+				Print.println(TrawelColor.RESULT_FAIL+"Your equipment is damaged!");
 				Player.player.getPerson().addEffect(Effect.DAMAGED);
 				break;
 			case WOUND_KILL:
 				Deaths.die("You revive outside the trapped chamber.");
-				extra.println(TrawelColor.RESULT_FAIL+"Your body is broken!");
+				Print.println(TrawelColor.RESULT_FAIL+"Your body is broken!");
 				Player.player.getPerson().addEffect(Effect.WOUNDED);
 				break;
 			case FATIGUE:
-				extra.println(TrawelColor.RESULT_FAIL+"You are overcome with fatigue!");
+				Print.println(TrawelColor.RESULT_FAIL+"You are overcome with fatigue!");
 				Player.player.getPerson().addEffect(Effect.TIRED);
 				break;
 			case BEES:
-				extra.println(TrawelColor.RESULT_FAIL+"Bees pursue you!");
+				Print.println(TrawelColor.RESULT_FAIL+"Bees pursue you!");
 				Player.player.getPerson().addEffect(Effect.BEES);
 				break;
 			case CURSE:
-				extra.println(TrawelColor.RESULT_FAIL+"You are cursed!");
+				Print.println(TrawelColor.RESULT_FAIL+"You are cursed!");
 				Player.player.getPerson().addEffect(Effect.CURSE);
 				break;
 			case CURSE_KILL:
 				Deaths.die("You revive outside the trapped chamber.");
-				extra.println(TrawelColor.RESULT_FAIL+"You are cursed!");
+				Print.println(TrawelColor.RESULT_FAIL+"You are cursed!");
 				Player.player.getPerson().addEffect(Effect.CURSE);
 				break;
 			}

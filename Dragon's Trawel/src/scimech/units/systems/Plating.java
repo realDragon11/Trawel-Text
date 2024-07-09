@@ -14,6 +14,7 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
+import trawel.core.Input;
 import trawel.helper.methods.extra;
 
 public class Plating extends Systems {
@@ -72,7 +73,7 @@ public class Plating extends Systems {
 
 	@Override
 	public void examine() {//cannot turn off
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import trawel.helper.methods.extra;
+import trawel.core.Rand;
 import trawel.quests.types.Quest;
 import trawel.towns.contexts.Town;
 import trawel.towns.data.Connection;
@@ -66,7 +66,7 @@ public interface QuestBoardLocation{
 	 * @return
 	 */
 	public default Feature getQuestGoal(){
-		return extra.randList(getQuestLocationsInRange(5));
+		return Rand.randList(getQuestLocationsInRange(5));
 	}
 	
 	public Town getTown();
@@ -134,10 +134,10 @@ public interface QuestBoardLocation{
 		 * can return null if rolls an unusable feature twice
 		 */
 		public Feature roll() {
-			Feature f = goals.get(table.random(extra.getRand()));
+			Feature f = goals.get(table.random(Rand.getRand()));
 			if (f.getReplaced() == f) {
 				//try a reroll, but only one
-				f = goals.get(table.random(extra.getRand()));
+				f = goals.get(table.random(Rand.getRand()));
 				if (f.getReplaced() == f) {
 					return null;
 				}

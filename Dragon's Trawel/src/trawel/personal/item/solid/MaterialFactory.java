@@ -7,8 +7,9 @@ import java.util.Map;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.item.solid.variants.ArmorStyle;
 
 public class MaterialFactory {
@@ -1092,11 +1093,11 @@ public class MaterialFactory {
 	}
 	
 	public static Material randArmorMat() {
-		return matList.get(armMats.random(extra.getRand()));
+		return matList.get(armMats.random(Rand.getRand()));
 	}
 	
 	public static Material randWeapMat() {
-		return matList.get(weapMats.random(extra.getRand()));
+		return matList.get(weapMats.random(Rand.getRand()));
 	}
 	
 	public static void materialWeapDiag() {
@@ -1109,7 +1110,7 @@ public class MaterialFactory {
 			}
 		}
 		for (int i = 0; i < copyList.size();i++) {
-			extra.println(copyList.get(i).name+"% "+copyList.get(i).rarity/totalRarity);
+			Print.println(copyList.get(i).name+"% "+copyList.get(i).rarity/totalRarity);
 		}
 	}
 }

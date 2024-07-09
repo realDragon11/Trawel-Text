@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import scimech.mech.Mech;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class SaveHandler implements java.io.Serializable{
 
@@ -56,7 +56,7 @@ public class SaveHandler implements java.io.Serializable{
 	}
 	
 	public static void save() {
-		extra.println("saving...");
+		Print.println("saving...");
 		   FileOutputStream fos;
 			try {
 				fos = new FileOutputStream("scimech.save");
@@ -64,7 +64,7 @@ public class SaveHandler implements java.io.Serializable{
 				 oos.writeObject(save);
 			     oos.close();
 			     fos.close();
-			     extra.println("saved!");
+			     Print.println("saved!");
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -73,7 +73,7 @@ public class SaveHandler implements java.io.Serializable{
 	}
 	
 	public static void load() {
-		extra.println("loading...");
+		Print.println("loading...");
 		FileInputStream fos;
 		try {
 			fos = new FileInputStream("scimechs.save");
@@ -81,11 +81,11 @@ public class SaveHandler implements java.io.Serializable{
 			 save = (SaveHandler) oos.readObject();
 			 oos.close();
 			 fos.close();
-			 extra.println("loaded!");
+			 Print.println("loaded!");
 			 return;
 		} catch (Exception e) {
 			e.printStackTrace();
-			extra.println("Invalid load. Either no save file was found or it was outdated.");
+			Print.println("Invalid load. Either no save file was found or it was outdated.");
 			return;
 		}
 	}

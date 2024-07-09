@@ -2,7 +2,8 @@ package rtrawel.village;
 
 import rtrawel.battle.Party;
 import rtrawel.unit.RUnit;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
+import trawel.core.Print;
 
 public class Inn implements Content {
 
@@ -13,8 +14,8 @@ public class Inn implements Content {
 	
 	@Override
 	public boolean go() {
-		extra.println("Spend " + cost + " gold on a night's rest?");
-		if (Party.party.gold >= cost && extra.yesNo()) {
+		Print.println("Spend " + cost + " gold on a night's rest?");
+		if (Party.party.gold >= cost && Input.yesNo()) {
 			Party.party.gold -= cost;
 			for (RUnit r: Party.party.list) {
 				if (r.isAlive()) {

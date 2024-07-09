@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import trawel.helper.methods.extra;
+import trawel.core.Rand;
 
 public class StyleFactory {
 
@@ -66,6 +66,6 @@ public class StyleFactory {
 	
 	
 	public static Style randStyle() {
-		return StyleList.get(styleTable.random(extra.getRand()));
+		return StyleList.get(styleTable.random(Rand.getRand()));
 	}
 }

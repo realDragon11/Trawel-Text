@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.factions.Faction;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.IEffectiveLevel;
@@ -47,12 +49,12 @@ public class Forest extends ExploreFeature{
 	
 	@Override
 	public void onExhaust() {
-		extra.println("You don't find anything. You think you may have exhausted this forest, for now. Maybe come back later?");
+		Print.println("You don't find anything. You think you may have exhausted this forest, for now. Maybe come back later?");
 	}
 	
 	@Override
 	public void onNoGo() {
-		extra.println("The forest is barren.");
+		Print.println("The forest is barren.");
 	}
 	
 	@Override
@@ -67,11 +69,11 @@ public class Forest extends ExploreFeature{
 		if (explores == 100 && dryadQuest < 4) {
 			Player.player.addAchieve(this, this.getName() + " guide");
 		}
-		if (dryadQuest > 0 && dryadQuest < 4 && extra.chanceIn(1,3)) {
+		if (dryadQuest > 0 && dryadQuest < 4 && Rand.chanceIn(1,3)) {
 			lumerbjackDryad();
 			return;
 		}
-		if ((dryadQuest == 0 || dryadQuest == 4) && extra.chanceIn(1,6)) {
+		if ((dryadQuest == 0 || dryadQuest == 4) && Rand.chanceIn(1,6)) {
 			id = 10;
 		}
 		switch (id) {
@@ -130,39 +132,39 @@ public class Forest extends ExploreFeature{
 	}
 	
 	private void funkyMushroom() {
-		extra.println("You spot a glowing mushroom on the forest floor.");
-		extra.println("1 eat it");
-		extra.println("2 sell it");
-		extra.println("3 crush it");
-		extra.println("9 leave it");
-		int in =  extra.inInt(4,true,true);
+		Print.println("You spot a glowing mushroom on the forest floor.");
+		Print.println("1 eat it");
+		Print.println("2 sell it");
+		Print.println("3 crush it");
+		Print.println("9 leave it");
+		int in =  Input.inInt(4,true,true);
 		switch (in) {
-		default: extra.println("You decide to leave it alone.");break;
+		default: Print.println("You decide to leave it alone.");break;
 		case 1:
-			extra.println("You eat the mushroom...");
-			switch(extra.randRange(1,3)) {
-			case 1: extra.println("The mushroom is delicious!");break;
-			case 2: extra.println("Eating the mushroom is very difficult... but you manage.");
+			Print.println("You eat the mushroom...");
+			switch(Rand.randRange(1,3)) {
+			case 1: Print.println("The mushroom is delicious!");break;
+			case 2: Print.println("Eating the mushroom is very difficult... but you manage.");
 			Player.player.getPerson().addXp(getTempLevel()*2);break;
-			case 3: extra.println("You feel lightheaded.... you pass out!");
-			extra.println("When you wake up, you notice someone went through your bags!");
-			extra.println(Player.loseGold(IEffectiveLevel.cleanRangeReward(getTempLevel(),10f,.2f),true));
+			case 3: Print.println("You feel lightheaded.... you pass out!");
+			Print.println("When you wake up, you notice someone went through your bags!");
+			Print.println(Player.loseGold(IEffectiveLevel.cleanRangeReward(getTempLevel(),10f,.2f),true));
 			break;
 			}
 			if (Math.random() > .8) {
-				extra.println("As you eat the mushroom, you hear a voice cry out:");
-				extra.print(TrawelColor.PRE_BATTLE);
-				switch(extra.randRange(1,3)) {
+				Print.println("As you eat the mushroom, you hear a voice cry out:");
+				Print.print(TrawelColor.PRE_BATTLE);
+				switch(Rand.randRange(1,3)) {
 				case 1: 
-					extra.println("\"You dare violate the forest?!\"");
+					Print.println("\"You dare violate the forest?!\"");
 					Player.player.fightWith(RaceFactory.makeDryad(getTempLevel()));
 					break;
 				case 2:
-					extra.println("\"Hey, I wanted that!\"");
+					Print.println("\"Hey, I wanted that!\"");
 					Player.player.fightWith(RaceFactory.makeCollector(getTempLevel()));
 					break;
 				case 3:
-					extra.println("\"You dirty plant-thief!\"");
+					Print.println("\"You dirty plant-thief!\"");
 					Player.player.fightWith(RaceFactory.makeLawman(getTempLevel()));
 					break;
 				}
@@ -171,50 +173,50 @@ public class Forest extends ExploreFeature{
 			
 			;break;
 		case 2:
-			extra.println("You pick up the mushroom to sell it.");
+			Print.println("You pick up the mushroom to sell it.");
 			if (Math.random() > .3) {
-			extra.println("You hear someone cry out from behind you!");
-			extra.print(TrawelColor.PRE_BATTLE);
+			Print.println("You hear someone cry out from behind you!");
+			Print.print(TrawelColor.PRE_BATTLE);
 			Combat c;
-			switch(extra.randRange(1,3)) {
+			switch(Rand.randRange(1,3)) {
 			default:
-				extra.println("\"You dare violate the forest?!\"");
+				Print.println("\"You dare violate the forest?!\"");
 				c = Player.player.fightWith(RaceFactory.makeDryad(getTempLevel()));
 				break;
 			case 2:
-				extra.println("\"Hey, I wanted that!\"");
+				Print.println("\"Hey, I wanted that!\"");
 				c = Player.player.fightWith(RaceFactory.makeCollector(getTempLevel()));
 				break;
 			case 3:
-				extra.println("\"You dirty plant-thief!\"");
+				Print.println("\"You dirty plant-thief!\"");
 				c = Player.player.fightWith(RaceFactory.makeLawman(getTempLevel()));
 				break;
 			}
 			if (c.playerWon() > 0) {
 				int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),3f,.7f);
-				extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
+				Print.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
 				Player.player.addGold(gold);
 			}
 			}else {
 				int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),2f,.2f);
-				extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
+				Print.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
 				Player.player.addGold(gold);
 			};break;
 		case 3:
-			extra.println("You crush the mushroom under your heel.");
-			extra.println("You hear someone cry out from behind you!");
-			extra.print(TrawelColor.PRE_BATTLE);
-			switch(extra.randRange(1,3)) {
+			Print.println("You crush the mushroom under your heel.");
+			Print.println("You hear someone cry out from behind you!");
+			Print.print(TrawelColor.PRE_BATTLE);
+			switch(Rand.randRange(1,3)) {
 			case 1: 
-				extra.println("\"You dare violate the forest?!\"");
+				Print.println("\"You dare violate the forest?!\"");
 				Player.player.fightWith(RaceFactory.makeDryad(getTempLevel()+1));
 				break;
 			case 2:
-				extra.println("\"Hey, I wanted that!\"");
+				Print.println("\"Hey, I wanted that!\"");
 				Player.player.fightWith(RaceFactory.makeCollector(getTempLevel()+1));
 				break;
 			case 3:
-				extra.println("\"You dirty plant-crusher!\"");
+				Print.println("\"You dirty plant-crusher!\"");
 				Player.player.fightWith(RaceFactory.makeLawman(getTempLevel()+1));
 				break;
 			}
@@ -223,24 +225,24 @@ public class Forest extends ExploreFeature{
 	}
 	
 	private void hangedMan() {
-		extra.println("You come across a man hanging from a tree.");
-		switch (extra.randRange(0,2)) {
-		case 0:extra.println("You sigh and move on.");
+		Print.println("You come across a man hanging from a tree.");
+		switch (Rand.randRange(0,2)) {
+		case 0:Print.println("You sigh and move on.");
 			break;
-		case 1: extra.println("There's something off about the corpse... You feel like you need to leave, so you do.");
+		case 1: Print.println("There's something off about the corpse... You feel like you need to leave, so you do.");
 			break;
 		case 2:
-			extra.println(TrawelColor.PRE_BATTLE+ "Something fell and horrible steps out of the hanged man's shadow!");
+			Print.println(TrawelColor.PRE_BATTLE+ "Something fell and horrible steps out of the hanged man's shadow!");
 			Person reaver = RaceFactory.makeFellReaver(getTempLevel());
 			Combat c = Player.player.fightWith(reaver);
 			if (c.playerWon() > 0) {
 				//not a collector, but this is a dd1 quote ref
-				extra.println("They say a predator is often blind to its own peril- at least there won't be any more men hanged here soon.");
+				Print.println("They say a predator is often blind to its own peril- at least there won't be any more men hanged here soon.");
 				//bonus heroism
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC, IEffectiveLevel.unclean(getTempLevel()),0);
 			}else {
 				//terraria ref, unsure if references like this are a bit much
-				extra.println("You wake up elsewhere, striken with nightmares of claw, teeth, sinew, and bone. You feel an evil presence watching you...");
+				Print.println("You wake up elsewhere, striken with nightmares of claw, teeth, sinew, and bone. You feel an evil presence watching you...");
 				town.getIsland().getWorld().addReoccuring(new Agent(reaver,AgentGoal.SPOOKY));
 			}
 			break;
@@ -252,28 +254,28 @@ public class Forest extends ExploreFeature{
 		Person robber = RaceFactory.makeDryad(getTempLevel());
 		robber.getBag().graphicalDisplay(1, robber);
 		while (true) {
-		extra.println("You come across a dryad tending to a tree.");
-		extra.println("1 Leave");//DOLATER: fix menu
-		extra.println(TrawelColor.PRE_BATTLE+"2 Attack them.");
-		extra.println("3 Chat with them");
-		switch (extra.inInt(3)) {
-		default: case 1: extra.println("You leave the dryad alone");return;
+		Print.println("You come across a dryad tending to a tree.");
+		Print.println("1 Leave");//DOLATER: fix menu
+		Print.println(TrawelColor.PRE_BATTLE+"2 Attack them.");
+		Print.println("3 Chat with them");
+		switch (Input.inInt(3)) {
+		default: case 1: Print.println("You leave the dryad alone");return;
 		case 2: 
-			extra.println("You attack the dryad!");
+			Print.println("You attack the dryad!");
 			Player.player.fightWith(robber);
 		return;
-		case 3: extra.println("The dryad turns and answers your greeting.");
+		case 3: Print.println("The dryad turns and answers your greeting.");
 		while (true) {
-		extra.println("What would you like to ask about?");
-		extra.println("1 tell them goodbye");
-		extra.println("2 their tree");
-		extra.println("3 this forest");
-		int in = extra.inInt(3);
+		Print.println("What would you like to ask about?");
+		Print.println("1 tell them goodbye");
+		Print.println("2 their tree");
+		Print.println("3 this forest");
+		int in = Input.inInt(3);
 		switch (in) {
-			case 1: extra.println("They wish you well.") ;break;
-			case 2: extra.println("They start describing their tree in intricate detail before finishing.");
-			extra.println("They seem very passionate about it.");break;
-			case 3: extra.println("\"We are in " + this.getName() + ". I don't venture away from my tree.\"");break;
+			case 1: Print.println("They wish you well.") ;break;
+			case 2: Print.println("They start describing their tree in intricate detail before finishing.");
+			Print.println("They seem very passionate about it.");break;
+			case 3: Print.println("\"We are in " + this.getName() + ". I don't venture away from my tree.\"");break;
 		}
 		if (in == 1) {
 			break;
@@ -285,26 +287,26 @@ public class Forest extends ExploreFeature{
 	private void treeOnPerson() {
 		Person p = RaceFactory.makeMugger(getTempLevel());
 		p.getBag().graphicalDisplay(1, p);
-		extra.println("You stumble upon a person stuck under a fallen tree. Help them?");
-		if (extra.yesNo()) {
-			extra.println("You move the tree off of them.");
+		Print.println("You stumble upon a person stuck under a fallen tree. Help them?");
+		if (Input.yesNo()) {
+			Print.println("You move the tree off of them.");
 			if (Math.random() > .9) {
-				extra.println(TrawelColor.PRE_BATTLE+"Suddenly, they attack you!");
+				Print.println(TrawelColor.PRE_BATTLE+"Suddenly, they attack you!");
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() > 0) {
 				}
 			}else {
 				if (Math.random() < .3) {
-					extra.println("They scamper off...");
+					Print.println("They scamper off...");
 				}else {
 					int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),2f,.7f);
-					extra.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
+					Print.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1*IEffectiveLevel.unclean(getTempLevel()),0);
 					Player.player.addGold(gold);
 				}
 			}
 		}else {
-			extra.println("You leave them alone to rot...");
+			Print.println("You leave them alone to rot...");
 		}
 	}
 
@@ -317,81 +319,81 @@ public class Forest extends ExploreFeature{
 	}
 	
 	private void fairyCircle1() {
-		extra.println("You find a fairy circle of mushrooms. Step in it?");
-		if (extra.yesNo()) {
-			extra.println("You step in it. Nothing happens.");
+		Print.println("You find a fairy circle of mushrooms. Step in it?");
+		if (Input.yesNo()) {
+			Print.println("You step in it. Nothing happens.");
 		}else {
-			extra.println("You stay away from the circle.");
+			Print.println("You stay away from the circle.");
 		}
 	}
 	
 	private void fairyCircle3() {
-		extra.println("You find a fairy circle of mushrooms. Step in it?");
-		if (extra.yesNo()) {
-			extra.println("You step in it...");
+		Print.println("You find a fairy circle of mushrooms. Step in it?");
+		if (Input.yesNo()) {
+			Print.println("You step in it...");
 			if (dryadQuest == 0) {
-			extra.println("A squirrel asks if you want to be a dryad.");
-			if (extra.yesNo()) {
-				extra.println("You are told to kill lumberjacks damaging the forest.");
+			Print.println("A squirrel asks if you want to be a dryad.");
+			if (Input.yesNo()) {
+				Print.println("You are told to kill lumberjacks damaging the forest.");
 				dryadQuest = 1;
 			}
 			}else {
 				if (dryadQuest == 4) {
-				extra.println("You feel the forest reward you! Whirlwinds of aether appear at your feet!");
-				int a_reward = Math.round(getUnEffectiveLevel()*extra.randRange(400f,500f));
-				extra.println("You gain " + a_reward + " aether!");
+				Print.println("You feel the forest reward you! Whirlwinds of aether appear at your feet!");
+				int a_reward = Math.round(getUnEffectiveLevel()*Rand.randRange(400f,500f));
+				Print.println("You gain " + a_reward + " aether!");
 				Player.bag.addAether(a_reward);
 				dryadQuest = 5;
 				}
 			}
 		}else {
-			extra.println("You stay away from the circle.");
+			Print.println("You stay away from the circle.");
 		}
 	}
 	
 	private void lumerbjackDryad() {
 		Person robber = RaceFactory.makeLumberjack(getTempLevel());
-		if (extra.chanceIn(1,3)) {//TODO: make this much rarer and use ingame holidays/months instead
+		if (Rand.chanceIn(1,3)) {//TODO: make this much rarer and use ingame holidays/months instead
 			LocalDateTime t = LocalDateTime.now();
 			switch (t.getMonth()) {//lmao alphabetically ordered months
 			//enums are ordinal ordered, why does eclipse do this
 			case APRIL:
 				//idk how to describe medieval april fools day
-				extra.println(TrawelColor.PRE_BATTLE+"A person is chopping down tree covered in mud! Attack them?");
+				Print.println(TrawelColor.PRE_BATTLE+"A person is chopping down tree covered in mud! Attack them?");
 				break;
 			case AUGUST:
 				//trawel v0.8 haha
-				extra.println(TrawelColor.PRE_BATTLE+"A person is chopping down a tree with the symbols 'v.8' carved into it! Attack them?");
+				Print.println(TrawelColor.PRE_BATTLE+"A person is chopping down a tree with the symbols 'v.8' carved into it! Attack them?");
 				break;
 			case DECEMBER:
 				//t.getDayOfMonth() > 14 && t.getDayOfMonth() < 25
-				extra.println(TrawelColor.PRE_BATTLE+"A person is chopping down a christmas tree! Attack them?");
+				Print.println(TrawelColor.PRE_BATTLE+"A person is chopping down a christmas tree! Attack them?");
 				break;
 			case FEBRUARY:
 				//valentines day
-				extra.println(TrawelColor.PRE_BATTLE+"A lumberjack is chopping down a tree with many hearts and initials carved into it! Attack them?");
+				Print.println(TrawelColor.PRE_BATTLE+"A lumberjack is chopping down a tree with many hearts and initials carved into it! Attack them?");
 				break;
 			case JANUARY:
-				extra.println(TrawelColor.PRE_BATTLE+"A wannabe lumberjack has resolved to cut down more trees this year! Attack them?");
+				Print.println(TrawelColor.PRE_BATTLE+"A wannabe lumberjack has resolved to cut down more trees this year! Attack them?");
 				break;
 			case JULY:
 				//canada's independence day isn't pog enough to celebrate, so we celebrate
 				//https://www.holidayinsights.com/moreholidays/july/iforgotday.htm
-				extra.println("What were you doing again? There's a lumberjack here, should you attack them?");
+				Print.println("What were you doing again? There's a lumberjack here, should you attack them?");
 				break;
 			case JUNE:
 				//Emancipation Day, D day
 				robber.setRacism(true);//assigned racist at tree
-				extra.println(TrawelColor.PRE_BATTLE+"A racist is chopping down a tree. Attack them?");
+				Print.println(TrawelColor.PRE_BATTLE+"A racist is chopping down a tree. Attack them?");
 				break;
 			case MARCH:
 				//daylight savings, trawel doesn't have that lmao
 				//trawel has perfect years, but ironically it DOES have different rise and set times
-				extra.println(TrawelColor.PRE_BATTLE+"A lumberjack is chopping down a tree, apparently they need more paper for calender... clocks? You feel kinda bad, should you attack them?");
+				Print.println(TrawelColor.PRE_BATTLE+"A lumberjack is chopping down a tree, apparently they need more paper for calender... clocks? You feel kinda bad, should you attack them?");
 				break;
 			case MAY:
 				//lot of war days, cinco de mayo included
-				extra.println(TrawelColor.PRE_BATTLE+"A lumberjack is chopping down a tree planted over a grave! Attack them?");
+				Print.println(TrawelColor.PRE_BATTLE+"A lumberjack is chopping down a tree planted over a grave! Attack them?");
 				//lumberjacks truly have no chill in Trawel
 				break;
 			case NOVEMBER:
@@ -399,37 +401,37 @@ public class Forest extends ExploreFeature{
 				//https://www.holidayinsights.com/moreholidays/november/small-business-saturday.htm
 				//https://en.wikipedia.org/wiki/Lumber_Cartel
 				//https://en.wikipedia.org/wiki/Timber_mafia
-				extra.println(TrawelColor.PRE_BATTLE+"An agent of the timber mafia is trying to strongarm someone into the lumber cartel! Attack them?");
+				Print.println(TrawelColor.PRE_BATTLE+"An agent of the timber mafia is trying to strongarm someone into the lumber cartel! Attack them?");
 				break;
 			case OCTOBER:
 				//movie
-				extra.println(TrawelColor.PRE_BATTLE+"A person is chopping down a christmas tree?! Attack them?");
+				Print.println(TrawelColor.PRE_BATTLE+"A person is chopping down a christmas tree?! Attack them?");
 				break;
 			case SEPTEMBER:
 				//american enough to choose labor day in september, not american enough to choose 9/11 as my sad holiday over june and may's
-				extra.println(TrawelColor.PRE_BATTLE+"A strikebreaker lumberjack is chopping down a tree without a permit! Attack them?");
+				Print.println(TrawelColor.PRE_BATTLE+"A strikebreaker lumberjack is chopping down a tree without a permit! Attack them?");
 				break;	
 			}
 		}else {
-			extra.println(TrawelColor.PRE_BATTLE+"A lumberjack is chopping down a tree! Attack them?");
+			Print.println(TrawelColor.PRE_BATTLE+"A lumberjack is chopping down a tree! Attack them?");
 		}
 		
 		robber.getBag().graphicalDisplay(1, robber);
-		if (extra.chanceIn(1, 3)) {
+		if (Rand.chanceIn(1, 3)) {
 			robber.getBag().addDrawBaneSilently(DrawBane.ENT_CORE);
 		}else {
 			robber.getBag().addDrawBaneSilently(DrawBane.WOOD);
 		}
 		
-		extra.print(TrawelColor.PRE_BATTLE);
-		if (extra.yesNo()) {
+		Print.print(TrawelColor.PRE_BATTLE);
+		if (Input.yesNo()) {
 			Combat c = Player.player.fightWith(robber);
 			//quest need not be started normally
 			//just not completed or in a negative state
 			if (c.playerWon() > 0 && dryadQuest >= 0 && dryadQuest < 4) {
 				dryadQuest++;
 				if (dryadQuest == 4) {
-					extra.println("You feel a connection to the forest.");
+					Print.println("You feel a connection to the forest.");
 					Player.addXp(tier);
 					Player.player.addAchieve(this, "Dryad of " + getName());
 				}
@@ -438,33 +440,33 @@ public class Forest extends ExploreFeature{
 	}
 	
 	private void abandonedHut() {
-		extra.println("You find an abandoned hut. Enter?");
-		if (extra.yesNo()) {
-			switch (extra.randRange(2,3)) {
+		Print.println("You find an abandoned hut. Enter?");
+		if (Input.yesNo()) {
+			switch (Rand.randRange(2,3)) {
 			case 1:
 				//'jerked nowhere' is doomRL
-				extra.println("You feel yourself being jerked nowhere, some strange force is attempting to teleport you. Let it?");
-				if (extra.yesNo()) {
+				Print.println("You feel yourself being jerked nowhere, some strange force is attempting to teleport you. Let it?");
+				if (Input.yesNo()) {
 					Player.player.setLocation(Player.player.getWorld().getRandom(tier,Player.player.getPerson().getLevel()+1));
 					if (Player.player.getLocation() != town) {
-						extra.println("The skyline outside of the forest changes... Checking your map, it looks like you've found a temporary liminal connection to "+Player.player.getLocation().getName()+".");
+						Print.println("The skyline outside of the forest changes... Checking your map, it looks like you've found a temporary liminal connection to "+Player.player.getLocation().getName()+".");
 					}else {
-						extra.println("You find yourself in a different part of the forest.");
+						Print.println("You find yourself in a different part of the forest.");
 					}
 				}else {
-					extra.println("You resist the unknown force.");
+					Print.println("You resist the unknown force.");
 				}
 				break;
 			case 2:
 				oldFighter("a bench","Beware, some of these cabins are cursed.",this);
 				break;
 			case 3:
-				extra.println("There is a tree inside the hut.");
+				Print.println("There is a tree inside the hut.");
 				lumerbjackDryad();
 			break;
 			}
 		}else {
-			extra.println("You move away from the hut.");
+			Print.println("You move away from the hut.");
 		}
 	}
 	

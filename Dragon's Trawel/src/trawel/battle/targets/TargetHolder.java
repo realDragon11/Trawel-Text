@@ -7,7 +7,7 @@ import trawel.battle.attacks.Wound;
 import trawel.battle.targets.TargetFactory.TargetType;
 import trawel.battle.targets.TargetFactory.TypeBody;
 import trawel.battle.targets.TargetFactory.TypeBody.TargetReturn;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class TargetHolder {
 	/**
@@ -155,7 +155,7 @@ public class TargetHolder {
 		for (TargetReturn b: plan.rootTargetReturns()) {
 			combat_printSPOT(includePassthrough,b.spot,1);
 			if (seen.contains(b.spot)) {
-				extra.println("    ...");
+				Print.println("    ...");
 			}else {
 				seen.add(b.spot);
 				List<TargetReturn> children = plan.getDirectChildren(b.spot);
@@ -181,8 +181,8 @@ public class TargetHolder {
 			return;//do not print
 		}
 		//DOLATER: stripped version does not express linked parts very well
-		extra.println(extra.spaceBuffer(buffer)+
-				getPartName(spot) + ": " + (tr.tar.passthrough ? "p" : extra.format2.format(getStatus(spot)))
+		Print.println(Print.spaceBuffer(buffer)+
+				getPartName(spot) + ": " + (tr.tar.passthrough ? "p" : Print.format2.format(getStatus(spot)))
 				);
 	}
 	
@@ -192,7 +192,7 @@ public class TargetHolder {
 			for (TargetReturn b: plan.rootTargetReturns()) {
 				printSpot(b.spot,1);
 				if (seen.contains(b.spot)) {
-					extra.println("    ...");
+					Print.println("    ...");
 				}else {
 					seen.add(b.spot);
 					List<TargetReturn> children = plan.getDirectChildren(b.spot);
@@ -202,11 +202,11 @@ public class TargetHolder {
 				}
 			}
 		}
-		extra.print("  >");
+		Print.print("  >");
 		for (int i = 0; i < condition.length;i++) {
-			extra.print(extra.format2.format(condition[i])+" ");
+			Print.print(Print.format2.format(condition[i])+" ");
 		}
-		extra.println();
+		Print.println();
 		
 	}
 	
@@ -221,8 +221,8 @@ public class TargetHolder {
 	}
 	private void printSpot(int spot, int buffer) {
 		TargetReturn tr = plan.getTargetReturn(spot);
-		extra.println(extra.spaceBuffer(buffer)+
-				getPartName(spot) + " " +spot+": " + plan.getMap(spot) + "-" + (tr.tar.passthrough ? "p" : extra.format2.format(getStatus(spot))) + " attach: " + (plan.getAttach(spot) != -1 ? plan.getAttach(spot) : "-")
+		Print.println(Print.spaceBuffer(buffer)+
+				getPartName(spot) + " " +spot+": " + plan.getMap(spot) + "-" + (tr.tar.passthrough ? "p" : Print.format2.format(getStatus(spot))) + " attach: " + (plan.getAttach(spot) != -1 ? plan.getAttach(spot) : "-")
 				);
 	}
 

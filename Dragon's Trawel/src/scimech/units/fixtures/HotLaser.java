@@ -12,7 +12,7 @@ import scimech.mech.Fixture;
 import scimech.mech.Mech;
 import scimech.mech.Mount;
 import scimech.mech.TurnSubscriber;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class HotLaser extends Fixture {
 
@@ -21,7 +21,7 @@ public class HotLaser extends Fixture {
 		int acc = (int) (30*rating());
 		double hit = MechCombat.computeHit(t, AimType.LASER, acc,this);
 		if (!t.isDummy()) {
-			extra.print("The Hot Laser " + ( hit >= 0 ? "hits!" : "misses!") + " ");
+			Print.print("The Hot Laser " + ( hit >= 0 ? "hits!" : "misses!") + " ");
 		}
 		if (hit  >=0) {
 			t.takeDamage().take(DamageTypes.BURN,DamageMods.HOLLOW,(int) (13*rating()), t);

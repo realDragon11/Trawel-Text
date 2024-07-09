@@ -1,5 +1,6 @@
 package trawel.helper.methods;
 
+import trawel.core.Print;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
 import trawel.personal.item.magic.Enchant;
@@ -90,10 +91,10 @@ public class Services {
 	public static void sellItem(DrawBane item, Inventory purse) {
 		int val = item.getValue();
 		purse.addGold(val);
-		if (extra.getPrint()) {
+		if (Print.getPrint()) {
 			return;
 		}
-		extra.println("The " + item.getName() + " "+extra.pluralIs(item.getName())+" sold for " + World.currentMoneyDisplay(val) + "." );
+		Print.println("The " + item.getName() + " "+Print.pluralIs(item.getName())+" sold for " + World.currentMoneyDisplay(val) + "." );
 	}
 	
 	/**
@@ -109,6 +110,6 @@ public class Services {
 		if (!disp) {
 			return;
 		}
-		extra.println("The " + item.getName() + " dissolves into " + val + " aether." );
+		Print.println("The " + item.getName() + " dissolves into " + val + " aether." );
 	}
 }

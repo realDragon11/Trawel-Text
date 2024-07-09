@@ -2,7 +2,7 @@ package trawel.personal.item.solid;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import trawel.helper.methods.extra;
+import trawel.core.Rand;
 
 public enum DrawBane {
 	//values:
@@ -205,7 +205,7 @@ public enum DrawBane {
 	}
 	
 	public static DrawBane draw(DrawList list) {
-		return subLists[list.ordinal()][weightList[list.ordinal()].random(extra.getRand())];
+		return subLists[list.ordinal()][weightList[list.ordinal()].random(Rand.getRand())];
 	}
 	
 	

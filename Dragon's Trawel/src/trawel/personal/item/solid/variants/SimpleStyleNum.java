@@ -1,7 +1,7 @@
 package trawel.personal.item.solid.variants;
 
 import derg.ds.Chomp;
-import trawel.helper.methods.extra;
+import trawel.core.Rand;
 
 public abstract class SimpleStyleNum implements StyleNum {
 
@@ -26,7 +26,7 @@ public abstract class SimpleStyleNum implements StyleNum {
 	public int generate() {
 		int store = Chomp.emptyInt;
 		for (int i = 0;i < 4;i++) {
-			store |= extra.getRand().nextInt(maxes[i]) << 8;//DOLATER: make sure this actually works
+			store |= Rand.getRand().nextInt(maxes[i]) << 8;//DOLATER: make sure this actually works
 		}
 		return store;
 	}

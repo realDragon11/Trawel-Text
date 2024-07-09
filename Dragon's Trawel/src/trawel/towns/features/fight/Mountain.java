@@ -14,10 +14,12 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.arc.misc.Deaths;
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -75,7 +77,7 @@ public class Mountain extends ExploreFeature{
 					public boolean go() {
 						Player.player.getPerson().washAll();
 						Player.player.getPerson().bathEffects();
-						extra.println("You wash the blood off of your armor.");
+						Print.println("You wash the blood off of your armor.");
 						Player.bag.graphicalDisplay(-1,Player.player.getPerson());
 						return false;
 					}
@@ -89,7 +91,7 @@ public class Mountain extends ExploreFeature{
 		cleanTime -= time;
 		if (cleanTime < 0) {
 			cleanEntireTown();
-			cleanTime = 12+(24*extra.randFloat());
+			cleanTime = 12+(24*Rand.randFloat());
 		}
 		return null;
 	}
@@ -100,12 +102,12 @@ public class Mountain extends ExploreFeature{
 	
 	@Override
 	public void onExhaust() {
-		extra.println("You don't find anything. You think you may have exhausted this mountain, for now. Maybe come back later?");
+		Print.println("You don't find anything. You think you may have exhausted this mountain, for now. Maybe come back later?");
 	}
 	
 	@Override
 	public void onNoGo() {
-		extra.println("The mountain is barren.");
+		Print.println("The mountain is barren.");
 	}
 	
 	@Override
@@ -121,7 +123,7 @@ public class Mountain extends ExploreFeature{
 		}
 		switch (id) {
 		case 0: 
-			extra.println("You couldn't find anything interesting.");
+			Print.println("You couldn't find anything interesting.");
 			;break;
 		case 1: rockSlide();break;
 		case 2: ropeBridge();break;
@@ -178,17 +180,17 @@ public class Mountain extends ExploreFeature{
 	}
 	
 	private void rockSlide() {
-		extra.println("Some rocks start falling down the mountain!");
-		extra.println("1 Take it head on. (Str)");
-		extra.println("2 Attempt to avoid the rocks. (Dex)");
-		extra.println("9 Minimize the damage.");
-		switch (extra.inInt(2,true,true)) {
+		Print.println("Some rocks start falling down the mountain!");
+		Print.println("1 Take it head on. (Str)");
+		Print.println("2 Attempt to avoid the rocks. (Dex)");
+		Print.println("9 Minimize the damage.");
+		switch (Input.inInt(2,true,true)) {
 		case 1:
 			if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getStrength(),IEffectiveLevel.attributeChallengeMedium(getTempLevel())) >=0) {
-				extra.println(TrawelColor.RESULT_PASS+"You survive the rockslide.");
+				Print.println(TrawelColor.RESULT_PASS+"You survive the rockslide.");
 				Player.addXp(Math.max(1,getTempLevel()/3));//can't use temp level due to difficulty thing
 			}else {
-				extra.println(TrawelColor.RESULT_FAIL+"The rocks crush you!");
+				Print.println(TrawelColor.RESULT_FAIL+"The rocks crush you!");
 				Deaths.die("You pull yourself out from under the rocks, your armor is all dinged up.");
 				Player.player.getPerson().addEffect(Effect.DAMAGED);
 				Player.player.getPerson().addEffect(Effect.BURNOUT);
@@ -196,17 +198,17 @@ public class Mountain extends ExploreFeature{
 			;break;
 		case 2:
 			if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getDexterity(),IEffectiveLevel.attributeChallengeMedium(getTempLevel())) >=0) {
-				extra.println(TrawelColor.RESULT_PASS+"You survive the rockslide.");
+				Print.println(TrawelColor.RESULT_PASS+"You survive the rockslide.");
 				Player.addXp(Math.max(1,getTempLevel()/3));
 			}else {
-				extra.println(TrawelColor.RESULT_FAIL+"The rocks crush you!");
+				Print.println(TrawelColor.RESULT_FAIL+"The rocks crush you!");
 				Deaths.die("You pull yourself out from under the rocks, your armor is all dinged up.");
 				Player.player.getPerson().addEffect(Effect.DAMAGED);
 				Player.player.getPerson().addEffect(Effect.BURNOUT);
 			}
 			;break;
 		case 3:
-			extra.println(TrawelColor.RESULT_FAIL+"They rocks crush you!");
+			Print.println(TrawelColor.RESULT_FAIL+"They rocks crush you!");
 			Deaths.die("You pull yourself out from under the rocks.");
 		break;
 		
@@ -215,21 +217,21 @@ public class Mountain extends ExploreFeature{
 	
 	
 	private void ropeBridge() {
-		extra.println("You come across a rope bridge. Cross it?");
-		if (extra.yesNo()) {
-			extra.println("You cross the bridge.");
+		Print.println("You come across a rope bridge. Cross it?");
+		if (Input.yesNo()) {
+			Print.println("You cross the bridge.");
 		}else {
-			extra.println("You don't cross the bridge.");
+			Print.println("You don't cross the bridge.");
 		}
 	}
 	
 	private void tollKeeper() {
-		extra.println(TrawelColor.PRE_BATTLE+"You see a toll road keeper. Mug them for their "+World.currentMoneyString()+"?");
+		Print.println(TrawelColor.PRE_BATTLE+"You see a toll road keeper. Mug them for their "+World.currentMoneyString()+"?");
 		Person toller = RaceFactory.makePeace(getTempLevel());
 		int want = IEffectiveLevel.cleanRangeReward(getTempLevel(),3.5f,.8f);
 		toller.getBag().addLocalGoldIf(IEffectiveLevel.cleanRangeReward(getTempLevel(),6f,.5f));
 		toller.getBag().graphicalDisplay(1, toller);
-		if (extra.yesNo()) {
+		if (Input.yesNo()) {
 		
 		Combat c = Player.player.fightWith(toller);
 		if (c.playerWon() > 0) {
@@ -237,59 +239,59 @@ public class Mountain extends ExploreFeature{
 		}else {
 			int lost = Player.player.loseGold(want);
 			if (lost == -1) {
-				extra.println("They mutter something about freeloaders.");
+				Print.println("They mutter something about freeloaders.");
 			}else {
 				if (lost < want) {
-					extra.println("They make you pay the toll, but you don't have enough. (-"+World.currentMoneyDisplay(lost)+")");
+					Print.println("They make you pay the toll, but you don't have enough. (-"+World.currentMoneyDisplay(lost)+")");
 				}else {
-					extra.println("They make you pay the toll. (-"+World.currentMoneyDisplay(lost)+")");
+					Print.println("They make you pay the toll. (-"+World.currentMoneyDisplay(lost)+")");
 				}
 			}
 		}
 		}else {
-			extra.println("You walk away.");
+			Print.println("You walk away.");
 			Networking.clearSide(1);
 		}
 	}
 
 	private void wanderingDuelist() {
-		extra.println(TrawelColor.PRE_BATTLE+"A duelist approaches and challenges you to a duel.");
+		Print.println(TrawelColor.PRE_BATTLE+"A duelist approaches and challenges you to a duel.");
 		Person dueler = RaceFactory.getDueler(getTempLevel());
 		dueler.getBag().graphicalDisplay(1, dueler);
 		if (dueler.reallyFight("Accept a duel with")) {
 			Combat c = Player.player.fightWith(dueler);
 			if (c.playerWon() > 0) {
-				extra.println("You have won the duel!");
+				Print.println("You have won the duel!");
 			}else {
-				extra.println("They mutter a poem for your death.");
+				Print.println("They mutter a poem for your death.");
 			}
 		}else {
-			extra.println("You walk away. They sigh.");
+			Print.println("You walk away. They sigh.");
 		}
 	}
 
 	
 	private void aetherRock() {
-		extra.println("You spot a solidified aether rock rolling down the mountain. Chase it?");
-		Boolean result = extra.yesNo();
+		Print.println("You spot a solidified aether rock rolling down the mountain. Chase it?");
+		Boolean result = Input.yesNo();
 		if (result) {
 			if (Math.random() > .5) {
-				extra.println(TrawelColor.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
+				Print.println(TrawelColor.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
 				Combat c = Player.player.fightWith(RaceFactory.makeMugger(getTempLevel()));
 				if (c.playerWon() > 0) {
-					int aether = Math.round((IEffectiveLevel.unclean(getTempLevel())*extra.randRange(200f,400f)));
-					extra.println("You pick up " + aether + " aether!");
+					int aether = Math.round((IEffectiveLevel.unclean(getTempLevel())*Rand.randRange(200f,400f)));
+					Print.println("You pick up " + aether + " aether!");
 					Player.bag.addAether(aether);
 				}else {
-					extra.println("They take the aether rock and leave you rolling down the mountain...");
+					Print.println("They take the aether rock and leave you rolling down the mountain...");
 				}
 			}else {
-				int aether = Math.round((IEffectiveLevel.unclean(getTempLevel())*extra.randRange(100f,200f)));
-				extra.println("You pick up " + aether + " aether!");
+				int aether = Math.round((IEffectiveLevel.unclean(getTempLevel())*Rand.randRange(100f,200f)));
+				Print.println("You pick up " + aether + " aether!");
 				Player.bag.addAether(aether);
 			}
 		}else {
-			extra.println("You let the rock roll away...");
+			Print.println("You let the rock roll away...");
 		}
 		if (Math.random() > .5) {
 			rockSlide();
@@ -297,7 +299,7 @@ public class Mountain extends ExploreFeature{
 	}
 
 	private void vampireHunter() {
-		extra.println(TrawelColor.PRE_BATTLE+"A vampire hunter is walking around. Mug them?");
+		Print.println(TrawelColor.PRE_BATTLE+"A vampire hunter is walking around. Mug them?");
 		Person hunter = RaceFactory.makeHunter(getTempLevel());
 		hunter.getBag().graphicalDisplay(1,hunter);
 		if (hunter.reallyAttack()) {
@@ -306,12 +308,12 @@ public class Mountain extends ExploreFeature{
 				
 				int amber = IEffectiveLevel.cleanRangeReward(getTempLevel(),Gem.AMBER.reward(1f,false),.6f);
 				Gem.AMBER.changeGem(amber);
-				extra.println("One less thing for the vampires to worry about. You find "+amber+" amber.");
+				Print.println("One less thing for the vampires to worry about. You find "+amber+" amber.");
 			}else {
-				extra.println("They mutter something about vampire attacks.");
+				Print.println("They mutter something about vampire attacks.");
 			}
 		}else {
-			extra.println("You walk away. They warn you to be safe from vampire attacks.");
+			Print.println("You walk away. They warn you to be safe from vampire attacks.");
 			Networking.clearSide(1);
 		}
 	}
@@ -319,7 +321,7 @@ public class Mountain extends ExploreFeature{
 	private void skyCult() {
 		final Person leader = RaceFactory.makeCultistLeader(getTempLevel(), CultType.SKY);
 		final int tithe = IEffectiveLevel.cleanRangeReward(getTempLevel(),1500f,.5f);
-		final boolean groupSmall = getTempLevel() < 5 || extra.randFloat() > .6f;
+		final boolean groupSmall = getTempLevel() < 5 || Rand.randFloat() > .6f;
 		final int addLevel = Math.max(1,getTempLevel()-3);
 		final Predicate<Boolean> fight = new Predicate<Boolean>() {
 
@@ -331,11 +333,11 @@ public class Mountain extends ExploreFeature{
 					}
 					Combat c = Player.player.fightWith(leader);
 					if (c.playerWon() > 0) {
-						extra.println("The remaining cultist members flee before you get a chance to do anything.");
+						Print.println("The remaining cultist members flee before you get a chance to do anything.");
 						return true;
 					}else {
 						int lost = Player.player.loseAether(tithe);
-						extra.println(TrawelColor.RESULT_BAD+"They take " + lost + " aether as tithe from your body.");
+						Print.println(TrawelColor.RESULT_BAD+"They take " + lost + " aether as tithe from your body.");
 						Mountain.super.town.addOccupant(leader.setOrMakeAgentGoal(AgentGoal.NONE));
 						return false;
 					}
@@ -352,19 +354,19 @@ public class Mountain extends ExploreFeature{
 					}
 					Combat c = Player.player.massFightWith(cultists);
 					if (c.playerWon() > 0) {
-						extra.println("You defeat the cultist group.");
+						Print.println("You defeat the cultist group.");
 						return true;
 					}else {
 						int lost = Player.player.loseAether(tithe);
-						extra.println(TrawelColor.RESULT_BAD+"They take " + lost + " aether as tithe from your body.");
+						Print.println(TrawelColor.RESULT_BAD+"They take " + lost + " aether as tithe from your body.");
 						Mountain.super.town.addOccupant(leader.setOrMakeAgentGoal(AgentGoal.NONE));
 						return false;
 					}
 				}
 			}};
-		extra.println("A few cloaked figures are circling around you. After noticing you spotted them, the leader approaches and demand a tithe of "+tithe+" aether for you to be left alone."
+		Print.println("A few cloaked figures are circling around you. After noticing you spotted them, the leader approaches and demand a tithe of "+tithe+" aether for you to be left alone."
 				+ (groupSmall ? "" : " The group behind them draws weapons."));
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -405,7 +407,7 @@ public class Mountain extends ExploreFeature{
 						@Override
 						public boolean go() {
 							int lost = Player.player.loseAether(tithe);
-							extra.println(TrawelColor.RESULT_PASS+"You pay the tithe of " + lost + " aether and they leave.");
+							Print.println(TrawelColor.RESULT_PASS+"You pay the tithe of " + lost + " aether and they leave.");
 							return true;
 						}});
 				}else {
@@ -420,9 +422,9 @@ public class Mountain extends ExploreFeature{
 						public boolean go() {
 							if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getClarity(),IEffectiveLevel.attributeChallengeEasy(getTempLevel())) >=0){
 								int lower = Player.player.loseAether(tithe);
-								extra.println(TrawelColor.RESULT_PASS+"They accept the reduced tithe of "+lower+" aether.");
+								Print.println(TrawelColor.RESULT_PASS+"They accept the reduced tithe of "+lower+" aether.");
 							}else {
-								extra.println(TrawelColor.PRE_BATTLE+"They refuse the reduced tithe and attack!");
+								Print.println(TrawelColor.PRE_BATTLE+"They refuse the reduced tithe and attack!");
 								fight.test(false);
 							}
 							return true;
@@ -438,10 +440,10 @@ public class Mountain extends ExploreFeature{
 					@Override
 					public boolean go() {
 						if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getDexterity(),leader.getDexterity()) >=0){
-							extra.println(TrawelColor.RESULT_PASS+"You escape!");
+							Print.println(TrawelColor.RESULT_PASS+"You escape!");
 							return true;
 						}else {
-							extra.println(TrawelColor.RESULT_FAIL+"They catch up and attack you while you're panting for breath!");
+							Print.println(TrawelColor.RESULT_FAIL+"They catch up and attack you while you're panting for breath!");
 							Player.player.getPerson().addEffect(Effect.EXHAUSTED);
 							//doesn't apply burnout since the consequence is the fight with exhausted
 							fight.test(false);
@@ -464,23 +466,23 @@ public class Mountain extends ExploreFeature{
 							}
 							if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getClarity(),IEffectiveLevel.attributeChallengeEasy(getTempLevel())) >=0){
 								//challenge successful
-								extra.println(TrawelColor.RESULT_PASS+"The engage in the ritual battle to determine who is truly chosen!");
+								Print.println(TrawelColor.RESULT_PASS+"The engage in the ritual battle to determine who is truly chosen!");
 								Combat c = Player.player.fightWith(leader);
 								if (c.playerWon() > 0) {
-									extra.println(TrawelColor.RESULT_GOOD+"The remaining cultist members declare you the new chosen one!");
+									Print.println(TrawelColor.RESULT_GOOD+"The remaining cultist members declare you the new chosen one!");
 									Player.unlockPerk(Perk.CULT_CHOSEN_SKY);
 									Player.player.hasCult = true;
 									Networking.unlockAchievement("cult1");
 									return true;
 								}else {
-									extra.println(TrawelColor.RESULT_BAD+"The sky curses you for your hubris!");
+									Print.println(TrawelColor.RESULT_BAD+"The sky curses you for your hubris!");
 									Player.player.getPerson().addEffect(Effect.CURSE);
 									Mountain.super.town.addOccupant(leader.setOrMakeAgentGoal(AgentGoal.NONE));
 									return true;
 								}
 							}else {
 								//they reject it
-								extra.println(TrawelColor.RESULT_FAIL+"They reject your challenge and order their cult to attack!");
+								Print.println(TrawelColor.RESULT_FAIL+"They reject your challenge and order their cult to attack!");
 								fight.test(false);
 								return true;
 							}

@@ -25,7 +25,10 @@ import trawel.battle.targets.TargetFactory.BloodType;
 import trawel.battle.targets.TargetFactory.TypeBody;
 import trawel.battle.targets.TargetFactory.TypeBody.TargetReturn;
 import trawel.battle.attacks.Stance;
+import trawel.core.Input;
 import trawel.core.Networking;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.core.mainGame;
 import trawel.battle.attacks.Wound;
 import trawel.factions.FBox;
@@ -194,7 +197,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		bag = new Inventory(level,raceType,matType,job,race);
 		bag.owner = this;
 		if (raceType == RaceType.PERSONABLE) {
-			personType = extra.randCollection(RAND_PERSON_TYPES);
+			personType = Rand.randCollection(RAND_PERSON_TYPES);
 			firstName = randomLists.randomFirstName();
 			title = randomLists.randomLastName();
 			switch (bag.getRace().targetType) {
@@ -263,13 +266,13 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			this.scar = RaceFactory.scarFor(tRace.raceID());
 		}
 		
-		if (extra.chanceIn(3,5)) {
+		if (Rand.chanceIn(3,5)) {
 			this.setRacism(true);
-			if (extra.chanceIn(4,5)) {
+			if (Rand.chanceIn(4,5)) {
 				this.setAngry(true);
 			}
 		}else {
-			if (extra.chanceIn(3,5)) {
+			if (Rand.chanceIn(3,5)) {
 				this.setAngry(true);
 			}
 		}
@@ -370,7 +373,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			this.archType = archType;
 		}
 		public WeaponType randWeap() {
-			return extra.randList(weapType);
+			return Rand.randList(weapType);
 			//for now no weighted table
 		}
 	}
@@ -456,7 +459,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (job == null || job.archType.length == 0) {
 			return false;
 		}
-		Archetype add = extra.randList(job.archType);
+		Archetype add = Rand.randList(job.archType);
 		if (getArchSet().contains(add)) {
 			//will only attempt to grant one, if already has, will just continue with gen
 			return false;
@@ -488,7 +491,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				superperson.setFlask(new Potion(Effect.CURSE,4));
 			}else {
 				if (hasSkill(Skill.P_BREWER)) {
-					superperson.setFlask(new Potion(extra.randList(WitchHut.randomPotion),3));
+					superperson.setFlask(new Potion(Rand.randList(WitchHut.randomPotion),3));
 				}
 			}
 		}
@@ -518,7 +521,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				break;
 			}
 			if (isPlayer()) {
-				extra.println(gain.getOwnText());
+				Print.println(gain.getOwnText());
 			}
 			skillSet.addAll(gain.giveSet());//doesn't compute them fully, just enough to understand requirements
 		}
@@ -807,16 +810,16 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			sipped = Player.player.doSip();
 			isPlay = true;
 			if (hasEffect(Effect.CURSE)) {
-				extra.println(TrawelColor.RESULT_WARN+"The curse saps the life out of you...");
+				Print.println(TrawelColor.RESULT_WARN+"The curse saps the life out of you...");
 			}
 			if (hasEffect(Effect.TIRED)) {
-				extra.println(TrawelColor.RESULT_WARN+"You're so tired you can barely move...");
+				Print.println(TrawelColor.RESULT_WARN+"You're so tired you can barely move...");
 			}
 			if (hasEffect(Effect.WOUNDED)) {
-				extra.println(TrawelColor.RESULT_WARN+"Your bandages are barely holding on...");
+				Print.println(TrawelColor.RESULT_WARN+"Your bandages are barely holding on...");
 			}
 			if (hasEffect(Effect.DAMAGED)) {
-				extra.println(TrawelColor.RESULT_WARN+"Your armor is already beat up...");
+				Print.println(TrawelColor.RESULT_WARN+"Your armor is already beat up...");
 			}
 		}else {
 			if (superperson != null) {
@@ -825,13 +828,13 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		}
 		if (sipped != null) {
 			if (hasSkill(Skill.POTION_CHUGGER)) {
-				extra.println("A refreshing draft!");
+				Print.println("A refreshing draft!");
 				addEffect(Effect.BREATHING);
 			}
 			if (sipped == Effect.CURSE && hasSkill(Skill.TOXIC_BREWS)) {
-				extra.println("Their face contorts in power!");
+				Print.println("Their face contorts in power!");
 				for (int i = 0; i < 3;i++) {
-					addEffect(extra.randList(Effect.minorBuffEffects));
+					addEffect(Rand.randList(Effect.minorBuffEffects));
 				}
 			}
 		}
@@ -861,7 +864,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			}
 			hp+=IEffectiveLevel.cleanLHP(level, hasSkill(Skill.BEER_BELLY) ? 0.10 : 0.05);
 			if (!isPlay) {
-				extra.println(getNameNoTitle()+" looks drunk!");
+				Print.println(getNameNoTitle()+" looks drunk!");
 			}
 		}
 		
@@ -877,8 +880,8 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			addEffect(Effect.BONUS_WEAP_ATTACK);
 			wentFast = true;
 		}
-		if (wentFast && !isPlay && !extra.getPrint()) {
-			extra.println(getNameNoTitle() + " springs their trap!");
+		if (wentFast && !isPlay && !Print.getPrint()) {
+			Print.println(getNameNoTitle() + " springs their trap!");
 		}
 		
 		speedFill = -1;
@@ -947,11 +950,11 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			pluslevel++;
 		}
 		if (pluslevel > level) {
-			extra.println(this.getName() + " leveled up " + (pluslevel-level) + " times and is now level " + (pluslevel) + ".");
+			Print.println(this.getName() + " leveled up " + (pluslevel-level) + " times and is now level " + (pluslevel) + ".");
 			computeLevels(pluslevel-level);
 		}
-		if (!extra.getPrint()) {
-			extra.println(this.getName() + " has " + xp + "/" + level*level + " xp toward level " + (level+1) + ". +" + x + "xp.");
+		if (!Print.getPrint()) {
+			Print.println(this.getName() + " has " + xp + "/" + level*level + " xp toward level " + (level+1) + ". +" + x + "xp.");
 		}
 		return pluslevel > level;
 	}
@@ -962,7 +965,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 */
 	public void computeLevels(int levels) {
 			//maxHp+=50*levels;
-			if (!extra.getPrint() && mainGame.displayFlavorText && getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
+			if (!Print.getPrint() && mainGame.displayFlavorText && getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
 				BarkManager.getBoast(this, false);
 			}
 			addFeatPoint(levels);
@@ -1026,9 +1029,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public void playerSkillMenu() {
 		updateSkills();
 		if (Player.getTutorial()) {
-			extra.println("This is the skill overview menu.");
+			Print.println("This is the skill overview menu.");
 		}
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -1115,9 +1118,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 
 					@Override
 					public boolean go() {
-						extra.println("Display a dump of all skills granted?");
-						if (extra.yesNo()) {
-							fetchSkills().stream().forEach(s -> extra.println(s.explain()));
+						Print.println("Display a dump of all skills granted?");
+						if (Input.yesNo()) {
+							fetchSkills().stream().forEach(s -> Print.println(s.explain()));
 						}
 						return false;
 					}});
@@ -1131,10 +1134,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 					@Override
 					public boolean go() {
 						if (archSet.size() == 0) {
-							extra.println("You have no archetypes.");
+							Print.println("You have no archetypes.");
 							return false;
 						}
-						extra.menuGo(skillDispMenu(archSet,"archetype","archetypes"));
+						Input.menuGo(skillDispMenu(archSet,"archetype","archetypes"));
 						return false;
 					}});
 				list.add(new MenuSelect() {
@@ -1147,10 +1150,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 					@Override
 					public boolean go() {
 						if (featSet.size() == 0) {
-							extra.println("You have no feats.");
+							Print.println("You have no feats.");
 							return false;
 						}
-						extra.menuGo(skillDispMenu(featSet,"feat","feats"));
+						Input.menuGo(skillDispMenu(featSet,"feat","feats"));
 						return false;
 					}});
 				list.add(new MenuSelect() {
@@ -1163,10 +1166,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 					@Override
 					public boolean go() {
 						if (perkSet.size() == 0) {
-							extra.println("You have no perks.");
+							Print.println("You have no perks.");
 							return false;
 						}
-						extra.menuGo(skillDispMenu(perkSet,"perk","perks"));
+						Input.menuGo(skillDispMenu(perkSet,"perk","perks"));
 						return false;
 					}});
 				
@@ -1183,7 +1186,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			return null;
 		}
 		useFeatPoint();
-		IHasSkills gain = extra.randList(hases);
+		IHasSkills gain = Rand.randList(hases);
 		setSkillHas(gain);
 		return gain;
 	}
@@ -1198,7 +1201,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (isPlayer()) {
 			while (featPoints > 0) {
 				List<IHasSkills> iList = Archetype.getFeatChoices(p);
-				extra.menuGo(new MenuGenerator() {
+				Input.menuGo(new MenuGenerator() {
 
 				@Override
 				public List<MenuItem> gen() {
@@ -1279,7 +1282,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		@Override
 		public boolean go() {
 			picked = false;
-			extra.menuGo(new MenuGenerator() {
+			Input.menuGo(new MenuGenerator() {
 
 				@Override
 				public List<MenuItem> gen() {
@@ -1366,32 +1369,32 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			displayStatOverview(true);
 			return;
 		}
-		extra.println(getName() +": "+TrawelColor.ITEM_DESC_PROP+"LvL " +TrawelColor.ITEM_WANT_HIGHER+ this.getLevel() +TrawelColor.PRE_WHITE+" " + this.getBag().getRace().renderName(false)+".");
-		extra.println(" "
+		Print.println(getName() +": "+TrawelColor.ITEM_DESC_PROP+"LvL " +TrawelColor.ITEM_WANT_HIGHER+ this.getLevel() +TrawelColor.PRE_WHITE+" " + this.getBag().getRace().renderName(false)+".");
+		Print.println(" "
 				+TrawelColor.ITEM_WANT_HIGHER+getHp()+TrawelColor.PRE_WHITE +"/"+ tempMaxHp +TrawelColor.ITEM_DESC_PROP+ " HP, "
-				+TrawelColor.ITEM_WANT_HIGHER+extra.format(bag.getDodge()) + "x "+TrawelColor.ITEM_DESC_PROP+"dodge, "
+				+TrawelColor.ITEM_WANT_HIGHER+Print.format(bag.getDodge()) + "x "+TrawelColor.ITEM_DESC_PROP+"dodge, "
 				+TrawelColor.ITEM_DESC_PROP+extra.CHAR_SHARP+"/"+extra.CHAR_BLUNT+"/"+extra.CHAR_PIERCE+
-				": "+TrawelColor.ITEM_WANT_HIGHER+extra.F_WHOLE.format(bag.getSharpResist())+"/"+extra.F_WHOLE.format(bag.getBluntResist())+"/"+extra.F_WHOLE.format(bag.getPierceResist())
+				": "+TrawelColor.ITEM_WANT_HIGHER+Print.F_WHOLE.format(bag.getSharpResist())+"/"+Print.F_WHOLE.format(bag.getBluntResist())+"/"+Print.F_WHOLE.format(bag.getPierceResist())
 				);
 		//tbh is uneeded since the quick summary displays hp/dodge/SBP which are the important things
 		//extra.println(" "+bag.quickInventory());
 	}
 	
 	public void displayStatOverview(boolean showHp) {
-		extra.println(getName() +": "+TrawelColor.ITEM_DESC_PROP+"LvL " +TrawelColor.ITEM_WANT_HIGHER+ this.getLevel() +TrawelColor.PRE_WHITE+" " + this.getBag().getRace().renderName(false)+".");
+		Print.println(getName() +": "+TrawelColor.ITEM_DESC_PROP+"LvL " +TrawelColor.ITEM_WANT_HIGHER+ this.getLevel() +TrawelColor.PRE_WHITE+" " + this.getBag().getRace().renderName(false)+".");
 		if (showHp) {
-			extra.println(" "+TrawelColor.ITEM_WANT_HIGHER+getHp()+TrawelColor.PRE_WHITE +"/"+ tempMaxHp +TrawelColor.ITEM_DESC_PROP+ " HP.");
+			Print.println(" "+TrawelColor.ITEM_WANT_HIGHER+getHp()+TrawelColor.PRE_WHITE +"/"+ tempMaxHp +TrawelColor.ITEM_DESC_PROP+ " HP.");
 		}
-		extra.println(" "
-		+TrawelColor.ITEM_WANT_HIGHER+extra.format(bag.getHealth()) + "x "+TrawelColor.ITEM_DESC_PROP+"hpm, "
-		+TrawelColor.ITEM_WANT_HIGHER+extra.format(bag.getAim()) + "x "+TrawelColor.ITEM_DESC_PROP+"aim, "
-		+TrawelColor.ITEM_WANT_HIGHER+extra.format(bag.getDam()) + "x "+TrawelColor.ITEM_DESC_PROP+"dam, "
-		+TrawelColor.ITEM_WANT_HIGHER+extra.format(bag.getSpeed()) + "x "+TrawelColor.ITEM_DESC_PROP+"spd, "
-		+TrawelColor.ITEM_WANT_HIGHER+extra.format(bag.getDodge()) + "x "+TrawelColor.ITEM_DESC_PROP+"dodge, "
+		Print.println(" "
+		+TrawelColor.ITEM_WANT_HIGHER+Print.format(bag.getHealth()) + "x "+TrawelColor.ITEM_DESC_PROP+"hpm, "
+		+TrawelColor.ITEM_WANT_HIGHER+Print.format(bag.getAim()) + "x "+TrawelColor.ITEM_DESC_PROP+"aim, "
+		+TrawelColor.ITEM_WANT_HIGHER+Print.format(bag.getDam()) + "x "+TrawelColor.ITEM_DESC_PROP+"dam, "
+		+TrawelColor.ITEM_WANT_HIGHER+Print.format(bag.getSpeed()) + "x "+TrawelColor.ITEM_DESC_PROP+"spd, "
+		+TrawelColor.ITEM_WANT_HIGHER+Print.format(bag.getDodge()) + "x "+TrawelColor.ITEM_DESC_PROP+"dodge, "
 		+TrawelColor.ITEM_DESC_PROP+extra.CHAR_SHARP+"/"+extra.CHAR_BLUNT+"/"+extra.CHAR_PIERCE+
-		": "+TrawelColor.ITEM_WANT_HIGHER+extra.F_WHOLE.format(bag.getSharpResist())+"/"+extra.F_WHOLE.format(bag.getBluntResist())+"/"+extra.F_WHOLE.format(bag.getPierceResist())
+		": "+TrawelColor.ITEM_WANT_HIGHER+Print.F_WHOLE.format(bag.getSharpResist())+"/"+Print.F_WHOLE.format(bag.getBluntResist())+"/"+Print.F_WHOLE.format(bag.getPierceResist())
 				);
-		extra.println(bag.quickInventory());
+		Print.println(bag.quickInventory());
 	}
 	
 	public void displayStats(boolean inCombat) {
@@ -1399,17 +1402,17 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (inCombat) {
 			displayStatOverview(true);
 		}else {
-			extra.println("This is " + this.getName() +". They are a "+TrawelColor.ITEM_DESC_PROP+"level " + TrawelColor.ITEM_WANT_HIGHER+this.getLevel() +" "+TrawelColor.PRE_WHITE + this.getBag().getRace().renderName(false)+".");
-			extra.println("They have "+TrawelColor.ITEM_WANT_HIGHER+ getBase_HP() +TrawelColor.ITEM_DESC_PROP+ " LHP"+TrawelColor.PRE_WHITE+". Their health modifier is " +TrawelColor.ITEM_WANT_HIGHER+ extra.format(bag.getHealth()) +TrawelColor.PRE_WHITE+ "x. Their expected hp is "+TrawelColor.ITEM_DESC_PROP+ getOOB_HP() +TrawelColor.PRE_WHITE+".");
-			extra.println("They have "+TrawelColor.ITEM_WANT_HIGHER+ extra.format(bag.getAim()) + "x "+TrawelColor.ITEM_DESC_PROP+"aiming"+TrawelColor.PRE_WHITE+", " +TrawelColor.ITEM_WANT_HIGHER+extra.format(bag.getDam()) + "x "+TrawelColor.ITEM_DESC_PROP+"damage"+TrawelColor.PRE_WHITE+", and "+TrawelColor.ITEM_WANT_HIGHER+extra.format(bag.getSpeed()) + "x "+TrawelColor.ITEM_DESC_PROP+"speed.");
-			extra.println("They have " +TrawelColor.ITEM_WANT_HIGHER+ extra.format(bag.getDodge()) + "x "+TrawelColor.ITEM_DESC_PROP+"dodging"+TrawelColor.PRE_WHITE+", "+TrawelColor.ITEM_WANT_HIGHER + extra.format(bag.getSharpResist()) +TrawelColor.ITEM_DESC_PROP+" sharp resistance"+TrawelColor.PRE_WHITE+", " +
-					TrawelColor.ITEM_WANT_HIGHER+extra.format(bag.getBluntResist()) +TrawelColor.ITEM_DESC_PROP+ " blunt resistance"+TrawelColor.PRE_WHITE+", and "+ TrawelColor.ITEM_WANT_HIGHER+extra.format(bag.getPierceResist())+TrawelColor.ITEM_DESC_PROP+ " pierce resistance"+TrawelColor.PRE_WHITE+".");
-			extra.println("They have " +TrawelColor.ITEM_WANT_HIGHER+ xp +TrawelColor.PRE_WHITE+ "/" + level*level + TrawelColor.ITEM_DESC_PROP+" xp"+TrawelColor.PRE_WHITE+" toward "+TrawelColor.ITEM_DESC_PROP+"level "+TrawelColor.PRE_WHITE + (level+1) + ".");
+			Print.println("This is " + this.getName() +". They are a "+TrawelColor.ITEM_DESC_PROP+"level " + TrawelColor.ITEM_WANT_HIGHER+this.getLevel() +" "+TrawelColor.PRE_WHITE + this.getBag().getRace().renderName(false)+".");
+			Print.println("They have "+TrawelColor.ITEM_WANT_HIGHER+ getBase_HP() +TrawelColor.ITEM_DESC_PROP+ " LHP"+TrawelColor.PRE_WHITE+". Their health modifier is " +TrawelColor.ITEM_WANT_HIGHER+ Print.format(bag.getHealth()) +TrawelColor.PRE_WHITE+ "x. Their expected hp is "+TrawelColor.ITEM_DESC_PROP+ getOOB_HP() +TrawelColor.PRE_WHITE+".");
+			Print.println("They have "+TrawelColor.ITEM_WANT_HIGHER+ Print.format(bag.getAim()) + "x "+TrawelColor.ITEM_DESC_PROP+"aiming"+TrawelColor.PRE_WHITE+", " +TrawelColor.ITEM_WANT_HIGHER+Print.format(bag.getDam()) + "x "+TrawelColor.ITEM_DESC_PROP+"damage"+TrawelColor.PRE_WHITE+", and "+TrawelColor.ITEM_WANT_HIGHER+Print.format(bag.getSpeed()) + "x "+TrawelColor.ITEM_DESC_PROP+"speed.");
+			Print.println("They have " +TrawelColor.ITEM_WANT_HIGHER+ Print.format(bag.getDodge()) + "x "+TrawelColor.ITEM_DESC_PROP+"dodging"+TrawelColor.PRE_WHITE+", "+TrawelColor.ITEM_WANT_HIGHER + Print.format(bag.getSharpResist()) +TrawelColor.ITEM_DESC_PROP+" sharp resistance"+TrawelColor.PRE_WHITE+", " +
+					TrawelColor.ITEM_WANT_HIGHER+Print.format(bag.getBluntResist()) +TrawelColor.ITEM_DESC_PROP+ " blunt resistance"+TrawelColor.PRE_WHITE+", and "+ TrawelColor.ITEM_WANT_HIGHER+Print.format(bag.getPierceResist())+TrawelColor.ITEM_DESC_PROP+ " pierce resistance"+TrawelColor.PRE_WHITE+".");
+			Print.println("They have " +TrawelColor.ITEM_WANT_HIGHER+ xp +TrawelColor.PRE_WHITE+ "/" + level*level + TrawelColor.ITEM_DESC_PROP+" xp"+TrawelColor.PRE_WHITE+" toward "+TrawelColor.ITEM_DESC_PROP+"level "+TrawelColor.PRE_WHITE + (level+1) + ".");
 			if (this.getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
-				extra.println("Their inventory includes " + bag.nameInventory());
-				if (hasSkill(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
-				if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
-				if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}
+				Print.println("Their inventory includes " + bag.nameInventory());
+				if (hasSkill(Skill.BEER_LOVER)) {Print.println("They look drunk.");}
+				if (hasSkill(Skill.PARRY)) {Print.println("They have a parrying dagger.");}
+				if (hasSkill(Skill.SHIELD)) {Print.println("They have a shield.");}
 				attributeDescLongPrint();
 			}
 		}
@@ -1428,8 +1431,8 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			str+= a.getName()+", ";
 		}
 		str += bag.getHand().getName()+";";
-		str += getBase_HP() + " LHP, " +extra.format(bag.getHealth())+ "xhp, "+extra.format(bag.getAim()) + "xaim, "+extra.format(bag.getDam()) + "xdam, "+extra.format(bag.getSpeed())+"xspd, " +extra.format(bag.getDodge())+"xdge;";
-		str += extra.format(bag.getSharpResist())+" "+extra.format(bag.getBluntResist())+" "+extra.format(bag.getPierceResist())+ " sbp";
+		str += getBase_HP() + " LHP, " +Print.format(bag.getHealth())+ "xhp, "+Print.format(bag.getAim()) + "xaim, "+Print.format(bag.getDam()) + "xdam, "+Print.format(bag.getSpeed())+"xspd, " +Print.format(bag.getDodge())+"xdge;";
+		str += Print.format(bag.getSharpResist())+" "+Print.format(bag.getBluntResist())+" "+Print.format(bag.getPierceResist())+ " sbp";
 		System.out.println(str);
 	}
 	
@@ -1465,7 +1468,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 
 	public void displayXp() {
-		extra.println(this.getName() + " has " + xp + "/" + level*level + " xp toward level " + (level+1) + ".");
+		Print.println(this.getName() + " has " + xp + "/" + level*level + " xp toward level " + (level+1) + ".");
 	}
 	
 	public String xpString() {
@@ -1477,7 +1480,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 
 	public void displayHp() {
-		extra.println("Hp: " + hp + "/" + tempMaxHp);
+		Print.println("Hp: " + hp + "/" + tempMaxHp);
 		
 	}
 
@@ -1559,9 +1562,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			bluntm += a.getBluntResist();
 			piercem += a.getPierceResist();
 		}
-		extra.println(TrawelColor.ITEM_DESC_PROP+"Sharp: "+TrawelColor.ITEM_WANT_HIGHER+ sharp + "/" +sharpm);
-		extra.println(TrawelColor.ITEM_DESC_PROP+"Blunt: "+TrawelColor.ITEM_WANT_HIGHER+ blunt + "/" +bluntm);
-		extra.println(TrawelColor.ITEM_DESC_PROP+"Pierce: "+TrawelColor.ITEM_WANT_HIGHER+ pierce + "/" +piercem);
+		Print.println(TrawelColor.ITEM_DESC_PROP+"Sharp: "+TrawelColor.ITEM_WANT_HIGHER+ sharp + "/" +sharpm);
+		Print.println(TrawelColor.ITEM_DESC_PROP+"Blunt: "+TrawelColor.ITEM_WANT_HIGHER+ blunt + "/" +bluntm);
+		Print.println(TrawelColor.ITEM_DESC_PROP+"Pierce: "+TrawelColor.ITEM_WANT_HIGHER+ pierce + "/" +piercem);
 	}
 	
 	public void removeEffectAll(Effect e) {
@@ -1581,15 +1584,15 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public void cureEffects() {
 		if (isPlayer()) {
 			if (hasEffect(Effect.CURSE)) {
-				extra.println(TrawelColor.RESULT_GOOD+"Your curse is lifted!");
+				Print.println(TrawelColor.RESULT_GOOD+"Your curse is lifted!");
 				Networking.unlockAchievement("recover1");
 			}
 			if (hasEffect(Effect.BURNOUT)) {
-				extra.println(TrawelColor.RESULT_GOOD+"Your burnout is treated!");
+				Print.println(TrawelColor.RESULT_GOOD+"Your burnout is treated!");
 				Networking.unlockAchievement("recover1");
 			}
 			if (hasEffect(Effect.WOUNDED)) {
-				extra.println(TrawelColor.RESULT_GOOD+"Your wounds are mended!");
+				Print.println(TrawelColor.RESULT_GOOD+"Your wounds are mended!");
 				Networking.unlockAchievement("recover1");
 			}
 			/*
@@ -1613,7 +1616,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public void bathEffects() {
 		if (isPlayer()) {
 			if (hasEffect(Effect.BEES)) {
-				extra.println(TrawelColor.RESULT_GOOD+"A quick dip makes the bees stop following you.");
+				Print.println(TrawelColor.RESULT_GOOD+"A quick dip makes the bees stop following you.");
 				Networking.unlockAchievement("recover1");
 			}
 		}
@@ -1626,11 +1629,11 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public void restEffects() {
 		if (isPlayer()) {
 			if (hasEffect(Effect.BURNOUT)) {
-				extra.println(TrawelColor.RESULT_GOOD+"You rest off the burnout.");
+				Print.println(TrawelColor.RESULT_GOOD+"You rest off the burnout.");
 				Networking.unlockAchievement("recover1");
 			}
 			if (hasEffect(Effect.TIRED)) {
-				extra.println(TrawelColor.RESULT_GOOD+"You rest off your tiredness.");
+				Print.println(TrawelColor.RESULT_GOOD+"You rest off your tiredness.");
 				Networking.unlockAchievement("recover1");
 			}
 		}
@@ -1644,7 +1647,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public void repairEffects() {
 		if (isPlayer()) {
 			if (hasEffect(Effect.DAMAGED)) {
-				extra.println(TrawelColor.RESULT_GOOD+"Your armor is repaired.");
+				Print.println(TrawelColor.RESULT_GOOD+"Your armor is repaired.");
 				Networking.unlockAchievement("recover1");
 			}
 		}
@@ -1664,19 +1667,19 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			int num = effects.getOrDefault(e, 0);
 			if (num > 0) {
 				if (!found) {
-					extra.println(TrawelColor.STAT_HEADER+"Effects:");
+					Print.println(TrawelColor.STAT_HEADER+"Effects:");
 					found = true;
 				}
 				if (num > 1) {
-					extra.println(" " +e.getName() +TrawelColor.PRE_WHITE+ " x"+num+": "+ e.getDesc());
+					Print.println(" " +e.getName() +TrawelColor.PRE_WHITE+ " x"+num+": "+ e.getDesc());
 				}else {
-					extra.println(" " +e.getName() +TrawelColor.PRE_WHITE+ ": "+ e.getDesc());
+					Print.println(" " +e.getName() +TrawelColor.PRE_WHITE+ ": "+ e.getDesc());
 				}
 			}
 			
 		}
 		if (!found) {
-			extra.println("No Effects.");
+			Print.println("No Effects.");
 		}
 		return found;
 	}
@@ -1794,11 +1797,11 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				*(torn == 0 ? 1 : Math.pow(.9,torn));
 	}
 	
-	public int bloodSeed = extra.randRange(0,2000);
+	public int bloodSeed = Rand.randRange(0,2000);
 	private float bloodCount = 0;
 	
 	public void wash() {
-		bloodSeed = extra.randRange(0,2000);
+		bloodSeed = Rand.randRange(0,2000);
 		bloodCount = 0;
 	}
 	
@@ -1813,7 +1816,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		bag.getHand().wash();
 		if (this.isPlayer()) {
 			if (bTotal > 6) {
-				extra.println("You were REALLY bloody!");
+				Print.println("You were REALLY bloody!");
 			}
 			this.bag.graphicalDisplay(-1,this);
 		}
@@ -1841,7 +1844,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public float getPitch() {//TODO: examine for what it does besides just set it base, probably missing rng
 		if (pitch < this.getBag().getRace().minPitch || pitch > this.getBag().getRace().maxPitch) {
 			//pitch = extra.curveLerp(this.getBag().getRace().minPitch, this.getBag().getRace().maxPitch,.7f);
-			pitch = this.getBag().getRace().minPitch+(extra.hrandomFloat()*(this.getBag().getRace().maxPitch-this.getBag().getRace().minPitch));
+			pitch = this.getBag().getRace().minPitch+(Rand.hrandomFloat()*(this.getBag().getRace().maxPitch-this.getBag().getRace().minPitch));
 		}//extra.randRange((int)this.getBag().getRace().minPitch*1000,(int)this.getBag().getRace().maxPitch*1000)/1000.0f;}
 		return pitch;
 	}
@@ -1901,19 +1904,19 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 
 	public void debug_print_status(int damageDone) {
-		if (extra.getPrint()) {
+		if (Print.getPrint()) {
 			return;
 		}
 		if (damageDone != 0) {
 			if (!mainGame.advancedCombatDisplay) {
 				return;
 			}
-			extra.println(getHp() +" ("+damageDone+")->"+ (getHp()-damageDone) + "/" + getMaxHp());
+			Print.println(getHp() +" ("+damageDone+")->"+ (getHp()-damageDone) + "/" + getMaxHp());
 		}else {
 			bodystatus.debug_print(true);//testing, will have to redo both this and submethods if used for real
 			String[] attributes = attributeDesc();
 			for (int i = 0;i < attributes.length;i++) {
-				extra.println(attributes[i]);
+				Print.println(attributes[i]);
 			}
 		}
 	}
@@ -1936,7 +1939,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	
 	public Wound getAnyWoundForTargetSpot(int spot) {
 		Target t =bodystatus.getTargetReturn(spot).tar;
-		switch (extra.randRange(0,2)) {
+		switch (Rand.randRange(0,2)) {
 		case 0 :
 			return t.rollWound(DamageType.SHARP);
 		case 1: default:
@@ -2056,8 +2059,8 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 * typically, should use >= since engager wins ties
 	 */
 	public int contestedRoll(Person defender, int mynum, int theirnum) {
-		int myroll = extra.randRange(0,mynum);
-		int theirroll = extra.randRange(0,theirnum);
+		int myroll = Rand.randRange(0,mynum);
+		int theirroll = Rand.randRange(0,theirnum);
 		return myroll-theirroll;
 	}
 	
@@ -2069,11 +2072,11 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 * typically, should use >= since engager wins ties
 	 */
 	public int contestedRoll(int mynum, int theirnum) {
-		int myroll = extra.randRange(0,mynum);
+		int myroll = Rand.randRange(0,mynum);
 		if (hasEffect(Effect.BURNOUT)) {
 			myroll/=2;
 		}
-		int theirroll = extra.randRange(0,theirnum);
+		int theirroll = Rand.randRange(0,theirnum);
 		return myroll-theirroll;
 	}
 	
@@ -2097,46 +2100,46 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				,
 				TrawelColor.ITEM_DESC_PROP+extra.DISP_WEIGHT+TrawelColor.PRE_WHITE+"/"+TrawelColor.ATT_TRUE+"Str"+TrawelColor.PRE_WHITE+": "
 						+TrawelColor.ITEM_WANT_LOWER + bag.getCapacity() +TrawelColor.PRE_WHITE+ "/"+TrawelColor.ATT_TRUE+getStrength()
-							+TrawelColor.PRE_WHITE+ ", "+ TrawelColor.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(attMultStr())+"x"
+							+TrawelColor.PRE_WHITE+ ", "+ TrawelColor.ITEM_WANT_HIGHER+Print.F_TWO_TRAILING.format(attMultStr())+"x"
 			,"("+TrawelColor.ATT_TRUE+"Base"+TrawelColor.PRE_WHITE+") "+TrawelColor.ATT_EFFECTIVE+"Dex"+TrawelColor.PRE_WHITE
 			+": ("+TrawelColor.ATT_TRUE+getRawDexterity()+TrawelColor.PRE_WHITE+") "+TrawelColor.ATT_EFFECTIVE+getDexterity()
-				+TrawelColor.PRE_WHITE+ ", "+ TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(attMultDex())+"x"
-				,TrawelColor.ITEM_DESC_PROP+" Mobility"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(getTotalAgiPen())+"x"+TrawelColor.PRE_WHITE+", "
-				+TrawelColor.ITEM_DESC_PROP+" Swiftness"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(getAttributeAgiPen())+"x"
+				+TrawelColor.PRE_WHITE+ ", "+ TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(attMultDex())+"x"
+				,TrawelColor.ITEM_DESC_PROP+" Mobility"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(getTotalAgiPen())+"x"+TrawelColor.PRE_WHITE+", "
+				+TrawelColor.ITEM_DESC_PROP+" Swiftness"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+Print.F_TWO_TRAILING.format(getAttributeAgiPen())+"x"
 		,TrawelColor.ATT_TRUE+"Cla"+TrawelColor.PRE_WHITE+": " +TrawelColor.ATT_TRUE+ getClarity()
-			+TrawelColor.PRE_WHITE+", " +TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(attMultCla())+"x"
+			+TrawelColor.PRE_WHITE+", " +TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(attMultCla())+"x"
 				};
 	}
 	
 	public void attributeDescLongPrint() {
 		if (Player.getTutorial()) {
-			extra.println("Your attributes include Strength, Dexterity, and Clarity. Strength lets you carry more stuff. If you can't carry your stuff, you suffer penalities to Dexterity. Dexterity influences your dodge when factoring in your restrictive equipment, which also impair your Dexterity.");
-			extra.println("Attributes above 100 have bonuses. This is a +10% bonus for every 100 above 100. Dexterity is more involved due to being restricted by equipment weight and load, but cannot have a penalty to its pure multiplier.");
-			extra.println("Strength mult applies to physical damage from weapons, Dexterity mult applies to hit roll.");
+			Print.println("Your attributes include Strength, Dexterity, and Clarity. Strength lets you carry more stuff. If you can't carry your stuff, you suffer penalities to Dexterity. Dexterity influences your dodge when factoring in your restrictive equipment, which also impair your Dexterity.");
+			Print.println("Attributes above 100 have bonuses. This is a +10% bonus for every 100 above 100. Dexterity is more involved due to being restricted by equipment weight and load, but cannot have a penalty to its pure multiplier.");
+			Print.println("Strength mult applies to physical damage from weapons, Dexterity mult applies to hit roll.");
 		}
 		//str section
-		extra.println(TrawelColor.STAT_HEADER+"Strength"+TrawelColor.PRE_WHITE+": "+TrawelColor.ATT_TRUE+getStrength());
-			extra.println(
+		Print.println(TrawelColor.STAT_HEADER+"Strength"+TrawelColor.PRE_WHITE+": "+TrawelColor.ATT_TRUE+getStrength());
+			Print.println(
 				" "+TrawelColor.ITEM_DESC_PROP+"Weight: "+TrawelColor.ITEM_WANT_LOWER+bag.getCapacity()
-				+TrawelColor.ITEM_DESC_PROP+" Used Capacity: "+TrawelColor.ITEM_WANT_LOWER+extra.F_WHOLE.format(100f*(bag.getCapacity())/(getStrength()))+"%");
-			extra.println(" "+TrawelColor.ITEM_DESC_PROP+"Multiplier: "+TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(attMultStr())+"x");
-		extra.println(
-				TrawelColor.ITEM_DESC_PROP+" Encumbrance Multiplier Maximum Penalty: " +TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(atrBox.getDexPen())+"x");
+				+TrawelColor.ITEM_DESC_PROP+" Used Capacity: "+TrawelColor.ITEM_WANT_LOWER+Print.F_WHOLE.format(100f*(bag.getCapacity())/(getStrength()))+"%");
+			Print.println(" "+TrawelColor.ITEM_DESC_PROP+"Multiplier: "+TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(attMultStr())+"x");
+		Print.println(
+				TrawelColor.ITEM_DESC_PROP+" Encumbrance Multiplier Maximum Penalty: " +TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(atrBox.getDexPen())+"x");
 		//dex section
-		extra.println(
+		Print.println(
 			TrawelColor.STAT_HEADER+"Dexterity"+TrawelColor.PRE_WHITE+":" +TrawelColor.ATT_TRUE +" Base "+getRawDexterity()+TrawelColor.PRE_WHITE+", "
 				+TrawelColor.ATT_EFFECTIVE+"Effective " +getDexterity() + TrawelColor.PRE_WHITE);
-		extra.println(TrawelColor.ITEM_DESC_PROP+" Multiplier"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(attMultDex())+"x");
-		extra.println(
+		Print.println(TrawelColor.ITEM_DESC_PROP+" Multiplier"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(attMultDex())+"x");
+		Print.println(
 				TrawelColor.ITEM_DESC_PROP+" Mobility Multiplier: "
-				+TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(getTotalAgiPen())+"x"+TrawelColor.PRE_WHITE+", "
-				+TrawelColor.ITEM_DESC_PROP+"Applied to Dex: "+TrawelColor.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(getAgiPenAgainstDex()) 
-				+ "x"+TrawelColor.ITEM_DESC_PROP+" of Encumbrance "+TrawelColor.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(atrBox.getCapAgiPen())
-				+ "x"+TrawelColor.ITEM_DESC_PROP+" and Restriction "+extra.DISP_AMP+" "+TrawelColor.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(bag.getAgiPen()) +"x"
-				+TrawelColor.PRE_WHITE+";"+TrawelColor.ITEM_DESC_PROP+" Swiftness Multiplier: "+TrawelColor.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(getAttributeAgiPen())+"x");
+				+TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(getTotalAgiPen())+"x"+TrawelColor.PRE_WHITE+", "
+				+TrawelColor.ITEM_DESC_PROP+"Applied to Dex: "+TrawelColor.ITEM_WANT_HIGHER+Print.F_TWO_TRAILING.format(getAgiPenAgainstDex()) 
+				+ "x"+TrawelColor.ITEM_DESC_PROP+" of Encumbrance "+TrawelColor.ITEM_WANT_HIGHER+Print.F_TWO_TRAILING.format(atrBox.getCapAgiPen())
+				+ "x"+TrawelColor.ITEM_DESC_PROP+" and Restriction "+extra.DISP_AMP+" "+TrawelColor.ITEM_WANT_HIGHER+Print.F_TWO_TRAILING.format(bag.getAgiPen()) +"x"
+				+TrawelColor.PRE_WHITE+";"+TrawelColor.ITEM_DESC_PROP+" Swiftness Multiplier: "+TrawelColor.ITEM_WANT_HIGHER+Print.F_TWO_TRAILING.format(getAttributeAgiPen())+"x");
 		//cla section
-		extra.println(TrawelColor.STAT_HEADER+"Clarity"+TrawelColor.PRE_WHITE+": "+TrawelColor.ATT_TRUE+getClarity());
-		extra.println(TrawelColor.ITEM_DESC_PROP+" Multiplier: " +TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(attMultCla())+"x");
+		Print.println(TrawelColor.STAT_HEADER+"Clarity"+TrawelColor.PRE_WHITE+": "+TrawelColor.ATT_TRUE+getClarity());
+		Print.println(TrawelColor.ITEM_DESC_PROP+" Multiplier: " +TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(attMultCla())+"x");
 	}
 
 	public SuperPerson getSuper() {
@@ -2265,8 +2268,8 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	public boolean reallyFight(String verb) {
 		graphicalFoe();
-		extra.println(TrawelColor.PRE_BATTLE+verb+" " + getName() + " level " + getLevel() + "?");
-		int i = extra.menuGo(new MenuGenerator() {
+		Print.println(TrawelColor.PRE_BATTLE+verb+" " + getName() + " level " + getLevel() + "?");
+		int i = Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {

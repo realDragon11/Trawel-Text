@@ -19,7 +19,8 @@ import rtrawel.jobs.PathFactory;
 import rtrawel.jobs.PathWithLevel;
 import rtrawel.jobs.Progression;
 import rtrawel.unit.Action.TargetType;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
+import trawel.core.Print;
 
 public class RPlayer extends RUnit {
 
@@ -215,20 +216,20 @@ public class RPlayer extends RUnit {
 		int in;
 		boolean valid;
 		while (keepGoing) {
-			extra.println(this.getName() + " HP: " + this.getHp() + "/" + this.getMaxHp() + " MP: " + this.getMana() + "/" + this.getMaxMana() + " Tsn: " + this.getTension() + "/" + this.getMaxTension());
-			extra.println("1 basic attack");
-			extra.println("2 abilities and spells");
-			extra.println("3 items");
-			extra.println("4 change stance");
-			extra.println("5 defend");
-		switch (extra.inInt(5)) {
+			Print.println(this.getName() + " HP: " + this.getHp() + "/" + this.getMaxHp() + " MP: " + this.getMana() + "/" + this.getMaxMana() + " Tsn: " + this.getTension() + "/" + this.getMaxTension());
+			Print.println("1 basic attack");
+			Print.println("2 abilities and spells");
+			Print.println("3 items");
+			Print.println("4 change stance");
+			Print.println("5 defend");
+		switch (Input.inInt(5)) {
 		case 1:
 			for (RUnit r: curBattle.foes) {
-				extra.println(r.getName());
+				Print.println(r.getName());
 			}
 			valid = false;
 			while (!valid) {
-				in = extra.inInt(99);
+				in = Input.inInt(99);
 				if (in == 99) {
 					break;
 				}
@@ -244,10 +245,10 @@ public class RPlayer extends RUnit {
 			break;
 		case 2: 
 			for (int i = 0;i < abs.size();i++) {
-				extra.println((i+1) + " " +abs.get(i).getName()  + ": " + abs.get(i).getDesc() + (abs.get(i).canCast(this) ? "" : " (locked)"));
+				Print.println((i+1) + " " +abs.get(i).getName()  + ": " + abs.get(i).getDesc() + (abs.get(i).canCast(this) ? "" : " (locked)"));
 			}
-			extra.println((abs.size()+1 )+" back");
-			in = extra.inInt(abs.size()+1);
+			Print.println((abs.size()+1 )+" back");
+			in = Input.inInt(abs.size()+1);
 			if (in == abs.size()+1) {
 				continue;
 			}
@@ -255,10 +256,10 @@ public class RPlayer extends RUnit {
 			break;
 		case 3:
 			for (int i = 0;i < inventory.size();i++) {
-				extra.println((i+1) + " " +inventory.get(i).getName() + ": " + inventory.get(i).getDesc());//make sure only valid things can go into inventory later
+				Print.println((i+1) + " " +inventory.get(i).getName() + ": " + inventory.get(i).getDesc());//make sure only valid things can go into inventory later
 			}
-			extra.println((inventory.size()+1 )+" back");
-			in = extra.inInt(inventory.size()+1);
+			Print.println((inventory.size()+1 )+" back");
+			in = Input.inInt(inventory.size()+1);
 			if (in == inventory.size()+1) {
 				continue;
 			}
@@ -268,7 +269,7 @@ public class RPlayer extends RUnit {
 			}else {
 				if (it.getItemType().equals(ItemType.WEAPON)) {
 					if (JobFactory.getJobByName(currentJob).weaponTypes().contains(((Weapon)it).getWeaponType())){
-						extra.println("You swap out your " + weap.getName() + " for your " + it.getName() + ".");
+						Print.println("You swap out your " + weap.getName() + " for your " + it.getName() + ".");
 						inventory.add(this.getWeapon());
 						inventory.remove(it);
 						this.weap = (Weapon)it;
@@ -281,12 +282,12 @@ public class RPlayer extends RUnit {
 			
 			break;
 		case 4:
-			extra.println("Current Stance: " + fStance.name().toLowerCase());
-			extra.println("1 offensive");
-			extra.println("2 balanced");
-			extra.println("3 defensive");
-			extra.println("4 back");
-			switch (extra.inInt(4)) {
+			Print.println("Current Stance: " + fStance.name().toLowerCase());
+			Print.println("1 offensive");
+			Print.println("2 balanced");
+			Print.println("3 defensive");
+			Print.println("4 back");
+			switch (Input.inInt(4)) {
 			case 1: this.fStance = FightingStance.OFFENSIVE; keepGoing = false;break;
 			case 2: this.fStance = FightingStance.BALANCED; keepGoing = false;break;
 			case 3: this.fStance = FightingStance.DEFENSIVE; keepGoing = false;break;
@@ -307,7 +308,7 @@ public class RPlayer extends RUnit {
 		boolean valid;
 		TargetGroup t;
 		if (!ab.canCast(this)) {
-			extra.println("You can't cast that right now.");
+			Print.println("You can't cast that right now.");
 			return true;
 		}
 		if (ab.getTargetType().equals(Action.TargetType.SELF_ONLY)) {
@@ -328,20 +329,20 @@ public class RPlayer extends RUnit {
 						for (RUnit u: curBattle.foeGroups.get(i)) {
 							t.targets.add(u);
 						}
-						extra.println((i+1) + " " + t.toString());
+						Print.println((i+1) + " " + t.toString());
 					}
 					t = new TargetGroup();
-					in = extra.inInt(curBattle.foeGroups.size());
+					in = Input.inInt(curBattle.foeGroups.size());
 					t.targets.addAll(curBattle.foeGroups.get(in-1));
 					decideOn(ab,t);
 					return false;
 				}else {
 					for (RUnit r: curBattle.foes) {
-						extra.println(r.getName());
+						Print.println(r.getName());
 					}
 					valid = false;
 					while (!valid) {
-						in = extra.inInt(99);
+						in = Input.inInt(99);
 						for (RUnit r: curBattle.foes) {
 							if (((RMonster)r).getMonsterNumber() == in) {
 								decideOn(ab,new TargetGroup(r));
@@ -356,9 +357,9 @@ public class RPlayer extends RUnit {
 		}else {
 			if (ab.getTargetGrouping().equals(Action.TargetGrouping.SINGLE)) {
 				for (int i = 0;i<curBattle.party.size();i++) {//TODO battle rezes?
-					extra.println((1+i) + " "+curBattle.party.get(i).getName());
+					Print.println((1+i) + " "+curBattle.party.get(i).getName());
 				}
-				in = extra.inInt(curBattle.party.size());
+				in = Input.inInt(curBattle.party.size());
 				decideOn(ab,new TargetGroup(curBattle.party.get(in-1)));
 				return false;
 			}else {
@@ -438,14 +439,14 @@ public class RPlayer extends RUnit {
 	public boolean assignItems() {
 		int i;
 		for (i = 0;i < inventory.size();i++) {
-			extra.println((i + 1) + " " + inventory.get(i).getName());
+			Print.println((i + 1) + " " + inventory.get(i).getName());
 		}
 		i++;//extra i++
 		if (inventory.size() < 3) {
-			extra.println((i++) + " empty slot");
+			Print.println((i++) + " empty slot");
 		}
-		extra.println((i) + " back");
-		int in = extra.inInt(i);
+		Print.println((i) + " back");
+		int in = Input.inInt(i);
 		if (in <= inventory.size()+1) {
 			if (in <= inventory.size()) {
 			Party.party.addItem(inventory.get(in-1).getName(),1);
@@ -463,17 +464,17 @@ public class RPlayer extends RUnit {
 	public void addWeaponPoints(int points) {
 		List<WeaponType> list = JobFactory.getJobByName(currentJob).weaponTypes();
 		while (points > 0) {
-			extra.println("You have " + points + " weapon points left.");
+			Print.println("You have " + points + " weapon points left.");
 			for (int i = 0;i < list.size();i++) {
-				extra.println((i+1)+ " " + list.get(i).toString().toLowerCase());
+				Print.println((i+1)+ " " + list.get(i).toString().toLowerCase());
 			}
-			int in = extra.inInt(list.size());
+			int in = Input.inInt(list.size());
 			WeaponType wt = list.get(in-1);
 			PathWithLevel p = progression.getPathByName(wt.toString().toLowerCase(),this);
 			int aLeft = 100-p.level;
-			extra.println("Allocate how many? (Weapons can go over 100.)");
+			Print.println("Allocate how many? (Weapons can go over 100.)");
 			int take = points;
-			take = extra.inInt(take);
+			take = Input.inInt(take);
 			progression.addPathPoints(wt.toString().toLowerCase(),take, this);
 			points-=take;
 			
@@ -485,8 +486,8 @@ public class RPlayer extends RUnit {
 		Armor hold = null;
 		switch (item.getArmorType()) {
 		case ASSEC:
-			extra.println("slot one or slot two?");
-			if (extra.inInt(2) == 1) {
+			Print.println("slot one or slot two?");
+			if (Input.inInt(2) == 1) {
 				hold = this.assec1;
 				this.assec1 = item;
 			}else {
@@ -557,16 +558,16 @@ public class RPlayer extends RUnit {
 	public void display() {
 		this.displayStats();
 		for (Item i: this.getItems()) {
-			extra.println(i.display());
+			Print.println(i.display());
 		}
 		
 	}
 
 	public void displayStats() {
 		// TODO Auto-generated method stub
-		extra.println(this.getName() + ": level "+this.progression.jobLevel(currentJob) + " " + currentJob);
-		extra.println("HP: " + this.getHp() + "/" + this.getMaxHp() + " MP: " + this.getMana() + "/" + this.getMaxMana() + " Tsn: " + this.getTension() + "/" + this.getMaxTension());
-		extra.println("Str: " + this.getStrength() +" Agi: " +this.getAgility() + " Kno: " +this.getKnowledge() + " Res: " + this.getResilence() + " Dex: " + this.getDexterity() + " Spd: " + this.getSpeed());
+		Print.println(this.getName() + ": level "+this.progression.jobLevel(currentJob) + " " + currentJob);
+		Print.println("HP: " + this.getHp() + "/" + this.getMaxHp() + " MP: " + this.getMana() + "/" + this.getMaxMana() + " Tsn: " + this.getTension() + "/" + this.getMaxTension());
+		Print.println("Str: " + this.getStrength() +" Agi: " +this.getAgility() + " Kno: " +this.getKnowledge() + " Res: " + this.getResilence() + " Dex: " + this.getDexterity() + " Spd: " + this.getSpeed());
 	}
 
 	public List<Item> getItems() {
@@ -602,7 +603,7 @@ public class RPlayer extends RUnit {
 			
 		}else {
 			if (ab.getTargetGrouping().equals(Action.TargetGrouping.SINGLE)) {
-				extra.println("On who?");
+				Print.println("On who?");
 				return new TargetGroup(Party.party.getUnit());
 			}else {
 				TargetGroup t = new TargetGroup();

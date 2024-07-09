@@ -17,7 +17,8 @@ import scimech.units.mechs.Packrat;
 import scimech.units.mechs.Pirate;
 import scimech.units.mechs.Pyro;
 import scimech.units.mechs.Swashbuckler;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
+import trawel.core.Print;
 
 public class SciRunner {
 	
@@ -25,15 +26,15 @@ public class SciRunner {
 	 * @return true if the player won
 	 */
 	public static boolean playProto() {
-		extra.println("Choose your mechs");
+		Print.println("Choose your mechs");
 		List<Mech> mechs = SciRunner.mechsForSide(true);
-		extra.println("Save mechs?");
-		if (extra.yesNo()) {
+		Print.println("Save mechs?");
+		if (Input.yesNo()) {
 			SaveHandler.clean();
 			SaveHandler.imprintMechs(mechs);
 			SaveHandler.save();
 		}
-		extra.println("Choose their mechs");
+		Print.println("Choose their mechs");
 		mechs.addAll(mechsForSide(false));
 
 		MechCombat mc = new MechCombat(mechs);
@@ -47,7 +48,7 @@ public class SciRunner {
 
 
 	private static List<Mech> mechsForSide(boolean side){
-		extra.menuGoPaged(new MenuGeneratorPaged(){
+		Input.menuGoPaged(new MenuGeneratorPaged(){
 
 			@Override
 			public List<MenuItem> gen() {

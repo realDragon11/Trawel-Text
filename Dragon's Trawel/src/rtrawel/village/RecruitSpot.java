@@ -6,7 +6,8 @@ import java.util.List;
 import rtrawel.EventFlag;
 import rtrawel.battle.Party;
 import rtrawel.unit.RPlayer;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
+import trawel.core.Print;
 
 public class RecruitSpot implements Content{
 
@@ -34,11 +35,11 @@ public class RecruitSpot implements Content{
 	
 	@Override
 	public boolean go() {
-		extra.println("What class do you want " + pname + " to be?");
+		Print.println("What class do you want " + pname + " to be?");
 		for (int i = 0; i < paths.size();i++) {
-			extra.println((i+1) +" " + paths.get(i));
+			Print.println((i+1) +" " + paths.get(i));
 		}
-		RPlayer p = new RPlayer(pname,paths.get(extra.inInt(paths.size())-1));
+		RPlayer p = new RPlayer(pname,paths.get(Input.inInt(paths.size())-1));
 		village.conts.remove(this);
 		EventFlag.eventFlag.setEF(evF, 1);
 		Party.party.list.add(p);

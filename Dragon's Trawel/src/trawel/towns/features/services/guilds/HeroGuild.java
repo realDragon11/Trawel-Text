@@ -7,11 +7,13 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.core.Input;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.factions.Faction;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.DrawBane;
@@ -45,7 +47,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 		tier = _tier;
 		tutorialText = "Hero's Guild";
 		area_type = Area.MISC_SERVICE;
-		activityTimer = 24f+extra.randFloat()*24f;
+		activityTimer = 24f+Rand.randFloat()*24f;
 	}
 	
 	@Override
@@ -60,7 +62,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 	
 	@Override
 	public void go() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -70,7 +72,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 					@Override
 					public String title() {
 						FSub sub = Player.player.getPerson().facRep.getFacRep(Faction.HEROIC);
-						return "Current Heroic Reputation: " + (sub == null ? "Unknown" : ""+extra.format2(sub.forFac-sub.againstFac));
+						return "Current Heroic Reputation: " + (sub == null ? "Unknown" : ""+Print.format2(sub.forFac-sub.againstFac));
 					}
 				});
 				mList.add(new MenuSelect() {
@@ -92,14 +94,14 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 						}*/
 						float spenda = FBox.getSpendableFor(Faction.HEROIC);
 						float cost = (float)Math.pow(((spentf/50f)+1)*10,1.1f);
-						extra.println("Request a feat fragment? cost: " +extra.format2(cost) + " of "+extra.format2(spenda));
-						if (extra.yesNo()) {
+						Print.println("Request a feat fragment? cost: " +Print.format2(cost) + " of "+Print.format2(spenda));
+						if (Input.yesNo()) {
 							if (cost <= spenda) {
 								Player.player.hSpentOnKno += cost;
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
 								Player.bag.addNewDrawBanePlayer(DrawBane.KNOW_FRAG);
 							}else {
-								extra.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
+								Print.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
 								break;
 							}
 						}else {
@@ -122,14 +124,14 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 						while (true) {
 						int cost = 20*gemAmount;
 						float spenda = FBox.getSpendableFor(Faction.HEROIC);
-						extra.println("Request "+gemAmount+" "+(gemAmount == 1 ? Gem.RUBY.name : Gem.RUBY.plural)+"? cost: " +cost + " of "+extra.format2(spenda));
-						if (extra.yesNo()) {
+						Print.println("Request "+gemAmount+" "+(gemAmount == 1 ? Gem.RUBY.name : Gem.RUBY.plural)+"? cost: " +cost + " of "+Print.format2(spenda));
+						if (Input.yesNo()) {
 							if (cost <= spenda) {
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
 								Gem.RUBY.changeGem(gemAmount);
-								extra.println(TrawelColor.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.RUBY.name : Gem.RUBY.plural)+", new total: " + Gem.RUBY.getGem()+".");
+								Print.println(TrawelColor.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.RUBY.name : Gem.RUBY.plural)+", new total: " + Gem.RUBY.getGem()+".");
 							}else {
-								extra.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
+								Print.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
 								break;
 							}
 						}else {
@@ -148,7 +150,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
+						Input.menuGo(new MenuGenerator() {
 
 							@Override
 							public List<MenuItem> gen() {
@@ -200,7 +202,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 		if (canQuest) {
 			activityTimer-=time;
 			if (activityTimer <= 0) {
-				activityTimer+=12f+(36f*extra.randFloat());
+				activityTimer+=12f+(36f*Rand.randFloat());
 				generateSideQuest();
 			}
 		}
@@ -215,9 +217,9 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 	@Override
 	public void generateSideQuest() {
 		if (sideQuests.size() >= 3) {
-			sideQuests.remove(extra.randList(sideQuests));
+			sideQuests.remove(Rand.randList(sideQuests));
 		}
-		switch (extra.randRange(1,5)) {
+		switch (Rand.randRange(1,5)) {
 		case 1:
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.HERO));
 			break;
@@ -225,10 +227,10 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.COMMUNITY));
 			break;
 		case 3: case 4:
-			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.VAMPIRE,CleanseType.BANDIT,CleanseType.MONSTERS)));
+			sideQuests.add(CleanseSideQuest.generate(this,Rand.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.VAMPIRE,CleanseType.BANDIT,CleanseType.MONSTERS)));
 			break;
 		case 5:
-			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .9f));//10% chance to be a murder quest
+			sideQuests.add(KillSideQuest.generate(this,Rand.randFloat() > .9f));//10% chance to be a murder quest
 			break;
 		}
 	}

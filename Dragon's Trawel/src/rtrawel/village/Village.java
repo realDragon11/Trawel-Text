@@ -5,7 +5,9 @@ import java.util.List;
 
 import rtrawel.battle.Fight;
 import rtrawel.battle.Party;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
+import trawel.core.Print;
+import trawel.core.Rand;
 
 public class Village {
 
@@ -32,10 +34,10 @@ public class Village {
 
 	public void doRandomBattle() {
 		if (spawns.size() == 0) {
-			extra.println("There are no monsters here.");
+			Print.println("There are no monsters here.");
 			return;
 		}
-		extra.randList(spawns).go();
+		Rand.randList(spawns).go();
 		if (!Party.party.allDead()) {
 			wanderCombo++;
 		loot(Party.party.lootChance());}
@@ -47,12 +49,12 @@ public class Village {
 	
 	public boolean go() {
 		int i = 1;
-		extra.println(name);
+		Print.println(name);
 		for (Content c: conts) {
-			extra.println(i + " " + c.name());
+			Print.println(i + " " + c.name());
 			i++;
 		}
-		int in = extra.inInt(i-1);
+		int in = Input.inInt(i-1);
 		//i = 1;
 		for (i = 0; i< conts.size();i++) {
 			if (in == i+1) {
@@ -69,7 +71,7 @@ public class Village {
 	public void loot(double chance) {
 		for (int i = 0; i < lootData.size();i++) {
 			if (Math.random() < lootChance.get(i)*chance) {
-				extra.println("You looted the " + lootData.get(i));
+				Print.println("You looted the " + lootData.get(i));
 				Party.party.addItem(lootData.get(i),1);
 				return;
 			}

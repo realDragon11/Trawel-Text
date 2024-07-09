@@ -8,7 +8,7 @@ import scimech.combat.Target;
 import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Mount;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class Pulsar extends Mount {
 
@@ -51,7 +51,7 @@ public class Pulsar extends Mount {
 	@Override
 	public void bonusEffect(Target t, int damage) {
 			t.takeDamage().suffer(DamageEffect.EMP,20, t);
-			extra.println("Pulsar EMP!");
+			Print.println("Pulsar EMP!");
 	}
 	
 	public static Savable deserialize(String s) throws Exception {

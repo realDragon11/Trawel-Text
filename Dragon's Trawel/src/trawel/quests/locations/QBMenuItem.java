@@ -1,7 +1,7 @@
 package trawel.quests.locations;
 
 import derg.menus.MenuSelect;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 import trawel.personal.people.Player;
 import trawel.quests.types.Quest;
 
@@ -24,7 +24,7 @@ public class QBMenuItem extends MenuSelect {
 	@Override
 	public boolean go() {
 		if (Player.player.sideQuests.size() >= 4) {
-			extra.println("You have too many side quests already!");
+			Print.println("You have too many side quests already!");
 		}else {
 			Player.player.sideQuests.add(q);
 			q.take();

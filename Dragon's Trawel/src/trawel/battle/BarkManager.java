@@ -3,7 +3,8 @@ package trawel.battle;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.helper.methods.extra;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory.RaceClass;
 
@@ -11,7 +12,7 @@ public class BarkManager {
 
 	
 	public static String getTaunt(Person p,Person target) {
-		if (extra.getPrint()) {
+		if (Print.getPrint()) {
 			return null;
 		}
 		double hpPercent = ((double)p.getHp())/p.getMaxHp();
@@ -26,7 +27,7 @@ public class BarkManager {
 			if (hpPercent > .3) {
 				return(genericTaunt(p));
 			}else {
-				if (extra.randRange(1,2) == 1) {
+				if (Rand.randRange(1,2) == 1) {
 					return (resolveTaunt(p));
 				}else {
 					return (genericTaunt(p));
@@ -36,7 +37,7 @@ public class BarkManager {
 			if (hpPercent > .3) {
 				return (genericTaunt(p));
 			}else {
-				if (extra.randRange(1,2) == 1) {
+				if (Rand.randRange(1,2) == 1) {
 					return (grizzleTaunt(p));
 				}else {
 					return (genericTaunt(p));
@@ -46,7 +47,7 @@ public class BarkManager {
 			if (hpPercent > .33) {
 				return (genericTaunt(p));
 			}else {
-				if (extra.randRange(1,2) == 1) {
+				if (Rand.randRange(1,2) == 1) {
 					return (deathCheaterTaunt(p));
 				}else {
 					return (genericTaunt(p));
@@ -56,7 +57,7 @@ public class BarkManager {
 			if (hpPercent > .33) {
 				return (lifeKeeperTaunt(p));
 			}else {
-				if (extra.randRange(1,2) == 1) {
+				if (Rand.randRange(1,2) == 1) {
 						return (lifeKeeperTaunt(p));
 					}else {
 						return (lifeKeeperTauntLow(p));
@@ -67,7 +68,7 @@ public class BarkManager {
 		case FELL_MONSTER:
 			return (fellTaunt(p,target));
 		case HARPY_GENERIC:
-			if (hpPercent > .4 || extra.chanceIn(2,3)) {
+			if (hpPercent > .4 || Rand.chanceIn(2,3)) {
 				return (harpyTaunt(p));
 			}else {
 				return (cowardTaunt(p));
@@ -77,7 +78,7 @@ public class BarkManager {
 	}
 	
 	public static String getBoast(Person p, boolean opposed) {
-		if (extra.getPrint()) {
+		if (Print.getPrint()) {
 			return null;
 		}
 		double hpPercent = ((double)p.getHp())/p.getMaxHp();
@@ -105,9 +106,9 @@ public class BarkManager {
 	private static String genericBoast(Person p, boolean opposed) {
 		List<String> list = new ArrayList<String>();
 		list.add("This is almost too easy!");
-		list.add("I am the " +extra.choose("most powerful","strongest","mightiest","most amazing","greatest") +" "+extra.choose("warrior","fighter","combatant")+" in all the " + extra.choose("continent","kingdom","land","world","universe") +"!");
-		list.add("I am the " +extra.choose("most powerful","strongest","mightiest","most amazing","greatest") +" "+extra.choose("warrior","fighter","combatant")+" in all the " + extra.choose("continent","kingdom","land","world","universe") +"!");
-		list.add("I have slain many "+extra.choose("fearsome","dangerous","worthy")+" opponents!");
+		list.add("I am the " +Rand.choose("most powerful","strongest","mightiest","most amazing","greatest") +" "+Rand.choose("warrior","fighter","combatant")+" in all the " + Rand.choose("continent","kingdom","land","world","universe") +"!");
+		list.add("I am the " +Rand.choose("most powerful","strongest","mightiest","most amazing","greatest") +" "+Rand.choose("warrior","fighter","combatant")+" in all the " + Rand.choose("continent","kingdom","land","world","universe") +"!");
+		list.add("I have slain many "+Rand.choose("fearsome","dangerous","worthy")+" opponents!");
 		list.add("Look out world, I'm coming!");
 		list.add("All this equipment means that I'm the best!");
 		list.add("I'm getting stronger everyday!");
@@ -115,7 +116,7 @@ public class BarkManager {
 		list.add("I am become death!");
 		list.add("I am the reaper of souls!");
 		list.add("How many folk, have fallen before me!");
-		return p.getName() + " " + extra.choose("screams","shouts","boasts")+  " \""+ extra.randList(list) +"\"";
+		return p.getName() + " " + Rand.choose("screams","shouts","boasts")+  " \""+ Rand.randList(list) +"\"";
 	}
 	
 	private static String harpyBoast(Person p) {
@@ -124,7 +125,7 @@ public class BarkManager {
 		list.add("What an interesting series of events to ponder...");
 		list.add("This isn't the best haul, but the best in a while!");
 		list.add("Baubles and trinkets, all mine to keep!");
-		return p.getName() + " " + extra.choose("shrills","screeches","ruminates","murmurs")+  " \""+ extra.randList(list) + "\"";
+		return p.getName() + " " + Rand.choose("shrills","screeches","ruminates","murmurs")+  " \""+ Rand.randList(list) + "\"";
 	}
 	
 	private static String harpyTaunt(Person p) {
@@ -133,7 +134,7 @@ public class BarkManager {
 		list.add("I hope you have some really shiny loot!");
 		list.add("Your stuff better not be a waste of my time!");
 		list.add("At least you look like you have some good gear to take!");
-		return p.getName() + " " + extra.choose("shrills","screeches","wails","cries")+  " \""+ extra.randList(list) + "\"";
+		return p.getName() + " " + Rand.choose("shrills","screeches","wails","cries")+  " \""+ Rand.randList(list) + "\"";
 	}
 	
 	private static String fellBoast(Person p) {//can't really be used in personable things, but that is fine. For a fully personable fell creature make another list
@@ -142,11 +143,11 @@ public class BarkManager {
 		list.add(" scans the area menacingly, pondering their next move.");
 		list.add(" lets loose a discordant howl!");
 		list.add(" takes a trophy from the minds of the dead.");
-		return p.getName() + extra.randList(list);
+		return p.getName() + Rand.randList(list);
 	}
 	private static String fellTaunt(Person p,Person target) {
 		List<String> list = new ArrayList<String>();
-		if (extra.chanceIn(3,4)) {
+		if (Rand.chanceIn(3,4)) {
 			list.add(" gazes horribly.");
 			list.add(" stares through your bones, your body, into your soul. You feel a chill...");
 			list.add(" is looking at someone else... or are they? You don't quite understand how... that can't be!");
@@ -154,7 +155,7 @@ public class BarkManager {
 			list.add(" mocks your fragile sanity silently.");
 			list.add(" knows too much!");
 			list.add(" is something truly evil!");//woh reference, yes
-			return p.getName() + extra.randList(list);
+			return p.getName() + Rand.randList(list);
 		}else {
 			return "\""+target.getNameNoTitle()+"...\" Did "+p.getName() +" just say your name?!";
 		}
@@ -168,7 +169,7 @@ public class BarkManager {
 		list.add("Our kingdom will not be limited to the sea alone!");
 		list.add("Visions of briny depths spur me onwards in this accursed dry hell, they shall expand here!");
 		list.add("From the depths to the peaks, the ocean owns all!");
-		return p.getName() + " " + extra.choose("gurgles","babbles","bubbles","murmurs","hisses")+  " \""+ extra.randList(list) + "\"";
+		return p.getName() + " " + Rand.choose("gurgles","babbles","bubbles","murmurs","hisses")+  " \""+ Rand.randList(list) + "\"";
 	}
 	
 	private static String drudgerTaunt(Person p, Person target) {
@@ -184,7 +185,7 @@ public class BarkManager {
 		list.add("Ocean claim you!");
 		list.add("Sea swallow you!");
 		
-		return p.getName() + " " + extra.choose("gurgles","babbles","bubbles","murmurs","hisses")+  " \""+ extra.randList(list) + "\"";
+		return p.getName() + " " + Rand.choose("gurgles","babbles","bubbles","murmurs","hisses")+  " \""+ Rand.randList(list) + "\"";
 	}
 	
 	private static String lifeKeeperBoast(Person p) {
@@ -192,39 +193,39 @@ public class BarkManager {
 		list.add("My task is not always clear, but that belies its importance.");//TODO: it's its it's i'ts
 		list.add("Life itself pushes me to move forward!");
 		list.add("The ebb and flow... wax and wane... it... I!");
-		return p.getName() + " " + extra.choose("mutters","shouts","boasts","declares")+  " \""+ extra.randList(list) + "\"";
+		return p.getName() + " " + Rand.choose("mutters","shouts","boasts","declares")+  " \""+ Rand.randList(list) + "\"";
 	}
 	
 	private static String resolveTaunt(Person p) {
 		List<String> list = new ArrayList<String>();
 		list.add("Death draws near... but I am unafraid!");
 		list.add("Can you kill me, or will you fall, like the others?");
-		list.add("I greet death with courage!" + extra.choose(""," Can you say the same?"));
-		return p.getName() + " " + extra.choose("screams","shouts","taunts")+  " \""+ extra.randList(list) + "\"";
+		list.add("I greet death with courage!" + Rand.choose(""," Can you say the same?"));
+		return p.getName() + " " + Rand.choose("screams","shouts","taunts")+  " \""+ Rand.randList(list) + "\"";
 	}
 	
 	private static String lifeKeeperTaunt(Person p) {
 		List<String> list = new ArrayList<String>();
 		list.add("Primal forces urge me on!");
 		list.add("Life itself demands that I do this!");
-		list.add("The ebb and flow speaks to me!" + extra.choose(""," It whispers your weaknesses in my ear!"," It bolsters me with pure strength!"));
-		return p.getName() + " " + extra.choose("mutters","shouts","taunts","declares")+  " \""+ extra.randList(list) + "\"";
+		list.add("The ebb and flow speaks to me!" + Rand.choose(""," It whispers your weaknesses in my ear!"," It bolsters me with pure strength!"));
+		return p.getName() + " " + Rand.choose("mutters","shouts","taunts","declares")+  " \""+ Rand.randList(list) + "\"";
 	}
 	
 	private static String lifeKeeperTauntLow(Person p) {
 		List<String> list = new ArrayList<String>();
 		list.add("Primal forces urge me on, and if I fall another shall rise to take my place!");
 		list.add("If I fall, primality will reclaim me!");
-		list.add("The ebb and flow speaks to me!" + extra.choose(""," Whispers of death and life are constant!"," I face oblivion."));
-		return p.getName() + " " + extra.choose("mutters","shouts","taunts","declares")+  " \""+ extra.randList(list) + "\"";
+		list.add("The ebb and flow speaks to me!" + Rand.choose(""," Whispers of death and life are constant!"," I face oblivion."));
+		return p.getName() + " " + Rand.choose("mutters","shouts","taunts","declares")+  " \""+ Rand.randList(list) + "\"";
 	}
 	
 	private static String deathCheaterTaunt(Person p) {
 		List<String> list = new ArrayList<String>();
-		list.add("Death draws near... "+extra.choose("but I am unafraid!","I care not, I fight on!","but I know it well!"));
-		list.add("Can you kill me... for real?"+ extra.choose(""," I care not, I fight on!"));
-		list.add("I greet death with courage!" + extra.choose(""," Can you say the same?"," It has proven weak!"));
-		return p.getName() + " " + extra.choose("screams","shouts","taunts")+  " \""+ extra.randList(list) + "\"";
+		list.add("Death draws near... "+Rand.choose("but I am unafraid!","I care not, I fight on!","but I know it well!"));
+		list.add("Can you kill me... for real?"+ Rand.choose(""," I care not, I fight on!"));
+		list.add("I greet death with courage!" + Rand.choose(""," Can you say the same?"," It has proven weak!"));
+		return p.getName() + " " + Rand.choose("screams","shouts","taunts")+  " \""+ Rand.randList(list) + "\"";
 	}
 	
 	private static String grizzleTaunt(Person p) {
@@ -232,7 +233,7 @@ public class BarkManager {
 		list.add("You are not the first... but you will not be the last!");
 		list.add("Can you kill me, or will you fall, like the others?");
 		list.add("Is it finally time?");
-		return p.getName() + " " + extra.choose("screams","shouts","taunts")+  " \""+ extra.randList(list) + "\"";
+		return p.getName() + " " + Rand.choose("screams","shouts","taunts")+  " \""+ Rand.randList(list) + "\"";
 	}
 
 
@@ -241,7 +242,7 @@ public class BarkManager {
 		tauntList.add("\"Please! I don't want to die!\" " + p.getName() + " whimpers.");
 		tauntList.add(p.getName() + " shouts \"Oh gods I'm going to die!\"");
 		tauntList.add("\"AAAAAAAAA!\" " + p.getName() + " screams in terror.\"");
-		return extra.randList(tauntList);
+		return Rand.randList(tauntList);
 	}
 
 	private static String genericTaunt(Person p) {
@@ -251,7 +252,7 @@ public class BarkManager {
 		tauntList.add("Come on! Die!");
 		tauntList.add("Time to put you six feet under!");
 		tauntList.add("For glory!");
-		tauntList.add(extra.choose("Run","Flee") +", "+extra.choose("run","flee")+"! Like the "+extra.choose("coward","craven")+" you are!");
+		tauntList.add(Rand.choose("Run","Flee") +", "+Rand.choose("run","flee")+"! Like the "+Rand.choose("coward","craven")+" you are!");
 		tauntList.add("Die by me!");
 		tauntList.add("I shall overcome!");
 		tauntList.add("All that fancy equipment will be mine soon!");
@@ -268,7 +269,7 @@ public class BarkManager {
 		tauntList.add("Now you're mine!");
 		tauntList.add("Die already so I can take your stuff!");
 		tauntList.add("Death comes for you!");
-		tauntList.add("I've fought " + extra.choose("rats","crabs","worms") + " " + extra.choose("mightier","fiercer","stronger") + " than you!" );
+		tauntList.add("I've fought " + Rand.choose("rats","crabs","worms") + " " + Rand.choose("mightier","fiercer","stronger") + " than you!" );
 		tauntList.add("You will now pay my taxes!");
 		tauntList.add("I am NOT your equal!");
 		tauntList.add("I fight better than you!");
@@ -280,6 +281,6 @@ public class BarkManager {
 		tauntList.add("You won't win!");
 		tauntList.add("End yourself before I end you!");
 		tauntList.add("Maybe the next fighter will prove a challenge!");
-		return p.getName() + " " + extra.choose("screams","shouts","taunts")+  " \""+ extra.randList(tauntList) + "\"";
+		return p.getName() + " " + Rand.choose("screams","shouts","taunts")+  " \""+ Rand.randList(tauntList) + "\"";
 	}
 }

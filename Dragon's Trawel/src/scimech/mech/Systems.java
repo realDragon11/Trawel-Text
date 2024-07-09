@@ -10,6 +10,7 @@ import derg.menus.MenuSelect;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.handlers.Savable;
+import trawel.core.Input;
 import trawel.helper.methods.extra;
 
 public abstract class Systems extends MechPart implements TurnSubscriber, Savable{
@@ -100,7 +101,7 @@ public abstract class Systems extends MechPart implements TurnSubscriber, Savabl
 	
 	
 	public void examine() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {

@@ -10,7 +10,10 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.AIClass;
@@ -87,10 +90,10 @@ public class GraveyardNode implements NodeType{
 			idNum = 1;//for now, starting node will only be a gravedigger
 			break;
 		case 1: case 2://entry
-			idNum = 1+entryGraveyardRoller.random(extra.getRand());
+			idNum = 1+entryGraveyardRoller.random(Rand.getRand());
 			break;
 		default:
-			idNum = 1+noneGraveyardRoller.random(extra.getRand());
+			idNum = 1+noneGraveyardRoller.random(Rand.getRand());
 			break;
 		}
 		int ret = holder.newNode(NodeType.NodeTypeNum.GRAVEYARD.ordinal(),idNum,tier);
@@ -112,18 +115,18 @@ public class GraveyardNode implements NodeType{
 		if (size <= 0) {
 			return made;
 		}
-		int split = extra.randRange(1,Math.min(size,3));
+		int split = Rand.randRange(1,Math.min(size,3));
 		int i = 0;
 		int sizeLeft = size-(split+1);
 		int[] dist = new int[split]; 
 		while (sizeLeft > 0)//DOLATER: maybe give a better gen type
 		{
-			dist[extra.randRange(0,split-1)]++;
+			dist[Rand.randRange(0,split-1)]++;
 			sizeLeft--;
 		}
 		while (i < split) {
 			int tempLevel = tier;
-			if (extra.chanceIn(1,10)) {
+			if (Rand.chanceIn(1,10)) {
 				tempLevel++;
 			}
 			int n = generate(holder,made,dist[i],tempLevel);
@@ -179,7 +182,7 @@ public class GraveyardNode implements NodeType{
 			float spare = 0;
 			if (level > 3) {
 				//FIXME: idk how to use this properly yet, plus it needs to be fixed
-				if (extra.chanceIn(1,3)) {
+				if (Rand.chanceIn(1,3)) {
 					//bat master
 					spare = level/1.2f;
 					level = level-2;
@@ -223,8 +226,8 @@ public class GraveyardNode implements NodeType{
 	public boolean interact(NodeConnector holder, int node) {
 		String str = interactStringHide(holder,node);
 		if (!holder.isForced() && str != null) {
-			extra.println(str+"?");
-			if (!extra.yesNo()) {
+			Print.println(str+"?");
+			if (!Input.yesNo()) {
 				//unvisit
 				holder.setVisited(node,2);//only been at node
 				return false;
@@ -265,14 +268,14 @@ public class GraveyardNode implements NodeType{
 			return "Approach " +holder.getStorageFirstPerson(node).getName();
 		case 6://attacking statue
 			Person attStatue = holder.getStorageFirstPerson(node);
-			String attName = extra.capFirst(attStatue.getBag().getRace().renderName(false));
+			String attName = Print.capFirst(attStatue.getBag().getRace().renderName(false));
 			if (state == 33) {//destroyed
 				return "Examine Destroyed " + attName + " Statue";
 			}
 			return "Loot " +attName + " Statue";
 		case 7://non attacking statue
 			Person quietStatue = holder.getStorageFirstPerson(node);
-			String quietName = extra.capFirst(quietStatue.getBag().getRace().renderName(false));
+			String quietName = Print.capFirst(quietStatue.getBag().getRace().renderName(false));
 			if (state == 13) {//destroyed
 				return "Examine Looted " + quietName + " Statue";
 			}
@@ -345,7 +348,7 @@ public class GraveyardNode implements NodeType{
 			return "Vampire's Lair";
 		case 6://attacking statue
 			Person attStatue = holder.getStorageFirstPerson(node);
-			String attName = extra.capFirst(attStatue.getBag().getRace().renderName(false));
+			String attName = Print.capFirst(attStatue.getBag().getRace().renderName(false));
 			if (state == 33) {//destroyed
 				return "Destroyed " + attName + " Statue";
 			}
@@ -355,7 +358,7 @@ public class GraveyardNode implements NodeType{
 			return attName + " Statue";
 		case 7://non attacking statue
 			Person quietStatue = holder.getStorageFirstPerson(node);
-			String quietName = extra.capFirst(quietStatue.getBag().getRace().renderName(false));
+			String quietName = Print.capFirst(quietStatue.getBag().getRace().renderName(false));
 			if (state == 13) {//destroyed
 				return "Looted " + quietName + " Statue";
 			}
@@ -367,7 +370,7 @@ public class GraveyardNode implements NodeType{
 	}
 	
 	private boolean packOfBats(NodeConnector holder,int node) {
-			extra.println(TrawelColor.PRE_BATTLE+"The bats descend upon you!");
+			Print.println(TrawelColor.PRE_BATTLE+"The bats descend upon you!");
 			List<Person> list = holder.getStorageFirstClass(node, List.class);
 			Combat c = Player.player.massFightWith(list);
 			if (c.playerWon() > 0) {
@@ -386,13 +389,13 @@ public class GraveyardNode implements NodeType{
 		if (state == 0) {//first meeting, will play nightvision or not
 			holder.setStateNum(node,10);
 			state = 10;
-			extra.println("You come across a weary gravedigger, warding against undead during a break.");
+			Print.println("You come across a weary gravedigger, warding against undead during a break.");
 		}
 		Person p = holder.getStorageFirstPerson(node);
 		p.getBag().graphicalDisplay(1, p);
 		if (state == 10) {//fine with
 			
-			extra.menuGo(new MenuGenerator() {
+			Input.menuGo(new MenuGenerator() {
 
 				@Override
 				public List<MenuItem> gen() {
@@ -413,8 +416,8 @@ public class GraveyardNode implements NodeType{
 
 						@Override
 						public boolean go() {
-							extra.println(p.getName()+" looks up from the mud and answers your greeting.");
-							extra.menuGo(new MenuGenerator() {
+							Print.println(p.getName()+" looks up from the mud and answers your greeting.");
+							Input.menuGo(new MenuGenerator() {
 
 								@Override
 								public List<MenuItem> gen() {
@@ -446,7 +449,7 @@ public class GraveyardNode implements NodeType{
 
 										@Override
 										public boolean go() {
-											extra.println("\"We are in " + holder.parent.getName() + ". Beware, danger lurks everywhere.\"");
+											Print.println("\"We are in " + holder.parent.getName() + ". Beware, danger lurks everywhere.\"");
 											//tODO: maybe nodefeature lore eventually
 											return false;
 										}});
@@ -475,10 +478,10 @@ public class GraveyardNode implements NodeType{
 				}});
 			if (holder.getStateNum(node) == 11) {//angry now, could have been selected in above menu
 				if (state != 11) {//if just got made angry
-					extra.println("They scream bloody murder about vampire thralls!");
+					Print.println("They scream bloody murder about vampire thralls!");
 					holder.setForceGo(node,true);
 				}else {
-					extra.println("The Gravedigger attacks you!");
+					Print.println("The Gravedigger attacks you!");
 				}
 			}else {
 				Networking.clearSide(1);
@@ -502,22 +505,22 @@ public class GraveyardNode implements NodeType{
 		if (state == 0) {//first meeting
 			holder.setStateNum(node,10);
 			state = 10;
-			extra.println("A Graverobber is poking around some headstones.");
+			Print.println("A Graverobber is poking around some headstones.");
 		}
 		Person p = holder.getStorageFirstPerson(node);
 		p.getBag().graphicalDisplay(1, p);
 		if (state == 10) {//might be fine with
 			int react = p.facRep.getReactionAgainst(p,Player.player.getPerson());
 			if (react > 0) {
-				extra.println("The Graverobber nods to you, but doesn't want to be disturbed. "+TrawelColor.PRE_BATTLE+"Disturb them?");
-				if (!extra.yesNo()) {
+				Print.println("The Graverobber nods to you, but doesn't want to be disturbed. "+TrawelColor.PRE_BATTLE+"Disturb them?");
+				if (!Input.yesNo()) {
 					Networking.clearSide(1);
 					return false;
 				}
 			}else {
 				if (react == 0) {
-					extra.println("The Graverobber tells you to leave. "+TrawelColor.PRE_BATTLE+"Attack them?");
-					if (!extra.yesNo()) {
+					Print.println("The Graverobber tells you to leave. "+TrawelColor.PRE_BATTLE+"Attack them?");
+					if (!Input.yesNo()) {
 						Networking.clearSide(1);
 						return false;
 					}
@@ -525,9 +528,9 @@ public class GraveyardNode implements NodeType{
 			}
 			//we didn't leave while we still could, friend
 			holder.setStateNum(node,11);
-			extra.println(TrawelColor.PRE_BATTLE+"\"Should have left it alone, friend!\"");
+			Print.println(TrawelColor.PRE_BATTLE+"\"Should have left it alone, friend!\"");
 		}else {
-			extra.println(TrawelColor.PRE_BATTLE+"The Graverobber attacks you!");
+			Print.println(TrawelColor.PRE_BATTLE+"The Graverobber attacks you!");
 		}
 		//if we got here, we're fighting
 		//it doesn't forcego, however
@@ -547,10 +550,10 @@ public class GraveyardNode implements NodeType{
 		int state = holder.getStateNum(node);
 		if (state == 0) {
 			holder.setStateNum(node,10);
-			extra.println("A vampire eyes you from a perch on a tombstone.");
+			Print.println("A vampire eyes you from a perch on a tombstone.");
 			holder.setForceGo(node, true);
 		}
-		extra.println(TrawelColor.PRE_BATTLE+"Shouldn't have come to this graveyard, mortal!");
+		Print.println(TrawelColor.PRE_BATTLE+"Shouldn't have come to this graveyard, mortal!");
 		Combat c = Player.player.massFightWith(holder.getStorageFirstClass(node,List.class));
 		
 		if (c.playerWon() > 0) {
@@ -591,15 +594,15 @@ public class GraveyardNode implements NodeType{
 		}
 		if (state < 10) {
 			if (forced) {
-				state = extra.randRange(11,18);
+				state = Rand.randRange(11,18);
 			}else {
-				state = extra.randRange(21,28);
+				state = Rand.randRange(21,28);
 			}
 		}else {
 			if (state < 30) {
 				if (forced) {
-					if (extra.chanceIn(1,8)) {
-						extra.println("...Did that statue just move?");
+					if (Rand.chanceIn(1,8)) {
+						Print.println("...Did that statue just move?");
 					}
 					state++;//will only add this way if forced, also can add if examined for real
 				}
@@ -618,7 +621,7 @@ public class GraveyardNode implements NodeType{
 		
 		if (state == 33) {
 			//destroyed
-			extra.println("The destroyed statue slumps in the mud.");
+			Print.println("The destroyed statue slumps in the mud.");
 			holder.findBehind(node,"broken statue");
 			return false;
 		}
@@ -630,16 +633,16 @@ public class GraveyardNode implements NodeType{
 			//them if they checked it due to the 'just move?'
 			if (state < 20) {
 				if (state < 18) {//if wasn't close
-					state = extra.randRange(21,26);
+					state = Rand.randRange(21,26);
 				}else {//if was close
-					state = extra.randRange(26, 28);
+					state = Rand.randRange(26, 28);
 				}
 			}
 			
 			p.getBag().graphicalDisplay(1, p);
 			//they approached it, now we can ask to loot it for real
-			extra.println(statueLootAsk(p));
-			if (!extra.yesNo() && extra.chanceIn(3,4)) {//25% chance to attack instantly if ignored
+			Print.println(statueLootAsk(p));
+			if (!Input.yesNo() && Rand.chanceIn(3,4)) {//25% chance to attack instantly if ignored
 				Networking.clearSide(1);
 				holder.setStateNum(node,state);
 				return false;
@@ -650,9 +653,9 @@ public class GraveyardNode implements NodeType{
 		//it might also be displayed, but in that case the combat will clean it up for us
 		
 		if (state <= 31) {//first fight
-			extra.println(TrawelColor.PRE_BATTLE+"The statue springs to life and attacks you!");
+			Print.println(TrawelColor.PRE_BATTLE+"The statue springs to life and attacks you!");
 		}else {
-			extra.println(TrawelColor.PRE_BATTLE+"The statue attacks you!");
+			Print.println(TrawelColor.PRE_BATTLE+"The statue attacks you!");
 		}
 		Combat c = Player.player.fightWith(p);
 		if (c.playerWon() > 0) {
@@ -673,17 +676,17 @@ public class GraveyardNode implements NodeType{
 		int state = holder.getStateNum(node);
 		Person p = holder.getStorageFirstPerson(node);
 		if (state == 13) {
-			extra.println("The " + p.getBag().getRace().renderName(false) + " statue has already been looted.");
+			Print.println("The " + p.getBag().getRace().renderName(false) + " statue has already been looted.");
 			holder.findBehind(node,"statue");
 			return false;
 		}
 		p.getBag().graphicalDisplay(1,p);
-		extra.println(statueLootAsk(p));
-		if (!extra.yesNo()) {
+		Print.println(statueLootAsk(p));
+		if (!Input.yesNo()) {
 			Networking.clearSide(1);
 			return false;
 		}
-		extra.println("You loot the statue...");
+		Print.println("You loot the statue...");
 		holder.setStateNum(node,13);
 		AIClass.playerLoot(p.getBag(),true);
 		return false;
@@ -693,7 +696,7 @@ public class GraveyardNode implements NodeType{
 		int state = holder.getStateNum(node);
 		if (state == 0) {
 			holder.setStateNum(node,10);
-			extra.println("An antiquarian is navigating amongst old urns.");
+			Print.println("An antiquarian is navigating amongst old urns.");
 		}
 		return GenericNode.goCollector(holder, node);
 	}

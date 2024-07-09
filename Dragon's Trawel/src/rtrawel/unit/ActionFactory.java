@@ -6,7 +6,8 @@ import java.util.List;
 
 import rtrawel.items.Weapon;
 import rtrawel.items.Weapon.WeaponType;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
+import trawel.core.Rand;
 
 public class ActionFactory {
 	private static HashMap<String,Action> data = new HashMap<String, Action>();
@@ -15,7 +16,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " basic attacks " + target.toString());
+				Print.println(caster.getName() + " basic attacks " + target.toString());
 				Weapon w = caster.getWeapon();
 				for (RUnit u: target.targets) {
 					if (RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit(), (w.getDamage()+w.damageBonuses(u)* ( RCore.doesHit(caster,u,w.critChance(),w.isRanged())? w.critMult() : 1)),w.isRanged(),w.getDamageTypes()) > -1) {
@@ -69,7 +70,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " cleaves " + target.toString());
+				Print.println(caster.getName() + " cleaves " + target.toString());
 				caster.drainMp(2);
 				Weapon w = caster.getWeapon();
 				List<DamageType> dList = new ArrayList<DamageType>();
@@ -130,7 +131,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " thrust their sword at " + target.toString());
+				Print.println(caster.getName() + " thrust their sword at " + target.toString());
 				Weapon w = caster.getWeapon();
 				List<DamageType> dList = new ArrayList<DamageType>();
 				dList.add(DamageType.PIERCE);
@@ -186,7 +187,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " heals " + target.toString() + " with medicine!");
+				Print.println(caster.getName() + " heals " + target.toString() + " with medicine!");
 				for (RUnit u: target.targets) {
 					u.heal(12,caster.getDexterity());
 				}
@@ -236,7 +237,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " heals " + target.toString() + " with medicine!");
+				Print.println(caster.getName() + " heals " + target.toString() + " with medicine!");
 				for (RUnit u: target.targets) {
 					u.heal(30,caster.getDexterity());
 				}
@@ -286,7 +287,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " defends!");
+				Print.println(caster.getName() + " defends!");
 				Buff b = new Buff();
 				b.isDebuff = false;
 				b.mag = 1.5;
@@ -340,7 +341,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " dances with their sword!");
+				Print.println(caster.getName() + " dances with their sword!");
 				caster.drainTen(4);
 				Buff b = new Buff();
 				b.isDebuff = false;
@@ -398,7 +399,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " hammer stuns " + target.toString());
+				Print.println(caster.getName() + " hammer stuns " + target.toString());
 				caster.drainMp(10);
 				Weapon w = caster.getWeapon();
 				for (RUnit u: target.targets) {
@@ -457,7 +458,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " sprays ink on " + target.toString());
+				Print.println(caster.getName() + " sprays ink on " + target.toString());
 				//caster.drainTen(4);
 				for (RUnit u: target.targets) {
 					if (RCore.doesHit(caster,u,.7, true)) {
@@ -530,7 +531,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " uses their enfeebling spores on " + target.toString());
+				Print.println(caster.getName() + " uses their enfeebling spores on " + target.toString());
 				caster.drainMp(2);
 				for (RUnit u: target.targets) {
 					if (RCore.doesHit(caster,u,.6, true)) {
@@ -592,7 +593,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " takes the root!");
+				Print.println(caster.getName() + " takes the root!");
 				for (RUnit u: target.targets) {
 						Buff b = new Buff();
 						b.isDebuff = false;
@@ -657,7 +658,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " body slams " + target.toString());
+				Print.println(caster.getName() + " body slams " + target.toString());
 				Weapon w = caster.getWeapon();
 				caster.drainTen(8);
 				List<DamageType> types = new ArrayList<DamageType>();
@@ -717,7 +718,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " suddenly spears " + target.toString());
+				Print.println(caster.getName() + " suddenly spears " + target.toString());
 				Weapon w = caster.getWeapon();
 				for (RUnit u: target.targets) {
 					if (RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit(), (w.getDamage()+w.damageBonuses(u)* ( RCore.doesHit(caster,u,w.critChance(),w.isRanged())? w.critMult() : 1)),w.isRanged(),w.getDamageTypes()) > -1) {
@@ -771,11 +772,11 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " uses triple thrust!");
+				Print.println(caster.getName() + " uses triple thrust!");
 				Weapon w = caster.getWeapon();
 				caster.drainMp(4);
 				for (int i = 0; i < 3;i++) {
-					RUnit u = extra.randList(target.targets);
+					RUnit u = Rand.randList(target.targets);
 					if (RCore.doAttack(caster, u,(int) (caster.getStrength()*.9),w.getBaseHit(), (w.getDamage()+w.damageBonuses(u)* ( RCore.doesHit(caster,u,w.critChance(),w.isRanged())? w.critMult() : 1)),w.isRanged(),w.getDamageTypes()) > -1) {
 						w.getOnHit().go(caster,u);//note: not all abilities should be able to crit
 					}
@@ -830,7 +831,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " mends " + target.toString() + " with magic!");
+				Print.println(caster.getName() + " mends " + target.toString() + " with magic!");
 				caster.drainMp(2);
 				for (RUnit u: target.targets) {
 					u.heal(10,caster.getKnowledge());
@@ -884,7 +885,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " heals " + target.toString() + " quickly with magic!");
+				Print.println(caster.getName() + " heals " + target.toString() + " quickly with magic!");
 				caster.drainMp(6);
 				for (RUnit u: target.targets) {
 					u.heal(12,caster.getKnowledge());
@@ -938,7 +939,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " backlashes " + target.toString());
+				Print.println(caster.getName() + " backlashes " + target.toString());
 				Weapon w = caster.getWeapon();
 				caster.drainMp(1);
 				for (RUnit u: target.targets) {
@@ -996,7 +997,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " suddenly spears " + target.toString());
+				Print.println(caster.getName() + " suddenly spears " + target.toString());
 				Weapon w = caster.getWeapon();
 				List<DamageType> list = new ArrayList<DamageType>();
 				list.add(DamageType.HOLY);
@@ -1057,7 +1058,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " throws their boomerang at " + target.toString());
+				Print.println(caster.getName() + " throws their boomerang at " + target.toString());
 				Weapon w = caster.getWeapon();
 				for (RUnit u: target.targets) {
 					if (RCore.doAttack(caster, u,(int) (.9*caster.getStrength()),w.getBaseHit(), (.9*w.getDamage()+w.damageBonuses(u)* ( RCore.doesHit(caster,u,w.critChance(),w.isRanged())? w.critMult() : 1)),w.isRanged(),w.getDamageTypes()) > -1) {
@@ -1114,7 +1115,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " fires a bolt perfectly at " + target.toString());
+				Print.println(caster.getName() + " fires a bolt perfectly at " + target.toString());
 				Weapon w = caster.getWeapon();
 				caster.drainMp(10);
 				List<DamageType> list = new ArrayList<DamageType>();
@@ -1177,7 +1178,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " sling stuns " + target.toString());
+				Print.println(caster.getName() + " sling stuns " + target.toString());
 				caster.drainMp(3);
 				Weapon w = caster.getWeapon();
 				for (RUnit u: target.targets) {
@@ -1236,7 +1237,7 @@ public class ActionFactory {
 
 				@Override
 				public void go(RUnit caster, TargetGroup target) {
-					extra.println(caster.getName() + " drains the mana out of " + target.toString());
+					Print.println(caster.getName() + " drains the mana out of " + target.toString());
 					Weapon w = caster.getWeapon();
 					double chanceTo = ((100.0 + caster.getKnowledge())/100.0);
 					for (RUnit u: target.targets) {
@@ -1293,7 +1294,7 @@ public class ActionFactory {
 
 				@Override
 				public void go(RUnit caster, TargetGroup target) {
-					extra.println(caster.getName() + " gets all riled up!");
+					Print.println(caster.getName() + " gets all riled up!");
 					for (RUnit u: target.targets) {
 							Buff b = new Buff();
 							b.isDebuff = false;
@@ -1358,7 +1359,7 @@ public class ActionFactory {
 
 				@Override
 				public void go(RUnit caster, TargetGroup target) {
-					extra.println(caster.getName() + " shoots an ice arrow at " + target.toString());
+					Print.println(caster.getName() + " shoots an ice arrow at " + target.toString());
 					caster.drainMp(3);
 					Weapon w = caster.getWeapon();
 					List<DamageType> list = new ArrayList<DamageType>();
@@ -1420,7 +1421,7 @@ public class ActionFactory {
 				@Override
 				public void go(RUnit caster, TargetGroup target) {
 					caster.drainMp(3);
-					extra.println(caster.getName() + " amps " +target.toString()+  " up!");
+					Print.println(caster.getName() + " amps " +target.toString()+  " up!");
 					for (RUnit u: target.targets) {
 							Buff b = new Buff();
 							b.isDebuff = false;
@@ -1488,7 +1489,7 @@ public class ActionFactory {
 
 				@Override
 				public void go(RUnit caster, TargetGroup target) {
-					extra.println(caster.getName() + " fireballs " + target.toString());
+					Print.println(caster.getName() + " fireballs " + target.toString());
 					caster.drainMp(7);
 					Weapon w = caster.getWeapon();
 					List<DamageType> list = new ArrayList<DamageType>();
@@ -1548,7 +1549,7 @@ public class ActionFactory {
 
 				@Override
 				public void go(RUnit caster, TargetGroup target) {
-					extra.println(caster.getName() + " casts thunder on " + target.toString());
+					Print.println(caster.getName() + " casts thunder on " + target.toString());
 					caster.drainMp(5);
 					Weapon w = caster.getWeapon();
 					List<DamageType> list = new ArrayList<DamageType>();
@@ -1609,7 +1610,7 @@ public class ActionFactory {
 
 				@Override
 				public void go(RUnit caster, TargetGroup target) {
-					extra.println(caster.getName() + " whines at " + target.toString());
+					Print.println(caster.getName() + " whines at " + target.toString());
 					caster.drainMp(2);
 					for (RUnit u: target.targets) {
 						if (RCore.doesHit(caster,u,.8, true)){

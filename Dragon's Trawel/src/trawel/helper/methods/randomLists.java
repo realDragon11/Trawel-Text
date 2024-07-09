@@ -10,6 +10,8 @@ import derg.strings.random.SRGapShuffle;
 import derg.strings.random.SRInOrder;
 import derg.strings.random.SRPlainRandom;
 import trawel.battle.Combat.ATK_ResultCode;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
@@ -132,13 +134,13 @@ public class randomLists {
 	 * @return an element (String)
 	 */
 	public static String randomElement(){
-		if (extra.chanceIn(2,3)) {
+		if (Rand.chanceIn(2,3)) {
 			return commonElements.next();
 		}
-		if (extra.chanceIn(2,3)) {
+		if (Rand.chanceIn(2,3)) {
 			return rareElements.next();
 		}
-		if (extra.chanceIn(2,3)) {
+		if (Rand.chanceIn(2,3)) {
 			return MaterialFactory.randWeapMat().name;
 		}
 		return MaterialFactory.randArmorMat().name;
@@ -166,7 +168,7 @@ public class randomLists {
 	}
 	
 	public static String randomTheTitle() {
-		return "the " + extra.capFirst(theTitles.next());
+		return "the " + Print.capFirst(theTitles.next());
 	}
 	
 	public static String randomDoer() {
@@ -179,17 +181,17 @@ public class randomLists {
 	}
 	
 	public static String randomLastName() {
-		switch (extra.randRange(0,1)) {
+		switch (Rand.randRange(0,1)) {
 		default: case 0:
 			return randomLists.randomTheTitle();
 		case 1:
-			switch (extra.randRange(0,2)) {
+			switch (Rand.randRange(0,2)) {
 			default: case 0:
-				return extra.capFirst(randomLists.randomElement()) + extra.capFirst(randomLists.randomDoer());
+				return Print.capFirst(randomLists.randomElement()) + Print.capFirst(randomLists.randomDoer());
 			case 1:
-				return extra.capFirst(randomLists.randomElement()) + extra.capFirst(randomLists.randomLivingThing());
+				return Print.capFirst(randomLists.randomElement()) + Print.capFirst(randomLists.randomLivingThing());
 			case 2:
-				return extra.capFirst(randomLists.randomLivingThing()) + extra.capFirst(randomLists.randomDoer());
+				return Print.capFirst(randomLists.randomLivingThing()) + Print.capFirst(randomLists.randomDoer());
 			}
 		}
 	}
@@ -199,14 +201,14 @@ public class randomLists {
 	}
 	
 	public static String randomLivingThing() {
-		if (extra.chanceIn(3, 4)) {
+		if (Rand.chanceIn(3, 4)) {
 			return randomAnimal();
 		}
 		return randomPlant();
 	}
 	
 	public static void deadPerson() {
-		extra.println(extra.choose("They are dead. You killed them.","This person is dead... by your hand.","Oh look, a corpse... that you made.","Yep. You killed them good."));
+		Print.println(Rand.choose("They are dead. You killed them.","This person is dead... by your hand.","Oh look, a corpse... that you made.","Yep. You killed them good."));
 	}
 	
 	
@@ -256,13 +258,13 @@ public class randomLists {
 	}
 	
 	public static String randomTitleFormat(String title) {
-		switch (extra.randRange(0,2)) {
+		switch (Rand.randRange(0,2)) {
 		default: case 0:
-			return "the " + extra.capFirst(title);
+			return "the " + Print.capFirst(title);
 		case 1:
-			return ", the " + extra.capFirst(title);
+			return ", the " + Print.capFirst(title);
 		case 2:
-			return extra.capFirst(title) + " ";
+			return Print.capFirst(title) + " ";
 		}
 	}
 	
@@ -282,11 +284,11 @@ public class randomLists {
 	}
 
 	public static String randomAlphaName() {
-		return "the " +extra.capFirst(theAlphaTitles.next());
+		return "the " +Print.capFirst(theAlphaTitles.next());
 	}
 
 	public static String randomLargeName() {
-		return extra.capFirst(theLargeTitles.next());
+		return Print.capFirst(theLargeTitles.next());
 	}
 	
 	public static String attackMissFluff(ATK_ResultCode code) {
@@ -302,8 +304,8 @@ public class randomLists {
 	}
 
 	public static String randomHunterTitle() {
-		if (extra.chanceIn(1,5)) {
-			return (extra.randFloat() > 0.5f ? ", " : " the ")+ thingsToSlay.next() + " " +slayerTitleToSlay.next();
+		if (Rand.chanceIn(1,5)) {
+			return (Rand.randFloat() > 0.5f ? ", " : " the ")+ thingsToSlay.next() + " " +slayerTitleToSlay.next();
 		}
 		return hunterTitles.next();
 	}

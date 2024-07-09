@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import derg.strings.misc.StringContext;
-import trawel.helper.methods.extra;
+import trawel.core.Rand;
 
 
 /**
@@ -225,7 +225,7 @@ public class StringFluffer {
 		int rejections = 0;
 		int maxtrials = 2+Math.max(10, Math.max(currentTask.getLocalDupes(),currentTask.getGlobalDupes()));
 		while (result == null && rejections < maxtrials) {
-			result = srArr[extra.getRand().nextInt(srArr.length)].next();
+			result = srArr[Rand.getRand().nextInt(srArr.length)].next();
 			if (result == null) {//shouldn't be allowed to happen, but we fail gracefully
 				rejections++;
 			}else {

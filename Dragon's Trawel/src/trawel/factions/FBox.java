@@ -3,8 +3,8 @@ package trawel.factions;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.core.Print;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
@@ -335,9 +335,9 @@ public class FBox implements java.io.Serializable{
 			if (str != "") {
 				str += ", ";
 			}
-			str +=TrawelColor.ITEM_DESC_PROP+ (s.name.name + TrawelColor.ITEM_VALUE + ": " +TrawelColor.ITEM_VALUE+ extra.F_TWO_TRAILING.format(s.forFac - s.againstFac));
+			str +=TrawelColor.ITEM_DESC_PROP+ (s.name.name + TrawelColor.ITEM_VALUE + ": " +TrawelColor.ITEM_VALUE+ Print.F_TWO_TRAILING.format(s.forFac - s.againstFac));
 		}
-		extra.println(str);
+		Print.println(str);
 	}
 	
 	public static float getSpendableFor(Faction fac) {

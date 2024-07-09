@@ -15,6 +15,9 @@ import trawel.battle.Combat.ATK_ResultCode;
 import trawel.battle.Combat.ATK_ResultType;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.Stance.AttackLevel;
+import trawel.core.Input;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.Archetype;
@@ -40,7 +43,7 @@ public class WeaponAttackFactory {
 	private static WeightedTable weapTypeTable;
 	
 	public static WeaponType randWeapType() {
-		return WeaponType.values()[weapTypeTable.random(extra.getRand())];
+		return WeaponType.values()[weapTypeTable.random(Rand.getRand())];
 	}
 	
 	/**
@@ -1143,10 +1146,10 @@ public class WeaponAttackFactory {
 			w.display(2);//unsure how to handle qualities impacting the test, because I need to know what they do
 			for (AttackMetric a: metrics) {
 				a.total_percent_dps = a.average_dps/totalDPS;
-				extra.println(a.toString());
+				Print.println(a.toString());
 			}
-			extra.println("1 continue");
-			extra.inInt(1);
+			Print.println("1 continue");
+			Input.inInt(1);
 		}
 	}
 	
@@ -1189,13 +1192,13 @@ public class WeaponAttackFactory {
 		
 		@Override
 		public String toString() {
-			java.text.DecimalFormat formata = extra.F_TWO_TRAILING;
-			return weaponname + "'s " + extra.cutPadLenFront(8, basename) +": rng%"
+			java.text.DecimalFormat formata = Print.F_TWO_TRAILING;
+			return weaponname + "'s " + Print.cutPadLenFront(8, basename) +": rng%"
 					+ formata.format(rarity)
 					+" hit%" +formata.format(average_hit)
 					+" full%" +formata.format(average_full)
-					+" raw: d"+extra.cutPadLenFront(6, formata.format(average_damage))
-					+" _"+extra.cutPadLenFront(6,formata.format(average_time))
+					+" raw: d"+Print.cutPadLenFront(6, formata.format(average_damage))
+					+" _"+Print.cutPadLenFront(6,formata.format(average_time))
 					+" avg: "+formata.format(average_dps)
 					+ " contrib %"+ formata.format(total_percent_dps); 
 		}
@@ -1505,7 +1508,7 @@ public class WeaponAttackFactory {
 
 
 	public static ImpairedAttack rollAttack(IHasSkills source, IHasSkills source2, Person attacker, Person defender) {
-		return extra.randFloat() >= .5f ? getStance(source).randAtts(1, null, attacker, defender).get(0) : getStance(source2).randAtts(1, null, attacker, defender).get(0);
+		return Rand.randFloat() >= .5f ? getStance(source).randAtts(1, null, attacker, defender).get(0) : getStance(source2).randAtts(1, null, attacker, defender).get(0);
 	}
 	public static ImpairedAttack rollAttack(IHasSkills source, Person attacker, Person defender) {
 		return getStance(source).randAtts(1, null, attacker, defender).get(0);

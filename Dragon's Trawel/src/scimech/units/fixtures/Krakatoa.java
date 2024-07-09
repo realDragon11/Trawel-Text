@@ -10,7 +10,7 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Fixture;
 import scimech.mech.TurnSubscriber;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class Krakatoa extends Fixture {
 
@@ -19,7 +19,7 @@ public class Krakatoa extends Fixture {
 		int acc = (int) (10*rating());
 		double hit = MechCombat.computeHit(t, AimType.ARCING, acc,this);
 		if (!t.isDummy()) {
-			extra.print("Krakatoa " + ( hit >= 0 ? "hits!" : "misses!") + " ");
+			Print.print("Krakatoa " + ( hit >= 0 ? "hits!" : "misses!") + " ");
 		}
 		if (hit >=0) {
 			t.takeDamage().take(DamageTypes.BURN,DamageMods.AP,10, t);	

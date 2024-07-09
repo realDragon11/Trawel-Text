@@ -1,6 +1,7 @@
 package tests;
 
 import derg.ds.Chomp;
+import trawel.core.Rand;
 import trawel.core.mainGame;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
@@ -66,7 +67,7 @@ public class UnitAssertions {
 		assert t1.hasTeleporters() == false;
 		
 		for (int i = 0; i < 20; i++) {
-			System.out.print(extra.hrandomFloat() +" ");
+			System.out.print(Rand.hrandomFloat() +" ");
 		}
 		System.out.println();
 		

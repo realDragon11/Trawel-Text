@@ -7,11 +7,13 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.core.Input;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.factions.Faction;
 import trawel.factions.FBox.FSub;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.IEffectiveLevel;
@@ -51,8 +53,8 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 		name = _name;
 		tier = _tier;
 		tutorialText = "Merchant's Guild";
-		timePassed = extra.randRange(1,30);
-		nextReset = extra.randRange(8,30);
+		timePassed = Rand.randRange(1,30);
+		nextReset = Rand.randRange(8,30);
 		area_type = Area.MISC_SERVICE;
 	}
 	
@@ -68,7 +70,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	
 	@Override
 	public void go() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -84,7 +86,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 					@Override
 					public String title() {
 						FSub sub = Player.player.getPerson().facRep.getFacRep(Faction.MERCHANT);
-						return "Current Merchant Reputation: " + (sub == null ? "Unknown" : ""+extra.format2(sub.forFac-sub.againstFac));
+						return "Current Merchant Reputation: " + (sub == null ? "Unknown" : ""+Print.format2(sub.forFac-sub.againstFac));
 					}
 				});
 				list.add(new MenuSelect() {
@@ -98,19 +100,19 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 					@Override
 					public boolean go() {
 						if (Player.bag.getDrawBanes().isEmpty()) {
-							extra.println("You have no drawbanes to donate!");
+							Print.println("You have no drawbanes to donate!");
 							return false;
 						}
 						DrawBane b = null;
 						do{
-							extra.println("The merchants are willing to take supplies to increase your reputation. (current reputation: " + Player.player.merchantLevel+ ")");
+							Print.println("The merchants are willing to take supplies to increase your reputation. (current reputation: " + Player.player.merchantLevel+ ")");
 							b = Player.bag.playerOfferDrawBane("donate");
 							if (b != null && b != DrawBane.EV_NOTHING) {
 								Player.player.addMPoints(b.getMValue());
 								//chance
 								DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.TRADE_ALIGN,(float)b.getMValue()/3f,1);
 								if (gain != null) {
-									extra.println("You get "+1+" " + gain.getName() + " pieces while trading!");
+									Print.println("You get "+1+" " + gain.getName() + " pieces while trading!");
 								}
 							}else {
 								b = null;
@@ -140,7 +142,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
+						Input.menuGo(new MenuGenerator() {
 
 							@Override
 							public List<MenuItem> gen() {
@@ -171,14 +173,14 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 							if (Gem.EMERALD.getGem() > gemAmount) {
 								//scales directly on amount, since the amount scales on eLevel
 								Player.player.addMPoints(10*gemAmount);
-								extra.println("You donate "+gemAmount+" "+(gemAmount == 1 ? Gem.EMERALD.name : Gem.EMERALD.plural)+".");
+								Print.println("You donate "+gemAmount+" "+(gemAmount == 1 ? Gem.EMERALD.name : Gem.EMERALD.plural)+".");
 								Gem.EMERALD.changeGem(-gemAmount);
 								DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.TRADE_ALIGN,1f,1);
 								if (gain != null) {
-									extra.println("You get "+1+" " + gain.getName() + " pieces while trading!");
+									Print.println("You get "+1+" " + gain.getName() + " pieces while trading!");
 								}
 							}else {
-								extra.println(TrawelColor.RESULT_ERROR+"You have no emeralds to donate.");
+								Print.println(TrawelColor.RESULT_ERROR+"You have no emeralds to donate.");
 							}
 							return false;
 						}});
@@ -189,7 +191,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	}
 
 	private void buyGShip() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -213,18 +215,18 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 					@Override
 					public boolean go() {
 						if (Player.player.getGold() < merchantBookPrice) {
-							extra.println(TrawelColor.RESULT_ERROR+"You can't afford that many books!");
+							Print.println(TrawelColor.RESULT_ERROR+"You can't afford that many books!");
 							return false;
 						}
-						extra.println("Buying lots of books might find you a feat fragment- buy?");
-						if (extra.yesNo()) {
+						Print.println("Buying lots of books might find you a feat fragment- buy?");
+						if (Input.yesNo()) {
 							Player.player.addGold(-merchantBookPrice);
 							//chance of success declines from 3/5ths to 1/2th as the number of passes approaches infinity
-							if (passes < 3 || extra.chanceIn(3+passes,5+(2*passes))) {
+							if (passes < 3 || Rand.chanceIn(3+passes,5+(2*passes))) {
 								Player.player.merchantBookPasses++;
 								Player.bag.addNewDrawBanePlayer(DrawBane.KNOW_FRAG);
 							}else {
-								extra.println(TrawelColor.RESULT_FAIL+"There was nothing interesting in this batch.");
+								Print.println(TrawelColor.RESULT_FAIL+"There was nothing interesting in this batch.");
 							}
 						}
 						return false;
@@ -241,14 +243,14 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 					@Override
 					public boolean go() {
 						if (Player.player.getGold() < bShipmentCost) {
-							extra.println(TrawelColor.RESULT_ERROR+"You can't afford that many beers!");
+							Print.println(TrawelColor.RESULT_ERROR+"You can't afford that many beers!");
 							return false;
 						}
-						extra.println("Beer increases your starting HP in battle, one use per beer- buy 20 of them?");
-						if (extra.yesNo()) {
+						Print.println("Beer increases your starting HP in battle, one use per beer- buy 20 of them?");
+						if (Input.yesNo()) {
 							Player.player.addGold(-bShipmentCost);
 							Player.player.beer+=20;
-							extra.println(TrawelColor.RESULT_PASS+"You gain 20 beers.");
+							Print.println(TrawelColor.RESULT_PASS+"You gain 20 beers.");
 						}
 						return false;
 					}
@@ -264,7 +266,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 		timePassed += time;
 		if (timePassed > nextReset) {
 			timePassed = 0;
-			nextReset = extra.randRange(8,30);
+			nextReset = Rand.randRange(8,30);
 			if (canQuest) {this.generateSideQuest();}
 		}
 		return null;
@@ -282,17 +284,17 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	@Override
 	public void generateSideQuest() {
 		if (sideQuests.size() >= 3) {
-			sideQuests.remove(extra.randList(sideQuests));
+			sideQuests.remove(Rand.randList(sideQuests));
 		}
-		switch (extra.randRange(1,3)) {
+		switch (Rand.randRange(1,3)) {
 		case 1:
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.MERCHANT));
 			break;
 		case 2:
-			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.HARPY,CleanseType.BANDIT,CleanseType.UNICORN,CleanseType.ANIMALS)));
+			sideQuests.add(CleanseSideQuest.generate(this,Rand.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.HARPY,CleanseType.BANDIT,CleanseType.UNICORN,CleanseType.ANIMALS)));
 			break;
 		case 3:
-			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .7f));//30% chance to be a murder quest
+			sideQuests.add(KillSideQuest.generate(this,Rand.randFloat() > .7f));//30% chance to be a murder quest
 			break;
 		}
 	}

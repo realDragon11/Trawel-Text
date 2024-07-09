@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import derg.strings.fluffer.StringNum;
-import trawel.helper.methods.extra;
+import trawel.core.Rand;
 
 public class SRFrontBackedRandom extends StringNum {
 
@@ -32,7 +32,7 @@ public class SRFrontBackedRandom extends StringNum {
 	
 	@Override
 	public String next() {
-		return back[extra.getRand().nextInt(back.length)];
+		return back[Rand.getRand().nextInt(back.length)];
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class SRFrontBackedRandom extends StringNum {
 
 	@Override
 	public int getNum() {
-		return extra.getRand().nextInt(back.length);
+		return Rand.getRand().nextInt(back.length);
 	}
 
 	@Override

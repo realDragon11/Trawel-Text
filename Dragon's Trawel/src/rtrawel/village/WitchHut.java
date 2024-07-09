@@ -5,7 +5,8 @@ import java.util.List;
 
 import rtrawel.EventFlag;
 import rtrawel.battle.Party;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
+import trawel.core.Print;
 
 public class WitchHut implements Content {
 	
@@ -23,22 +24,22 @@ public class WitchHut implements Content {
 			alist.add("hemo");
 		}
 		while (true) {
-			extra.println("1 back");
+			Print.println("1 back");
 			for (int i = 0; i < alist.size();i++) {
-				extra.println((i+2) + " " + alist.get(i));
+				Print.println((i+2) + " " + alist.get(i));
 			}
-			int in = extra.inInt(alist.size()+1);
+			int in = Input.inInt(alist.size()+1);
 			if (in == 1) {
 				return false;
 			}
 			in-=2;
 			List<Recipe> rs =RecipeFactory.getHolder(alist.get(in)).list;
 			while (true) {
-				extra.println("1 back");
+				Print.println("1 back");
 				for (int i = 0; i < rs.size();i++) {
-					extra.println((i+2) + " " + rs.get(i).toString());
+					Print.println((i+2) + " " + rs.get(i).toString());
 				}
-				int in2 = extra.inInt(alist.size()+1);
+				int in2 = Input.inInt(alist.size()+1);
 				if (in2 == 1) {
 					break;
 				}
@@ -52,7 +53,7 @@ public class WitchHut implements Content {
 	private void make(Recipe recipe) {
 		for (int i = 0; i < recipe.inputs.size();i++) {
 			if (Party.party.getItemCount(recipe.inputs.get(i)) < recipe.inputCount.get(i)){
-				extra.println("Not enough " + recipe.inputs.get(i));
+				Print.println("Not enough " + recipe.inputs.get(i));
 				return;
 			}
 		}

@@ -4,6 +4,8 @@ import com.github.yellowstonegames.core.WeightedTable;
 
 import derg.ds.Chomp;
 import derg.strings.random.SRFrontBackedRandom;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.core.mainGame;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
@@ -224,10 +226,10 @@ public class EnchantConstant extends Enchant {
 
 		int off1 = 0;//0 = benefit, 1 = downside
 		int off2 = 0;
-		magnitudeOne = (extra.hrandomFloat()*powMod);
-		magnitudeTwo = (extra.hrandomFloat()*powMod);
+		magnitudeOne = (Rand.hrandomFloat()*powMod);
+		magnitudeTwo = (Rand.hrandomFloat()*powMod);
 		
-		float[] mults = floatMultList[enchantChances.random(extra.getRand())];
+		float[] mults = floatMultList[enchantChances.random(Rand.getRand())];
 		off1 = mults[0] == 0 ? 1 : 0;//0 = bad, but not in our offset scheme
 		magnitudeOne *= mults[1];
 		off2 = mults[2] == 0 ? 1 : 0;
@@ -250,13 +252,13 @@ public class EnchantConstant extends Enchant {
 			//two rand floats, one scaled off of mag, one off of 3
 			//thus slightly worse than even chances when mag == 3
 			//worse chances than the after mighty, to make it rarer
-			if (extra.randFloat()*magnitudeTwo > extra.randFloat()*3f ) {
+			if (Rand.randFloat()*magnitudeTwo > Rand.randFloat()*3f ) {
 				might = randomLists.powerMightyAdj(true).getNumByte();
 				might |= 1 << 7;//sets that we're mighty, note that mighty is limited to 2^7 options due to this
 			}else {
 				might = Chomp.emptyInt;
 			}
-			subType = (byte) extra.randRange(0, 4);
+			subType = (byte) Rand.randRange(0, 4);
 			enchantTypes = (byte) (internalNibbleConverter(off1,subType) << 4);
 			//System.err.println(off1 + "/" + subType + " 1: " + Integer.toBinaryString(Byte.toUnsignedInt(enchantTypes)));
 			switch (off1+(subType*2)) {
@@ -309,13 +311,13 @@ public class EnchantConstant extends Enchant {
 		if (magnitudeTwo > 0f){
 			//two rand floats, one scaled off of mag, one off of 2
 			//thus slightly worse than even chances when mag == 2
-			if (extra.randFloat()*magnitudeTwo > extra.randFloat()*2f ) {
+			if (Rand.randFloat()*magnitudeTwo > Rand.randFloat()*2f ) {
 				might = randomLists.powerMightyAdj(false).getNumByte();
 				might |= 1 << 7;//sets that we're mighty, note that mighty is limited to 2^7 options due to this
 			}else {
 				might = Chomp.emptyInt;
 			}
-			subType = (byte) extra.randRange(0, 4);
+			subType = (byte) Rand.randRange(0, 4);
 			enchantTypes = (byte) (enchantTypes | internalNibbleConverter(off2, subType));//FIXME
 			//System.err.println(off2 + "/" + subType + " 2: " + Integer.toBinaryString(Byte.toUnsignedInt(enchantTypes)));
 		switch (off2+(subType*2)) {
@@ -564,7 +566,7 @@ public class EnchantConstant extends Enchant {
 			case 4:	d = getDodgeMod(); str = "dodge";break;
 			}
 			if (d != 1) {
-				extra.println("  " +TrawelColor.colorBasedAtOne(d,TrawelColor.TIMID_GREEN,TrawelColor.TIMID_RED,TrawelColor.PRE_WHITE) + "x " + str);
+				Print.println("  " +TrawelColor.colorBasedAtOne(d,TrawelColor.TIMID_GREEN,TrawelColor.TIMID_RED,TrawelColor.PRE_WHITE) + "x " + str);
 			}
 		
 		}

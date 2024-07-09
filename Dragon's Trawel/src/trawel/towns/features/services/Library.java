@@ -7,9 +7,10 @@ import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
+import trawel.core.Input;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.quests.events.QuestReactionFactory.QKey;
@@ -52,7 +53,7 @@ public class Library extends Feature {
 
 	@Override
 	public void go() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -100,7 +101,7 @@ public class Library extends Feature {
 						public boolean go() {
 							setLibFlag(LibraryFlag.HAS_BONUS_FEAT_PICKED,true);
 							Player.player.addFeatPick(1);
-							extra.println("You learn enough to reassess you future. You gained one feat pick as a result.");
+							Print.println("You learn enough to reassess you future. You gained one feat pick as a result.");
 							return false;
 						}
 						
@@ -153,15 +154,15 @@ public class Library extends Feature {
 								}
 								got++;
 							}*/
-							extra.println("You study the "+frag_count+" scraps of knowledge you've accumulated.");
+							Print.println("You study the "+frag_count+" scraps of knowledge you've accumulated.");
 							for (int i = 0; i < frag_count;i++) {
 								Player.player.addKnowFrag();
 							}
 							Player.player.currentKFrags = 0;
-							extra.println("You are now " + Player.player.strKnowFrag());
+							Print.println("You are now " + Player.player.strKnowFrag());
 							DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.KNOW_ALIGN,frag_count*.5f,2*frag_count);
 							if (gain != null) {
-								extra.println("You find "+(2*frag_count)+" " + gain.getName() + " pieces while studying!");
+								Print.println("You find "+(2*frag_count)+" " + gain.getName() + " pieces while studying!");
 							}
 							return false;
 						}

@@ -13,7 +13,7 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
 
 public class RacerFrame extends Systems {
 	
@@ -64,7 +64,7 @@ public class RacerFrame extends Systems {
 
 	@Override
 	public void examine() {//cannot turn off
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {

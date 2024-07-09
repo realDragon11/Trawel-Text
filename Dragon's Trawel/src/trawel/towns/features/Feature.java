@@ -2,8 +2,9 @@ package trawel.towns.features;
 import java.util.List;
 
 import trawel.core.Networking;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.core.mainGame;
-import trawel.helper.methods.extra;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
@@ -27,7 +28,7 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	protected String tutorialText = null;
 	protected Town town;
 	protected int moneyEarned;
-	protected int background_variant = extra.randRange(1, 3);
+	protected int background_variant = Rand.randRange(1, 3);
 	protected String background_area = "main";
 	protected int tier;
 	protected Networking.Area area_type;
@@ -87,7 +88,7 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	}
 	
 	public void printTutorial() {
-		extra.println(getTutorialText());
+		Print.println(getTutorialText());
 	}
 
 	public abstract String getColor();
@@ -165,17 +166,17 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 		goHeader();
 		String text = getIntro();
 		if (text != null && mainGame.displayFeatureFluff) {
-			extra.println(text);
+			Print.println(text);
 		}
 		if (owner == Player.player && moneyEarned > 0) {
-			extra.println("You take the " + moneyEarned + " in profits.");
+			Print.println("You take the " + moneyEarned + " in profits.");
 			Player.player.addGold(moneyEarned);
 			moneyEarned = 0;
 		}
 		go();
 		text = getOutro();
 		if (text != null && mainGame.displayFeatureFluff) {
-			extra.println(text);
+			Print.println(text);
 		}
 	}
 	

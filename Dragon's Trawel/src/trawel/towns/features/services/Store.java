@@ -7,7 +7,10 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.core.Input;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.extra;
@@ -55,7 +58,7 @@ public class Store extends Feature{
 	private Store() {
 		time = 0;
 		tutorialText = "Store";
-		markup= extra.lerp(BASE_MARKUP,BASE_MARKUP*extra.choose(.9f,.95f,1.2f,1.3f,1.5f),extra.randFloat());
+		markup= extra.lerp(BASE_MARKUP,BASE_MARKUP*Rand.choose(.9f,.95f,1.2f,1.3f,1.5f),Rand.randFloat());
 		aetherRate = Player.NORMAL_AETHER_RATE;
 		/*if (extra.chanceIn(3,4)) {
 			//3 out of 4 chance to move at least somewhat towards a % deviated rate
@@ -63,7 +66,7 @@ public class Store extends Feature{
 			//can't be better than pure rate
 			aetherRate = Math.min(aetherRate,Player.PURE_AETHER_RATE);
 		}*/
-		invSize = extra.randRange(4,6);
+		invSize = Rand.randRange(4,6);
 		if (invSize < 5) {
 			markup *= .95;
 		}
@@ -122,7 +125,7 @@ public class Store extends Feature{
 			itemMaxLevel = tier;
 			type = 6;
 			//lower size
-			invSize = extra.randRange(2,4);
+			invSize = Rand.randRange(2,4);
 			//move towards a bad aether rate
 			//to simulate lack of ability to deal with aether
 			float max_pen = Player.NORMAL_AETHER_RATE*.3f;
@@ -163,44 +166,44 @@ public class Store extends Feature{
 		assert itemMinLevel <= itemMaxLevel;
 		type = newType;
 		switch (type) {
-		case 0: name = extra.choose("Hat","Headwear","Heads and Hair");
+		case 0: name = Rand.choose("Hat","Headwear","Heads and Hair");
 			tutorialText = "Helmet Store";
 		break;
-		case 1: name = extra.choose("Gloves","Handwear","Hand Protection","Mitten");
+		case 1: name = Rand.choose("Gloves","Handwear","Hand Protection","Mitten");
 		tutorialText = "Armbands Store";
 		break;
-		case 2: name = extra.choose("Chestpiece","Bodywear","Chest Protector");
+		case 2: name = Rand.choose("Chestpiece","Bodywear","Chest Protector");
 			tutorialText = "Chestpiece Store";
 		break;
-		case 3: name = extra.choose("Pants","Legwear","Leg Protector","Trouser","Pantaloon");
+		case 3: name = Rand.choose("Pants","Legwear","Leg Protector","Trouser","Pantaloon");
 		tutorialText = "Pants Store";
 		break;
-		case 4: name = extra.choose("Boot","Footwear","Cobbler","Feet Protection");
+		case 4: name = Rand.choose("Boot","Footwear","Cobbler","Feet Protection");
 		tutorialText = "Boots Store";
 		break;
-		case 5: name = extra.choose("Weapon","Arms","Armament","War");
+		case 5: name = Rand.choose("Weapon","Arms","Armament","War");
 		tutorialText = "Weapon Store";
 		break;
-		case 6: name = extra.choose("General","Flea","Convenience","Trading","Super","Tag","Jumble","Clearance","Retail");
+		case 6: name = Rand.choose("General","Flea","Convenience","Trading","Super","Tag","Jumble","Clearance","Retail");
 		tutorialText = "Equipment Store";
 		break;
-		case 7: name = extra.choose("Race","Species","Body","New You");
+		case 7: name = Rand.choose("Race","Species","Body","New You");
 		tutorialText = "Species Store";
 		break;
-		case 8: name = extra.choose("Drawbane");
+		case 8: name = Rand.choose("Drawbane");
 			tutorialText = "Drawbane Store";
 		break;//misc
-		case 9: name = extra.choose("Witchery","Potion Material","Reagent","Catalyst","Reactant","Ingredient");
+		case 9: name = Rand.choose("Witchery","Potion Material","Reagent","Catalyst","Reactant","Ingredient");
 		tutorialText = "Reagent Store";
 		break;
-		case 10: name = extra.choose("Food","Provision","Comestible","Edible","Commissariat");
+		case 10: name = Rand.choose("Food","Provision","Comestible","Edible","Commissariat");
 			tutorialText = "Food Store";
 		break;
-		case 11: name = extra.choose("Oddity","Bizarre","Peculiar","Curiosity","Souvenir","Trinket","Trophy");
+		case 11: name = Rand.choose("Oddity","Bizarre","Peculiar","Curiosity","Souvenir","Trinket","Trophy");
 			tutorialText = "Oddity Store";
 		break;//collector
 		}
-		name += " " + extra.choose("Store","Market","Shop","Post","Boutique","Emporium","Outlet","Center","Mart","Stand","Sale","Fair","Bazaar","Stall","Booth");
+		name += " " + Rand.choose("Store","Market","Shop","Post","Boutique","Emporium","Outlet","Center","Mart","Stand","Sale","Fair","Bazaar","Stall","Booth");
 
 		if (type >=8) {
 			dbs = new ArrayList<DrawBane>();
@@ -250,8 +253,8 @@ public class Store extends Feature{
 			DrawBane db = dbs.get(index);
 			int buyGold = (int) Math.ceil(db.getValue() * markup);
 			if (Player.bag.getGold() >= buyGold) {
-				extra.println("Buy the "+ db.getName() + "? (" + World.currentMoneyDisplay(buyGold) + ")");//TODO: explain aether conversion
-				if (extra.yesNo()) {
+				Print.println("Buy the "+ db.getName() + "? (" + World.currentMoneyDisplay(buyGold) + ")");//TODO: explain aether conversion
+				if (Input.yesNo()) {
 					DrawBane sellItem = bag.handleDrawBane(db,true,"sell");
 					if (sellItem != null) {
 						Services.sellItem(sellItem, bag);
@@ -260,7 +263,7 @@ public class Store extends Feature{
 					dbs.remove(index);
 				}
 			}else {
-				extra.println(TrawelColor.RESULT_ERROR+"You cannot afford this item.");
+				Print.println(TrawelColor.RESULT_ERROR+"You cannot afford this item.");
 			}
 			return;
 		}
@@ -271,7 +274,7 @@ public class Store extends Feature{
 		ItemType itemType = buyItem.getType();
 		Item result = AIClass.storeBuyCompareItem(buyItem, this);
 		if (result == buyItem) {
-			extra.println("You decide not to buy the item.");
+			Print.println("You decide not to buy the item.");
 			return;
 		}
 		if (result != null) {
@@ -283,14 +286,14 @@ public class Store extends Feature{
 		this.addBuy();
 		switch (itemType) {
 		case ARMOR:
-			extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + buyItem.getName() + ".");
+			Print.println("They "+Rand.choose("take","pick up","claim","swap for")+" the " + buyItem.getName() + ".");
 			//arraySwap(bag.swapArmorSlot((Armor)buyItem, slot),buyItem);
 			break;
 		case RACE:
 			//arraySwap(bag.swapRace((Race)buyItem),buyItem);
 			break;
 		case WEAPON:
-			extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + buyItem.getName() + ".");
+			Print.println("They "+Rand.choose("take","pick up","claim","swap for")+" the " + buyItem.getName() + ".");
 			//arraySwap(bag.swapWeapon((Weapon)buyItem),buyItem);
 			break;	
 		}
@@ -527,7 +530,7 @@ public class Store extends Feature{
 
 		@Override
 		public String title() {
-			return item.getName() + " cost: " + extra.F_WHOLE.format(Math.ceil(item.getValue()*markup));
+			return item.getName() + " cost: " + Print.F_WHOLE.format(Math.ceil(item.getValue()*markup));
 		}
 
 		@Override
@@ -555,16 +558,16 @@ public class Store extends Feature{
 	
 	@Override
 	public void go() {
-		extra.menuGo(modernStoreFront());
+		Input.menuGo(modernStoreFront());
 	}
 	
 	@Override
 	public List<TimeEvent> passTime(double addtime, TimeContext calling) {
 		time += addtime;
-		if (time > 12+(extra.getRand().nextInt(30))) {
-			extra.offPrintStack();
+		if (time > 12+(Rand.getRand().nextInt(30))) {
+			Print.offPrintStack();
 			goShopping();
-			extra.popPrintStack();
+			Print.popPrintStack();
 			addAnItem();
 			time = 0;
 		}
@@ -604,7 +607,7 @@ public class Store extends Feature{
 	public Item addAnItem() {
 		if (type >= 8) {
 			if (dbs.size() >= invSize) {
-				dbs.remove(extra.randRange(0,dbs.size()-1));
+				dbs.remove(Rand.randRange(0,dbs.size()-1));
 			}
 			switch (type) {
 			case 8:
@@ -624,32 +627,32 @@ public class Store extends Feature{
 		}
 		if (type == 7) {
 			if (races.size() >= invSize) {
-				races.remove(extra.randRange(0,races.size()-1));
+				races.remove(Rand.randRange(0,races.size()-1));
 			}
 			Race addRace = RaceFactory.randRace(Race.RaceType.PERSONABLE);
 			races.add(addRace.raceID());
 			return addRace;
 		}
 		if (items.size() >= invSize) {
-			items.remove(extra.randRange(0,items.size()-1));
+			items.remove(Rand.randRange(0,items.size()-1));
 		}
 		if (type < 5) {
-			Armor a = new Armor(extra.randRange(itemMinLevel, itemMaxLevel),type);
+			Armor a = new Armor(Rand.randRange(itemMinLevel, itemMaxLevel),type);
 			items.add(a);
 			return a;
 		}
 		if (type == 5) {
-			Weapon w = Weapon.genMidWeapon(extra.randRange(itemMinLevel, itemMaxLevel));
+			Weapon w = Weapon.genMidWeapon(Rand.randRange(itemMinLevel, itemMaxLevel));
 			items.add(w);
 			return w;
 		}
 		if (type == 6) {
-			if (extra.randFloat() > .5f) {
-				Weapon w = Weapon.genMidWeapon(extra.randRange(itemMinLevel, itemMaxLevel));
+			if (Rand.randFloat() > .5f) {
+				Weapon w = Weapon.genMidWeapon(Rand.randRange(itemMinLevel, itemMaxLevel));
 				items.add(w);
 				return w;
 			}else {
-				Armor a = new Armor(extra.randRange(itemMinLevel, itemMaxLevel));
+				Armor a = new Armor(Rand.randRange(itemMinLevel, itemMaxLevel));
 				items.add(a);
 				return a;
 			}

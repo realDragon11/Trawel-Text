@@ -3,9 +3,9 @@ package trawel.quests.types;
 import derg.strings.fluffer.StringResult;
 import derg.strings.random.SRPlainRandom;
 import trawel.core.Networking;
+import trawel.core.Print;
 import trawel.factions.FBox;
 import trawel.factions.Faction;
-import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.Gem;
@@ -69,7 +69,7 @@ public class FetchSideQuest extends BasicSideQuest {
 		Feature endFeature = qRList.get(1).locationF;
 		switch (QRID) {
 		case 0:
-			extra.println("You claim the " + this.targetName);
+			Print.println("You claim the " + this.targetName);
 			this.desc = "Return the " + this.targetName + " to " + this.giverName + " at " + endFeature.getName() + " in " + endFeature.getTown().getName();
 			advanceStage();
 			announceUpdate();
@@ -82,7 +82,7 @@ public class FetchSideQuest extends BasicSideQuest {
 			case COMMUNITY:
 				reward = IEffectiveLevel.cleanRangeReward(atLevel,.5f, .5f);
 				Player.player.addGold(reward);
-				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+				Print.println("Gained "+World.currentMoneyDisplay(reward)+".");
 				endFeature.getTown().helpCommunity(2);//helps community twice as much
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*FBox.bonusLiked, 0);
 				
@@ -93,7 +93,7 @@ public class FetchSideQuest extends BasicSideQuest {
 			case CRIME:
 				reward = IEffectiveLevel.cleanRangeReward(atLevel,1.8f,.3f);
 				Player.player.addGold(reward);
-				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+				Print.println("Gained "+World.currentMoneyDisplay(reward)+".");
 				Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,mult*FBox.bonusDistant,0);
 				Player.player.getPerson().facRep.addFactionRep(Faction.LAW_GOOD,0,mult*FBox.againstNear);
 				Player.player.getPerson().facRep.addFactionRep(Faction.LAW_EVIL,0,mult*FBox.againstDistant);
@@ -106,7 +106,7 @@ public class FetchSideQuest extends BasicSideQuest {
 			case HERO:
 				reward = IEffectiveLevel.cleanRangeReward(atLevel,.8f,.7f);
 				Player.player.addGold(reward);
-				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+				Print.println("Gained "+World.currentMoneyDisplay(reward)+".");
 				endFeature.getTown().helpCommunity(1);
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*FBox.bonusFavored, 0);
 				
@@ -117,7 +117,7 @@ public class FetchSideQuest extends BasicSideQuest {
 			case MERCHANT:
 				reward = IEffectiveLevel.cleanRangeReward(atLevel,1.3f,.7f);
 				Player.player.addGold(reward);
-				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+				Print.println("Gained "+World.currentMoneyDisplay(reward)+".");
 				Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,mult*FBox.bonusLiked, 0);
 				Player.player.addMPoints(.2f);
 				endFeature.getTown().helpCommunity(1);
@@ -130,7 +130,7 @@ public class FetchSideQuest extends BasicSideQuest {
 				//gives amber instead
 				reward = IEffectiveLevel.cleanRangeReward(atLevel,Gem.AMBER.reward(1f,true),.7f);
 				Gem.AMBER.changeGem(reward);
-				extra.println("Gained "+reward+" amber.");
+				Print.println("Gained "+reward+" amber.");
 				endFeature.getTown().helpCommunity(1);
 				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*FBox.bonusLiked, 0);
 				

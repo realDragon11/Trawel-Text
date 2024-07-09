@@ -6,7 +6,10 @@ import java.util.List;
 import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
@@ -78,12 +81,12 @@ public class DungeonNode implements NodeType{
 	
 	@Override
 	public int rollRegrow() {
-		return 1+dungeonRegrowRoller.random(extra.getRand());
+		return 1+dungeonRegrowRoller.random(Rand.getRand());
 	}
 	
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
-		byte idNum = (byte) (dungeonNoneRoller.random(extra.getRand())+1);//1 is ladder
+		byte idNum = (byte) (dungeonNoneRoller.random(Rand.getRand())+1);//1 is ladder
 		if (guessDepth == 0) {
 			idNum = 4;//starting node can only be a door
 		}
@@ -98,17 +101,17 @@ public class DungeonNode implements NodeType{
 		if (size < 2) {
 			return made;
 		}
-		int split = extra.randRange(1,Math.min(size,3));
+		int split = Rand.randRange(1,Math.min(size,3));
 		int i = 0;
 		int sizeLeft = size-1;
 		//now more even, as with new groves, but less likely to fill it entirely
 		int baseSize = sizeLeft/split;
 		sizeLeft-=baseSize*split;
 		while (i < split) {
-			int sizeRemove = sizeLeft > 2 ? extra.randRange(1,sizeLeft-1) : 0;
+			int sizeRemove = sizeLeft > 2 ? Rand.randRange(1,sizeLeft-1) : 0;
 			sizeLeft-=sizeRemove;
 			int tempLevel = tier;
-			if (extra.chanceIn(1,10)) {
+			if (Rand.chanceIn(1,10)) {
 				tempLevel++;
 			}
 			int n = generate(holder,made,sizeRemove+baseSize,tempLevel);
@@ -168,13 +171,13 @@ public class DungeonNode implements NodeType{
 						}
 						if (floors.size()%2==0) {//every other floor
 							//guard floor
-							if (extra.chanceIn(3,4)) {//linking nodes have a 3/4ths chance to become a guard of some sort
-								holder.setEventNum(lastNode,GUARD_NUMBERS[dungeonGuardRoller.random(extra.getRand())]);
+							if (Rand.chanceIn(3,4)) {//linking nodes have a 3/4ths chance to become a guard of some sort
+								holder.setEventNum(lastNode,GUARD_NUMBERS[dungeonGuardRoller.random(Rand.getRand())]);
 							}
 						}else {
-							if (extra.chanceIn(1,2)) {//linking nodes have a 50% chance to become a loot of some sort
+							if (Rand.chanceIn(1,2)) {//linking nodes have a 50% chance to become a loot of some sort
 								//might not be a safe loot
-								holder.setEventNum(lastNode,LOOT_NUMBERS[dungeonLootRoller.random(extra.getRand())]);
+								holder.setEventNum(lastNode,LOOT_NUMBERS[dungeonLootRoller.random(Rand.getRand())]);
 							}
 						}
 						
@@ -270,7 +273,7 @@ public class DungeonNode implements NodeType{
 			Collections.shuffle(skillcon_list);//random order
 			while (!skillcon_list.isEmpty()) {
 				int last_node = fight_room;
-				boolean tough = extra.randRange(0, 1) == 0;
+				boolean tough = Rand.randRange(0, 1) == 0;
 				int this_length = tough ? path_length_tough : path_length_weak;
 				int this_end_level = tough ? tough_end_level : weak_end_level;
 				for (int i = 0; i < this_length;i++) {
@@ -364,7 +367,7 @@ public class DungeonNode implements NodeType{
 		switch (holder.getEventNum(madeNode)) {
 		case 1:
 			holder.setForceGo(madeNode,true);
-			holder.setStorage(madeNode, extra.choose("stairs","ladder"));
+			holder.setStorage(madeNode, Rand.choose("stairs","ladder"));
 			break;
 		case 5: case 6:
 			Person mimic = RaceFactory.makeMimic(holder.getLevel(madeNode));
@@ -372,7 +375,7 @@ public class DungeonNode implements NodeType{
 			break;
 		case 2:
 			holder.setForceGo(madeNode, true);
-			holder.setStorage(madeNode, new Object[] {extra.choose("Checkpoint","Barricade","Guardpost")
+			holder.setStorage(madeNode, new Object[] {Rand.choose("Checkpoint","Barricade","Guardpost")
 					,RaceFactory.makeDGuard(holder.getLevel(madeNode))});
 		break;
 		case 3:
@@ -381,18 +384,18 @@ public class DungeonNode implements NodeType{
 			holder.setLevel(madeNode, baseLevel);//now increases node level
 			int guardLevel = baseLevel;
 			int guardAmount = 4;
-			if (extra.chanceIn(1,4)) {//less, but eliter guards
+			if (Rand.chanceIn(1,4)) {//less, but eliter guards
 				guardAmount--;
 				for (int i = 0; i < guardAmount;i++) {
-					list.add(RaceFactory.makeDGuard(guardLevel+extra.randRange(1,2)));
+					list.add(RaceFactory.makeDGuard(guardLevel+Rand.randRange(1,2)));
 				}
 			}else {
 				int manyCost = 5;
-				if (guardLevel > manyCost && extra.chanceIn(1,6)) {//more weaker guards
+				if (guardLevel > manyCost && Rand.chanceIn(1,6)) {//more weaker guards
 					do {
 						guardLevel-=manyCost;
 						guardAmount++;
-					}while (guardLevel > manyCost && guardAmount < 6 && extra.chanceIn(2,3));
+					}while (guardLevel > manyCost && guardAmount < 6 && Rand.chanceIn(2,3));
 					//populate our list
 					for (int i = 0; i < guardAmount;i++) {
 						list.add(RaceFactory.makeDGuard(guardLevel));
@@ -406,14 +409,14 @@ public class DungeonNode implements NodeType{
 			}
 			holder.setForceGo(madeNode, true);
 			holder.setStorage(madeNode, new Object[] {
-					extra.choose("Large ","Well Lit ","High Security ") +extra.choose("Checkpoint","Barricade","Guardpost")
+					Rand.choose("Large ","Well Lit ","High Security ") +Rand.choose("Checkpoint","Barricade","Guardpost")
 					,list});
 		break;
 		case 4:
 			GenericNode.applyLockDoor(holder, madeNode);
 			break;
 		case 8:
-			if (extra.chanceIn(1, 3)) {
+			if (Rand.chanceIn(1, 3)) {
 				holder.setForceGo(madeNode, true);
 			}
 		case 7:
@@ -486,21 +489,21 @@ public class DungeonNode implements NodeType{
 				Networking.unlockAchievement("power_orb_smash");
 				switch (((Dungeon)holder.parent).requestRemoveBattleCon(node)) {
 				default:
-					extra.println("You smash the orb of power.");
+					Print.println("You smash the orb of power.");
 					break;
 				case DEATH:
-					extra.println("You smash the orb of power, and the screams of the dead thank you.");
+					Print.println("You smash the orb of power, and the screams of the dead thank you.");
 					break;
 				case ELEMENTAL:
-					extra.println("You smash the orb of power, and the room is briefly brought to a boil.");
+					Print.println("You smash the orb of power, and the room is briefly brought to a boil.");
 					break;
 				case SCRYING:
-					extra.println("You smash the orb of power, and a vision of an arena flashes in your mind.");
+					Print.println("You smash the orb of power, and a vision of an arena flashes in your mind.");
 					break;
 				}
 				BossNode.addRubyPayout(holder, node,.5f);
 			}else {
-				extra.println("The orb is broken into jagged fragments.");
+				Print.println("The orb is broken into jagged fragments.");
 				holder.findBehind(node,"broken orb");
 			}
 			return false;
@@ -511,23 +514,23 @@ public class DungeonNode implements NodeType{
 
 	private boolean chest(NodeConnector holder, int node) {
 		if (holder.getStateNum(node) != 0) {
-			extra.println("The "+holder.getStorageFirstClass(node,String.class)+" has already been opened.");
+			Print.println("The "+holder.getStorageFirstClass(node,String.class)+" has already been opened.");
 			holder.findBehind(node,"chest");
 			return false;
 		}
 		Person p = holder.getStorageFirstPerson(node);
 		p.getBag().graphicalDisplay(1,p);
-		extra.println("Really open the " + holder.getStorageFirstClass(node,String.class) + "?");
-		if (extra.yesNo()) {
+		Print.println("Really open the " + holder.getStorageFirstClass(node,String.class) + "?");
+		if (Input.yesNo()) {
 			holder.setStateNum(node,1);
-			if (extra.chanceIn(5,6)) {
+			if (Rand.chanceIn(5,6)) {
 				int gold = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),RaceFactory.WEALTH_HIGH, .2f);
 				Player.player.addGold(gold);
-				extra.println("You open the " +holder.getStorageFirstClass(node,String.class) + " and find " + World.currentMoneyDisplay(gold) + ".");
+				Print.println("You open the " +holder.getStorageFirstClass(node,String.class) + " and find " + World.currentMoneyDisplay(gold) + ".");
 			}else {
 				Gem gem = null;
 				boolean themed = false;
-				switch (extra.randRange(1,4)) {
+				switch (Rand.randRange(1,4)) {
 				case 1: 
 					gem = Gem.EMERALD;
 					themed = true;
@@ -544,13 +547,13 @@ public class DungeonNode implements NodeType{
 				}
 				int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),gem.reward(1.5f, themed), .5f);
 				gem.changeGem(gemAmount);
-				extra.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find "+gemAmount+" "+(gemAmount == 0 ? gem.name : gem.plural)+"!");
+				Print.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find "+gemAmount+" "+(gemAmount == 0 ? gem.name : gem.plural)+"!");
 			}
 			Networking.clearSide(1);
 			return false;
 		}else {
 			Networking.clearSide(1);
-			extra.println("You decide not to open it.");
+			Print.println("You decide not to open it.");
 			return false;
 		}
 	}
@@ -559,9 +562,9 @@ public class DungeonNode implements NodeType{
 
 		Person p = holder.getStorageFirstPerson(node);
 		p.getBag().graphicalDisplay(1,p);
-		extra.println("Really open the " + holder.getStorageFirstClass(node,String.class) + "?");
-		if (extra.yesNo()) {
-			extra.println(TrawelColor.PRE_BATTLE+"The mimic attacks you!");
+		Print.println("Really open the " + holder.getStorageFirstClass(node,String.class) + "?");
+		if (Input.yesNo()) {
+			Print.println(TrawelColor.PRE_BATTLE+"The mimic attacks you!");
 			Combat c = Player.player.fightWith(p);
 			if (c.playerWon() > 0) {
 				GenericNode.setSimpleDeadRaceID(holder, node,p.getBag().getRaceID());
@@ -570,7 +573,7 @@ public class DungeonNode implements NodeType{
 				return true;
 			}
 		}else {
-			extra.println("You decide not to open it.");
+			Print.println("You decide not to open it.");
 			return false;
 		}
 	}
@@ -580,20 +583,20 @@ public class DungeonNode implements NodeType{
 		int state = holder.getStateNum(node);
 		Person p = holder.getStorageFirstPerson(node);
 		if (state == 0 && !holder.isForced()) {
-			extra.println("Really loot the statue?");
+			Print.println("Really loot the statue?");
 			p.getBag().graphicalDisplay(1, p);
-			if (!extra.yesNo() && extra.chanceIn(1,2)) {//half chance to attack you anyway
-				extra.println("You decide not to loot it.");
+			if (!Input.yesNo() && Rand.chanceIn(1,2)) {//half chance to attack you anyway
+				Print.println("You decide not to loot it.");
 				Networking.clearSide(1);
 				return false;
 			}
-			extra.println(TrawelColor.PRE_BATTLE+"The statue springs to life and attacks you!");
+			Print.println(TrawelColor.PRE_BATTLE+"The statue springs to life and attacks you!");
 		}
 		if (state == 0) {
 			holder.setStateNum(node,1);
 			holder.setForceGo(node,true);
 		}else {//already attacked
-			extra.println("The statue attacks you!");
+			Print.println("The statue attacks you!");
 		}
 		
 		Combat c = Player.player.fightWith(p);
@@ -609,19 +612,19 @@ public class DungeonNode implements NodeType{
 		int state = holder.getStateNum(node);
 		Person p = holder.getStorageFirstPerson(node);
 		if (state == 0) {
-			extra.println("Really loot the statue?");
+			Print.println("Really loot the statue?");
 			p.getBag().graphicalDisplay(1, p);
-			if (!extra.yesNo()) {//half chance to attack you anyway
-				extra.println("You decide not to loot it.");
+			if (!Input.yesNo()) {//half chance to attack you anyway
+				Print.println("You decide not to loot it.");
 				Networking.clearSide(1);
 				return false;
 			}
-			extra.println("You loot the statue...");
+			Print.println("You loot the statue...");
 			AIClass.playerLoot(p.getBag(),true);
 			holder.setStateNum(node,1);
 			return false;
 		}else {
-			extra.println("The " + holder.getStorageFirstPerson(node).getBag().getRace().renderName(false) + " statue has already been looted.");
+			Print.println("The " + holder.getStorageFirstPerson(node).getBag().getRace().renderName(false) + " statue has already been looted.");
 			holder.findBehind(node,"statue");
 			return false;
 		}
@@ -651,10 +654,10 @@ public class DungeonNode implements NodeType{
 			return "Open the " + holder.getStorageFirstClass(node,String.class);
 		case 7: 
 			if (holder.getStateNum(node) != 0) {
-				return "Looted " + extra.capFirst(holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)) + " Statue";
+				return "Looted " + Print.capFirst(holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)) + " Statue";
 			}
 		case 8:
-			return extra.capFirst(holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)) + " Statue";
+			return Print.capFirst(holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)) + " Statue";
 		case 100:
 			if (holder.getStateNum(node) != 0) {
 				return "Examine broken orb.";
@@ -687,10 +690,10 @@ public class DungeonNode implements NodeType{
 			return holder.getStorageFirstClass(node,String.class);
 		case 7: 
 			if (holder.getStateNum(node) != 0) {
-				return "Looted " + extra.capFirst(holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)) + " Statue";
+				return "Looted " + Print.capFirst(holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)) + " Statue";
 			}
 		case 8:
-			return extra.capFirst(holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)) + " Statue";
+			return Print.capFirst(holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)) + " Statue";
 		case 100:
 			if (holder.getStateNum(node) != 0) {
 				return "Destroyed Orb of Power";

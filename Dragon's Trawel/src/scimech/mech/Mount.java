@@ -22,6 +22,9 @@ import scimech.mech.Fixture.MenuFixture;
 import scimech.mech.Mech.MenuMechTarget;
 import scimech.people.Trait;
 import scimech.people.TraitKeeper;
+import trawel.core.Input;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.methods.extra;
 
 public abstract class Mount extends MechPart implements TurnSubscriber, Target, Savable{
@@ -63,7 +66,7 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 				if (m.checkFire()) {
 					
 					if (MechCombat.mc.activeMechs.contains(m)) {
-						extra.print(m.callsign + " is taken out! ");
+						Print.print(m.callsign + " is taken out! ");
 						MechCombat.mc.turnOrder.remove(m);
 						MechCombat.mc.activeMechs.remove(m);
 					}
@@ -72,8 +75,8 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 
 		}
 		if (!t.isDummy()) {
-			extra.println();
-			extra.println(t.targetName() + " takes " + (before-t.getHP())  + " damage!");
+			Print.println();
+			Print.println(t.targetName() + " takes " + (before-t.getHP())  + " damage!");
 			this.bonusEffect(t,before-t.getHP());
 			//thing
 			if (!t.isDummy()) {
@@ -89,7 +92,7 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 				if (m.checkFire()) {
 					
 					if (MechCombat.mc.activeMechs.contains(m)) {
-						extra.print(m.callsign + " is taken out! ");
+						Print.print(m.callsign + " is taken out! ");
 						MechCombat.mc.turnOrder.remove(m);
 						MechCombat.mc.activeMechs.remove(m);
 					}
@@ -141,7 +144,7 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 	}
 	
 	public void examine() {
-		extra.menuGo(new MenuGenerator(){
+		Input.menuGo(new MenuGenerator(){
 
 			@Override
 			public List<MenuItem> gen() {
@@ -207,7 +210,7 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 		List<Mech> enemies = MechCombat.enemies(this.currentMech);
 		//fired =  false;
 		Mount fixed = this;
-		extra.menuGoPaged(new MenuGeneratorPaged() {
+		Input.menuGoPaged(new MenuGeneratorPaged() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -242,7 +245,7 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 	}
 	
 	public void manageFixtures() {
-		extra.menuGoPaged(new MenuGeneratorPaged(){
+		Input.menuGoPaged(new MenuGeneratorPaged(){
 
 			@Override
 			public List<MenuItem> gen() {
@@ -476,8 +479,8 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 			arr[i] = 0;
 		}
 		for (int i = 0; i < dam;i++) {
-			int v = extra.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
-			if (extra.chanceIn(2,3) && fixtures.get(v).damage == 100) {
+			int v = Rand.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
+			if (Rand.chanceIn(2,3) && fixtures.get(v).damage == 100) {
 				i--;
 			}else {
 				arr[v]++;
@@ -495,7 +498,7 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 			arr[i] = 0;
 		}
 		for (int i = 0; i < dam;i++) {
-			int v = extra.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
+			int v = Rand.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
 			arr[v]++;
 		}
 		for (int i = 0; i < arr.length;i++) {
@@ -507,11 +510,11 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 	public boolean addFixture(Fixture f) {
 		f.currentMount = this;//used for detecting stuff
 		if (f.getSlots() > (baseSlots()-usedSlots())) {
-			extra.println("Hit slot cap.");
+			Print.println("Hit slot cap.");
 			return false;
 		}
 		if (f.getComplexity() > currentMech.hardComplexityCap()-currentMech.totalComplexity()) {
-			extra.println("Hit complexity cap.");
+			Print.println("Hit complexity cap.");
 			return false;
 		}
 		fixtures.add(f);
@@ -527,7 +530,7 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 		}
 		
 		List<Mech> targets = MechCombat.enemies(this.currentMech);
-		this.activate(extra.randList(targets), currentMech);
+		this.activate(Rand.randList(targets), currentMech);
 		fired = true;
 		return true;
 	}

@@ -1,7 +1,8 @@
 package trawel.arc.misc;
 
 import derg.menus.MenuSelect;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
+import trawel.core.Print;
 
 public class Changelog {
 	//b__X is in development, b_X is the actual release of that version
@@ -126,15 +127,15 @@ public class Changelog {
 				@Override
 				public boolean go() {
 					changelog: do {
-						extra.println(changelog[changelogViewerVersion][0]
+						Print.println(changelog[changelogViewerVersion][0]
 								+ " part "+changelogViewerIndex+"/"+(changelog[changelogViewerVersion].length-1) +": "
 								+ changelog[changelogViewerVersion][changelogViewerIndex]);
 						//log = log.replace("@", "{part "+(1+changelogViewerIndex)+"/"+changelog[changelogViewerVersion].length+"}");
 						
-						extra.println("1 "+(changelogViewerIndex == changelog[changelogViewerVersion].length-1 ? "Next." : "More."));
-						extra.println("2 Next update.");
-						extra.println("9 Back.");
-						switch (extra.inInt(2,true, true)) {
+						Print.println("1 "+(changelogViewerIndex == changelog[changelogViewerVersion].length-1 ? "Next." : "More."));
+						Print.println("2 Next update.");
+						Print.println("9 Back.");
+						switch (Input.inInt(2,true, true)) {
 						case 1:
 							changelogViewerIndex++;
 							if (changelogViewerIndex >= changelog[changelogViewerVersion].length) {

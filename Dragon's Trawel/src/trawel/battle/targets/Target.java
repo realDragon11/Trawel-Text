@@ -7,8 +7,8 @@ import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.Wound;
+import trawel.core.Rand;
 import trawel.battle.attacks.ImpairedAttack.DamageType;
-import trawel.helper.methods.extra;
 
 public class Target{
 
@@ -174,7 +174,7 @@ public class Target{
 		if (t == null) {
 			return Wound.ERROR;//TODO
 		}else {
-			return tupleLists.get(dt).get(t.random(extra.getRand())).wound;
+			return tupleLists.get(dt).get(t.random(Rand.getRand())).wound;
 		}
 	}
 }

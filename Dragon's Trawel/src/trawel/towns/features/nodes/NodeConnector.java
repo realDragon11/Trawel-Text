@@ -11,11 +11,13 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLast;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.core.Input;
 import trawel.core.Networking;
 import trawel.core.mainGame;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
@@ -290,7 +292,7 @@ public class NodeConnector implements Serializable {
 		if (Player.isPlaying && rubyPayout > 0) {
 			//only apply if the player is playing to avoid telling them stuff when they've quit to menu
 			Gem.RUBY.changeGem(rubyPayout);
-			extra.println(TrawelColor.RESULT_GOOD+"You are met outside "+parent.getName() + " by a Hero's Guild member who awards you "+rubyPayout+" Rubies for your efforts!");
+			Print.println(TrawelColor.RESULT_GOOD+"You are met outside "+parent.getName() + " by a Hero's Guild member who awards you "+rubyPayout+" Rubies for your efforts!");
 			rubyPayout = 0;
 		}
 	}
@@ -338,7 +340,7 @@ public class NodeConnector implements Serializable {
 			interactCode(node);
 			return;//redo operation
 		}
-		extra.menuGo(menuGen(getCurrentNode()));
+		Input.menuGo(menuGen(getCurrentNode()));
 	}
 	
 	public MenuGenerator menuGen(int node) {
@@ -559,7 +561,7 @@ public class NodeConnector implements Serializable {
 	protected DrawBane attemptCollectAll(int node,float odds,int amount) {
 		NodeFeature keeper = parent;
 		if (keeper.getFindTime() > 1 && Player.player.sideQuests.size() > 0) {
-			if (extra.randFloat() < odds) {
+			if (Rand.randFloat() < odds) {
 				List<String> list = Player.player.allQTriggers();
 				for (DrawBane str: NodeType.getTypeEnum(getTypeNum(node)).singleton.dbFinds()) {
 					if (list.contains("db:"+str.name())) {
@@ -576,7 +578,7 @@ public class NodeConnector implements Serializable {
 	protected boolean findBehind(int node,String behind) {
 		DrawBane db = this.attemptCollectAll(node,.2f,1);
 		if (db == null) {return false;}
-		extra.println("Hey, there's some "+ db.getName() +" pieces behind that "+ behind+"!");
+		Print.println("Hey, there's some "+ db.getName() +" pieces behind that "+ behind+"!");
 		return true;
 	}
 

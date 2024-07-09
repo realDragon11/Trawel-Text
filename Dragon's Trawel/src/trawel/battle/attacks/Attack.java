@@ -5,8 +5,8 @@ import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.WeaponAttackFactory.DamageTier;
 import trawel.battle.targets.TargetFactory;
 import trawel.battle.targets.TargetFactory.TypeBody.TargetReturn;
+import trawel.core.Print;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Skill;
@@ -333,19 +333,19 @@ public class Attack implements IAttack{
 	public void display(int style) {
 		switch (style) {
 		case 0://naive style
-			extra.println(
+			Print.println(
 				name 
-				+" rarity: " + extra.formatPerSubOne(holdingStance.getRarity(this))
-				+" hit mult: " + extra.format(hitMult)
-				+" warmup: " + extra.format(warmup)
-				+" cooldown: " + extra.format(cooldown)
-				+" Sharp: " + extra.format(getSharp())
-				+" Blunt: " + extra.format(getBlunt())
-				+" Pierce: " + extra.format(getPierce())
+				+" rarity: " + Print.formatPerSubOne(holdingStance.getRarity(this))
+				+" hit mult: " + Print.format(hitMult)
+				+" warmup: " + Print.format(warmup)
+				+" cooldown: " + Print.format(cooldown)
+				+" Sharp: " + Print.format(getSharp())
+				+" Blunt: " + Print.format(getBlunt())
+				+" Pierce: " + Print.format(getPierce())
 				);
 			break;	
 		default:
-			extra.println(this.toString());
+			Print.println(this.toString());
 			break;
 		}
 		
@@ -380,25 +380,25 @@ public class Attack implements IAttack{
 		String p = TrawelColor.ITEM_DESC_PROP;
 		String g = TrawelColor.ITEM_WANT_HIGHER;
 		String b = TrawelColor.ITEM_WANT_LOWER;
-		extra.println(
-			" "+TrawelColor.STAT_HEADER+extra.cutPadLenFront(8,name)+TrawelColor.PRE_WHITE+"="
-			+p+" Raw DPI:" +g+extra.cutPadLenError(5, extra.F_TWO_TRAILING.format((totalDam/getSpeed()))) 
+		Print.println(
+			" "+TrawelColor.STAT_HEADER+Print.cutPadLenFront(8,name)+TrawelColor.PRE_WHITE+"="
+			+p+" Raw DPI:" +g+Print.cutPadLenError(5, Print.F_TWO_TRAILING.format((totalDam/getSpeed()))) 
 			//+" Against Equity DPI: " + extra.F_WHOLE.format(dpi/expectedAverage)
-			+p+" Rarity:" +TrawelColor.ITEM_VALUE+ extra.cutPadLenError(5, extra.formatPerSubOne(holdingStance.getRarity(this)))
-			+p+" Base Accuracy:"+g+extra.cutPadLenError(5, extra.format(hitMult))
-			+p+" Warmup:"+b +extra.cutPadLenError(3, extra.F_WHOLE.format(warmup))
-			+p+" Cooldown:"+b + extra.cutPadLenError(3, extra.F_WHOLE.format(cooldown))
-			+p+" Total Delay:"+b + extra.cutPadLenError(4, extra.F_WHOLE.format(warmup+cooldown))
+			+p+" Rarity:" +TrawelColor.ITEM_VALUE+ Print.cutPadLenError(5, Print.formatPerSubOne(holdingStance.getRarity(this)))
+			+p+" Base Accuracy:"+g+Print.cutPadLenError(5, Print.format(hitMult))
+			+p+" Warmup:"+b +Print.cutPadLenError(3, Print.F_WHOLE.format(warmup))
+			+p+" Cooldown:"+b + Print.cutPadLenError(3, Print.F_WHOLE.format(cooldown))
+			+p+" Total Delay:"+b + Print.cutPadLenError(4, Print.F_WHOLE.format(warmup+cooldown))
 			);
-		extra.println(
+		Print.println(
 				TrawelColor.STAT_HEADER+"  Base Damage"+TrawelColor.PRE_WHITE+"="
-				+(sharp > 0 ? p+" Sharp: " +g+ extra.F_WHOLE.format(sharp) : "")
-				+(blunt > 0 ? p+" Blunt: " +g+ extra.F_WHOLE.format(blunt) : "")
-				+(pierce > 0 ? p+" Pierce: " +g+ extra.F_WHOLE.format(pierce) : "")
+				+(sharp > 0 ? p+" Sharp: " +g+ Print.F_WHOLE.format(sharp) : "")
+				+(blunt > 0 ? p+" Blunt: " +g+ Print.F_WHOLE.format(blunt) : "")
+				+(pierce > 0 ? p+" Pierce: " +g+ Print.F_WHOLE.format(pierce) : "")
 				
-				+(ignite > 0 ? p+" Ignite: " +g+ extra.F_WHOLE.format(ignite) : "")
-				+(frost > 0 ? p+" Frost: " +g+ extra.F_WHOLE.format(frost) : "")
-				+(elec > 0 ? p+" Elec: " +g+ extra.F_WHOLE.format(elec) : "")
+				+(ignite > 0 ? p+" Ignite: " +g+ Print.F_WHOLE.format(ignite) : "")
+				+(frost > 0 ? p+" Frost: " +g+ Print.F_WHOLE.format(frost) : "")
+				+(elec > 0 ? p+" Elec: " +g+ Print.F_WHOLE.format(elec) : "")
 				);
 		
 	}

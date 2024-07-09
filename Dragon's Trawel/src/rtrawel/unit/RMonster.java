@@ -6,7 +6,8 @@ import java.util.List;
 import rtrawel.battle.Party;
 import rtrawel.items.Weapon;
 import rtrawel.items.WeaponFactory;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
+import trawel.core.Rand;
 
 public class RMonster extends RUnit {
 	
@@ -124,14 +125,14 @@ public class RMonster extends RUnit {
 		List<Action> rList = new ArrayList<Action>();
 		list.stream().filter(p -> !p.canCast(this)).forEach(rList::add);
 		list.removeAll(rList);
-		a = extra.randList(list);
+		a = Rand.randList(list);
 		warmUp = a.warmUp();
 		upComing = a.coolDown();
 		TargetGroup t;
 		switch (a.getTargetType()) {
 		case FOE:
 			if (a.getTargetGrouping().equals(Action.TargetGrouping.SINGLE)) {
-			savedTarget = new TargetGroup(extra.randList(curBattle.party));}else {
+			savedTarget = new TargetGroup(Rand.randList(curBattle.party));}else {
 				t =  new TargetGroup();
 				t.targets.addAll(curBattle.party);
 				savedTarget = t;
@@ -140,10 +141,10 @@ public class RMonster extends RUnit {
 		case FRIEND:
 		case HURT_FRIEND://TODO make smarter
 			if (a.getTargetGrouping().equals(Action.TargetGrouping.SINGLE)) {
-				savedTarget = new TargetGroup(extra.randList(curBattle.foes));}else{
+				savedTarget = new TargetGroup(Rand.randList(curBattle.foes));}else{
 					if (a.getTargetGrouping().equals(Action.TargetGrouping.GROUP)) {
 						t =  new TargetGroup();
-						t.targets.addAll(extra.randList(curBattle.foeGroups));
+						t.targets.addAll(Rand.randList(curBattle.foeGroups));
 						savedTarget = t;}else{
 							t =  new TargetGroup();
 							t.targets.addAll(curBattle.foes);
@@ -173,11 +174,11 @@ public class RMonster extends RUnit {
 	}
 	public void loot() {
 		if (Math.random() < MonsterFactory.getMonsterByName(name).getDropChance()) {
-			extra.println(this.getName() + " dropped a " +MonsterFactory.getMonsterByName(name).getDrop() + "!");
+			Print.println(this.getName() + " dropped a " +MonsterFactory.getMonsterByName(name).getDrop() + "!");
 			Party.party.addItem(MonsterFactory.getMonsterByName(name).getDrop(),1);
 		}
 		if (Math.random() < MonsterFactory.getMonsterByName(name).getRareDropChance()) {
-			extra.println(this.getName() + " dropped a " +MonsterFactory.getMonsterByName(name).getRareDrop() + "!");
+			Print.println(this.getName() + " dropped a " +MonsterFactory.getMonsterByName(name).getRareDrop() + "!");
 			Party.party.addItem(MonsterFactory.getMonsterByName(name).getRareDrop(),1);
 		}
 		

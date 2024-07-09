@@ -2,7 +2,7 @@ package trawel.personal.people.behaviors;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.helper.methods.extra;
+import trawel.core.Rand;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Behavior;
 import trawel.time.TimeEvent;
@@ -19,12 +19,12 @@ public class WanderEndless extends Behavior{
 			setTimeTo(24);//wait a bit longer before retrying
 		}else {
 			connect = c;
-			setTimeTo(c.getTime()+(extra.randFloat()*60));
+			setTimeTo(c.getTime()+(Rand.randFloat()*60));
 		}
 	}
 	public WanderEndless() {
 		connect = null;
-		setTimeTo(extra.randFloat()*5);//random awakeness after start to prevent grouping
+		setTimeTo(Rand.randFloat()*5);//random awakeness after start to prevent grouping
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class WanderEndless extends Behavior{
 	
 	public static Connection destination(Agent user) {
 		Town current = user.getLocation();
-		if (current.hasConnectFlow() && extra.chanceIn(1, 5)) {//1/5th chance to follow natural flow
+		if (current.hasConnectFlow() && Rand.chanceIn(1, 5)) {//1/5th chance to follow natural flow
 			return current.getConnectFlow();
 		}
 		List<Connection> connects = new ArrayList<Connection>();
@@ -57,7 +57,7 @@ public class WanderEndless extends Behavior{
 		for (Connection c: connects) {
 			total += c.getAIWanderAppeal(current)+.2;
 		}
-		total *= extra.randFloat();
+		total *= Rand.randFloat();
 		for (Connection c: connects) {
 			total -= c.getAIWanderAppeal(current)+.2;
 			if (total <= 0) {

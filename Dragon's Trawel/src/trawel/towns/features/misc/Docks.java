@@ -13,11 +13,13 @@ import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
+import trawel.core.Input;
 import trawel.core.Networking;
 import trawel.core.mainGame;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
@@ -107,9 +109,9 @@ public class Docks extends Feature {
 								continue;
 							}else {
 								Person me = old_attackers.remove(i);
-								extra.offPrintStack();
+								Print.offPrintStack();
 								Combat c = leader.fightWith(me);
-								extra.popPrintStack();
+								Print.popPrintStack();
 								leader = c.getNonSummonSurvivors().get(0).setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
 								//may the best drudger lead!
 								Person p = leader.getPerson();
@@ -143,7 +145,7 @@ public class Docks extends Feature {
 			}
 			for (int i = old_defenders.size()-1;i>=0;i--) {
 				int mylevel = old_defenders.get(i).getLevel();
-				if (mylevel >= tier+1 && extra.chanceIn(1,3)) {
+				if (mylevel >= tier+1 && Rand.chanceIn(1,3)) {
 					Person me = old_defenders.remove(i);
 					town.addOccupant(me.setOrMakeAgentGoal(AgentGoal.NONE));
 					continue;
@@ -170,7 +172,7 @@ public class Docks extends Feature {
 	public void go() {
 		List<Connection> connects = new ArrayList<Connection>();
 		town.getConnects().stream().filter(c -> c.getType().type == ConnectClass.SEA).forEach(connects::add);
-		extra.menuGo(new ScrollMenuGenerator(connects.size(),"n/a","n/a") {
+		Input.menuGo(new ScrollMenuGenerator(connects.size(),"n/a","n/a") {
 
 			@Override
 			public List<MenuItem> header() {
@@ -199,7 +201,7 @@ public class Docks extends Feature {
 
 							@Override
 							public boolean go() {
-								extra.println("The Docks are currently clear of invaders, so you gaze out over the town.");
+								Print.println("The Docks are currently clear of invaders, so you gaze out over the town.");
 								TownFlavorFactory.go(.1f,town);
 								return false;
 							}});
@@ -211,7 +213,7 @@ public class Docks extends Feature {
 							public String title() {
 								return TrawelColor.PRE_BATTLE
 										+"Wait and then Take Back Port ("
-										+extra.F_TWO_TRAILING.format(fightCooldownTimer+1)+" hours)";
+										+Print.F_TWO_TRAILING.format(fightCooldownTimer+1)+" hours)";
 							}
 
 							@Override
@@ -274,7 +276,7 @@ public class Docks extends Feature {
 
 						@Override
 						public boolean go() {
-							extra.menuGo(gen);
+							Input.menuGo(gen);
 							if (Player.player.getLocation() != town) {
 								return true;//if we moved
 							}
@@ -290,7 +292,7 @@ public class Docks extends Feature {
 
 							@Override
 							public boolean go() {
-								extra.println("The docks are Blockaded, and you cannot take a long route.");
+								Print.println("The docks are Blockaded, and you cannot take a long route.");
 								return false;
 							}});
 					}//annoying that this will make the first option not far flung, but meh
@@ -321,7 +323,7 @@ public class Docks extends Feature {
 						if (!town.dockWander(false)) {
 							//attempt a flavor event
 							if (!TownFlavorFactory.go(.2f,town)) {
-								extra.println("Nothing interesting happens.");
+								Print.println("Nothing interesting happens.");
 							}
 						}
 						return false;
@@ -416,19 +418,19 @@ public class Docks extends Feature {
 					public boolean go() {
 						// needs to be clickable even if can't go, for scroll reasons
 						if (t.getTier() > Player.player.getPerson().getLevel()) {
-							extra.println("Too high level!");
+							Print.println("Too high level!");
 							return false;
 						}
 						//can either take naive time or use a*
 						if (mainGame.displayTravelText) {
-							extra.println("You start the voyage to "+t.getName()+".");
+							Print.println("You start the voyage to "+t.getName()+".");
 						}
 						Player.addTime(timeList.get(i));
 						TrawelTime.globalPassTime();
 						Player.player.setLocation(t);
 						town.dockWander(true);
 						if (mainGame.displayTravelText) {
-							extra.println("You arrive in "+t.getName()+".");
+							Print.println("You arrive in "+t.getName()+".");
 						}
 						return true;
 					}});
@@ -469,7 +471,7 @@ public class Docks extends Feature {
 			p.setPerk(Perk.NPC_PROMOTED);
 			return p.getSelfOrAllies();
 		}
-		if (extra.chanceIn(1,3)) {
+		if (Rand.chanceIn(1,3)) {
 			return RaceFactory.makeDrudgerMage(tier).getSelfOrAllies();
 		}else {
 			return RaceFactory.makeDrudgerTitan(tier).getSelfOrAllies();
@@ -483,48 +485,48 @@ public class Docks extends Feature {
 	public boolean defend() {
 		if (fightCooldownTimer > 0) {
 			if (townOwned) {
-				extra.println("The port isn't going to be attacked soon.");
+				Print.println("The port isn't going to be attacked soon.");
 			}else {
-				extra.println("The port is too overrun right now to take back.");
+				Print.println("The port is too overrun right now to take back.");
 			}
 			return false;
 		}
 		if (Player.player.getPerson().getLevel() >= tier) {
 			boolean oldOwned = townOwned;
 			if (oldOwned) {
-				extra.println("You help defend the port against the drudger onslaught.");
+				Print.println("You help defend the port against the drudger onslaught.");
 			}else {
-				extra.println("You help defend try to take back the port from the drudger occupying army.");
+				Print.println("You help defend try to take back the port from the drudger occupying army.");
 			}
 			Combat c = battle(Player.player.getAllies(),null);
 			Player.addTime(3);//3 hour battle
 			if (townOwned) {
 				if (oldOwned == townOwned) {
-					extra.println(TrawelColor.RESULT_NO_CHANGE_GOOD+"The docks are safe.");
+					Print.println(TrawelColor.RESULT_NO_CHANGE_GOOD+"The docks are safe.");
 				}else {
-					extra.println(TrawelColor.RESULT_GOOD+"You took back the docks!");
+					Print.println(TrawelColor.RESULT_GOOD+"You took back the docks!");
 				}
 				if (c.playerWon() > 1) {//you must survive to get paid
 					Networking.unlockAchievement("docks_survive");
 					town.helpCommunity(1);
-					int reward = (int) ((8*getUnEffectiveLevel())+extra.randRange(0,4));
-					extra.println("They pay you with "+World.currentMoneyDisplay(reward)+".");
+					int reward = (int) ((8*getUnEffectiveLevel())+Rand.randRange(0,4));
+					Print.println("They pay you with "+World.currentMoneyDisplay(reward)+".");
 					Player.player.addGold(reward);
 				}
 			}else {
 				if (!oldOwned) {
-					extra.println(TrawelColor.RESULT_NO_CHANGE_BAD+"The docks remain under drudger control...");
+					Print.println(TrawelColor.RESULT_NO_CHANGE_BAD+"The docks remain under drudger control...");
 				}else {
 					if (leader != null) {
-						extra.println(TrawelColor.RESULT_BAD+leader.getPerson().getName() +"'s drudger army takes over the docks!");
+						Print.println(TrawelColor.RESULT_BAD+leader.getPerson().getName() +"'s drudger army takes over the docks!");
 					}else {
-						extra.println(TrawelColor.RESULT_BAD+"The docks are overrun by the drudger force.");
+						Print.println(TrawelColor.RESULT_BAD+"The docks are overrun by the drudger force.");
 					}
 				}
 			}
 			return false;
 		}else {
-			extra.println(TrawelColor.RESULT_ERROR+"They don't think you capable of helping.");
+			Print.println(TrawelColor.RESULT_ERROR+"They don't think you capable of helping.");
 			return false;
 		}
 	}
@@ -533,9 +535,9 @@ public class Docks extends Feature {
 		boolean playerin = true;
 		if (addForTown == null || !addForTown.contains(Player.player.getPerson())) {
 			playerin = false;
-			extra.offPrintStack();
+			Print.offPrintStack();
 		}
-		int addSize = extra.randRange(1,3);
+		int addSize = Rand.randRange(1,3);
 		/*int addTownSize = addSize;
 		int addSeaSize = addSize;*/
 		List<Person> allyList = new ArrayList<Person>();
@@ -593,7 +595,7 @@ public class Docks extends Feature {
 
 		if (townWon) {
 			c.getNonSummonSurvivors().stream().filter(p -> !p.isPlayer()).forEach(old_defenders::add);
-			fightCooldownTimer = extra.getRand().nextDouble(100,130);//over 4 days roughly
+			fightCooldownTimer = Rand.getRand().nextDouble(100,130);//over 4 days roughly
 			
 			Person highest = null;
 			for (Person p: old_defenders) {
@@ -615,7 +617,7 @@ public class Docks extends Feature {
 					.filter(p -> !p.getFlag(PersonFlag.IS_MOOK) && !p.getFlag(PersonFlag.IS_SUMMON))
 					.findAny().orElse(null);
 			if (wleader == null) {
-				fightCooldownTimer = extra.getRand().nextDouble(10,14);//12 hours roughly
+				fightCooldownTimer = Rand.getRand().nextDouble(10,14);//12 hours roughly
 				old_attackers.addAll(alive);
 				if(townOwned){//taken over
 					townOwned = false;
@@ -623,7 +625,7 @@ public class Docks extends Feature {
 					
 				}
 			}else {
-				fightCooldownTimer = extra.getRand().nextDouble(36,48);//1.5-2 days roughly
+				fightCooldownTimer = Rand.getRand().nextDouble(36,48);//1.5-2 days roughly
 				leader = wleader.setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
 				alive.remove(wleader);
 				old_attackers.addAll(alive);
@@ -639,7 +641,7 @@ public class Docks extends Feature {
 		assert Combat.hasNonNullBag(old_defenders);
 		assert Combat.hasNonNullBag(old_attackers);*/
 		if (playerin == false) {
-			extra.popPrintStack();
+			Print.popPrintStack();
 		}
 		return c;
 	}

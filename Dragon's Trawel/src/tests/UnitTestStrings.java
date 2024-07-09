@@ -4,6 +4,7 @@ import derg.strings.fluffer.LembdaFactory;
 import derg.strings.fluffer.StringFluffer;
 import derg.strings.random.SRInOrder;
 import derg.strings.random.SRPlainRandom;
+import trawel.core.Rand;
 import trawel.core.mainGame;
 import trawel.helper.methods.extra;
 import trawel.towns.data.Calender;
@@ -45,7 +46,7 @@ public class UnitTestStrings {
 		
 		System.out.println("-------");
 		for (int i = 0; i < 100;i++) {
-			System.out.print(extra.hrandomFloat()+", ");
+			System.out.print(Rand.hrandomFloat()+", ");
 		}
 		
 		System.out.println("-------");

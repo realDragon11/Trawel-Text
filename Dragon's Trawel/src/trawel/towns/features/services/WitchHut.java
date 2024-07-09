@@ -8,10 +8,12 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -84,7 +86,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	
 	@Override
 	public void go() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -113,7 +115,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
-						extra.menuGo(modernStoreFront());
+						Input.menuGo(modernStoreFront());
 						return false;
 					}});
 				list.add(new MenuSelect() {
@@ -138,15 +140,15 @@ public class WitchHut extends Store implements QuestBoardLocation{
 					@Override
 					public boolean go() {
 						if (Player.player.hasFlask()) {
-							extra.println("Bottling will replace your current potion. It also likely won't be very high quality! Bottle potion runoff?");
+							Print.println("Bottling will replace your current potion. It also likely won't be very high quality! Bottle potion runoff?");
 						}else {
-							extra.println("Potions made from brew waste will be of questionable content. Do it anyway?");
+							Print.println("Potions made from brew waste will be of questionable content. Do it anyway?");
 						}
-						if (extra.yesNo()) {
-							Player.player.setFlask(new Potion(extra.randList(randomQuestionablePotion),8));
-							extra.println("You scoop the strange mix of discarded fluid into a glass jar. At least there's a lot of it.");
+						if (Input.yesNo()) {
+							Player.player.setFlask(new Potion(Rand.randList(randomQuestionablePotion),8));
+							Print.println("You scoop the strange mix of discarded fluid into a glass jar. At least there's a lot of it.");
 						}else {
-							extra.println("You look away from the goup.");
+							Print.println("You look away from the goup.");
 						}
 						return false;
 					}});
@@ -160,22 +162,22 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 						@Override
 						public boolean go() {
-							extra.println("You can attempt to have the witches here top up your potion, but there's a chance that will ruin it. It will also cost "+town.getIsland().getWorld().moneyString(topUpPrice())+". Pay?");
-							if (extra.yesNo()) {
+							Print.println("You can attempt to have the witches here top up your potion, but there's a chance that will ruin it. It will also cost "+town.getIsland().getWorld().moneyString(topUpPrice())+". Pay?");
+							if (Input.yesNo()) {
 								if (Player.player.canBuyMoneyAmount(topUpPrice())) {
 									Player.player.buyMoneyAmount(topUpPrice());
 									Player.player.addFlaskUses((byte)3);
-									if (extra.chanceIn(1,3)) {
+									if (Rand.chanceIn(1,3)) {
 										Player.player.spoilPotion();
 									}else {
 										Player.player.muddyPotion();//don't spoil, but they can't tell
 									}
-									extra.println("The potion bubbles freshly.");
+									Print.println("The potion bubbles freshly.");
 								}else {
-									extra.println("You can't afford a refill!");
+									Print.println("You can't afford a refill!");
 								}
 							}else {
-								extra.println("You decide against it.");
+								Print.println("You decide against it.");
 							}
 							return false;
 						}});
@@ -190,7 +192,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	}
 
 	private void brew() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -215,7 +217,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 							DrawBane inter = Player.bag.playerOfferDrawBane("mix in");
 							if (inter != null && inter.getCanBrew()) {
 								reagents.add(inter);
-								Networking.sendStrong("PlayDelay|sound_potionmake"+extra.randRange(1,2)+"|1|");
+								Networking.sendStrong("PlayDelay|sound_potionmake"+Rand.randRange(1,2)+"|1|");
 							}else {
 								Player.bag.giveBackDrawBane(inter,"%s isn't brewable!");
 							}
@@ -246,9 +248,9 @@ public class WitchHut extends Store implements QuestBoardLocation{
 							//mess up the count of how many charges you have slightly
 							if (Player.player.hasFlask() && actualPotionMade) {
 								if (Player.player.getFlaskUses() < 3) {
-									Player.player.addFlaskUses((byte) extra.randRange(1,3));
+									Player.player.addFlaskUses((byte) Rand.randRange(1,3));
 								}else {
-									Player.player.addFlaskUses((byte) extra.randRange(-1,4));
+									Player.player.addFlaskUses((byte) Rand.randRange(-1,4));
 								}
 							}
 						}
@@ -263,11 +265,11 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	
 	public boolean finishBrew() {
 		if (reagents.size() == 0) {
-			extra.println(TrawelColor.RESULT_ERROR+"There's nothing in the pot!");
+			Print.println(TrawelColor.RESULT_ERROR+"There's nothing in the pot!");
 			return false;
 		}
 		if (reagents.size() < 3) {
-			extra.println(TrawelColor.RESULT_ERROR+"You need at least 3 reagents to finish your brew!");
+			Print.println(TrawelColor.RESULT_ERROR+"You need at least 3 reagents to finish your brew!");
 			return false;
 		}
 		int batWings = 0;
@@ -388,7 +390,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			Person fGolem = RaceFactory.makeFleshGolem(
 					(Player.player.getPerson().getLevel()+town.getTier())/2//near the player and town level
 					);
-			extra.println(TrawelColor.PRE_BATTLE+"The meat wraps around the heartwood and contorts into a humanoid shape... which then attacks you!");
+			Print.println(TrawelColor.PRE_BATTLE+"The meat wraps around the heartwood and contorts into a humanoid shape... which then attacks you!");
 			Combat c = Player.player.fightWith(fGolem);
 			if (c.playerWon() < 0) {//if player lost
 				//player gets a fleshy friend now :D
@@ -423,10 +425,10 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			}
 			if (food >= 2) {
 				transmuteMisc();
-				extra.println("The food morphs!");
+				Print.println("The food morphs!");
 				for (int left = food-1; left >= 0 ; left--) {
-					if (extra.chanceIn(3,4)) {//make a seeded plant
-						switch (extra.randRange(0,3)) {
+					if (Rand.chanceIn(3,4)) {//make a seeded plant
+						switch (Rand.randRange(0,3)) {
 						case 0:
 							//can only make pumpkin with 2 'value', otherwise makes an apple
 							if (left > 0) {
@@ -453,7 +455,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 							break;
 						}
 					}else {
-						if (extra.chanceIn(1,4)) {//make a bee with honey
+						if (Rand.chanceIn(1,4)) {//make a bee with honey
 							Player.bag.addNewDrawBanePlayer(DrawBane.HONEY);
 							Player.bag.addSeed(Seed.SEED_BEE);
 						}else {
@@ -467,7 +469,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		}
 		
 		//transmutation ended, roll botching
-		if (extra.chanceIn(botch, 10)) {
+		if (Rand.chanceIn(botch, 10)) {
 			Player.player.setFlask(new Potion(Effect.CURSE,1+filler));
 			actualPotion();
 			return true;
@@ -499,7 +501,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		}
 		//'stew chance', any potion with food as an ingredient that isn't above
 		//might turn into HEARTY even if it would be something else
-		if (food >= 1 && extra.chanceIn(food,20)) {
+		if (food >= 1 && Rand.chanceIn(food,20)) {
 			Player.player.setFlask(new Potion(Effect.HEARTY,(total+food+foodless_filler) * (Player.hasSkill(Skill.CHEF) ? 2 : 1)));
 			actualPotion();
 			return true;
@@ -541,7 +543,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		
 		//final chance for a normal stew
 		//if not all reagents are food, chance of failure, unless the ones that are food are the 'heavier' foods
-		if (food > 0 && extra.chanceIn(food,total)) {
+		if (food > 0 && Rand.chanceIn(food,total)) {
 			Player.player.setFlask(new Potion(Effect.HEARTY,(total+food+foodless_filler) * (Player.hasSkill(Skill.CHEF) ? 2 : 1)));
 			actualPotion();
 			return true;
@@ -567,19 +569,19 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		//will indicate it was an actual brew, but, probably doesn't matter as much
 		DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.BREW_ALIGN,.1f,1);
 		if (gain != null) {
-			extra.println("You find "+1+" " + gain.getName() + " pieces while brewing!");
+			Print.println("You find "+1+" " + gain.getName() + " pieces while brewing!");
 		}
-		extra.println("You finish brewing your potion, and put it in your flask... now to test it out!");
+		Print.println("You finish brewing your potion, and put it in your flask... now to test it out!");
 		actualPotionMade = true;
 	}
 	
 	public void transmute(DrawBane from, DrawBane into,int count) {
 		transmuteMisc();
-		extra.println("You manage to turn the "+from.getName()+" into " + (count > 1 ? count + " " : "") + into.getName()+"!");
+		Print.println("You manage to turn the "+from.getName()+" into " + (count > 1 ? count + " " : "") + into.getName()+"!");
 	}
 	public void transmute(String from, DrawBane into,int count) {
 		transmuteMisc();
-		extra.println("You manage to turn the "+from+" into " + (count > 1 ? count + " " : "") + into.getName()+"!");
+		Print.println("You manage to turn the "+from+" into " + (count > 1 ? count + " " : "") + into.getName()+"!");
 	}
 	
 	public void transmuteMisc() {
@@ -587,7 +589,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		//higher chance since transmutations are harder to activate
 		DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.TRANSMUTE_ALIGN,.3f,1);
 		if (gain != null) {
-			extra.println("You find "+1+" " + gain.getName() + " pieces while brewing!");
+			Print.println("You find "+1+" " + gain.getName() + " pieces while brewing!");
 		}
 	}
 	
@@ -617,7 +619,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			.forEach(a -> buyRandomPotion(a,price));
 			WitchHut.randomRefillsAtTown(town,tier);
 			if (canQuest) {generateSideQuest();}
-			timecounter += extra.randRange(20,40);
+			timecounter += Rand.randRange(20,40);
 			addAnItem();
 		}
 		return null;
@@ -629,7 +631,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	
 	private void buyRandomPotion(SuperPerson p,int price) {
 		p.buyMoneyAmount(price);
-		p.setFlask(new Potion(extra.randList(randomPotion),5));
+		p.setFlask(new Potion(Rand.randList(randomPotion),5));
 	}
 	
 	public static final Effect[] randomPotion = new Effect[] {
@@ -650,7 +652,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	
 	private void backroom() {
 		WitchHut hut = this;
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -671,7 +673,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	@Override
 	public void generateSideQuest() {
 		if (sideQuests.size() >= 3) {
-			sideQuests.remove(extra.randList(sideQuests));
+			sideQuests.remove(Rand.randList(sideQuests));
 		}
 		sideQuests.add(CollectSideQuest.generate(this, DrawBane.draw(DrawList.WITCH_STORE)));
 	}

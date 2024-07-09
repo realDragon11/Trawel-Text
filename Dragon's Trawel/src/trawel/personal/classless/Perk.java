@@ -4,8 +4,8 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import trawel.core.Print;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.classless.Skill.Type;
 
 public enum Perk implements IHasSkills{
@@ -121,7 +121,7 @@ public enum Perk implements IHasSkills{
 
 	@Override
 	public boolean goMenuItem() {
-		extra.println("n/a");
+		Print.println("n/a");
 		return false;
 	}
 	

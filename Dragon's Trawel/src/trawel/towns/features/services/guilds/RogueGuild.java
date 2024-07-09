@@ -9,11 +9,13 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
+import trawel.core.Input;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.factions.Faction;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.Gem;
@@ -46,7 +48,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 		tier = _tier;
 		tutorialText = "Rogue's Guild";
 		area_type = Area.MISC_SERVICE;
-		activityTimer = 24f+extra.randFloat()*24f;
+		activityTimer = 24f+Rand.randFloat()*24f;
 	}
 	
 	@Override
@@ -61,7 +63,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 	
 	@Override
 	public void go() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -71,7 +73,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 					@Override
 					public String title() {
 						FSub sub = Player.player.getPerson().facRep.getFacRep(Faction.ROGUE);
-						return "Current Rogue Reputation: " + (sub == null ? "Unknown" : ""+extra.format2(sub.forFac-sub.againstFac));
+						return "Current Rogue Reputation: " + (sub == null ? "Unknown" : ""+Print.format2(sub.forFac-sub.againstFac));
 					}
 				});
 				mList.add(new MenuSelect() {
@@ -96,7 +98,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
+						Input.menuGo(new MenuGenerator() {
 
 							@Override
 							public List<MenuItem> gen() {
@@ -126,14 +128,14 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 						while (true) {
 							int cost = 25*gemAmount;
 							float spenda = FBox.getSpendableFor(Faction.ROGUE);
-							extra.println("Request "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+"? cost: " +cost + "/"+extra.format2(spenda));
-							if (extra.yesNo()) {
+							Print.println("Request "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+"? cost: " +cost + "/"+Print.format2(spenda));
+							if (Input.yesNo()) {
 								if (cost <= spenda) {
 									Player.player.factionSpent.addFactionRep(Faction.ROGUE,cost,0);
 									Gem.SAPPHIRE.changeGem(gemAmount);
-									extra.println(TrawelColor.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+", new total: " + Gem.SAPPHIRE.getGem()+".");
+									Print.println(TrawelColor.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+", new total: " + Gem.SAPPHIRE.getGem()+".");
 								}else {
-									extra.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
+									Print.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
 									break;
 								}
 							}else {
@@ -155,15 +157,15 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 						public boolean go() {
 							while (true) {
 								int reward = 8;
-								extra.println("Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+"? You have " + Gem.SAPPHIRE.getGem());
-								if (extra.yesNo()) {
+								Print.println("Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+"? You have " + Gem.SAPPHIRE.getGem());
+								if (Input.yesNo()) {
 									if (Gem.SAPPHIRE.getGem() >=gemAmount) {
 										float gain = reward*gemAmount;
 										Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,gain,0);
 										Gem.SAPPHIRE.changeGem(-gemAmount);
-										extra.println(TrawelColor.RESULT_PASS+"You gained "+extra.F_TWO_TRAILING.format(gain) + " reputation.");
+										Print.println(TrawelColor.RESULT_PASS+"You gained "+Print.F_TWO_TRAILING.format(gain) + " reputation.");
 									}else {
-										extra.println(TrawelColor.RESULT_ERROR+"You do not have any sapphires.");
+										Print.println(TrawelColor.RESULT_ERROR+"You do not have any sapphires.");
 										break;
 									}
 								}else {
@@ -184,7 +186,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 		if (canQuest) {
 			activityTimer-=time;
 			if (activityTimer <= 0) {
-				activityTimer+=12f+(36f*extra.randFloat());
+				activityTimer+=12f+(36f*Rand.randFloat());
 				generateSideQuest();
 			}
 		}
@@ -192,7 +194,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 	}
 	
 	public void gemLaunder() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -202,7 +204,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 					@Override
 					public String title() {
 						FSub sub = Player.player.getPerson().facRep.getFacRep(Faction.ROGUE);
-						return "Current Reputation: " + (sub == null ? "Unknown" : ""+extra.format2(sub.forFac-sub.againstFac));
+						return "Current Reputation: " + (sub == null ? "Unknown" : ""+Print.format2(sub.forFac-sub.againstFac));
 					}
 				});
 				mList.add(new MenuLine() {
@@ -238,15 +240,15 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 					public boolean go() {
 						while (true) {
 						
-						extra.println("Buy a launder credit? cost: " +cost + "/"+Player.player.getGold());
-						if (extra.yesNo()) {
+						Print.println("Buy a launder credit? cost: " +cost + "/"+Player.player.getGold());
+						if (Input.yesNo()) {
 							if (cost <= Player.player.getGold()) {
 								Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
 								credits++;
 								Player.player.addGold(-cost);
-								extra.println(TrawelColor.RESULT_PASS+"You gain 1 credit.");
+								Print.println(TrawelColor.RESULT_PASS+"You gain 1 credit.");
 							}else {
-								extra.println(TrawelColor.RESULT_ERROR+"You cannnot afford a credit.");
+								Print.println(TrawelColor.RESULT_ERROR+"You cannnot afford a credit.");
 								break;
 							}
 						}else {
@@ -268,15 +270,15 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 						int cost = Math.round(IEffectiveLevel.unclean(tier)*6);
 						while (true) {
 							float spenda = FBox.getSpendableFor(Faction.ROGUE);
-							extra.println("Request a launder credit? cost: " +cost + " of "+extra.format2(spenda));
-							if (extra.yesNo()) {
+							Print.println("Request a launder credit? cost: " +cost + " of "+Print.format2(spenda));
+							if (Input.yesNo()) {
 								if (cost <= spenda) {
 									Player.player.factionSpent.addFactionRep(Faction.ROGUE,cost,0);
 									credits++;
-									extra.println(TrawelColor.RESULT_PASS+"You gain 1 credit.");
+									Print.println(TrawelColor.RESULT_PASS+"You gain 1 credit.");
 								}
 							}else {
-								extra.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
+								Print.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
 								break;
 							}
 						}
@@ -302,7 +304,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 						@Override
 						public boolean go() {
 							
-							extra.menuGo(new ScrollMenuGenerator(known.size(),"last <> gems","next <> gems") {
+							Input.menuGo(new ScrollMenuGenerator(known.size(),"last <> gems","next <> gems") {
 
 								@Override
 								public List<MenuItem> forSlot(int i) {
@@ -316,7 +318,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 											List<Gem> others = new ArrayList<Gem>();
 											others.addAll(known);
 											others.remove(known.get(i));
-											extra.menuGo(new ScrollMenuGenerator(others.size(),"last <> gems","next <> gems") {
+											Input.menuGo(new ScrollMenuGenerator(others.size(),"last <> gems","next <> gems") {
 
 												@Override
 												public List<MenuItem> forSlot(int i) {
@@ -398,16 +400,16 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 		@Override
 		public boolean go() {
 			if (credits == 0) {
-				extra.println(TrawelColor.RESULT_ERROR+"You have no credits.");
+				Print.println(TrawelColor.RESULT_ERROR+"You have no credits.");
 				return false;
 			}
 			if (from.getGem() >= fromInt) {
-				extra.println(TrawelColor.RESULT_PASS+"You trade "+fromInt+" " + from.plural + " for " + toInt + to.plural+".");
+				Print.println(TrawelColor.RESULT_PASS+"You trade "+fromInt+" " + from.plural + " for " + toInt + to.plural+".");
 				from.changeGem(-fromInt);
 				to.changeGem(toInt);
 				credits--;
 			}else {
-				extra.println(TrawelColor.RESULT_ERROR+"You need " + (fromInt-from.getGem()) + " more " + from.plural+"!");
+				Print.println(TrawelColor.RESULT_ERROR+"You need " + (fromInt-from.getGem()) + " more " + from.plural+"!");
 			}
 			return false;
 		}
@@ -432,18 +434,18 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 	@Override
 	public void generateSideQuest() {
 		if (sideQuests.size() >= 3) {
-			sideQuests.remove(extra.randList(sideQuests));
+			sideQuests.remove(Rand.randList(sideQuests));
 		}
-		switch (extra.randRange(1,2)) {
+		switch (Rand.randRange(1,2)) {
 		case 1:
-			if (extra.randFloat() > .8f) {//20% chance for a merchant quest instead
+			if (Rand.randFloat() > .8f) {//20% chance for a merchant quest instead
 				sideQuests.add(FetchSideQuest.generate(this,FetchType.MERCHANT));
 				break;
 			}
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.CRIME));
 			break;
 		case 2:
-			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .1f));//90% chance to be a murder quest
+			sideQuests.add(KillSideQuest.generate(this,Rand.randFloat() > .1f));//90% chance to be a murder quest
 			break;
 		}
 	}

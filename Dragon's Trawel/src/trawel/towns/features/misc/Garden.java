@@ -7,9 +7,10 @@ import com.github.yellowstonegames.core.WeightedTable;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
+import trawel.core.Input;
 import trawel.core.Networking.Area;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.item.Seed;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -177,7 +178,7 @@ public class Garden extends Feature {
 		}
 		
 		public Seed roll() {
-			return fills[roller.random(extra.getRand())];
+			return fills[roller.random(Rand.getRand())];
 		}
 	}
 
@@ -202,7 +203,7 @@ public class Garden extends Feature {
 			plants.add(new PlantSpot(tier));
 			plants.get(i).contains = defaultFill.roll();
 			//delay starting growth randomly
-			plants.get(i).timer = -(20+(50*extra.randFloat()));
+			plants.get(i).timer = -(20+(50*Rand.randFloat()));
 		}
 		background_area = "forest";
 		background_variant = 1;
@@ -216,7 +217,7 @@ public class Garden extends Feature {
 
 	@Override
 	public void go() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> list = new ArrayList<MenuItem>();
@@ -235,9 +236,9 @@ public class Garden extends Feature {
 			reTimer += time;
 			if (reTimer > 120) {
 				for (PlantSpot p: plants) {
-					if (p.contains == Seed.EMPTY && extra.chanceIn(1,3)) {
+					if (p.contains == Seed.EMPTY && Rand.chanceIn(1,3)) {
 						p.contains = filler.roll();
-						p.timer = -(50+(100*extra.randFloat()));
+						p.timer = -(50+(100*Rand.randFloat()));
 					}
 				}
 				reTimer = 0;

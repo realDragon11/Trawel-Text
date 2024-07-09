@@ -13,7 +13,7 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
-import trawel.helper.methods.extra;
+import trawel.core.Input;
 
 public class CoolantRod extends Systems {
 
@@ -69,7 +69,7 @@ public class CoolantRod extends Systems {
 	
 	@Override
 	public void examine() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {

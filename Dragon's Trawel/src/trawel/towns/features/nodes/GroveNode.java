@@ -12,7 +12,10 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.factions.Faction;
 import trawel.factions.HostileTask;
 import trawel.helper.constants.TrawelColor;
@@ -105,7 +108,7 @@ public class GroveNode implements NodeType{
 	
 	@Override
 	public int rollRegrow() {
-		return 1+groveRegrowRoller.random(extra.getRand());
+		return 1+groveRegrowRoller.random(Rand.getRand());
 	}
 	
 	@Override
@@ -114,13 +117,13 @@ public class GroveNode implements NodeType{
 		switch (guessDepth) {
 		case 0://start
 			//smaller list of things only the starting node can be
-			id = startRolls[extra.randRange(0,startRolls.length-1)];
+			id = startRolls[Rand.randRange(0,startRolls.length-1)];
 			break;
 		case 1: case 2://entry
-			id+=groveEntryRoller.random(extra.getRand());
+			id+=groveEntryRoller.random(Rand.getRand());
 			break;
 		default:
-			id+=groveBasicRoller.random(extra.getRand());
+			id+=groveBasicRoller.random(Rand.getRand());
 			break;
 		}
 		int ret = holder.newNode(NodeType.NodeTypeNum.GROVE.ordinal(),id,tier);
@@ -143,9 +146,9 @@ public class GroveNode implements NodeType{
 		}
 		int split;
 		if (size > 5) {
-			split = extra.randRange(3,5);
+			split = Rand.randRange(3,5);
 		}else {
-			split = extra.randRange(1,Math.min(size, 3));
+			split = Rand.randRange(1,Math.min(size, 3));
 		}
 		
 		int i = 0;
@@ -154,19 +157,19 @@ public class GroveNode implements NodeType{
 		int baseSize = sizeLeft/(split+1);
 		sizeLeft-=baseSize*split;
 		while (i < split) {
-			int sizeRemove = extra.zeroOut(extra.randRange(sizeLeft/2,sizeLeft)-1);
+			int sizeRemove = extra.zeroOut(Rand.randRange(sizeLeft/2,sizeLeft)-1);
 			sizeLeft-=sizeRemove;
 			int tempLevel = tier;
 			int n;
 			int sizeFor = baseSize+sizeRemove;
-			if (sizeFor < 4 && holder.getFloor(made) > 3 && extra.chanceIn(1,5)) {
+			if (sizeFor < 4 && holder.getFloor(made) > 3 && Rand.chanceIn(1,5)) {
 				//caves always level up
 				n = NodeType.NodeTypeNum.CAVE.singleton.generate(holder, made,sizeFor, tempLevel+1);
-				if (sizeFor >= 2 && extra.chanceIn(2,3)) {//cannot generate entrance if not enough space
+				if (sizeFor >= 2 && Rand.chanceIn(2,3)) {//cannot generate entrance if not enough space
 					holder.setEventNum(n, 1);//entrance
 				}
 			}else {
-				if (extra.chanceIn(1,10)) {
+				if (Rand.chanceIn(1,10)) {
 					tempLevel++;
 				}
 				n = generate(holder,made,sizeFor,tempLevel);
@@ -182,17 +185,17 @@ public class GroveNode implements NodeType{
 		switch (holder.getEventNum(madeNode)) {
 		case 1: 
 			Person pd = RaceFactory.getDueler(holder.getLevel(madeNode));
-			String warName = extra.capFirst(randomLists.randomWarrior());
+			String warName = Print.capFirst(randomLists.randomWarrior());
 			pd.setTitle(randomLists.randomTitleFormat(warName));
 			GenericNode.setSimpleDuelPerson(holder,madeNode, pd,warName,"Approach " +pd.getName() +".","Challenge");
 		break;
 		case 2: 
-			holder.setStorage(madeNode, extra.choose("river","pond","lake","stream","brook"));
+			holder.setStorage(madeNode, Rand.choose("river","pond","lake","stream","brook"));
 			;break;
 		case 3:
 			Person mugger = RaceFactory.makeMugger(holder.getLevel(madeNode));
 			String mugName = randomLists.extractTitleFormat(mugger.getTitle());
-			GenericNode.setBasicRagePerson(holder,madeNode,mugger,mugName,"The "+extra.capFirst(mugName) + " attacks you!");
+			GenericNode.setBasicRagePerson(holder,madeNode,mugger,mugName,"The "+Print.capFirst(mugName) + " attacks you!");
 		break;
 		case 4:
 			int blevel = holder.getLevel(madeNode)-2;
@@ -201,18 +204,18 @@ public class GroveNode implements NodeType{
 			}else {
 				Person body = RaceFactory.makeLootBody(blevel);
 				holder.setStorage(madeNode, new Object[]{
-						extra.choose("Rotting","Decaying","Long Dead","Festering")
+						Rand.choose("Rotting","Decaying","Long Dead","Festering")
 						+ " " +body.getBag().getRace().renderName(false) + " " +
-						extra.choose("Corpse","Body")
+						Rand.choose("Corpse","Body")
 						,
 						body
 				});
 			}
 			break;
 		case 5:
-			PlantSpot[] big_circle = new PlantSpot[extra.randRange(12,24)];
+			PlantSpot[] big_circle = new PlantSpot[Rand.randRange(12,24)];
 			for (int i = Math.min(big_circle.length/2,holder.getLevel(madeNode)+2); i >=0;i--) {
-				int place = extra.randRange(0,big_circle.length-1);
+				int place = Rand.randRange(0,big_circle.length-1);
 				PlantSpot check = big_circle[place];
 				while (check != null) {//fancy way of making them appear in 'stretches' slightly more often
 					place++;
@@ -224,7 +227,7 @@ public class GroveNode implements NodeType{
 			break;
 		case 6:
 			Person old = RaceFactory.makeOld(holder.getLevel(madeNode)+2);
-			if (extra.chanceIn(1,3)) {
+			if (Rand.chanceIn(1,3)) {
 				old.getBag().addDrawBaneSilently(DrawBane.TELESCOPE);
 			}
 			holder.setStorage(madeNode, old);
@@ -239,7 +242,7 @@ public class GroveNode implements NodeType{
 			int dlevel = holder.getLevel(madeNode);
 			List<Person> entslist = new ArrayList<Person>();
 			int testLevel = RaceFactory.addAdjustLevel(dlevel,3);
-			switch(extra.randRange(0,3)) {
+			switch(Rand.randRange(0,3)) {
 			case 3:
 				//many ents
 				if (dlevel > 3) {
@@ -271,7 +274,7 @@ public class GroveNode implements NodeType{
 			break;
 		 case 12://moss
 			holder.setStorage(madeNode, randomLists.randomPrintableColor());
-			holder.setStateNum(madeNode, extra.choose(0,1));//50% chance of having something under it
+			holder.setStateNum(madeNode, Rand.choose(0,1));//50% chance of having something under it
 			break;
 		case 13://rich and bodyguard
 			GenericNode.setBasicRichAndGuard(holder, madeNode);
@@ -282,7 +285,7 @@ public class GroveNode implements NodeType{
 		case 15:
 			List<Person> wolves = new ArrayList<Person>();
 			int wolflevel = holder.getLevel(madeNode);
-			for (int i = Math.min(wolflevel, extra.randRange(3,4));i > 0 ;i--) {
+			for (int i = Math.min(wolflevel, Rand.randRange(3,4));i > 0 ;i--) {
 				wolves.add(RaceFactory.makeWolf(extra.zeroOut(wolflevel-3)+1));
 			}
 			holder.setForceGo(madeNode,true);
@@ -302,12 +305,12 @@ public class GroveNode implements NodeType{
 	public boolean interact(NodeConnector holder,int node) {
 		switch (holder.getEventNum(node)) {
 		case 2: 
-			extra.println("You wash yourself in the "+holder.getStorageFirstClass(node, String.class)+".");
+			Print.println("You wash yourself in the "+holder.getStorageFirstClass(node, String.class)+".");
 			Player.player.getPerson().washAll();
 			Player.player.getPerson().bathEffects();
 			return false;
 		case 4:
-			extra.println("You find a "+holder.getStorageFirstClass(node,String.class)+"... With their equipment intact!");
+			Print.println("You find a "+holder.getStorageFirstClass(node,String.class)+"... With their equipment intact!");
 			Person p = holder.getStorageFirstPerson(node);
 			p.getBag().forceDownGradeIf(Player.player.getPerson().getLevel());
 			AIClass.playerLoot(p.getBag(),true);
@@ -315,9 +318,9 @@ public class GroveNode implements NodeType{
 			GenericNode.setPlantSpot(holder, node,Seed.SEED_FUNGUS);//make corpse fungus
 			return false;
 		case 5: //fairy circle
-			extra.println("You enter the fairy circle.");
+			Print.println("You enter the fairy circle.");
 			PlantSpot[] spots = (PlantSpot[])holder.getStorage(node);
-			extra.menuGo(new ScrollMenuGenerator(spots.length,"previous <> mushrooms", "next <> mushrooms") {
+			Input.menuGo(new ScrollMenuGenerator(spots.length,"previous <> mushrooms", "next <> mushrooms") {
 
 				@Override
 				public List<MenuItem> forSlot(int i) {
@@ -328,12 +331,12 @@ public class GroveNode implements NodeType{
 
 							@Override
 							public String title() {
-								return "Mushroom?"+extra.choose("?","??","???");
+								return "Mushroom?"+Rand.choose("?","??","???");
 							}
 
 							@Override
 							public boolean go() {
-								extra.println("As you reach for this mushroom, it vanishes.");
+								Print.println("As you reach for this mushroom, it vanishes.");
 								return false;
 							}});
 					}else {
@@ -341,12 +344,12 @@ public class GroveNode implements NodeType{
 
 							@Override
 							public String title() {
-								return "Mushroom?"+extra.choose("!","?!","??!");//this is so dumb and I love it
+								return "Mushroom?"+Rand.choose("!","?!","??!");//this is so dumb and I love it
 							}
 
 							@Override
 							public boolean go() {
-								extra.println("As you reach for this mushroom, a planter appears in the ground!");
+								Print.println("As you reach for this mushroom, a planter appears in the ground!");
 								p.go();
 								return false;
 							}});
@@ -368,7 +371,7 @@ public class GroveNode implements NodeType{
 			Person old = holder.getStorageFirstPerson(node);
 			int oldstate = holder.getStateNum(node);
 			if (oldstate == 0) {
-				extra.menuGo(new MenuGenerator() {
+				Input.menuGo(new MenuGenerator() {
 					
 					@Override
 					public List<MenuItem> gen() {
@@ -382,7 +385,7 @@ public class GroveNode implements NodeType{
 
 							@Override
 							public boolean go() {
-								extra.println("\"We are in " + holder.parent.getName()
+								Print.println("\"We are in " + holder.parent.getName()
 								+ ". It is a Grove on the island of "+holder.parent.getTown().getIsland().getName()
 										+". Beware, danger lurks under these trees. If you wish to survive, heed my advice:\"");
 								Oracle.tip("old");
@@ -397,7 +400,7 @@ public class GroveNode implements NodeType{
 
 							@Override
 							public boolean go() {
-								extra.println("Before you can move, they speak up. "
+								Print.println("Before you can move, they speak up. "
 								+TrawelColor.TIMID_RED+"\"Hm, yes. Maybe you would be a fitting end to my story... or perhaps merely another part of it. But be warned, there is no going back.\"");
 								if (old.reallyAttack()) {
 									holder.setForceGo(node,true);
@@ -411,7 +414,7 @@ public class GroveNode implements NodeType{
 					}
 				});
 			}else {//can combat forcego
-				extra.println(TrawelColor.TIMID_RED+old.getNameNoTitle()+" has had enough. One way or the other.");
+				Print.println(TrawelColor.TIMID_RED+old.getNameNoTitle()+" has had enough. One way or the other.");
 				Combat oldc = Player.player.fightWith(old);
 				if (oldc.playerWon() > 0) {
 					GenericNode.setSimpleDeadPerson(holder, node, old);//gets their own corpse
@@ -463,8 +466,8 @@ public class GroveNode implements NodeType{
 					PlantSpot pspot = spots[i];
 					if (pspot.timer > 40f) {
 						if (pspot.contains == Seed.EMPTY) {//if we have nothing
-							if (extra.chanceIn(1, 5)) {//add something
-								pspot.contains = extra.choose(Seed.SEED_FAE,Seed.SEED_TRUFFLE);
+							if (Rand.chanceIn(1, 5)) {//add something
+								pspot.contains = Rand.choose(Seed.SEED_FAE,Seed.SEED_TRUFFLE);
 								pspot.timer = 0;
 							}else {
 								//delay
@@ -513,25 +516,25 @@ public class GroveNode implements NodeType{
 	private boolean treeOfManyThings(NodeConnector holder,int node) {
 		int state = holder.getStateNum(node);
 		if (holder.getStorageFirstClass(node,Boolean.class)) {
-			extra.println("The tree looks... hollow?");
+			Print.println("The tree looks... hollow?");
 			holder.findBehind(node, "oddly hollow tree");
 			return false;
 		}
 		//TODO: many things! add a thing, and make it not happen if it was the last thing
 		switch (state) {
 		case 0://always starts in state 0
-			extra.println("You examine the fallen tree. It is very pretty... but something feels off.");
+			Print.println("You examine the fallen tree. It is very pretty... but something feels off.");
 			holder.findBehind(node, "fallen tree");
 			break;
 		case 1:
 			Person p = RaceFactory.makeGeneric(holder.getLevel(node));
 			p.getBag().graphicalDisplay(1, p);
-			extra.println("There's a person stuck under the fallen tree! Help them?");
-			if (extra.yesNo()) {
-				extra.println("You move the tree off of them.");
+			Print.println("There's a person stuck under the fallen tree! Help them?");
+			if (Input.yesNo()) {
+				Print.println("You move the tree off of them.");
 				holder.setStateNum(node,1);
-				if (extra.randFloat() > .9f) {
-					extra.println(TrawelColor.PRE_BATTLE+"Suddenly, they attack you!");
+				if (Rand.randFloat() > .9f) {
+					Print.println(TrawelColor.PRE_BATTLE+"Suddenly, they attack you!");
 					p.hTask = HostileTask.MUG;
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
@@ -540,27 +543,27 @@ public class GroveNode implements NodeType{
 						Player.placeAsOccupant(p);
 					}
 				}else {
-					if (extra.randFloat() < .3f) {
+					if (Rand.randFloat() < .3f) {
 						p.hTask = HostileTask.PEACE;
 						p.setPersonType(PersonType.COWARDLY);
-						extra.println("They scamper off... "+TrawelColor.PRE_BATTLE+"Attack them?");
-						if (extra.yesNo()) {
+						Print.println("They scamper off... "+TrawelColor.PRE_BATTLE+"Attack them?");
+						if (Input.yesNo()) {
 							Combat c = Player.player.fightWith(p);
 							if (c.playerWon() > 0) {
 							}else {
 								Player.placeAsOccupant(p);
 							}
 						}else {
-							extra.println("Well, that wasn't very rewarding...");
+							Print.println("Well, that wasn't very rewarding...");
 							Networking.clearSide(1);
 							holder.findBehind(node,"tree");
 						}
 					}else {
 						int gold = IEffectiveLevel.cleanRangeReward(holder.getLevel(node), 2f,.7f);
-						extra.println("They offer a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them. "+TrawelColor.PRE_BATTLE+"...But it looks like they might have more. Mug them?");
-						if (extra.yesNo()) {
+						Print.println("They offer a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them. "+TrawelColor.PRE_BATTLE+"...But it looks like they might have more. Mug them?");
+						if (Input.yesNo()) {
 							p.getBag().addGold(gold);
-							if (extra.randFloat() > .3f) {//70% chance for more money
+							if (Rand.randFloat() > .3f) {//70% chance for more money
 								p.getBag().addGold(IEffectiveLevel.cleanRangeReward(holder.getLevel(node),1.5f,.8f));
 							}
 							p.hTask = HostileTask.PEACE;
@@ -573,18 +576,18 @@ public class GroveNode implements NodeType{
 						}else {
 							Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 							Player.player.addGold(gold);
-							extra.println("They walk off, leaving you with your reward.");
+							Print.println("They walk off, leaving you with your reward.");
 						}
 					}
 				}
 			}else {
-				extra.println("You leave them alone to rot...");
+				Print.println("You leave them alone to rot...");
 			}
 			
 			break;
 		}
-		if (state != 0 && extra.chanceIn(1,3)) {
-			extra.println("What an odd tree.");
+		if (state != 0 && Rand.chanceIn(1,3)) {
+			Print.println("What an odd tree.");
 		}
 		holder.setStateNum(node, treeRandNot(state));
 		holder.setStorage(node,true);//needs to be 'refilled' by time passing
@@ -594,9 +597,9 @@ public class GroveNode implements NodeType{
 	
 	public int treeRandNot(int not) {
 		int cap = 1;
-		int potential = extra.randRange(0,cap);
+		int potential = Rand.randRange(0,cap);
 		if (potential == not) {
-			potential = (potential+extra.randRange(1,Math.round(cap/2f)))%cap;
+			potential = (potential+Rand.randRange(1,Math.round(cap/2f)))%cap;
 		}
 		return potential;
 	}
@@ -607,9 +610,9 @@ public class GroveNode implements NodeType{
 		List<Person > peeps = holder.getStorageFirstClass(node,List.class);
 		Person p = extra.getNonAddOrFirst(peeps);//the ent is an add if present
 		if (state >=0 && state < 3) {//3 is angry, immediately killed force updates it with a generic
-			extra.println("You come across a dryad tending to a tree.");
+			Print.println("You come across a dryad tending to a tree.");
 			p.getBag().graphicalDisplay(1, p);
-			extra.menuGo(new MenuGenerator() {
+			Input.menuGo(new MenuGenerator() {
 
 				@Override
 				public List<MenuItem> gen() {
@@ -625,22 +628,22 @@ public class GroveNode implements NodeType{
 						public boolean go() {
 							int state = holder.getStateNum(node);
 							if (state != 2) {
-								if (state == 1 || extra.chanceIn(2,3)) {
-									extra.println("\"Would like your own tree?\"");
-									if (extra.yesNo()) {
-										extra.println("The dryad says to find a spot where a lumberjack has chopped down a tree and plant one there.");
+								if (state == 1 || Rand.chanceIn(2,3)) {
+									Print.println("\"Would like your own tree?\"");
+									if (Input.yesNo()) {
+										Print.println("The dryad says to find a spot where a lumberjack has chopped down a tree and plant one there.");
 										Player.bag.addSeed(Seed.SEED_ENT);
 										holder.setStateNum(node,2);//can only get once, but can offer multiple times
 									}else {
 										holder.setStateNum(node,1);//set that they have it
 									}
 								}else {
-									extra.println("The dryad goes into great depth about their tree's history, then says it's a shame that they don't have anything to offer such an intelligent "+Player.bag.getRace().renderName(false)+".");
+									Print.println("The dryad goes into great depth about their tree's history, then says it's a shame that they don't have anything to offer such an intelligent "+Player.bag.getRace().renderName(false)+".");
 									holder.setStateNum(node,2);//can only check once
 								}
 								
 							}else {
-								extra.println("The dryad goes into great depth about their tree's history.");
+								Print.println("The dryad goes into great depth about their tree's history.");
 							}
 							return false;
 						}});
@@ -653,10 +656,10 @@ public class GroveNode implements NodeType{
 
 						@Override
 						public boolean go() {
-							extra.println("\"We are in " + holder.parent.getName() + ". I don't venture away from my tree. It is a dangerous place, and this tree needs protection.\"");
+							Print.println("\"We are in " + holder.parent.getName() + ". I don't venture away from my tree. It is a dangerous place, and this tree needs protection.\"");
 							if (holder.globalTimer >= 6d) {//can offer seeds if the node hasn't refreshed stuff lately
-								extra.println("\"Would you like a seed to help grow the forest?\"");
-								if (extra.yesNo()) {
+								Print.println("\"Would you like a seed to help grow the forest?\"");
+								if (Input.yesNo()) {
 									Player.bag.addSeed(Seed.randSeed());
 									holder.globalTimer-=6;
 									//minus 6 (the time needed) and then div by 2 to avoid a large timer making it happen instantly forever
@@ -686,7 +689,7 @@ public class GroveNode implements NodeType{
 										return true;
 									}
 								}else {
-									extra.println(TrawelColor.PRE_BATTLE+ "It looks like their tree has other friends!");
+									Print.println(TrawelColor.PRE_BATTLE+ "It looks like their tree has other friends!");
 									Combat c = Player.player.massFightWith(peeps);
 									if (c.playerWon() > 0) {
 										GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
@@ -718,7 +721,7 @@ public class GroveNode implements NodeType{
 			boolean hasdryad = !p.getFlag(PersonFlag.IS_MOOK);
 			
 			if (peeps.size() == 1) {
-				extra.println(TrawelColor.PRE_BATTLE+ (hasdryad ? p.getName() + " protects their tree!" : "The trees move to avenge their caretaker!"));
+				Print.println(TrawelColor.PRE_BATTLE+ (hasdryad ? p.getName() + " protects their tree!" : "The trees move to avenge their caretaker!"));
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() > 0) {
 					GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
@@ -727,7 +730,7 @@ public class GroveNode implements NodeType{
 					return true;//kick out
 				}
 			}else {
-				extra.println(TrawelColor.PRE_BATTLE+ (hasdryad ? p.getName() + " protects their tree, and their tree has friends!" : "The trees move to avenge their caretaker!"));
+				Print.println(TrawelColor.PRE_BATTLE+ (hasdryad ? p.getName() + " protects their tree, and their tree has friends!" : "The trees move to avenge their caretaker!"));
 				Combat c = Player.player.massFightWith(peeps);
 				if (c.playerWon() > 0) {
 					holder.setForceGo(node,false);//clean up our force go
@@ -749,8 +752,8 @@ public class GroveNode implements NodeType{
 		int state = holder.getStateNum(node);
 		int startstate = state;
 		if (state == 0) {
-			extra.println("You spot a glowing "+holder.getStorageFirstClass(node, String.class)+" mushroom on the forest floor.");
-			extra.menuGo(new MenuGenerator() {
+			Print.println("You spot a glowing "+holder.getStorageFirstClass(node, String.class)+" mushroom on the forest floor.");
+			Input.menuGo(new MenuGenerator() {
 
 				@Override
 				public List<MenuItem> gen() {
@@ -789,7 +792,7 @@ public class GroveNode implements NodeType{
 						@Override
 						public boolean go() {
 							holder.setStateNum(node,3);
-							extra.println("You crush the mushroom under your heel.");
+							Print.println("You crush the mushroom under your heel.");
 							return true;
 						}});
 					list.add(new MenuBack("Perhaps not."));
@@ -798,14 +801,14 @@ public class GroveNode implements NodeType{
 		}
 		state = holder.getStateNum(node);
 		if (state == 0) {//didn't interact
-			extra.println("You decide to leave it alone.");
+			Print.println("You decide to leave it alone.");
 			holder.findBehind(node, "nearby rock");
 			return false;
 		}
 		switch (state) {
 		case 1://eat
-			if (extra.chanceIn(1, 4)) {//25% chance of anger
-				if (extra.chanceIn(1,5)) {
+			if (Rand.chanceIn(1, 4)) {//25% chance of anger
+				if (Rand.chanceIn(1,5)) {
 					state = 22;//dryad takes offense
 				}else {
 					state = 32;//thief takes offense
@@ -813,8 +816,8 @@ public class GroveNode implements NodeType{
 			}
 			break;
 		case 2://sell
-			if (extra.chanceIn(3, 4)) {//75% chance of anger
-				if (extra.chanceIn(1,3)) {
+			if (Rand.chanceIn(3, 4)) {//75% chance of anger
+				if (Rand.chanceIn(1,3)) {
 					state = 22;//dryad takes offense
 				}else {
 					state = 32;//thief takes offense
@@ -822,7 +825,7 @@ public class GroveNode implements NodeType{
 			}
 			break;
 		case 3://crush
-			if (extra.chanceIn(3,4)) {
+			if (Rand.chanceIn(3,4)) {
 				state = 23;//dryad takes offense
 			}else {
 				state = 33;//thief takes offense
@@ -845,7 +848,7 @@ public class GroveNode implements NodeType{
 				p = RaceFactory.makeDryad(holder.getLevel(node));
 				String str = holder.getStorageFirstClass(node,String.class);
 				holder.setStorage(node, new Object[] {str,p});
-				extra.println(TrawelColor.PRE_BATTLE+randomLists.randomViolateForestQuote());
+				Print.println(TrawelColor.PRE_BATTLE+randomLists.randomViolateForestQuote());
 			}else {
 				p = holder.getStorageFirstPerson(node);
 			}
@@ -868,7 +871,7 @@ public class GroveNode implements NodeType{
 					p = RaceFactory.makeMugger(holder.getLevel(node));
 					String str = holder.getStorageFirstClass(node,String.class);
 					holder.setStorage(node, new Object[] {str,p});
-					extra.println( TrawelColor.PRE_BATTLE+"\"That looked expensive!\"");
+					Print.println( TrawelColor.PRE_BATTLE+"\"That looked expensive!\"");
 				}else {
 					p = holder.getStorageFirstPerson(node);
 				}
@@ -887,27 +890,27 @@ public class GroveNode implements NodeType{
 		switch (state%10) {//now just the starting digit
 		case 1://eat
 			if (state < 10) {//if not interrupted
-				extra.print("You eat the mushroom... ");
+				Print.print("You eat the mushroom... ");
 			}else {
-				extra.println("Resume eating the mushroom?");
-				if (!extra.yesNo()) {
+				Print.println("Resume eating the mushroom?");
+				if (!Input.yesNo()) {
 					return false;
 				}
-				extra.print("You return to your meal, and ");
+				Print.print("You return to your meal, and ");
 			}
 			//all paths replace with new plant spot
-			if (extra.chanceIn(1,3)) {
-				extra.println("it tastes delicious!");
+			if (Rand.chanceIn(1,3)) {
+				Print.println("it tastes delicious!");
 				plantstart = Seed.SEED_TRUFFLE;
 			}else {
-				if (extra.chanceIn(1,3)) {
-					extra.println("you start to feel lightheaded.... you pass out!");
-					extra.println("When you wake up, you notice someone went through your bags!");
-					extra.println(Player.loseGold(IEffectiveLevel.cleanRangeReward(holder.getLevel(node), 3f, .2f),true)
+				if (Rand.chanceIn(1,3)) {
+					Print.println("you start to feel lightheaded.... you pass out!");
+					Print.println("When you wake up, you notice someone went through your bags!");
+					Print.println(Player.loseGold(IEffectiveLevel.cleanRangeReward(holder.getLevel(node), 3f, .2f),true)
 						);
 					plantstart = Seed.EMPTY;
 				}else {
-					extra.println("getting it down is very difficult... but you manage.");
+					Print.println("getting it down is very difficult... but you manage.");
 					int xpadd = Math.min(Player.player.getPerson().getLevel(),holder.getLevel(node));
 					Player.player.getPerson().addXp(xpadd);
 					plantstart = Seed.EMPTY;//add with nothing
@@ -922,7 +925,7 @@ public class GroveNode implements NodeType{
 				worth = 2;
 			}
 			worth = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),worth,.2f);
-			extra.println("You sell the mushroom for " +World.currentMoneyDisplay(worth) + ".");
+			Print.println("You sell the mushroom for " +World.currentMoneyDisplay(worth) + ".");
 			Player.player.addGold(worth);
 			plantstart = Seed.EMPTY;
 			break;
@@ -947,25 +950,25 @@ public class GroveNode implements NodeType{
 		int state = holder.getStateNum(node);
 		//int startstate = state;
 		if (state == 0) {//under
-			extra.println("You see something shining under the moss! Get a closer look?");
-			if (!extra.yesNo()) {
-				extra.println("You leave it alone.");
+			Print.println("You see something shining under the moss! Get a closer look?");
+			if (!Input.yesNo()) {
+				Print.println("You leave it alone.");
 				return false;
 			}
 			//shiny stuff time
 			DrawBane db = holder.attemptCollectAll(node,.7f, 3);
 			if (db != null) {
-				extra.println("Wow, there were a ton of "+ db.getName() +" pieces under the moss!");
+				Print.println("Wow, there were a ton of "+ db.getName() +" pieces under the moss!");
 				holder.setStateNum(node,1);
 				state = 1;
 			}else {
 				int worth = 1;
-				boolean will_attack = extra.chanceIn(1,3);
+				boolean will_attack = Rand.chanceIn(1,3);
 				if (will_attack) {
 					worth*=2;
 				}
 				worth = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),worth,.3f);;
-				extra.println("You find " +World.currentMoneyDisplay(worth) + " under the moss!");
+				Print.println("You find " +World.currentMoneyDisplay(worth) + " under the moss!");
 				Player.player.addGold(worth);
 				if (will_attack) {
 					GenericNode.setBasicRagePerson(holder, node,
@@ -979,7 +982,7 @@ public class GroveNode implements NodeType{
 			}
 		}
 		if (state == 1 || state == 2) {
-			extra.println("There is some moss here. It looks poisonous.");
+			Print.println("There is some moss here. It looks poisonous.");
 			holder.setStateNum(node,2);
 			return false;//TODO maybe make this have more behavior again
 			
@@ -990,27 +993,27 @@ public class GroveNode implements NodeType{
 	private boolean weapStone(NodeConnector holder,int node) {
 		if (holder.getStateNum(node) == 0) {
 			Weapon w = holder.getStorageFirstClass(node, Weapon.class);
-			extra.println("There is a " + w.getBaseName() + " embeded in the stone here. Try to take it?");
-			if (extra.yesNo()) {
+			Print.println("There is a " + w.getBaseName() + " embeded in the stone here. Try to take it?");
+			if (Input.yesNo()) {
 				int lvl = Player.player.getPerson().getLevel();
 				int w_level = w.getLevel();
 				if (lvl < w_level-1) {
-					extra.println("Try as you might, you can't pry lose the " + w.getBaseName());
+					Print.println("Try as you might, you can't pry lose the " + w.getBaseName());
 					return false;
 				}
 				if (lvl > w_level + 1) {
-					extra.println("As you pull on it, the stone crumbles to pieces!");
+					Print.println("As you pull on it, the stone crumbles to pieces!");
 				}else {
-					extra.println("As you pull on it, the "+w.getBaseName()+" slowly slips free, and the rock crumbles!");
+					Print.println("As you pull on it, the "+w.getBaseName()+" slowly slips free, and the rock crumbles!");
 				}
 				holder.setStateNum(node,1);
 				AIClass.findItem(w,Player.player.getPerson());
 				GenericNode.setMiscText(holder, node,"Rock Fragments", "Look at rock fragments.", "Crumbled rock lies on the forest floor.", "rock fragments");
 			}else {
-				extra.println("You leave it alone.");
+				Print.println("You leave it alone.");
 			}
 		}else {
-			extra.println("Crumbled rock lies on the forest floor.");
+			Print.println("Crumbled rock lies on the forest floor.");
 			holder.findBehind(node,"rock fragments");
 		}
 		return false;
@@ -1020,7 +1023,7 @@ public class GroveNode implements NodeType{
 		Person p = holder.getStorageFirstPerson(node);
 		p.getBag().graphicalDisplay(1,p);
 		int cost = (int) (IEffectiveLevel.unclean(holder.getLevel(node))*4);
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -1042,18 +1045,18 @@ public class GroveNode implements NodeType{
 					@Override
 					public boolean go() {
 						if (cost > Player.player.getGold()) {
-							extra.println("You can't afford that!");
+							Print.println("You can't afford that!");
 							return false;
 						}
-						extra.println("Really pay?");
-						if (extra.yesNo()) {
+						Print.println("Really pay?");
+						if (Input.yesNo()) {
 							Player.player.addGold(-cost);
 							Player.player.getPerson().removeEffectAll(Effect.CURSE);
 							Player.player.getPerson().cureEffects();
-							extra.println("You feel better.");
+							Print.println("You feel better.");
 							return false;
 						}
-						extra.println("You decide to not.");
+						Print.println("You decide to not.");
 						return false;
 					}});
 				list.add(new MenuSelect() {
@@ -1078,7 +1081,7 @@ public class GroveNode implements NodeType{
 	}
 	
 	private boolean packOfWolves(NodeConnector holder,int node) {
-		extra.println(TrawelColor.PRE_BATTLE+"The pack descends upon you!");
+		Print.println(TrawelColor.PRE_BATTLE+"The pack descends upon you!");
 		List<Person> list = holder.getStorageFirstClass(node,List.class);
 		Combat c = Player.player.massFightWith(list);
 		if (c.playerWon() > 0) {
@@ -1092,10 +1095,10 @@ public class GroveNode implements NodeType{
 
 	}
 	private boolean beeHive(NodeConnector holder,int node) {
-		extra.print("You destroy the natural hive... ");
+		Print.print("You destroy the natural hive... ");
 		Player.player.getPerson().addEffect(Effect.BEES);//BEEEEEEEEEEEEEEEEEEEEEES
 		Networking.unlockAchievement("bees_hive");
-		extra.println("The BEEEEEES!!!! They're angry!");
+		Print.println("The BEEEEEES!!!! They're angry!");
 		GenericNode.setPlantSpot(holder, node,Seed.SEED_BEE);
 		
 		Player.bag.addNewDrawBanePlayer(DrawBane.HONEY);

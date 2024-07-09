@@ -6,7 +6,10 @@ import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
+import trawel.core.Input;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
@@ -24,7 +27,7 @@ public class Doctor extends Feature {
 
 	private double timecounter;
 	public Doctor(String name,Town t) {
-		timecounter = extra.randRange(5,10);
+		timecounter = Rand.randRange(5,10);
 		this.name = name;
 		town = t;
 		tier = t.getTier();
@@ -42,7 +45,7 @@ public class Doctor extends Feature {
 	
 	@Override
 	public void go() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -73,11 +76,11 @@ public class Doctor extends Feature {
 					@Override
 					public boolean go() {
 						if (Player.player.getGold() < cost) {
-							extra.println("Not enough "+World.currentMoneyString()+"!");
+							Print.println("Not enough "+World.currentMoneyString()+"!");
 							return false;
 						}
-						extra.println("Pay for a check up?");
-						if (extra.yesNo()) {
+						Print.println("Pay for a check up?");
+						if (Input.yesNo()) {
 							Player.player.addGold(-cost);
 							Player.player.getPerson().cureEffects();
 						}
@@ -96,7 +99,7 @@ public class Doctor extends Feature {
 			//must have been afflicted by at least one effect since last doctor visit/creation
 			town.getPersonableOccupants().filter(a -> a.getPerson().effectsSize() > 0 && a.canBuyMoneyAmount(price)).limit(3)
 			.forEach(a -> a.getPerson().clearEffects());//uses clear instead of cure because NPCs don't go to blacksmiths and it's better to reduce the size of effect maps on npcs
-			timecounter += extra.randRange(20,40);
+			timecounter += Rand.randRange(20,40);
 		}
 		return null;
 	}

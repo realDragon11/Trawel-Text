@@ -11,8 +11,11 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
@@ -56,7 +59,7 @@ public class TravelingFeature extends Store{
 		super(town.getTier(),TravelingFeature.class);
 		this.town = town;
 		trueTier = town.getTier();
-		timeLeft = extra.randFloat()*24f;
+		timeLeft = Rand.randFloat()*24f;
 	}
 	
 	@Override
@@ -90,12 +93,12 @@ public class TravelingFeature extends Store{
 	public void regenNow() {
 		newFeature();
 		regen = false;
-		timeLeft = 22f+extra.randFloat()*4f;
+		timeLeft = 22f+Rand.randFloat()*4f;
 	}
 	
 	public void regenSetup() {
 		contents = null;
-		timeLeft = 12f+extra.randFloat()*48f;
+		timeLeft = 12f+Rand.randFloat()*48f;
 		regen = true;
 	}
 	
@@ -103,10 +106,10 @@ public class TravelingFeature extends Store{
 		useCount = 0;
 		//switch statement with features that need to be added
 		//and also non-features
-		tier = extra.zeroOut(trueTier+extra.randRange(1,5)-4)+1;
+		tier = extra.zeroOut(trueTier+Rand.randRange(1,5)-4)+1;
 		fighters.clear();//don't add to world yet, could overflow
 		items.clear();//probably should make a better way later
-		switch(extra.randRange(0,8)) {
+		switch(Rand.randRange(0,8)) {
 		default:
 			contents = null;
 			name = "n/a";
@@ -122,10 +125,10 @@ public class TravelingFeature extends Store{
 			area_type = Area.ARENA;
 			tier = Math.max(2,tier);
 			fighters.add(RaceFactory.getDueler(tier+1));
-			for (int i = extra.randRange(2,3);i>=0;i--) {
+			for (int i = Rand.randRange(2,3);i>=0;i--) {
 				fighters.add(RaceFactory.getDueler(tier));
 			}
-			for (int i = extra.randRange(2,3);i>=0;i--) {
+			for (int i = Rand.randRange(2,3);i>=0;i--) {
 				fighters.add(RaceFactory.getDueler(tier-1));
 			}
 			break;
@@ -137,7 +140,7 @@ public class TravelingFeature extends Store{
 			break;
 		case 4:
 			contents = TravelType.CELEBRATION;
-			name = extra.choose("Celebration","Festival","Community Event");
+			name = Rand.choose("Celebration","Festival","Community Event");
 			break;
 		}
 	}
@@ -151,7 +154,7 @@ public class TravelingFeature extends Store{
 			//all menus must return every time
 			switch (contents) {
 			case CELEBRATION:
-				extra.menuGo(new MenuGenerator() {
+				Input.menuGo(new MenuGenerator() {
 
 					@Override
 					public List<MenuItem> gen() {
@@ -164,14 +167,14 @@ public class TravelingFeature extends Store{
 
 							@Override
 							public boolean go() {
-								Player.addTime(.5f+extra.randFloat()*1f);
+								Player.addTime(.5f+Rand.randFloat()*1f);
 								TrawelTime.globalPassTime();
 								useCount++;
-								if (extra.randRange(1, useCount) == 1) {
-									extra.println(TrawelColor.RESULT_PASS+"You find some beer laying around.");
+								if (Rand.randRange(1, useCount) == 1) {
+									Print.println(TrawelColor.RESULT_PASS+"You find some beer laying around.");
 									Player.player.beer++;
 								}else{
-									extra.println(TrawelColor.RESULT_FAIL+"Your efforts were in vain, you could not find any beer.");
+									Print.println(TrawelColor.RESULT_FAIL+"Your efforts were in vain, you could not find any beer.");
 								}
 								return true;
 							}});
@@ -204,7 +207,7 @@ public class TravelingFeature extends Store{
 					}});
 				break;
 			case FIGHT:
-				extra.menuGo(new ScrollMenuGenerator(fighters.size(),"last <>","next <>") {
+				Input.menuGo(new ScrollMenuGenerator(fighters.size(),"last <>","next <>") {
 
 					@Override
 					public List<MenuItem> forSlot(int i) {
@@ -254,7 +257,7 @@ public class TravelingFeature extends Store{
 					}});
 				break;
 			case ORACLE:
-				extra.menuGo(new MenuGenerator() {
+				Input.menuGo(new MenuGenerator() {
 
 					@Override
 					public List<MenuItem> gen() {
@@ -268,22 +271,22 @@ public class TravelingFeature extends Store{
 
 							@Override
 							public boolean go() {
-								Player.addTime(1+extra.randFloat());
+								Player.addTime(1+Rand.randFloat());
 								TrawelTime.globalPassTime();
 								if (useCount > 2) {
-									if (extra.chanceIn(useCount,3+useCount)){
+									if (Rand.chanceIn(useCount,3+useCount)){
 										if (useCount > 5) {
 											regenSetup();
-											extra.println(TrawelColor.RESULT_FAIL+"The oracle packs up and heads off with extreme urgency.");
+											Print.println(TrawelColor.RESULT_FAIL+"The oracle packs up and heads off with extreme urgency.");
 										}else {
-											extra.println("The oracle watches you in silence.");
+											Print.println("The oracle watches you in silence.");
 										}
 										return true;
 									}
 								}
 								timeLeft+=1;//extend how long they stay, since they will be removed above by chance
 								Networking.unlockAchievement("oracle1");
-								extra.println("\""+Oracle.tipRandomOracle(town.getName())+"\"");
+								Print.println("\""+Oracle.tipRandomOracle(town.getName())+"\"");
 								useCount++;
 								return true;
 							}});
@@ -298,7 +301,7 @@ public class TravelingFeature extends Store{
 					}});
 				break;
 			case STALL:
-				extra.menuGo(modernStoreFront());
+				Input.menuGo(modernStoreFront());
 				exiting = true;
 				break;
 			}

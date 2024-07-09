@@ -14,11 +14,13 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import trawel.core.Input;
 import trawel.core.Networking;
 import trawel.core.mainGame;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -59,15 +61,15 @@ public class Oracle extends Feature{ //extends feature later
 	}
 
 	public static void tip(String mask) {
-		extra.println("\""+ extra.randList(tips.getOrDefault(mask, emptyList)) + "\"");
+		Print.println("\""+ Rand.randList(tips.getOrDefault(mask, emptyList)) + "\"");
 	}
 	
 	public static String tipString(String mask) {
-		return extra.randList(tips.get(mask));
+		return Rand.randList(tips.get(mask));
 	}
 	
 	public static String tipStringExt(String mask,String aAn, String self, String selves, String selvian, String town, List<String> otherList) {
-		String tip = extra.randList(tips.get(mask))
+		String tip = Rand.randList(tips.get(mask))
 				.replaceAll(Pattern.quote("<a>"), aAn)
 				.replaceAll(Pattern.quote("<self>"), self)
 				.replaceAll(Pattern.quote("<selves>"),selves)
@@ -75,7 +77,7 @@ public class Oracle extends Feature{ //extends feature later
 				.replaceAll(Pattern.quote("<town>"), town)
 				;
 		while (tip.contains("<other>")) {
-			tip = tip.replaceFirst(Pattern.quote("<other>"),extra.randList(otherList));
+			tip = tip.replaceFirst(Pattern.quote("<other>"),Rand.randList(otherList));
 		}
 		return tip;
 	}
@@ -181,7 +183,7 @@ public class Oracle extends Feature{ //extends feature later
 	}
 	
 	public void utterance0() {
-		extra.println("\""+tipRandomOracle(town.getName())+"\"");
+		Print.println("\""+tipRandomOracle(town.getName())+"\"");
 		visits++;
 		Networking.unlockAchievement("oracle1");
 		//has different titles if you just listen in
@@ -204,10 +206,10 @@ public class Oracle extends Feature{ //extends feature later
 
 	public void utterance() {
 		if (Player.bag.getAether() >= cheapUtterPrice()) {
-			extra.println("Pay "+ cheapUtterPrice() +" aether for an utterance?");
-			if (extra.yesNo()) {
+			Print.println("Pay "+ cheapUtterPrice() +" aether for an utterance?");
+			if (Input.yesNo()) {
 				Player.bag.addAether(-cheapUtterPrice());
-				extra.println("\""+tipRandomOracle(town.getName())+"\"");
+				Print.println("\""+tipRandomOracle(town.getName())+"\"");
 				visits++;
 				Networking.unlockAchievement("oracle1");
 				if (visits == 5) {
@@ -221,14 +223,14 @@ public class Oracle extends Feature{ //extends feature later
 				}
 			}
 		}else {
-			extra.println(TrawelColor.RESULT_ERROR+"You can't afford that!");
+			Print.println(TrawelColor.RESULT_ERROR+"You can't afford that!");
 		}
 	}
 
 	public void utterance2() {
 		if (Player.player.getGold() >= utterPrice()) {
-			extra.println("Pay "+ (utterPrice()) +" "+World.currentMoneyString()+" for a premium utterance?");
-			if (extra.yesNo()) {
+			Print.println("Pay "+ (utterPrice()) +" "+World.currentMoneyString()+" for a premium utterance?");
+			if (Input.yesNo()) {
 				Player.player.addGold(-utterPrice());
 				tip("utter");
 				int oldVisits = visits;
@@ -246,7 +248,7 @@ public class Oracle extends Feature{ //extends feature later
 				}
 			}
 		}else {
-			extra.println(TrawelColor.RESULT_ERROR+"You can't afford that!");
+			Print.println(TrawelColor.RESULT_ERROR+"You can't afford that!");
 		}
 	}
 
@@ -268,16 +270,16 @@ public class Oracle extends Feature{ //extends feature later
 	
 	private void goDelphi() {
 		while (true) {
-			extra.println("1 "+TrawelColor.SERVICE_AETHER+"buy an utterance ("+cheapUtterPrice()+" aether)");
-			extra.println("2 "+TrawelColor.SERVICE_CURRENCY+"buy a premium utterance ("+(utterPrice())+" "+World.currentMoneyString()+")");
-			extra.println("3 "+TrawelColor.SERVICE_FREE+"sit around and wait for them to talk to you");
-			extra.println("9 leave");
-			switch (extra.inInt(4,true,true)) {
+			Print.println("1 "+TrawelColor.SERVICE_AETHER+"buy an utterance ("+cheapUtterPrice()+" aether)");
+			Print.println("2 "+TrawelColor.SERVICE_CURRENCY+"buy a premium utterance ("+(utterPrice())+" "+World.currentMoneyString()+")");
+			Print.println("3 "+TrawelColor.SERVICE_FREE+"sit around and wait for them to talk to you");
+			Print.println("9 leave");
+			switch (Input.inInt(4,true,true)) {
 				case 1: utterance();break;
 				case 2: utterance2();break;
 				case 3: 
-					extra.println("After enough waiting, the oracles start rambling.");
-					Player.addTime(extra.randFloat()*5);
+					Print.println("After enough waiting, the oracles start rambling.");
+					Player.addTime(Rand.randFloat()*5);
 					TrawelTime.globalPassTime();
 					utterance0();
 					break;

@@ -10,9 +10,11 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.battle.Combat;
+import trawel.core.Input;
 import trawel.core.Networking;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -55,9 +57,9 @@ public class QuestReactionFactory {
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				Person p = RaceFactory.makePeace(bumperLocation.getTier());
-				extra.println("A traveler greets you and notices your quest ("+q.name() +") and asks if you want directions.");
+				Print.println("A traveler greets you and notices your quest ("+q.name() +") and asks if you want directions.");
 				p.getBag().graphicalDisplay(1, p);
-				extra.menuGo(new MenuGenerator() {
+				Input.menuGo(new MenuGenerator() {
 
 					@Override
 					public List<MenuItem> gen() {
@@ -75,7 +77,7 @@ public class QuestReactionFactory {
 								if (t != null) {
 									WorldGen.pathToTown(t);
 								}else {
-									extra.println("They cannot seem to say the instructions.");
+									Print.println("They cannot seem to say the instructions.");
 								}
 								
 								return false;
@@ -93,7 +95,7 @@ public class QuestReactionFactory {
 								if (c.playerWon() >= 0) {
 									
 								}else {
-									extra.println(p.getName() +" wanders off, regreting their helpfulness.");
+									Print.println(p.getName() +" wanders off, regreting their helpfulness.");
 									bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
 								}
 								
@@ -110,13 +112,13 @@ public class QuestReactionFactory {
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				Person p = RaceFactory.getDueler(bumperLocation.getTier());
-				extra.println(TrawelColor.PRE_BATTLE +p.getName() + " appears, claiming that they were hired to defend " + q.targetName +"!");
+				Print.println(TrawelColor.PRE_BATTLE +p.getName() + " appears, claiming that they were hired to defend " + q.targetName +"!");
 				
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() >= 0) {
 					
 				}else {
-					extra.println(p.getName() +" wanders off, job well done.");
+					Print.println(p.getName() +" wanders off, job well done.");
 					bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
 				}
 			}}) );
@@ -125,13 +127,13 @@ public class QuestReactionFactory {
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				Person p = RaceFactory.makeLawman(bumperLocation.getTier());
-				extra.println(TrawelColor.PRE_BATTLE +p.getName() + " attacks you for traveling to murder " + q.targetName +"!");
+				Print.println(TrawelColor.PRE_BATTLE +p.getName() + " attacks you for traveling to murder " + q.targetName +"!");
 				
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() >= 0) {
 					
 				}else {
-					extra.println(p.getName() +" wanders off, job well done.");
+					Print.println(p.getName() +" wanders off, job well done.");
 					bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
 				}
 			}}) );
@@ -145,10 +147,10 @@ public class QuestReactionFactory {
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				Person p = RaceFactory.makeMugger(bumperLocation.getTier());
-				extra.println("A figure approaches you and claims that they'll take the reward for "+q.name+", which they overheard!");
+				Print.println("A figure approaches you and claims that they'll take the reward for "+q.name+", which they overheard!");
 				p.getBag().graphicalDisplay(1,p);
 				int payOffCost = Math.round(p.getUnEffectiveLevel()*3);
-				extra.menuGo(new MenuGenerator() {
+				Input.menuGo(new MenuGenerator() {
 
 					@Override
 					public List<MenuItem> gen() {
@@ -165,7 +167,7 @@ public class QuestReactionFactory {
 								Combat c = Player.player.fightWith(p);
 								if (c.playerWon() > 0) {
 								}else {
-									extra.println("They run off laughing about the job.");
+									Print.println("They run off laughing about the job.");
 									bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
 								}
 								return true;
@@ -182,17 +184,17 @@ public class QuestReactionFactory {
 								Person playp = Player.player.getPerson();
 								//counts as an out of battle roll so burnout applies and to avoid other triggers
 								if (playp.contestedRoll(playp.getDexterity(),p.getDexterity()) >= 0) {
-									extra.println("You run away!");
+									Print.println("You run away!");
 									return true;
 								}else {
 									//adds a small handicap, note that these tend to get cleared AFTER battle so this should work
 									playp.addEffect(Effect.EXHAUSTED);
 									//doesn't need burnout because they are being fought
-									extra.println(TrawelColor.PRE_BATTLE+"They catch up, prepare to defend yourself!");
+									Print.println(TrawelColor.PRE_BATTLE+"They catch up, prepare to defend yourself!");
 									Combat c = Player.player.fightWith(p);
 									if (c.playerWon() > 0) {
 									}else {
-										extra.println("They run off laughing about the job.");
+										Print.println("They run off laughing about the job.");
 										bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
 									}
 									return true;
@@ -208,17 +210,17 @@ public class QuestReactionFactory {
 							@Override
 							public boolean go() {
 								if (Player.player.getGold() < payOffCost) {
-									extra.println(TrawelColor.PRE_BATTLE+"They laugh that you can't afford them!");
+									Print.println(TrawelColor.PRE_BATTLE+"They laugh that you can't afford them!");
 									Combat c = Player.player.fightWith(p);
 									if (c.playerWon() > 0) {
 									}else {
-										extra.println("They run off laughing about the job.");
+										Print.println("They run off laughing about the job.");
 										bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
 									}
 									return true;
 								}
 								Player.player.addGold(-payOffCost);
-								extra.println("They count the money and leave.");
+								Print.println("They count the money and leave.");
 								return true;
 							}});
 						return list;
@@ -232,7 +234,7 @@ public class QuestReactionFactory {
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				Person p = RaceFactory.makeMugger(bumperLocation.getTier());
 				String intro, text;
-				switch (extra.randRange(1,3)) {
+				switch (Rand.randRange(1,3)) {
 				case 1: default:
 					intro = "A voice cries out: ";
 					break;
@@ -243,7 +245,7 @@ public class QuestReactionFactory {
 					intro = "A hooded figure unveils in the road and speaks: ";
 					break;
 				}
-				switch (extra.randRange(1,3)) {
+				switch (Rand.randRange(1,3)) {
 				case 1: default:
 					text = "\"We don't take kindly to wannabe heroes around here!\"";
 					break;
@@ -254,12 +256,12 @@ public class QuestReactionFactory {
 					text = "\"Law shall not prevail!\"";
 					break;
 				}
-				extra.println(TrawelColor.PRE_BATTLE+intro+text);
+				Print.println(TrawelColor.PRE_BATTLE+intro+text);
 				
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() > 0) {
 				}else {
-					extra.println(p.getName() +" runs off the road.");
+					Print.println(p.getName() +" runs off the road.");
 					bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
 				}
 			}}) );
@@ -269,7 +271,7 @@ public class QuestReactionFactory {
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				Person p = RaceFactory.makeVampire(bumperLocation.getTier());
 				String intro, text;
-				switch (extra.randRange(1,3)) {
+				switch (Rand.randRange(1,3)) {
 				case 1: default:
 					intro = "A vampire emerges from the shadows and declares: ";
 					break;
@@ -280,7 +282,7 @@ public class QuestReactionFactory {
 					intro = "A hooded figure unveils in the road and speaks: ";
 					break;
 				}
-				switch (extra.randRange(1,3)) {
+				switch (Rand.randRange(1,3)) {
 				case 1: default:
 					text = "\"We don't take kindly to wannabe hunters around here!\"";
 					break;
@@ -291,12 +293,12 @@ public class QuestReactionFactory {
 					text = "\"Darkness shall prevail!\"";
 					break;
 				}
-				extra.println(TrawelColor.PRE_BATTLE+intro+text);
+				Print.println(TrawelColor.PRE_BATTLE+intro+text);
 				
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() > 0) {
 				}else {
-					extra.println(p.getName() +" flies off.");
+					Print.println(p.getName() +" flies off.");
 					Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
 				}
 			}}) );
@@ -334,7 +336,7 @@ public class QuestReactionFactory {
 		if (Player.player.sideQuests.size() == 0) {
 			return false;
 		}
-		if (Player.player.roadGracePeriod > 10 || extra.chanceIn(2,5+Player.player.roadGracePeriod)) {
+		if (Player.player.roadGracePeriod > 10 || Rand.chanceIn(2,5+Player.player.roadGracePeriod)) {
 			Player.player.roadGracePeriod = Math.max(-2,Player.player.roadGracePeriod-1);//can only get to 2/3rds chance
 			return false;
 		}
@@ -347,7 +349,7 @@ public class QuestReactionFactory {
 		if (sides.isEmpty()) {
 			return false;
 		}
-		BasicSideQuest side = extra.randList(sides);
+		BasicSideQuest side = Rand.randList(sides);
 		if (side == null) {
 			return false;
 		}
@@ -377,7 +379,7 @@ public class QuestReactionFactory {
 		if (canReacts.isEmpty()) {
 			return false;
 		}
-		totalWeight*= extra.randFloat();
+		totalWeight*= Rand.randFloat();
 		int i = canReacts.size()-1;
 		for (; i > 0; i--) {//stops at 0 either way
 			totalWeight-=canReacts.size();

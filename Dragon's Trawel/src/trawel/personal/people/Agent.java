@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import derg.ds.Chomp;
-import trawel.helper.methods.extra;
+import trawel.core.Rand;
 import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
@@ -169,7 +169,7 @@ public class Agent extends SuperPerson{
 		case DELVE_HELP:
 			current = new AbandonPostBehavior();
 			//one week and then potentially 2 more days
-			current.setTimeTo((24*7)+(extra.randFloat()*48));
+			current.setTimeTo((24*7)+(Rand.randFloat()*48));
 			break;
 		}
 		goals = EnumSet.of(goal);

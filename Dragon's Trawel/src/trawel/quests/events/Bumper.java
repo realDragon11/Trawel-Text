@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import trawel.helper.methods.extra;
+import trawel.core.Rand;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
@@ -42,7 +42,7 @@ public abstract class Bumper {
 			if (level < b.minAreaLevel) {
 				continue;
 			}
-			d = b.calculate()*extra.randFloat();
+			d = b.calculate()*Rand.randFloat();
 			if (d > highest) {
 				highest = d;
 				highestB = b;

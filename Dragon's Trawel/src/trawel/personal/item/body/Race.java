@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.battle.targets.TargetFactory;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceClass;
 import trawel.personal.RaceFactory.RaceID;
@@ -66,7 +67,7 @@ public class Race extends Item{
 	}
 	
 	public String renderName(boolean makePlural) {
-		return extra.capFirst(makePlural ? internalName.namePlural : internalName.name);
+		return Print.capFirst(makePlural ? internalName.namePlural : internalName.name);
 	}
 	
 	@Override
@@ -89,22 +90,22 @@ public class Race extends Item{
 	}
 	@Override
 	public void display(int style, float markup) {
-		extra.println(TrawelColor.STAT_HEADER+renderName(false));
-		extra.println(internalName.name +", "+internalName.namePlural + ", " +internalName.adjective );
-		extra.println("Type: " + racialType);
-		extra.println("Legacy Sprite: " + raceClass.getLegacy().friendlyName());
-		extra.println(TrawelColor.ITEM_DESC_PROP+"Blood: " + (emitsBlood ? TrawelColor.PRE_RED+"yes" : TrawelColor.PRE_WHITE +"no"));
-		extra.println("Rarity: " + extra.F_TWO_TRAILING.format(rarity));
-		extra.println(TrawelColor.ITEM_DESC_PROP+"Aiming: " +TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(aimMod));
-		extra.println(TrawelColor.ITEM_DESC_PROP+"Health: " +TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(hpMod));
-		extra.println(TrawelColor.ITEM_DESC_PROP+"Dodge: " +TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(dodgeMod));
-		extra.println(TrawelColor.ITEM_DESC_PROP+"Damage: " +TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(damMod));
-		extra.println(TrawelColor.ITEM_DESC_PROP+"Speed: " +TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(speedMod));
+		Print.println(TrawelColor.STAT_HEADER+renderName(false));
+		Print.println(internalName.name +", "+internalName.namePlural + ", " +internalName.adjective );
+		Print.println("Type: " + racialType);
+		Print.println("Legacy Sprite: " + raceClass.getLegacy().friendlyName());
+		Print.println(TrawelColor.ITEM_DESC_PROP+"Blood: " + (emitsBlood ? TrawelColor.PRE_RED+"yes" : TrawelColor.PRE_WHITE +"no"));
+		Print.println("Rarity: " + Print.F_TWO_TRAILING.format(rarity));
+		Print.println(TrawelColor.ITEM_DESC_PROP+"Aiming: " +TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(aimMod));
+		Print.println(TrawelColor.ITEM_DESC_PROP+"Health: " +TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(hpMod));
+		Print.println(TrawelColor.ITEM_DESC_PROP+"Dodge: " +TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(dodgeMod));
+		Print.println(TrawelColor.ITEM_DESC_PROP+"Damage: " +TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(damMod));
+		Print.println(TrawelColor.ITEM_DESC_PROP+"Speed: " +TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(speedMod));
 		if (archetype != null) {
-			extra.println(TrawelColor.ITEM_DESC_PROP+"Sterotype: " + archetype.friendlyName());
+			Print.println(TrawelColor.ITEM_DESC_PROP+"Sterotype: " + archetype.friendlyName());
 		}
 		//the funnier sounding the 'better'
-		extra.println(TrawelColor.ITEM_DESC_PROP+"Pitches: " +TrawelColor.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(minPitch)+ " " +TrawelColor.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(maxPitch));
+		Print.println(TrawelColor.ITEM_DESC_PROP+"Pitches: " +TrawelColor.ITEM_WANT_LOWER+ Print.F_TWO_TRAILING.format(minPitch)+ " " +TrawelColor.ITEM_WANT_HIGHER+Print.F_TWO_TRAILING.format(maxPitch));
 		String slurs = null;
 		for (String str: swears) {
 			if (slurs == null) {
@@ -114,7 +115,7 @@ public class Race extends Item{
 			}
 		}
 		if (slurs != null) {
-			extra.println("Slurs: " +slurs+".");
+			Print.println("Slurs: " +slurs+".");
 		}
 		String phrases = null;
 		for (String str: insultList) {
@@ -125,7 +126,7 @@ public class Race extends Item{
 			}
 		}
 		if (phrases != null) {
-			extra.println("Racist Phrases: " +phrases);
+			Print.println("Racist Phrases: " +phrases);
 		}
 	}
 	@Override
@@ -139,11 +140,11 @@ public class Race extends Item{
 	}
 	
 	public String randomInsult() {
-		return extra.randList(insultList);
+		return Rand.randList(insultList);
 	}
 	
 	public String randomSwear() {
-		return extra.randList(swears);
+		return Rand.randList(swears);
 	}
 	
 	public List<String> badNameList(){
@@ -156,7 +157,7 @@ public class Race extends Item{
 	
 	public int randomRaceMap() {
 		//return Integer.parseInt(extra.randList(raceMaps));//DOLATER check to see if the conversion worked
-		return extra.getRand().nextInt();//is moduluo'd for now
+		return Rand.getRand().nextInt();//is moduluo'd for now
 	}
 	
 	@Override
@@ -218,7 +219,7 @@ public class Race extends Item{
 	@Override
 	public String storeString(double markup, int canShow) {
 		return this.getName() 
-				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
+				+ " cost: " +  Print.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
 				;
 	}
 	

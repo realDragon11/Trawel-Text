@@ -11,8 +11,10 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.core.Input;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.AIClass;
 import trawel.personal.Effect;
@@ -88,7 +90,7 @@ public class BeachNode implements NodeType {
 	
 	@Override
 	public int rollRegrow() {
-		return 1+beachRegrowRoller.random(extra.getRand());
+		return 1+beachRegrowRoller.random(Rand.getRand());
 	}
 	
 	@Override
@@ -97,10 +99,10 @@ public class BeachNode implements NodeType {
 		switch (guessDepth) {
 		case 0://start
 		case 1://entry
-			id+=beachEntryRoller.random(extra.getRand());
+			id+=beachEntryRoller.random(Rand.getRand());
 			break;
 		default:
-			id+=beachBasicRoller.random(extra.getRand());
+			id+=beachBasicRoller.random(Rand.getRand());
 			break;
 		}
 		int ret = holder.newNode(NodeType.NodeTypeNum.BEACH.ordinal(),id,tier);
@@ -112,7 +114,7 @@ public class BeachNode implements NodeType {
 	public void apply(NodeConnector holder, int node) {
 		switch (holder.getEventNum(node)) {
 		case 1://beach dungeon blocker
-			int gateType = extra.randRange(0,2);
+			int gateType = Rand.randRange(0,2);
 			Person skelePerson = RaceFactory.makeGateNodeBlocker(holder.getLevel(node),gateType);
 			Agent skeleAgent = skelePerson.getMakeAgent(AgentGoal.WORLD_ENCOUNTER);
 			holder.parent.getTown().getIsland().getWorld().addReoccuring(skeleAgent);
@@ -124,13 +126,13 @@ public class BeachNode implements NodeType {
 		case 2://pirate rager
 			Person pirate = RaceFactory.makePirate(holder.getLevel(node));
 			String mugName = randomLists.extractTitleFormat(pirate.getTitle());
-			GenericNode.setBasicRagePerson(holder,node,pirate,mugName,"The "+extra.capFirst(mugName) + " attacks you!");
+			GenericNode.setBasicRagePerson(holder,node,pirate,mugName,"The "+Print.capFirst(mugName) + " attacks you!");
 			break;
 		case 3://ashore locked chest
 			holder.setStorage(node,randomLists.randomChestAdjective() + "Chest");
 			break;
 		case 4://variable fluff landmark, static state
-			int fluffType = extra.randRange(0,2);
+			int fluffType = Rand.randRange(0,2);
 			holder.setStateNum(node,fluffType);
 			switch (fluffType) {
 				case 0://sea glass
@@ -140,16 +142,16 @@ public class BeachNode implements NodeType {
 					break;
 				case 1://beach rock
 					//https://en.wikipedia.org/wiki/Beachrock
-					holder.setStorage(node,extra.choose("Shelled ","Petrified ","Smoothed ","Tall "+"Wide ")+extra.choose("Beachrock","Sea Stack","Crag","Ridge","Bluff"));
+					holder.setStorage(node,Rand.choose("Shelled ","Petrified ","Smoothed ","Tall "+"Wide ")+Rand.choose("Beachrock","Sea Stack","Crag","Ridge","Bluff"));
 					break;
 				case 2://patch of rocky sand/gravel
 					//https://en.wikipedia.org/wiki/Shingle_beach
-					holder.setStorage(node,extra.choose("Gravel ","Pebble ","Shingle ","Rocky ")+extra.choose("Patch","Strip"));
+					holder.setStorage(node,Rand.choose("Gravel ","Pebble ","Shingle ","Rocky ")+Rand.choose("Patch","Strip"));
 					break;
 			}
 			break;
 		case 5://bottle with variable results (statenum determines reward, if any)
-			holder.setStateNum(node,extra.choose(0,1,2,2,2));
+			holder.setStateNum(node,Rand.choose(0,1,2,2,2));
 			break;
 		case 6://beachcomber
 			//https://en.wikipedia.org/wiki/Beachcombing
@@ -178,16 +180,16 @@ public class BeachNode implements NodeType {
 			}else {
 				if (tier < guessLevel) {
 					//if behind, 66% chance to tier up
-					nextTier = tier + (extra.chanceIn(2,3) ? 1 : 0);
+					nextTier = tier + (Rand.chanceIn(2,3) ? 1 : 0);
 				}else {
 					//if on par or ahead, 20% chance to tier up
-					nextTier = tier + (extra.chanceIn(1,5) ? 1 : 0);
+					nextTier = tier + (Rand.chanceIn(1,5) ? 1 : 0);
 				}
 			}
 		}
 		
-		int routeA = generate(holder,node,(sizeLeft/2) + (extra.chanceIn(1,3) ? 1 : 0),nextTier);
-		int routeB = generate(holder,node,(sizeLeft/2) + (extra.chanceIn(1,3) ? 1 : 0),nextTier);
+		int routeA = generate(holder,node,(sizeLeft/2) + (Rand.chanceIn(1,3) ? 1 : 0),nextTier);
+		int routeB = generate(holder,node,(sizeLeft/2) + (Rand.chanceIn(1,3) ? 1 : 0),nextTier);
 		holder.setMutualConnect(node, routeA);
 		holder.setMutualConnect(node, routeB);
 		return node;
@@ -200,7 +202,7 @@ public class BeachNode implements NodeType {
 		switch (owner.getShape()) {
 			case TREASURE_BEACH://minimum rec'd size of 32, is probably more volatile than usual nodefeatures
 				//split into 3-4 main quadrants, min 3 each
-				int branchAmount = extra.randRange(3,4);
+				int branchAmount = Rand.randRange(3,4);
 				int branchSize = Math.max(8,size/branchAmount);
 				int dungeonsLeft = 2;//minimum two dungeons
 				int cavesLeft = 3;//minimum three caves
@@ -213,21 +215,21 @@ public class BeachNode implements NodeType {
 					boolean caveYet = false;
 					for (int subNum = 0; subNum < 5; subNum++) {
 						//max subnum is 5 but will terminate early if running out of space
-						int subSize = extra.randRange(3,branchSize/2);
+						int subSize = Rand.randRange(3,branchSize/2);
 						//subbranch types: 0 = none, goto beach normal generate; 1 = cave, make linear cave as with grove; 2 = dungeon, make a small dungeon
 						int subType = 0;
 						//first sub-branch will always be a beach branch
 						if (subNum > 0) {
 							//if we roll a dungeon, or if we won't meet quota without one forced per branch remaining
 							//first branch is immune to minimum if 3 or less, since 3-0 = 3, but can still roll naturally
-							if (extra.chanceIn(1,20) || (dungeonYet == false && dungeonsLeft >= 3-branch)) {
+							if (Rand.chanceIn(1,20) || (dungeonYet == false && dungeonsLeft >= 3-branch)) {
 								dungeonYet = true;
 								dungeonsLeft--;
 								subType = 2;
 							}else {
 								//dungeon takes priority over cave
 								//if we roll a cave, or haven't met quota yet
-								if (extra.chanceIn(1,10) || (caveYet == false && cavesLeft >= 3-branch)) {
+								if (Rand.chanceIn(1,10) || (caveYet == false && cavesLeft >= 3-branch)) {
 									caveYet = true;
 									cavesLeft--;
 									subType = 1;
@@ -255,7 +257,7 @@ public class BeachNode implements NodeType {
 								start.reverseConnections(caveLast);
 								caveLast = caveNext;
 								//tier levels up much more often in caves
-								if (extra.chanceIn(1,3)) {
+								if (Rand.chanceIn(1,3)) {
 									tempTier++;
 								}
 							}
@@ -377,16 +379,16 @@ public class BeachNode implements NodeType {
 		case 1://gatenode blocker
 			GateNodeBehavior gnb = holder.getStorageFirstClass(node,GateNodeBehavior.class);
 			if (gnb.opened) {//already been opened
-				extra.println(gnb.getOpenedText());
+				Print.println(gnb.getOpenedText());
 				return false;
 			}else {
 				if (gnb.checkOpened()) {
 					//opening!
-					extra.println(gnb.getOpeningText());
+					Print.println(gnb.getOpeningText());
 					return false;
 				}else {
 					//still locked
-					extra.println(gnb.getLockedText());
+					Print.println(gnb.getLockedText());
 					NodeConnector.setKickGate();//gate kick back
 					return false;
 				}
@@ -399,13 +401,13 @@ public class BeachNode implements NodeType {
 		case 4://variable fluff landmark, static state
 			switch (holder.getStateNum(node)) {
 			default: case 0://sea glass
-				extra.println("The glass here has been weathered by the ocean waves.");
+				Print.println("The glass here has been weathered by the ocean waves.");
 				break;
 			case 1://beach rock
-				extra.println("There is a large rock sticking out of the sand here.");
+				Print.println("There is a large rock sticking out of the sand here.");
 				break;
 			case 2://gravel patch
-				extra.println("The ground here is more rocky than the softer sand around it.");
+				Print.println("The ground here is more rocky than the softer sand around it.");
 				break;
 			}
 			return false;
@@ -413,18 +415,18 @@ public class BeachNode implements NodeType {
 			int messageReward = 0;
 			switch (holder.getStateNum(node)) {
 			case 0:
-				extra.println("The bottle is empty.");
+				Print.println("The bottle is empty.");
 				break;
 			case 1://whaler loot
 				messageReward = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),RaceFactory.WEALTH_WORKER,.5f);
-				extra.println("Inside the bottle there is a message and "+World.currentMoneyDisplay(messageReward)+": \""
+				Print.println("Inside the bottle there is a message and "+World.currentMoneyDisplay(messageReward)+": \""
 						+Oracle.tipStringExt("lootWhaler","a","Whaler","Whalers","Whaler",holder.parent.getTown().getName(),
 								Arrays.asList(new String[] {"Whales","Sea Serpents","Ghost Ships"}))+"\"");
-				Player.bag.addNewDrawBanePlayer(extra.choose(DrawBane.LIVING_FLAME,DrawBane.TELESCOPE,DrawBane.GOLD));
+				Player.bag.addNewDrawBanePlayer(Rand.choose(DrawBane.LIVING_FLAME,DrawBane.TELESCOPE,DrawBane.GOLD));
 				break;
 			case 2://civ letter loot
 				messageReward = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),RaceFactory.WEALTH_STANDARD,.5f);
-				DrawBane loot = extra.choose(DrawBane.CLOTH,DrawBane.BLOOD,DrawBane.REPEL);
+				DrawBane loot = Rand.choose(DrawBane.CLOTH,DrawBane.BLOOD,DrawBane.REPEL);
 				String lootName;
 				switch (loot){
 					case CLOTH:
@@ -439,7 +441,7 @@ public class BeachNode implements NodeType {
 					default:
 						throw new RuntimeException("invalid letter loot for message in a bottle");
 				}
-				extra.println("Inside the bottle there is a message and "+World.currentMoneyDisplay(messageReward)+": \""
+				Print.println("Inside the bottle there is a message and "+World.currentMoneyDisplay(messageReward)+": \""
 						+Oracle.tipStringExt("lootLetter"+lootName,"a","Lover","Lovers","Lover",holder.parent.getTown().getName(),
 								Arrays.asList(new String[] {"Rival","Fraud","Poser"}))+"\"");
 				Player.bag.addNewDrawBanePlayer(loot);
@@ -467,7 +469,7 @@ public class BeachNode implements NodeType {
 		switch (holder.getStateNum(node)) {
 			default: case 0:
 				//only applies burnout on fail to prevent further attempts, no other penalty
-				extra.menuGo(new MenuGenerator() {
+				Input.menuGo(new MenuGenerator() {
 
 					@Override
 					public List<MenuItem> gen() {
@@ -499,7 +501,7 @@ public class BeachNode implements NodeType {
 										Player.player.getPerson().getStrength(), IEffectiveLevel.attributeChallengeMedium(holder.getLevel(node)))
 										>=0){
 										//broke down door
-										extra.println(TrawelColor.RESULT_PASS+"You smash open the "+chestname+".");
+										Print.println(TrawelColor.RESULT_PASS+"You smash open the "+chestname+".");
 										holder.setStateNum(node,1);//broken open, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
@@ -507,7 +509,7 @@ public class BeachNode implements NodeType {
 									}else {
 										//failed
 										Player.player.getPerson().addEffect(Effect.BURNOUT);
-										extra.println(TrawelColor.RESULT_FAIL+"You fail to bash open the "+chestname+".");
+										Print.println(TrawelColor.RESULT_FAIL+"You fail to bash open the "+chestname+".");
 										holder.findBehind(node,chestname);
 									}
 									return true;
@@ -525,7 +527,7 @@ public class BeachNode implements NodeType {
 										Player.player.getPerson().getDexterity(), IEffectiveLevel.attributeChallengeMedium(holder.getLevel(node)))
 										>=0){
 										//lockpicked door
-										extra.println(TrawelColor.RESULT_PASS+"You pick open the "+chestname+".");
+										Print.println(TrawelColor.RESULT_PASS+"You pick open the "+chestname+".");
 										holder.setStateNum(node,2);//picked open, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
@@ -533,7 +535,7 @@ public class BeachNode implements NodeType {
 									}else {
 										//failed
 										Player.player.getPerson().addEffect(Effect.BURNOUT);
-										extra.println(TrawelColor.RESULT_FAIL+"You fail to lockpick the "+chestname+".");
+										Print.println(TrawelColor.RESULT_FAIL+"You fail to lockpick the "+chestname+".");
 										holder.findBehind(node,chestname);
 									}
 									return true;
@@ -551,7 +553,7 @@ public class BeachNode implements NodeType {
 										Player.player.getPerson().getClarity(), IEffectiveLevel.attributeChallengeMedium(holder.getLevel(node)))
 										>=0){
 										//lockpicked door
-										extra.println(TrawelColor.RESULT_PASS+"You open the "+chestname+" with a Knock cantrip.");
+										Print.println(TrawelColor.RESULT_PASS+"You open the "+chestname+" with a Knock cantrip.");
 										holder.setStateNum(node,3);//opened, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
@@ -559,7 +561,7 @@ public class BeachNode implements NodeType {
 									}else {
 										//failed
 										Player.player.getPerson().addEffect(Effect.BURNOUT);
-										extra.println(TrawelColor.RESULT_FAIL+"Your Knock cantrip on the "+chestname+" fizzles.");
+										Print.println(TrawelColor.RESULT_FAIL+"Your Knock cantrip on the "+chestname+" fizzles.");
 										holder.findBehind(node,chestname);
 									}
 									return true;
@@ -570,37 +572,37 @@ public class BeachNode implements NodeType {
 					}});
 				return;
 			case 1:
-				extra.println("This chest has already been smashed and looted.");
+				Print.println("This chest has already been smashed and looted.");
 				holder.findBehind(node,chestname);
 				return;
 			case 2:
-				extra.println("This chest has already been picked and looted.");
+				Print.println("This chest has already been picked and looted.");
 				holder.findBehind(node,chestname);
 				return;
 			case 3:
-				extra.println();
-				extra.println("This chest has already been opened and looted.");
+				Print.println();
+				Print.println("This chest has already been opened and looted.");
 				holder.findBehind(node,chestname);
 				return;
 		}
 	}
 	
 	private void beachChestLoot(int level) {
-		switch (extra.randRange(0,3)) {
+		switch (Rand.randRange(0,3)) {
 			default: case 0: case 1://basic loot
 				int moneyReward = IEffectiveLevel.cleanRangeReward(level,RaceFactory.WEALTH_HIGH,.7f);
 				int aetherReward = IEffectiveLevel.cleanRangeReward(level,1000,.5f);
 				Player.bag.addAether(aetherReward);
 				Player.player.addGold(moneyReward);
-				extra.println(TrawelColor.RESULT_GOOD+"Inside the chest you find "+World.currentMoneyDisplay(moneyReward) + " and "+aetherReward + " Aether!");
+				Print.println(TrawelColor.RESULT_GOOD+"Inside the chest you find "+World.currentMoneyDisplay(moneyReward) + " and "+aetherReward + " Aether!");
 				return;
 			case 2://hunter stash
 				//silver weapon
-				Weapon silvered = new Weapon(level,MaterialFactory.getMat("silver"),extra.choose(WeaponType.MACE,WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.SPEAR));
+				Weapon silvered = new Weapon(level,MaterialFactory.getMat("silver"),Rand.choose(WeaponType.MACE,WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.SPEAR));
 				//amber
 				int amberAmount = IEffectiveLevel.cleanRangeReward(level,Gem.AMBER.reward(2f,false), .5f);
 				Gem.AMBER.changeGem(amberAmount);
-				extra.println("You find a Hunter's cache with " + amberAmount + " Amber and a "+silvered.getName()+"!");
+				Print.println("You find a Hunter's cache with " + amberAmount + " Amber and a "+silvered.getName()+"!");
 				AIClass.findItem(silvered, Player.player.getPerson());
 				return;
 			case 3://misc gem stash
@@ -611,7 +613,7 @@ public class BeachNode implements NodeType {
 				Gem.EMERALD.changeGem(emeraldAmount);
 				Gem.RUBY.changeGem(rubyAmount);
 				Gem.SAPPHIRE.changeGem(sapphireAmount);
-				extra.println("You find a Gem cache with " + emeraldAmount + " Emeralds, "+rubyAmount + " Rubies, and " + sapphireAmount + " Sapphires!");
+				Print.println("You find a Gem cache with " + emeraldAmount + " Emeralds, "+rubyAmount + " Rubies, and " + sapphireAmount + " Sapphires!");
 				return;
 		}
 	}

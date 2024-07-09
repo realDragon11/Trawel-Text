@@ -10,7 +10,7 @@ import scimech.mech.Corpo;
 import scimech.mech.Fixture;
 import scimech.mech.Mech;
 import scimech.mech.TurnSubscriber;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class Clash extends Fixture{
 
@@ -27,7 +27,7 @@ public class Clash extends Fixture{
 			}
 		}
 		if (!t.isDummy()) {
-			extra.print("The Clash Shotgun attacks at +"+speedBonus+"! " + hits + " hits! ");
+			Print.print("The Clash Shotgun attacks at +"+speedBonus+"! " + hits + " hits! ");
 			currentMount.takeHeat(2);
 		}
 		

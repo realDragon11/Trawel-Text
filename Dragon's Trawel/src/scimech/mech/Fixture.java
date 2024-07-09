@@ -8,6 +8,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import scimech.handlers.Savable;
+import trawel.core.Input;
 import trawel.helper.methods.extra;
 
 public abstract class Fixture extends MechPart implements TurnSubscriber, Savable{
@@ -73,7 +74,7 @@ public abstract class Fixture extends MechPart implements TurnSubscriber, Savabl
 		}}
 	
 	public void examine() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {

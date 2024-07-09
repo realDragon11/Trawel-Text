@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import trawel.core.Networking;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.quests.events.QuestReactionFactory.QKey;
@@ -171,7 +171,7 @@ public class CollectSideQuest extends BasicSideQuest {
 		Feature endFeature = qRList.get(0).locationF;
 		switch (QRID) {
 		case 0:
-			extra.println("You assemble a whole " + targetName);
+			Print.println("You assemble a whole " + targetName);
 			Player.bag.addNewDrawBanePlayer(collect);
 			Networking.unlockAchievement("collectquest1");
 			complete();

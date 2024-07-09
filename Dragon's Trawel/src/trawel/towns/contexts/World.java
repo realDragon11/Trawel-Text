@@ -5,6 +5,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.factions.HostileTask;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
@@ -53,7 +55,7 @@ public class World extends TContextOwner{
 		this.minLonga = minLonga;
 		this.maxLonga = minLonga+x/WorldGen.unitsInLonga;
 		
-		moneyname = extra.choose(extra.choose("gold ","silver ","electrum ")+_name+" coins",_name + " notes", _name+" proof marks");
+		moneyname = Rand.choose(Rand.choose("gold ","silver ","electrum ")+_name+" coins",_name + " notes", _name+" proof marks");
 	}
 	
 	public void addIsland(Island t) {
@@ -119,9 +121,9 @@ public class World extends TContextOwner{
 		
 		for (int i = 0; i < xSize; i++) {
 			for (int j = 0; j < ySize; j++) {
-				extra.print(map[i][j]);
+				Print.print(map[i][j]);
 			}
-			extra.println();
+			Print.println();
 		}
 	}
 
@@ -136,7 +138,7 @@ public class World extends TContextOwner{
 				}
 			}
 		if (list.size() > 0) {
-			return extra.randList(list);
+			return Rand.randList(list);
 		}else {
 			if (level > 0) {
 				return getRandom(level-1);//maybe should add variance
@@ -168,7 +170,7 @@ public class World extends TContextOwner{
 			}
 		}while ((list.size() < 2) && levelWantMin > 0);
 		if (list.size() > 0) {
-			return extra.randList(list);
+			return Rand.randList(list);
 		}else {
 			return startTown;
 		}
@@ -213,7 +215,7 @@ public class World extends TContextOwner{
 		if (list.size() == 0) {
 			return null;
 		}
-		return extra.randList(list);
+		return Rand.randList(list);
 	}
 	
 	public Agent getStalker() {
@@ -222,7 +224,7 @@ public class World extends TContextOwner{
 		if (list.size() == 0) {
 			return null;
 		}
-		return extra.randList(list);
+		return Rand.randList(list);
 	}
 	
 	public Agent getWorldEncounter(int maxLevel) {
@@ -231,7 +233,7 @@ public class World extends TContextOwner{
 		if (list.size() == 0) {
 			return null;
 		}
-		return extra.randList(list);
+		return Rand.randList(list);
 	}
 
 	public Calender getCalender() {

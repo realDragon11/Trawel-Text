@@ -11,6 +11,8 @@ import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.extra;
@@ -161,8 +163,8 @@ public class Weapon extends Item implements IEffectiveLevel {
 		
 		addQuals(weap.qList,3);
 		//random chance, partially based on enchantment power, to enchant the weapon
-		if (getEnchantMult() > extra.randFloat()*3f) {
-			if (extra.chanceIn(2, 3)) {
+		if (getEnchantMult() > Rand.randFloat()*3f) {
+			if (Rand.chanceIn(2, 3)) {
 				enchant = EnchantConstant.makeEnchant(getEnchantMult(),getBaseCost());
 			}else {
 				enchant = new EnchantHit(getEnchantMult(),false);
@@ -441,18 +443,18 @@ public class Weapon extends Item implements IEffectiveLevel {
 	public void display(int style,float markup) {
 		switch (style) {
 		//0 is quick for store quickview, not used, use storestring
-		case 0: extra.println(getMaterialName() +" "+getBaseName()+":"+extra.format(this.scoreWeight()));
+		case 0: Print.println(getMaterialName() +" "+getBaseName()+":"+Print.format(this.scoreWeight()));
 		break;
 		case 1://used for comparing and in stores
 		case 3:
-			extra.println(this.getName()
+			Print.println(this.getName()
 			+ TrawelColor.ITEM_DESC_PROP+" ic/bd/wa"+TrawelColor.PRE_WHITE+": "
 			+TrawelColor.ITEM_WANT_HIGHER
-			+ extra.formatPerSubOne(this.scoreImpact())
-			+ "/" + extra.format(this.scoreBest())
-			+"/"+extra.format(this.scoreWeight())
+			+ Print.formatPerSubOne(this.scoreImpact())
+			+ "/" + Print.format(this.scoreBest())
+			+"/"+Print.format(this.scoreWeight())
 			+ (Player.player.caresAboutCapacity() ? " "+TrawelColor.ITEM_DESC_PROP+extra.DISP_WEIGHT+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_LOWER+getWeight() : "")
-			+" "+TrawelColor.ITEM_DESC_PROP+extra.DISP_AETHER+": " +TrawelColor.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
+			+" "+TrawelColor.ITEM_DESC_PROP+extra.DISP_AETHER+": " +TrawelColor.ITEM_VALUE+ Print.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
 			);
 			
 			if (this.isEnchantedConstant()) {
@@ -462,7 +464,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 				this.getEnchant().display(1);
 			}
 			for (WeaponQual wq: qualList) {
-				extra.println(" " +TrawelColor.TIMID_GREEN+wq.name +TrawelColor.PRE_WHITE+": "+wq.desc);
+				Print.println(" " +TrawelColor.TIMID_GREEN+wq.name +TrawelColor.PRE_WHITE+": "+wq.desc);
 			}
 			;break;
 		case 4:
@@ -471,33 +473,33 @@ public class Weapon extends Item implements IEffectiveLevel {
 		case 2://Appraiser/full self on stat
 			//by dividing it later we implicitly mult it by 100x to get it to display as a whole number
 			float expectedAverage = (1f/getMartialStance().getAttackCount());
-			extra.println(getName() +":");
-			extra.println(TrawelColor.STAT_HEADER+"Tested Stats:");
-			extra.println(TrawelColor.ITEM_DESC_PROP+" Impact Chance (ic)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+ extra.formatPerSubOne(scoreImpact()));
-			extra.println(TrawelColor.ITEM_DESC_PROP+" Best DPI (bd)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER + extra.format(scoreBest()));
-			extra.println(TrawelColor.ITEM_DESC_PROP+" Weighted DPI (wa)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER + extra.format(scoreWeight()));
-			extra.println(TrawelColor.STAT_HEADER+"Value and Usage:");
-			extra.println(TrawelColor.ITEM_DESC_PROP+" Aether"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_VALUE + (int)(getAetherValue()*markup));
-			extra.println(TrawelColor.ITEM_DESC_PROP+" Infused kills"+TrawelColor.PRE_WHITE+": " +getKills());
+			Print.println(getName() +":");
+			Print.println(TrawelColor.STAT_HEADER+"Tested Stats:");
+			Print.println(TrawelColor.ITEM_DESC_PROP+" Impact Chance (ic)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+ Print.formatPerSubOne(scoreImpact()));
+			Print.println(TrawelColor.ITEM_DESC_PROP+" Best DPI (bd)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER + Print.format(scoreBest()));
+			Print.println(TrawelColor.ITEM_DESC_PROP+" Weighted DPI (wa)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER + Print.format(scoreWeight()));
+			Print.println(TrawelColor.STAT_HEADER+"Value and Usage:");
+			Print.println(TrawelColor.ITEM_DESC_PROP+" Aether"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_VALUE + (int)(getAetherValue()*markup));
+			Print.println(TrawelColor.ITEM_DESC_PROP+" Infused kills"+TrawelColor.PRE_WHITE+": " +getKills());
 			
 			if (isEnchantedConstant()) {
-				extra.println(TrawelColor.STAT_HEADER+"Constant Enchantment:");
+				Print.println(TrawelColor.STAT_HEADER+"Constant Enchantment:");
 				getEnchant().display(2);
 			}
 			if (isEnchantedHit()) {
-				extra.println(TrawelColor.STAT_HEADER+"On-Hit Enchantment:");
+				Print.println(TrawelColor.STAT_HEADER+"On-Hit Enchantment:");
 				getEnchant().display(2);
 			}
 			if (qualList.size() > 0) {
-				extra.println(TrawelColor.STAT_HEADER+"Qualities:");
+				Print.println(TrawelColor.STAT_HEADER+"Qualities:");
 				for (WeaponQual wq: qualList) {
-					extra.println(" " +TrawelColor.TIMID_GREEN+wq.name +TrawelColor.PRE_WHITE+": "+wq.desc);
+					Print.println(" " +TrawelColor.TIMID_GREEN+wq.name +TrawelColor.PRE_WHITE+": "+wq.desc);
 				}
 			}
-			extra.println(TrawelColor.STAT_HEADER+"Tested Equity DPI:");
-			extra.println(TrawelColor.ITEM_DESC_PROP+" Highest"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_LOWER+extra.F_WHOLE.format(scoreHighestContribution()/expectedAverage)+TrawelColor.PRE_WHITE+"% of perfect equity");
-			extra.println(TrawelColor.ITEM_DESC_PROP+" Lowest"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+extra.F_WHOLE.format(scoreLowestContribution()/expectedAverage)+TrawelColor.PRE_WHITE+"% of perfect equity");
-			extra.println(TrawelColor.STAT_HEADER+"Raw Untested Attacks"+TrawelColor.PRE_WHITE+":");
+			Print.println(TrawelColor.STAT_HEADER+"Tested Equity DPI:");
+			Print.println(TrawelColor.ITEM_DESC_PROP+" Highest"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_LOWER+Print.F_WHOLE.format(scoreHighestContribution()/expectedAverage)+TrawelColor.PRE_WHITE+"% of perfect equity");
+			Print.println(TrawelColor.ITEM_DESC_PROP+" Lowest"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+Print.F_WHOLE.format(scoreLowestContribution()/expectedAverage)+TrawelColor.PRE_WHITE+"% of perfect equity");
+			Print.println(TrawelColor.STAT_HEADER+"Raw Untested Attacks"+TrawelColor.PRE_WHITE+":");
 			WeaponAttackFactory.getStance(this.weap).display(this);
 			;break;
 		}
@@ -511,13 +513,13 @@ public class Weapon extends Item implements IEffectiveLevel {
 	public String storeString(double markup, int canShow) {//for stores brief overview
 		if (canShow > 0) {
 			return this.getName() 
-					+ TrawelColor.ITEM_DESC_PROP+" ic/wa"+TrawelColor.PRE_WHITE+": " +TrawelColor.ITEM_WANT_HIGHER+extra.formatPerSubOne(this.scoreImpact())
-					+"/"+extra.format(this.scoreWeight())
-					+ TrawelColor.ITEM_DESC_PROP+ " cost"+TrawelColor.PRE_WHITE+": " + TrawelColor.ITEM_VALUE+extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
+					+ TrawelColor.ITEM_DESC_PROP+" ic/wa"+TrawelColor.PRE_WHITE+": " +TrawelColor.ITEM_WANT_HIGHER+Print.formatPerSubOne(this.scoreImpact())
+					+"/"+Print.format(this.scoreWeight())
+					+ TrawelColor.ITEM_DESC_PROP+ " cost"+TrawelColor.PRE_WHITE+": " + TrawelColor.ITEM_VALUE+Print.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
 						+ (canShow == 1 ? TrawelColor.TIMID_RED+" (raw deal)" : "");
 		}
 		String base = getBaseName();
-		return TrawelColor.TIMID_GREY+"  They refuse to show you something you think " + extra.pluralIsA(base) + " "+base+".";
+		return TrawelColor.TIMID_GREY+"  They refuse to show you something you think " + Print.pluralIsA(base) + " "+base+".";
 	}
 
 	@Override
@@ -604,7 +606,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 			if (added >= maxAdded) {
 				return added;
 			}
-			WeaponQual wq = extra.randCollection(quals);
+			WeaponQual wq = Rand.randCollection(quals);
 			if (!qualList.contains(wq)) {
 				qualList.add(wq);
 				added++;

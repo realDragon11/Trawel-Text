@@ -86,8 +86,8 @@ public class SaveManager {
 		Plane p = (Plane) fury.deserialize(in);
 		Person per = p.getPlayer().getPerson();
 		World w = p.getPlayer().getWorld();
-		extra.println(per.getName() +": Level " + per.getLevel() + ", "+per.xpString() + " XP");
-		extra.println(w.getName() + ": Year " +w.getCalender().dateYear());
+		Print.println(per.getName() +": Level " + per.getLevel() + ", "+per.xpString() + " XP");
+		Print.println(w.getName() + ": Year " +w.getCalender().dateYear());
 		//trawelKryo.reset();
 		return p;
 	}
@@ -104,8 +104,8 @@ public class SaveManager {
 		Plane p = trawelKryo.readObject(in,Plane.class);
 		Person per = p.getPlayer().getPerson();
 		World w = p.getPlayer().getWorld();
-		extra.println(per.getName() +": Level " + per.getLevel() + ", "+per.xpString() + " XP");
-		extra.println(w.getName() + ": Year " +w.getCalender().dateYear());
+		Print.println(per.getName() +": Level " + per.getLevel() + ", "+per.xpString() + " XP");
+		Print.println(w.getName() + ": Year " +w.getCalender().dateYear());
 		//trawelKryo.reset();
 		return p;
 	}
@@ -122,9 +122,9 @@ public class SaveManager {
 			 ;
 			 pws.flush();
 			 SaveManager.savePlaneFury(WorldGen.plane,fos);
-		     extra.println("Saved!");
+		     Print.println("Saved!");
 		     File f = new File("trawel"+str+".save");
-		     extra.println("Slot "+str + ": "+f.length() + " bytes.");
+		     Print.println("Slot "+str + ": "+f.length() + " bytes.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -140,7 +140,7 @@ public class SaveManager {
 					break;
 				}
 				if (red == -1) {
-					extra.println("Invaild file.");
+					Print.println("Invaild file.");
 					break;
 				}
 				values.add(red);
@@ -172,7 +172,7 @@ public class SaveManager {
 			if (!mainGame.logStreamIsErr) {
 				e.printStackTrace();
 			}
-			extra.println("Invalid load. Either no save file was found or it was outdated.");
+			Print.println("Invalid load. Either no save file was found or it was outdated.");
 		}
 	}
 	

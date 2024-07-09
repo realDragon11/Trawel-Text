@@ -9,7 +9,7 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Fixture;
 import scimech.mech.TurnSubscriber;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
 
 public class ArtemisCannon extends Fixture {
 
@@ -18,7 +18,7 @@ public class ArtemisCannon extends Fixture {
 		int acc = (int) (40*rating());
 		double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc,this);
 		if (!t.isDummy()) {
-			extra.print("The Artemis Cannon " + ( hit >= 0 ? "hits!" : "misses!") + " ");
+			Print.print("The Artemis Cannon " + ( hit >= 0 ? "hits!" : "misses!") + " ");
 		}
 		if (hit  >=0) {
 			t.takeDamage().take(DamageTypes.KINETIC,DamageMods.NORMAL,10+((int)hit/2), t);	

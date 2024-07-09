@@ -2,9 +2,10 @@ package trawel.towns.features.outdated;
 
 import java.util.List;
 
+import trawel.core.Input;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.item.Inventory;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -32,10 +33,10 @@ public class Gambler extends Feature{
 	
 	@Override
 	public void go() {
-		extra.println("1 play " +type);
-		extra.println("2 leave");
-		int input =  extra.inInt(2);
-		extra.linebreak();
+		Print.println("1 play " +type);
+		Print.println("2 leave");
+		int input =  Input.inInt(2);
+		Input.linebreak();
 		if (input == 2){
 			return;
 		}
@@ -43,35 +44,35 @@ public class Gambler extends Feature{
 		}else {
 			go();
 		}
-		extra.println("How much do you bid? They have " +gold + " gold to win.");
-		int in =  extra.inInt(gold);
-		extra.linebreak();
+		Print.println("How much do you bid? They have " +gold + " gold to win.");
+		int in =  Input.inInt(gold);
+		Input.linebreak();
 		Inventory bag = Player.player.getPerson().getBag();
 		int bid = Math.max(Math.min(bag.getGold(),Math.min(gold,in)),0);
-		extra.println("You bid " + bid + " gold.");
+		Print.println("You bid " + bid + " gold.");
 		switch (type) {
 		case "cups":
-			extra.println("They place a ball under a cup, then mix it with two other cups...");
-			extra.println("Which cup do you pick?");
-			extra.println("1 cup");
-			extra.println("2 cup");
-			extra.println("3 cup");
-			in =  extra.inInt(3);
-			extra.linebreak();
+			Print.println("They place a ball under a cup, then mix it with two other cups...");
+			Print.println("Which cup do you pick?");
+			Print.println("1 cup");
+			Print.println("2 cup");
+			Print.println("3 cup");
+			in =  Input.inInt(3);
+			Input.linebreak();
 			if (in == 1 || in ==2 || in ==3) {
 				if (Math.random()*3 < 1) {
-					extra.println("You win " + bid  + " gold!");
+					Print.println("You win " + bid  + " gold!");
 					bag.addGold(bid);
 					gold-=bid;
 				}else {
-					extra.println("You lose!");
+					Print.println("You lose!");
 					bag.addGold(-bid);
 					gold+=bid;
 				}
 			}else {
-				extra.println("That's not a cup! They decide to call it a draw.");
+				Print.println("That's not a cup! They decide to call it a draw.");
 			}
-			extra.println("Would you like to play again?");
+			Print.println("Would you like to play again?");
 			go();
 			;break;
 			case "digger":

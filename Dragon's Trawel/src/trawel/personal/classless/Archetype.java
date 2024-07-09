@@ -10,8 +10,10 @@ import java.util.stream.Stream;
 import derg.menus.MenuItem;
 import derg.menus.ScrollMenuGenerator;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.core.Input;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.Person.FeatArchMenuPick;
 import trawel.personal.Person.PersonFlag;
@@ -358,7 +360,7 @@ public enum Archetype implements IHasSkills{
 			if (options.size() == 0) {
 				break;
 			}
-			Archetype choice = extra.randList(options);
+			Archetype choice = Rand.randList(options);
 			options.remove(choice);
 			for (Archetype blocker: list) {
 				if (!choice.canFirstWith(blocker)) {
@@ -391,7 +393,7 @@ public enum Archetype implements IHasSkills{
 			if (options.size() == 0) {
 				break;
 			}
-			Archetype choice = extra.randList(options);
+			Archetype choice = Rand.randList(options);
 			options.remove(choice);
 			for (Archetype blocker: list) {
 				if (!choice.doesAfterWith(blocker)) {
@@ -452,7 +454,7 @@ public enum Archetype implements IHasSkills{
 
 	@Override
 	public boolean goMenuItem() {
-		extra.println("n/a");
+		Print.println("n/a");
 		return false;
 	}
 
@@ -514,11 +516,11 @@ public enum Archetype implements IHasSkills{
 	}
 	
 	public static void menuChooseFirstArchetype(Person person) {
-		extra.println("Please choose a starting Archetype.");
+		Print.println("Please choose a starting Archetype.");
 		List<Archetype> alist = new ArrayList<Archetype>();
 		alist.addAll(ENTRY_LIST_PERSONABLE);
 		//int start_points = person.getFeatPoints();
-		extra.menuGo(new ScrollMenuGenerator(alist.size(),"previous <> Archetypes","next <> Archetypes") {
+		Input.menuGo(new ScrollMenuGenerator(alist.size(),"previous <> Archetypes","next <> Archetypes") {
 			
 			@Override
 			public List<MenuItem> header() {
@@ -543,7 +545,7 @@ public enum Archetype implements IHasSkills{
 	public static void menuChooseSecondArchetype(Person person) {
 		person.updateSkills();
 		Archetype starting = person.getArchSet().stream().findAny().get();
-		extra.println("Please choose a second Unlock to go with "+starting.friendlyName()+".");
+		Print.println("Please choose a second Unlock to go with "+starting.friendlyName()+".");
 		List<IHasSkills> alist = new ArrayList<IHasSkills>();
 		
 		//use player list
@@ -556,7 +558,7 @@ public enum Archetype implements IHasSkills{
 		
 		alist.remove(starting);
 		//int start_points = person.getFeatPoints();
-		extra.menuGo(new ScrollMenuGenerator(alist.size(),"previous <> Unlocks","next <> Unlocks") {
+		Input.menuGo(new ScrollMenuGenerator(alist.size(),"previous <> Unlocks","next <> Unlocks") {
 			
 			@Override
 			public List<MenuItem> header() {

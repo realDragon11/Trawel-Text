@@ -13,7 +13,10 @@ import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.core.Input;
 import trawel.core.Networking;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.core.mainGame;
 import trawel.core.mainGame.DispAttack;
 import trawel.helper.constants.TrawelColor;
@@ -51,7 +54,7 @@ public class AIClass {
 	 * @return a random attack (Attack)
 	 */
 	public static Attack randomAttack(Stance theStance){
-		return theStance.getAttack(extra.getRand().nextInt(theStance.getAttackCount()));
+		return theStance.getAttack(Rand.getRand().nextInt(theStance.getAttackCount()));
 	}
 	/*
 	@Deprecated
@@ -261,7 +264,7 @@ public class AIClass {
 			j++;
 		}
 		
-		if (highestValue <=0) {return extra.randList(attacks);}//if they're all zero, just return a random one
+		if (highestValue <=0) {return Rand.randList(attacks);}//if they're all zero, just return a random one
 		return attacks.get(i);
 	}
 	
@@ -272,7 +275,7 @@ public class AIClass {
 	 * @param aetherStuff if the items can be atom-smashed into aether
 	 */
 	public static void loot(Inventory loot, Inventory stash, boolean aetherStuff, Person p,boolean canEverDisplay) {
-		boolean display = canEverDisplay && !extra.getPrint();
+		boolean display = canEverDisplay && !Print.getPrint();
 		//still do graphical display quickly for the player if connected
 		boolean graphicalDisplay = p.isPlayer() && Networking.connected();
 		int i = 0;
@@ -281,7 +284,7 @@ public class AIClass {
 			while (i < 5) {
 				if (compareItem(stash.getArmorSlot(i),loot.getArmorSlot(i),p)) {
 					if (display) {
-						extra.println(p.getNameNoTitle()+": Took " + loot.getArmorSlot(i).getName() + " over " + stash.getArmorSlot(i).getName()+".");
+						Print.println(p.getNameNoTitle()+": Took " + loot.getArmorSlot(i).getName() + " over " + stash.getArmorSlot(i).getName()+".");
 					}
 					if (aetherStuff) {
 						Services.aetherifyItem(stash.getArmorSlot(i),stash,display);
@@ -332,7 +335,7 @@ public class AIClass {
 					Networking.waitIfConnected(200L);
 				}
 				if (display) {
-					extra.println(p.getNameNoTitle()+": Took " + loot.getHand().getName() + " over " + stash.getHand().getName()+".");
+					Print.println(p.getNameNoTitle()+": Took " + loot.getHand().getName() + " over " + stash.getHand().getName()+".");
 				}
 				if (aetherStuff) {
 					Services.aetherifyItem(stash.getHand(),stash,display);
@@ -373,7 +376,7 @@ public class AIClass {
 			for (DrawBane db: loot.getDrawBanes()) {
 				stash.addNewDrawBanePlayer(db);
 			}
-			extra.endBackingSegment();
+			Input.endBackingSegment();
 		}else {
 			//MAYBELATER drawbane taking ai
 		}
@@ -385,12 +388,12 @@ public class AIClass {
 				stash.addGold(money);
 				loot.removeAllCurrency();
 				if (display) {
-					extra.println(p.getName() + " claims the " + aether + " aether"+(money > 0 ? " and " + World.currentMoneyDisplay(money) + "." : "."));
+					Print.println(p.getName() + " claims the " + aether + " aether"+(money > 0 ? " and " + World.currentMoneyDisplay(money) + "." : "."));
 				}
 			}else {
 				loot.removeAether();
 				if (display) {
-					extra.println(p.getName() + " gains " + aether + " aether.");
+					Print.println(p.getName() + " gains " + aether + " aether.");
 				}
 			}
 		}
@@ -411,24 +414,24 @@ public class AIClass {
 	 */
 	public static void playerDispLootChanges() {
 		if (Player.aLootHand != Player.bag.getHand()) {
-			extra.println("AutoLoot: TOOK " + Player.bag.getHand().getName() + " OVER " + Player.aLootHand.getName()+".");
+			Print.println("AutoLoot: TOOK " + Player.bag.getHand().getName() + " OVER " + Player.aLootHand.getName()+".");
 		}
 		for (int i = 0; i < 5;i++) {
 			if (Player.aLootArmors[i] != Player.bag.getArmorSlot(i)) {
-				extra.println("AutoLoot: TOOK " + Player.bag.getArmorSlot(i).getName() + " OVER " + Player.aLootArmors[i].getName()+".");
+				Print.println("AutoLoot: TOOK " + Player.bag.getArmorSlot(i).getName() + " OVER " + Player.aLootArmors[i].getName()+".");
 			}
 		}
 		if (Player.aLootAether != Player.bag.getAether()) {
-			extra.println("Aether: " + (Player.bag.getAether()-Player.aLootAether));
+			Print.println("Aether: " + (Player.bag.getAether()-Player.aLootAether));
 		}
 		if (Player.aLootLocal != Player.bag.getGold()) {
-			extra.println("Local ("+World.currentMoneyString()+"): " + (Player.bag.getGold()-Player.aLootLocal));
+			Print.println("Local ("+World.currentMoneyString()+"): " + (Player.bag.getGold()-Player.aLootLocal));
 		}
 	}
 	
 	public static void playerLoot(Inventory loot, boolean canAtomSmash) {
 		boolean normalLoot = loot.getRace().racialType == Race.RaceType.PERSONABLE;
-		extra.endBackingSegment();
+		Input.endBackingSegment();
 		if (Player.player.getPerson().getFlag(PersonFlag.AUTOLOOT)) {
 			//we can use canAtomSmash to decide to display the updates here or if they're managed by a greater
 			//looting function, as with mass battles
@@ -444,7 +447,7 @@ public class AIClass {
 		}
 		
 		if (normalLoot && Player.getTutorial()) {
-			extra.println("You are now looting something! The first item presented will be the new item, the second, your current item, and finally, the difference will be shown. Some items may be autosold if all their visible stats are worse.");
+			Print.println("You are now looting something! The first item presented will be the new item, the second, your current item, and finally, the difference will be shown. Some items may be autosold if all their visible stats are worse.");
 		}
 		
 		if (normalLoot) {
@@ -454,11 +457,11 @@ public class AIClass {
 				//int slot = a.getSlot();
 				if (replaceArmor != a) {
 					if (replaceArmor == null) {
-						extra.println("You swap for the " + a.getName() + ".");
+						Print.println("You swap for the " + a.getName() + ".");
 					}else {
 						if (canAtomSmash) {
 							Services.aetherifyItem(replaceArmor,Player.bag,true);
-							extra.println("You swap for the " + a.getName() + ".");
+							Print.println("You swap for the " + a.getName() + ".");
 							loot.nullArmorSlot(a.getSlot());
 						}else {
 							//loot.swapArmorSlot(Player.bag.swapArmorSlot(a,slot), slot);
@@ -487,11 +490,11 @@ public class AIClass {
 			Item replaceWeap = playerLootCompareItem(weap, canAtomSmash);
 			if (replaceWeap != weap) {
 				if (replaceWeap == null) {
-					extra.println("You swap for the " + weap.getName() + ".");
+					Print.println("You swap for the " + weap.getName() + ".");
 				}else {
 					if (canAtomSmash) {
 						Services.aetherifyItem(replaceWeap,Player.bag,true);
-						extra.println("You swap for the " + weap.getName() + ".");
+						Print.println("You swap for the " + weap.getName() + ".");
 					}
 				}
 			}else {
@@ -519,11 +522,11 @@ public class AIClass {
 			}
 		}
 		Networking.charUpdate();
-		extra.endBackingSegment();
+		Input.endBackingSegment();
 		for (DrawBane db: loot.getDrawBanes()) {
 			Player.bag.addNewDrawBanePlayer(db);
 		}
-		extra.endBackingSegment();
+		Input.endBackingSegment();
 		loot.clearDrawBanes();
 		if (canAtomSmash) {
 			int aether = loot.getAether();
@@ -531,16 +534,16 @@ public class AIClass {
 			int money = loot.getGold();
 			if (loot.owner != null && loot.owner.getSuper() != null) {
 				Player.player.takeGold(loot.owner.getSuper());
-				extra.println("You claim the " + aether + " aether"+(money > 0 ? " and " + World.currentMoneyDisplay(money) + "." : ".") +" And also any other world currency.");
+				Print.println("You claim the " + aether + " aether"+(money > 0 ? " and " + World.currentMoneyDisplay(money) + "." : ".") +" And also any other world currency.");
 				loot.removeAllCurrency();
 			}else {
 				if (money > 0) {
 					Player.bag.addGold(money);
 					loot.removeAllCurrency();
-					extra.println("You claim the " + aether + " aether"+(money > 0 ? " and " + World.currentMoneyDisplay(money) + "." : "."));
+					Print.println("You claim the " + aether + " aether"+(money > 0 ? " and " + World.currentMoneyDisplay(money) + "." : "."));
 				}else {
 					loot.removeAether();
-					extra.println("You gain " + aether + " aether.");
+					Print.println("You gain " + aether + " aether.");
 				}
 			}
 		}
@@ -603,15 +606,15 @@ public class AIClass {
 		if (delta < 0) {
 			Player.bag.addAether(delta);
 			int aetherDelta = -delta;
-			extra.println(TrawelColor.RESULT_PASS+"You complete the trade."
+			Print.println(TrawelColor.RESULT_PASS+"You complete the trade."
 			+ (aetherDelta > 0 ? " Spent " +aetherDelta +" aether." : "")
 			);
 		}else {
 			if (delta > 0) {//we sold something more expensive
 				Player.bag.addAether(delta);
-				extra.println("You complete the trade, gaining " + delta +" aether.");
+				Print.println("You complete the trade, gaining " + delta +" aether.");
 			}else {//equal value
-				extra.println("You complete the trade.");
+				Print.println("You complete the trade.");
 			}
 		}
 		
@@ -633,7 +636,7 @@ public class AIClass {
 		}
 		final boolean finalAllowedNotGiveBack = allowedNotGiveBack;
 		Item[] ret = new Item[1];
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -643,24 +646,24 @@ public class AIClass {
 				boolean canSwap = true;
 				if (store != null) {
 					int delta = -store.getDelta(current,thinking,Player.player);
-					extra.println("Buy the");
+					Print.println("Buy the");
 					thinking.display(store,true,3);
-					extra.println("replacing your");
+					Print.println("replacing your");
 					current.display(store,false,3);
 					displayChange(current,thinking,Player.player.getPerson(),store);
 					int buyPower = Player.bag.getAether();//Player.player.getTotalBuyPower(store.aetherPerMoney(Player.player.getPerson()));
-					extra.println("Aether Needed: " +delta + "/"+buyPower);
+					Print.println("Aether Needed: " +delta + "/"+buyPower);
 					if (buyPower < delta) {
 						canSwap = false;
 					}
 				}else {
-					extra.println("Use the");
+					Print.println("Use the");
 					thinking.display(1);
-					extra.println("instead of your");
+					Print.println("instead of your");
 					current.display(1);
 					displayChange(current,thinking, Player.player.getPerson());
 				}
-				extra.println("Current Capacity: " + Player.player.getPerson().capacityDesc());
+				Print.println("Current Capacity: " + Player.player.getPerson().capacityDesc());
 				
 				final boolean fCanSwap = canSwap;
 				list.add(new MenuSelect() {
@@ -673,7 +676,7 @@ public class AIClass {
 					@Override
 					public boolean go() {
 						if (!fCanSwap) {
-							extra.println("You cannot afford that trade.");
+							Print.println("You cannot afford that trade.");
 							return false;
 						}
 						ret[0] = current;
@@ -692,11 +695,11 @@ public class AIClass {
 					public boolean go() {
 						if (store == null) {
 							thinking.display(4);
-							extra.inputContinue();
+							Input.inputContinue();
 							return false;
 						}
 						thinking.display(store,true,5);
-						extra.inputContinue();
+						Input.inputContinue();
 						return false;
 					}});
 				list.add(new MenuSelect() {
@@ -710,11 +713,11 @@ public class AIClass {
 					public boolean go() {
 						if (store == null) {
 							current.display(4);
-							extra.inputContinue();
+							Input.inputContinue();
 							return false;
 						}
 						current.display(store,false,5);
-						extra.inputContinue();
+						Input.inputContinue();
 						return false;
 					}});
 				
@@ -742,7 +745,7 @@ public class AIClass {
 							@Override
 							public boolean go() {
 								if (!fCanSwap) {
-									extra.println("You cannot afford that trade.");
+									Print.println("You cannot afford that trade.");
 									return false;
 								}
 								ret[0] = null;
@@ -758,7 +761,7 @@ public class AIClass {
 							@Override
 							public boolean go() {
 								if (!fCanSwap) {
-									extra.println("You cannot afford that trade.");
+									Print.println("You cannot afford that trade.");
 									return false;
 								}
 								ret[0] = null;
@@ -853,8 +856,8 @@ public class AIClass {
 	
 	public static void displayChange(Item hasItem, Item toReplace, Person p, Store s) {
 		//p is used to display absolute stat changes instead of just raw stats like the non-diff
-		extra.println(" ");
-		extra.println(TrawelColor.STAT_HEADER+"Difference"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_DESC_PROP+"L " +TrawelColor.softColorDelta0(toReplace.getLevel(),hasItem.getLevel()));
+		Print.println(" ");
+		Print.println(TrawelColor.STAT_HEADER+"Difference"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_DESC_PROP+"L " +TrawelColor.softColorDelta0(toReplace.getLevel(),hasItem.getLevel()));
 		int costDiff = 0;
 		String costName = "aether";
 		/*if (s == null) {
@@ -875,9 +878,9 @@ public class AIClass {
 			Armor hasArm = (Armor) hasItem;
 			Armor toArm = (Armor) toReplace;
 			if (Player.getTutorial()) {
-				extra.println("SBP = sharp, blunt, pierce");
+				Print.println("SBP = sharp, blunt, pierce");
 			}
-			extra.println(" "+
+			Print.println(" "+
 			TrawelColor.ITEM_DESC_PROP+extra.CHAR_SHARP
 			+" "+TrawelColor.hardColorDelta1Elide(toArm.getSharpResist(),hasArm.getSharpResist())
 			+ TrawelColor.PRE_WHITE+" / "
@@ -895,19 +898,19 @@ public class AIClass {
 			if (hasItem.getEnchant() != null || toReplace.getEnchant() != null) {
 				displayEnchantDiff(hasItem.getEnchant(),toReplace.getEnchant());
 			}
-			hasArm.getQuals().stream().filter(q -> !toArm.getQuals().contains(q)).forEach(q -> extra.println(" -"+q.removeText()));
-			toArm.getQuals().stream().filter(q -> !hasArm.getQuals().contains(q)).forEach(q -> extra.println(" +"+q.addText()));
+			hasArm.getQuals().stream().filter(q -> !toArm.getQuals().contains(q)).forEach(q -> Print.println(" -"+q.removeText()));
+			toArm.getQuals().stream().filter(q -> !hasArm.getQuals().contains(q)).forEach(q -> Print.println(" +"+q.addText()));
 		}else {
 			if (Weapon.class.isInstance(hasItem)) {
 				Weapon hasWeap = (Weapon)hasItem;
 				Weapon toWeap = (Weapon)toReplace;
 				if (Player.getTutorial()) {
-					extra.println("ic = impact chance, bd = best damage, wa = weighted average damage");
+					Print.println("ic = impact chance, bd = best damage, wa = weighted average damage");
 				}
 				boolean isQDiff = !toWeap.equalQuals(hasWeap);
 				int qualDiff = isQDiff ? toWeap.numQual()-hasWeap.numQual() : 0;
 				
-				extra.println(" "+TrawelColor.ITEM_DESC_PROP+" ic/bd/wa: " 
+				Print.println(" "+TrawelColor.ITEM_DESC_PROP+" ic/bd/wa: " 
 				+ (TrawelColor.softColorDelta2Elide(toWeap.scoreImpact(),hasWeap.scoreImpact()))
 				+ TrawelColor.PRE_WHITE+"/"
 				+ (TrawelColor.hardColorDelta2Elide(toWeap.scoreBest(),hasWeap.scoreBest()))
@@ -924,7 +927,7 @@ public class AIClass {
 					displayEnchantDiff(((Weapon)hasItem).getEnchant(),((Weapon)toReplace).getEnchant());
 				}
 			}else {
-				extra.println(priceDiffDisp(costDiff,costName,s));
+				Print.println(priceDiffDisp(costDiff,costName,s));
 			}
 		}
 		
@@ -967,7 +970,7 @@ public class AIClass {
 			enchantDiff(0,toReplace.getShockMod(),"shock");
 			enchantDiff(0,toReplace.getFreezeMod(),"frost");
 			if (toReplace.isKeen()) {
-				extra.println(TrawelColor.PRE_GREEN+" +Keen");
+				Print.println(TrawelColor.PRE_GREEN+" +Keen");
 			}
 		}else {
 			if (toReplace == null) {
@@ -980,7 +983,7 @@ public class AIClass {
 				enchantDiff(hasItem.getShockMod(),0,"shock");
 				enchantDiff(hasItem.getFreezeMod(),0,"frost");
 				if (hasItem.isKeen()) {
-					extra.println(TrawelColor.PRE_RED+" -Keen");
+					Print.println(TrawelColor.PRE_RED+" -Keen");
 				}
 			}else {
 				enchantDiff(hasItem.getAimMod(),toReplace.getAimMod(),"aim");
@@ -994,11 +997,11 @@ public class AIClass {
 				//enchantDiff(hasItem,toReplace,"aim");
 				if (hasItem.isKeen()) {
 					if (!toReplace.isKeen()) {
-						extra.println(TrawelColor.PRE_RED+" -Keen");
+						Print.println(TrawelColor.PRE_RED+" -Keen");
 					}
 				}else {
 					if (toReplace.isKeen()) {
-						extra.println(TrawelColor.PRE_GREEN+" +Keen");
+						Print.println(TrawelColor.PRE_GREEN+" +Keen");
 					}
 				}
 			}
@@ -1008,7 +1011,7 @@ public class AIClass {
 	
 	private static void enchantDiff(float has, float get, String name) {
 		if (has-get != 0) {
-			extra.println(" " +TrawelColor.hardColorDelta2(get,has) + " " + name + " mult");
+			Print.println(" " +TrawelColor.hardColorDelta2(get,has) + " " + name + " mult");
 		}
 	}
 	
@@ -1016,7 +1019,7 @@ public class AIClass {
 		if (attacker.isPlayer()) {
 			if (attacker.getFlag(PersonFlag.AUTOBATTLE)) {
 				ImpairedAttack att = AIClass.attackTest(attacks, 4, combat, attacker, defender);
-				extra.menuGo(new MenuGenerator() {
+				Input.menuGo(new MenuGenerator() {
 
 					@Override
 					public List<MenuItem> gen() {
@@ -1037,30 +1040,30 @@ public class AIClass {
 					switch (mainGame.attackDisplayStyle) {
 					case SIMPLIFIED:
 						if (combat.turns > 0) {
-							extra.println(" ");
-							extra.println(attacker.inlineHPColor()+"You are "+attacker.getNameNoTitle()+".");
-							extra.println(
+							Print.println(" ");
+							Print.println(attacker.inlineHPColor()+"You are "+attacker.getNameNoTitle()+".");
+							Print.println(
 									combat.prettyHPIndex(Player.lastAttackStringer)
 									);
 						}
-						extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),TrawelColor.PRE_WHITE, defender)+": ");
+						Print.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),TrawelColor.PRE_WHITE, defender)+": ");
 						for(ImpairedAttack a: attacks) {
-							extra.print(j + " ");
+							Print.print(j + " ");
 							a.display(3);
 							j++;
 						}
 						break;
 					case CLASSIC:
 						if (combat.turns > 0) {
-							extra.println(" ");
-							extra.println(attacker.inlineHPColor()+"You are "+attacker.getNameNoTitle()+".");
-							extra.println(
+							Print.println(" ");
+							Print.println(attacker.inlineHPColor()+"You are "+attacker.getNameNoTitle()+".");
+							Print.println(
 									combat.prettyHPIndex(Player.lastAttackStringer)
 									);
 						}
-						extra.println("     name                hit    delay    sharp    blunt     pierce");
+						Print.println("     name                hit    delay    sharp    blunt     pierce");
 						for(ImpairedAttack a: attacks) {
-							extra.print(j + "    ");
+							Print.print(j + "    ");
 							a.display(1);
 							j++;
 						}
@@ -1068,35 +1071,35 @@ public class AIClass {
 					case TWO_LINE1_WITH_KEY:
 					case TWO_LINE1:
 						if (combat.turns > 0) {
-							extra.println(" ");
-							extra.println(attacker.inlineHPColor()+"You are "+attacker.getNameNoTitle()+".");
-							extra.println(
+							Print.println(" ");
+							Print.println(attacker.inlineHPColor()+"You are "+attacker.getNameNoTitle()+".");
+							Print.println(
 									combat.prettyHPIndex(Player.lastAttackStringer)
 									);
 						}
 						if (mainGame.attackDisplayStyle == DispAttack.TWO_LINE1_WITH_KEY) {
-							extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),TrawelColor.PRE_WHITE, defender)+": " + extra.CHAR_HITCHANCE + " hitmult; " +extra.CHAR_INSTANTS+" warmup cooldown; "+
+							Print.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),TrawelColor.PRE_WHITE, defender)+": " + extra.CHAR_HITCHANCE + " hitmult; " +extra.CHAR_INSTANTS+" warmup cooldown; "+
 									ImpairedAttack.EXPLAIN_DAMAGE_TYPES());
 						}else {
-							extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),TrawelColor.PRE_WHITE, defender)+": ");
+							Print.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),TrawelColor.PRE_WHITE, defender)+": ");
 						}
 						for(ImpairedAttack a: attacks) {
-							extra.print(j + " ");
+							Print.print(j + " ");
 							a.display(2);
 							j++;
 						}
 						break;
 					}
 					if (tactics.size() > 0) {
-						extra.println(j++ + " Tactics.");
+						Print.println(j++ + " Tactics.");
 					}
-					extra.println("9 Examine.");
-					numb = extra.inInt(j,true,false);
+					Print.println("9 Examine.");
+					numb = Input.inInt(j,true,false);
 				}else {
 					numb = -numb;//restore attack choice
 				}
 				if (numb == 9) {
-					extra.menuGo(new MenuGenerator() {
+					Input.menuGo(new MenuGenerator() {
 
 						@Override
 						public List<MenuItem> gen() {
@@ -1116,7 +1119,7 @@ public class AIClass {
 
 								@Override
 								public boolean go() {
-									extra.println(TrawelColor.STAT_HEADER+attacker.getName()+": ");
+									Print.println(TrawelColor.STAT_HEADER+attacker.getName()+": ");
 									attacker.displayHp();
 									attacker.displayArmor();
 									attacker.displayEffects();
@@ -1131,7 +1134,7 @@ public class AIClass {
 
 								@Override
 								public boolean go() {
-									extra.println(TrawelColor.STAT_HEADER+attacker.getName()+": ");
+									Print.println(TrawelColor.STAT_HEADER+attacker.getName()+": ");
 									if (mainGame.advancedCombatDisplay) {
 										attacker.debug_print_status(0);
 									}
@@ -1147,7 +1150,7 @@ public class AIClass {
 
 								@Override
 								public boolean go() {
-									extra.println(TrawelColor.STAT_HEADER+defender.getName()+": ");
+									Print.println(TrawelColor.STAT_HEADER+defender.getName()+": ");
 									defender.displayHp();
 									defender.displayArmor();
 									defender.displayEffects();
@@ -1162,7 +1165,7 @@ public class AIClass {
 
 								@Override
 								public boolean go() {
-									extra.println(TrawelColor.STAT_HEADER+defender.getName()+": ");
+									Print.println(TrawelColor.STAT_HEADER+defender.getName()+": ");
 									if (mainGame.advancedCombatDisplay) {
 										defender.debug_print_status(0);
 									}
@@ -1181,7 +1184,7 @@ public class AIClass {
 									defender.displayStatOverview(true);
 									String[] attributes = defender.attributeDesc();
 									for (int i = 0;i < attributes.length;i++) {
-										extra.println(attributes[i]);
+										Print.println(attributes[i]);
 									}
 									defender.displaySkills();
 									return false;
@@ -1216,7 +1219,7 @@ public class AIClass {
 					if (numb > attacks.size()) {//if past the list, which is already one behind, go to tactics screen
 						assert tactics.size() > 0;
 						ImpairedAttack[] tacticPick = new ImpairedAttack[1];
-						extra.menuGo(new ScrollMenuGenerator(tactics.size(),"Last <> Tactics.","Next <> Tactics.") {
+						Input.menuGo(new ScrollMenuGenerator(tactics.size(),"Last <> Tactics.","Next <> Tactics.") {
 
 							@Override
 							public List<MenuItem> forSlot(int i) {

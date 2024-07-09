@@ -8,10 +8,12 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.core.Input;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Item;
@@ -40,7 +42,7 @@ public class Blacksmith extends Feature {
 	public Blacksmith(int tier, Store s){
 		this.tier = tier;
 		this.store = s;
-		name = store.getName() +" " + extra.choose("Smith","Blacksmith","Smithy","Forge");
+		name = store.getName() +" " + Rand.choose("Smith","Blacksmith","Smithy","Forge");
 		tutorialText = "Blacksmith";
 		area_type = Area.MISC_SERVICE;
 	}
@@ -52,7 +54,7 @@ public class Blacksmith extends Feature {
 	
 	@Override
 	public void go() {
-		extra.menuGo(new MenuGenerator() {
+		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
@@ -77,12 +79,12 @@ public class Blacksmith extends Feature {
 							Player.player.loseGold(forgePrice);
 							Item i = store.addAnItem();
 							if (i == null) {
-								extra.println(TrawelColor.RESULT_PASS+"An item has been forged and sent to " + store.getName() + "!");
+								Print.println(TrawelColor.RESULT_PASS+"An item has been forged and sent to " + store.getName() + "!");
 							}else {
-								extra.println(i.getName() +TrawelColor.RESULT_PASS+ " was created and put on sale in " + store.getName()+"!");
+								Print.println(i.getName() +TrawelColor.RESULT_PASS+ " was created and put on sale in " + store.getName()+"!");
 							}
 						}else {
-							extra.println(TrawelColor.RESULT_ERROR+"You can't afford that!");
+							Print.println(TrawelColor.RESULT_ERROR+"You can't afford that!");
 						}
 						return false;
 					}});
@@ -106,7 +108,7 @@ public class Blacksmith extends Feature {
 							item = Player.bag.getHand();
 						}
 						if (item.getLevel() >= tier) {
-							extra.println(TrawelColor.RESULT_ERROR+"This item is too high in level to improve here!");
+							Print.println(TrawelColor.RESULT_ERROR+"This item is too high in level to improve here!");
 							return false;
 						}
 						int mcost = item.getMoneyValue();
@@ -114,19 +116,19 @@ public class Blacksmith extends Feature {
 						String costString = World.currentMoneyDisplay(mcost) + " and " +acost + " aether";
 						if (Player.player.getGold() < mcost) {
 							if (Player.bag.getAether() < acost) {
-								extra.println(TrawelColor.RESULT_ERROR+"You can't afford to improve '"+item.getName()+"'. ("+costString+")");
+								Print.println(TrawelColor.RESULT_ERROR+"You can't afford to improve '"+item.getName()+"'. ("+costString+")");
 							}else {
-								extra.println(TrawelColor.RESULT_ERROR+"You can't afford to pay the blacksmith to improve '"+item.getName()+"'. ("+costString+")");
+								Print.println(TrawelColor.RESULT_ERROR+"You can't afford to pay the blacksmith to improve '"+item.getName()+"'. ("+costString+")");
 							}
 							return false;
 						}
 						if (Player.bag.getAether() < acost) {
-							extra.println(TrawelColor.RESULT_ERROR+"You don't have enough aether to improve '"+item.getName()+"'. ("+costString+")");
+							Print.println(TrawelColor.RESULT_ERROR+"You don't have enough aether to improve '"+item.getName()+"'. ("+costString+")");
 							return false;
 						}
-						extra.println("Improve your item to +" + (item.getLevel()+1) + " for "+costString+"?");
-						if (extra.yesNo()) {
-							extra.println(TrawelColor.RESULT_PASS+"Item improved.");
+						Print.println("Improve your item to +" + (item.getLevel()+1) + " for "+costString+"?");
+						if (Input.yesNo()) {
+							Print.println(TrawelColor.RESULT_PASS+"Item improved.");
 							Player.player.loseGold(mcost);
 							Player.bag.addAether(-acost);
 							item.levelUp();
@@ -155,11 +157,11 @@ public class Blacksmith extends Feature {
 							item = Player.bag.getHand();
 						}
 						if (!item.hasNegQuality()) {
-							extra.println(item.getName() +TrawelColor.RESULT_ERROR+ " does not have any negative qualities!");
+							Print.println(item.getName() +TrawelColor.RESULT_ERROR+ " does not have any negative qualities!");
 							return false;
 						}
 						if (item.getLevel() > tier) {
-							extra.println(item.getName()+TrawelColor.RESULT_ERROR+" is too high in level ("+item.getLevel()+") to temper here!");
+							Print.println(item.getName()+TrawelColor.RESULT_ERROR+" is too high in level ("+item.getLevel()+") to temper here!");
 							return false;
 						}
 						int mcost = item.getMoneyValue();
@@ -167,23 +169,23 @@ public class Blacksmith extends Feature {
 						String costString = World.currentMoneyDisplay(mcost) + " and " +acost + " amber";
 						if (Player.player.getGold() < mcost) {
 							if (Gem.AMBER.getGem() < acost) {
-								extra.println(TrawelColor.RESULT_ERROR+"You can't afford to temper '"+item.getName()+"'. ("+costString+")");
+								Print.println(TrawelColor.RESULT_ERROR+"You can't afford to temper '"+item.getName()+"'. ("+costString+")");
 							}else {
-								extra.println(TrawelColor.RESULT_ERROR+"You can't afford to pay the blacksmith to temper '"+item.getName()+"'. ("+costString+")");
+								Print.println(TrawelColor.RESULT_ERROR+"You can't afford to pay the blacksmith to temper '"+item.getName()+"'. ("+costString+")");
 							}
 							return false;
 						}
 						if (Gem.AMBER.getGem() < acost) {
-							extra.println(TrawelColor.RESULT_ERROR+"You don't have enough amber to temper '"+item.getName()+"'. ("+costString+")");
+							Print.println(TrawelColor.RESULT_ERROR+"You don't have enough amber to temper '"+item.getName()+"'. ("+costString+")");
 							return false;
 						}
-						extra.println("Temper your "+item.getName()+" for "+costString+"?");
-						if (extra.yesNo()) {
+						Print.println("Temper your "+item.getName()+" for "+costString+"?");
+						if (Input.yesNo()) {
 							if (item.temperNegQuality(1) == 0) {
-								extra.println(TrawelColor.RESULT_FAIL+"Tempering failed.");
+								Print.println(TrawelColor.RESULT_FAIL+"Tempering failed.");
 								return false;
 							}
-							extra.println(TrawelColor.RESULT_PASS+"Item tempered.");
+							Print.println(TrawelColor.RESULT_PASS+"Item tempered.");
 							Player.player.loseGold(mcost);
 							Gem.AMBER.changeGem(-acost);
 							item.display(1);
@@ -204,11 +206,11 @@ public class Blacksmith extends Feature {
 						public boolean go() {
 							if (Player.player.getGold() >= repairCost) {
 								Player.player.loseGold(repairCost);
-								extra.println(TrawelColor.RESULT_PASS+" They tinker with your equipment.");
+								Print.println(TrawelColor.RESULT_PASS+" They tinker with your equipment.");
 								//next call displays the effect results
 								Player.player.getPerson().repairEffects();
 							}else {
-								extra.println(TrawelColor.RESULT_ERROR+"You can't afford that!");
+								Print.println(TrawelColor.RESULT_ERROR+"You can't afford that!");
 							}
 							return false;
 						}});
@@ -223,7 +225,7 @@ public class Blacksmith extends Feature {
 		time -= addtime;
 		if (time <= 0) {
 			store.addAnItem();//TODO: should probably add in event?
-			time = 12+(extra.randFloat()*30);
+			time = 12+(Rand.randFloat()*30);
 		}
 		return null;
 	}

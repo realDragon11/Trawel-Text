@@ -2,8 +2,9 @@ package trawel.personal.item.magic;
 
 import java.awt.Color;
 
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 
 public class EnchantHit extends Enchant {
@@ -19,24 +20,24 @@ public class EnchantHit extends Enchant {
 		fireMod = 0;
 		freezeMod = 0;
 		shockMod = 0;
-		if (!forceElemental && extra.chanceIn(1, 3)) {
+		if (!forceElemental && Rand.chanceIn(1, 3)) {
 			isKeen = true;
 			enchantstyle = 0;
 			name = randomLists.enchantHitKeen();
 			colorSaved = TrawelColor.inlineColor(TrawelColor.colorMix(Color.PINK,Color.LIGHT_GRAY,.5f));
 		}else {
-			switch (extra.randRange(1,3)) {
-			case 1: fireMod = extra.randFloat()*powMod/2;
+			switch (Rand.randRange(1,3)) {
+			case 1: fireMod = Rand.randFloat()*powMod/2;
 			name = randomLists.enchantHitIgnite();
 			enchantstyle = 3;
 			colorSaved = TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED,Color.LIGHT_GRAY,.5f));
 			break;
-			case 2: shockMod = extra.randFloat()*powMod/2;
+			case 2: shockMod = Rand.randFloat()*powMod/2;
 			name = randomLists.enchantHitElec();
 			enchantstyle = 2;
 			colorSaved = TrawelColor.inlineColor(TrawelColor.colorMix(Color.YELLOW,Color.LIGHT_GRAY,.5f));
 			break;
-			case 3: freezeMod = extra.randFloat()*powMod/2;
+			case 3: freezeMod = Rand.randFloat()*powMod/2;
 			name = randomLists.enchantHitFrost();
 			enchantstyle = 1;
 			colorSaved = TrawelColor.inlineColor(TrawelColor.colorMix(Color.BLUE,Color.LIGHT_GRAY,.5f));
@@ -70,7 +71,7 @@ public class EnchantHit extends Enchant {
 	@Override
 	public void display(int i) {
 		if (isKeen) {
-			extra.println(TrawelColor.ITEM_WANT_HIGHER+" Keen");
+			Print.println(TrawelColor.ITEM_WANT_HIGHER+" Keen");
 		}
 		double d = 0;
 		String str = null;
@@ -81,7 +82,7 @@ public class EnchantHit extends Enchant {
 		case 2:	d = getFreezeMod(); str = colorSaved+"frost";break;
 		}
 		if (d != 0) {
-			extra.println("  "+TrawelColor.ITEM_WANT_HIGHER +extra.format(d) + "x " + str);
+			Print.println("  "+TrawelColor.ITEM_WANT_HIGHER +Print.format(d) + "x " + str);
 		}
 		
 		}

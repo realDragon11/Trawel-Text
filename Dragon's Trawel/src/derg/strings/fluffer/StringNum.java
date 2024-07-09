@@ -1,6 +1,6 @@
 package derg.strings.fluffer;
 
-import trawel.helper.methods.extra;
+import trawel.core.Rand;
 
 /**
  * used for StringResults that let you faux-'seed' them, (get a number of the results and then use that to get a result later)
@@ -60,6 +60,6 @@ public abstract class StringNum extends StringResult{
 	 */
 	public byte getNumByte() {
 		assert getMaxNum() < 256;//we can probably do 256 since we use 0
-		return (byte) extra.getRand().nextInt(getMaxNum());
+		return (byte) Rand.getRand().nextInt(getMaxNum());
 	}
 }

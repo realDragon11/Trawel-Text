@@ -169,7 +169,7 @@ public class Networking {
 	
 	
 	public static void send(String str) {
-		if (!extra.getPrint()) {
+		if (!Print.getPrint()) {
 			sendStrong(str);
 		}
 	}
@@ -521,7 +521,7 @@ public class Networking {
 	
 	public static void playHitConnect(ImpairedAttack att, Inventory def, boolean boostSound, boolean deflectSound) {
 		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"
-				+extra.clamp(att.getAttack().getSoundIntensity() + (boostSound ? extra.randRange(0,1) : 0)+ (deflectSound ? -extra.randRange(0,1) : 0),0,2)
+				+extra.clamp(att.getAttack().getSoundIntensity() + (boostSound ? Rand.randRange(0,1) : 0)+ (deflectSound ? -Rand.randRange(0,1) : 0),0,2)
 				+"|" +att.getAttack().getSoundType()+"|");
 	}
 	

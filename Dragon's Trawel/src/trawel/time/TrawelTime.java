@@ -1,8 +1,8 @@
 package trawel.time;
 
 import trawel.core.Networking;
+import trawel.core.Print;
 import trawel.core.mainGame;
-import trawel.helper.methods.extra;
 import trawel.personal.people.Player;
 import trawel.towns.data.WorldGen;
 
@@ -16,7 +16,7 @@ public class TrawelTime {
 			boolean largeTimePassing = false;
 			if (Player.peekTime() > 24) {
 				largeTimePassing = true;
-				extra.println("Passing "+extra.F_WHOLE.format(Player.peekTime())+" hours.");
+				Print.println("Passing "+Print.F_WHOLE.format(Player.peekTime())+" hours.");
 			}
 			double passAmount = 1;
 			while (Player.peekTime() > 0) {

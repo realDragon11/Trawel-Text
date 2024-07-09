@@ -9,7 +9,8 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Fixture;
 import scimech.mech.TurnSubscriber;
-import trawel.helper.methods.extra;
+import trawel.core.Print;
+import trawel.core.Rand;
 
 public class LightAutocannon extends Fixture{
 
@@ -24,14 +25,14 @@ public class LightAutocannon extends Fixture{
 				hits++;
 			}
 			if (!t.isDummy()) {
-				if (extra.chanceIn(2,3)) {
+				if (Rand.chanceIn(2,3)) {
 					currentMount.takeHeat(1);
 				}
 			}
-			acc-=extra.randRange(1, 3);
+			acc-=Rand.randRange(1, 3);
 		}
 		if (!t.isDummy()) {
-			extra.print("The Light Autocannon attacks! " + hits + " hits! ");
+			Print.print("The Light Autocannon attacks! " + hits + " hits! ");
 		}
 		
 	}

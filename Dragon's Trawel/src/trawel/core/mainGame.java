@@ -155,12 +155,12 @@ public class mainGame {
 
 	public static void mainMenu() {
 		//log("gen main menu 0");
-		extra.menuGo(new MenuGenerator(){
+		Input.menuGo(new MenuGenerator(){
 
 			@Override
 			public List<MenuItem> gen() {
 				//log("gen main menu 1");
-				extra.changePrint(false);
+				Print.changePrint(false);
 				//log("gen main menu 2");
 				Networking.richDesc("Character Select");
 				Networking.sendStrong("Visual|MainMenu|");
@@ -192,10 +192,10 @@ public class mainGame {
 						forceSetup();
 						Networking.clearSides();
 						for (int i = 1; i < 9; i++) {
-							extra.println(i+" slot: "+SaveManager.checkNameInFile(""+i));
+							Print.println(i+" slot: "+SaveManager.checkNameInFile(""+i));
 						}
-						extra.println("9 autosave: "+SaveManager.checkNameInFile("auto"));
-						int in = extra.inInt(9);
+						Print.println("9 autosave: "+SaveManager.checkNameInFile("auto"));
+						int in = Input.inInt(9);
 						SaveManager.load(in == 9 ? "auto" : in+"");
 						boolean runit;
 						try {
@@ -225,13 +225,13 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
-						extra.println("In Trawel, you navigate the game world, and make choices, with numbered menu lists.");
-						extra.println("In Trawel proper (some subgames differ), there will never be an option presented that is greater than 9 or less than 1. Some newer menus have scrolling, but they will only ever show a max of 9 options at a time.");
-						extra.println("If you're playing from Steam, you can click these options, press a number key (numpad or number row), or even use a controller. If you're using the terminal, you'll have to input the number and then press enter.");
-						extra.println("Terminal Only: The 'command prompt' also lets you input 0 to attempt to leave the current menu, and 10 to attempt to leave up to 10 menus. This will only work if there is a 'pinned' back option, and that option isn't considered to lead in circles. Usually you'll end up at the town screen, but older menus might not have a pinned back out, some don't have backing out by design, and others wouldn't make sense to back out of. It will also 'break' the backing out if the state changes, for example after you finish looting, it won't back you out of where you're looting unless you input it again.");
-						extra.println("Graphical Only: The graphical client has a few bonus features not immediately evident. You can press the scroll wheel to automatically scroll to the bottom. The 'Jump' option lets you have the game scroll, print new text without scrolling, or jump instantly on new text. 'Fancy' mode disables some rendering that might bug on certain hardware, and is generally less intensive. You can use the arrow keys to scroll and WASD/enter to input on keyboard. On controller, 'dpad' right/A will select the current option and 'dpad' left/B will select the last option. 'dpad' up and down change options.");
-						extra.println("Tips: Many modern menus in Trawel are designed so that as many options as possible occupy the same number each time you enter them. In some menus, the options change so much that this isn't possible, or there is an edge case where this rule can't apply. But the Player menu is very stable within each Trawel release, so you can navigate that without needing to read (or listen to) the contents.");
-						extra.println("Most older menus do not behave like this, and are slowly being converted.");
+						Print.println("In Trawel, you navigate the game world, and make choices, with numbered menu lists.");
+						Print.println("In Trawel proper (some subgames differ), there will never be an option presented that is greater than 9 or less than 1. Some newer menus have scrolling, but they will only ever show a max of 9 options at a time.");
+						Print.println("If you're playing from Steam, you can click these options, press a number key (numpad or number row), or even use a controller. If you're using the terminal, you'll have to input the number and then press enter.");
+						Print.println("Terminal Only: The 'command prompt' also lets you input 0 to attempt to leave the current menu, and 10 to attempt to leave up to 10 menus. This will only work if there is a 'pinned' back option, and that option isn't considered to lead in circles. Usually you'll end up at the town screen, but older menus might not have a pinned back out, some don't have backing out by design, and others wouldn't make sense to back out of. It will also 'break' the backing out if the state changes, for example after you finish looting, it won't back you out of where you're looting unless you input it again.");
+						Print.println("Graphical Only: The graphical client has a few bonus features not immediately evident. You can press the scroll wheel to automatically scroll to the bottom. The 'Jump' option lets you have the game scroll, print new text without scrolling, or jump instantly on new text. 'Fancy' mode disables some rendering that might bug on certain hardware, and is generally less intensive. You can use the arrow keys to scroll and WASD/enter to input on keyboard. On controller, 'dpad' right/A will select the current option and 'dpad' left/B will select the last option. 'dpad' up and down change options.");
+						Print.println("Tips: Many modern menus in Trawel are designed so that as many options as possible occupy the same number each time you enter them. In some menus, the options change so much that this isn't possible, or there is an edge case where this rule can't apply. But the Player menu is very stable within each Trawel release, so you can navigate that without needing to read (or listen to) the contents.");
+						Print.println("Most older menus do not behave like this, and are slowly being converted.");
 						return false;
 					}});
 				mList.add(new MenuSelect() {
@@ -302,7 +302,7 @@ public class mainGame {
 
 	//MAYBELATER: for now, options are only global and there is no 'per save' override
 	public static void advancedDisplayOptions() {
-		extra.menuGo(new MenuGenerator(){
+		Input.menuGo(new MenuGenerator(){
 
 			@Override
 			public List<MenuItem> gen() {
@@ -337,7 +337,7 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
+						Input.menuGo(new MenuGenerator() {
 
 							@Override
 							public List<MenuItem> gen() {
@@ -376,7 +376,7 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
+						Input.menuGo(new MenuGenerator() {
 
 							@Override
 							public List<MenuItem> gen() {
@@ -666,7 +666,7 @@ public class mainGame {
 								prefs.setProperty("debug_attacks",advancedCombatDisplay+"");
 								return false;
 							}});
-						extra.menuGo(new ScrollMenuGenerator(list.size(), "last <> options", "next <> options") {
+						Input.menuGo(new ScrollMenuGenerator(list.size(), "last <> options", "next <> options") {
 							@Override
 							public List<MenuItem> forSlot(int i) {
 								return Collections.singletonList(list.get(i));
@@ -692,7 +692,7 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
+						Input.menuGo(new MenuGenerator() {
 
 							@Override
 							public List<MenuItem> gen() {
@@ -731,7 +731,7 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
+						Input.menuGo(new MenuGenerator() {
 
 							@Override
 							public List<MenuItem> gen() {
@@ -811,15 +811,15 @@ public class mainGame {
 		});
 		try (FileWriter fw = new FileWriter(prefFile)){
 			prefs.store(fw, null);
-			extra.println("Prefs saved.");
+			Print.println("Prefs saved.");
 		} catch (Exception e) {
-			extra.println("Was not able to save prefs.");
+			Print.println("Was not able to save prefs.");
 		}
 
 	}
 
 	private static void advancedOptions() {
-		extra.menuGo(new MenuGenerator(){
+		Input.menuGo(new MenuGenerator(){
 
 			@Override
 			public List<MenuItem> gen() {
@@ -841,13 +841,13 @@ public class mainGame {
 					@Override
 					public boolean go() {
 						if (autoConnect) {
-							extra.println(TrawelColor.PRE_ORANGE+"This option will break your connection! Really continue?");
-							if (!extra.yesNo()) {
+							Print.println(TrawelColor.PRE_ORANGE+"This option will break your connection! Really continue?");
+							if (!Input.yesNo()) {
 								return false;
 							}
 						}
 						Networking.connect(6510,true);
-						extra.println("Test Connection!");
+						Print.println("Test Connection!");
 						return true;
 					}});
 				mList.add(new MenuSelect() {
@@ -860,14 +860,14 @@ public class mainGame {
 					@Override
 					public boolean go() {
 						if (autoConnect) {
-							extra.println(TrawelColor.PRE_ORANGE+"This option will break your connection! Really continue?");
-							if (!extra.yesNo()) {
+							Print.println(TrawelColor.PRE_ORANGE+"This option will break your connection! Really continue?");
+							if (!Input.yesNo()) {
 								return false;
 							}
 						}
-						extra.println("Port?");
-						Networking.connect(extra.inInt(65535),true);
-						extra.println("Test Connection!");
+						Print.println("Port?");
+						Networking.connect(Input.inInt(65535),true);
+						Print.println("Test Connection!");
 						return true;
 					}});
 				mList.add(new MenuLine() {
@@ -908,53 +908,53 @@ public class mainGame {
 
 
 	private static void credits() {
-		extra.println("Made by 'dragon' of realDragon.");
-		extra.println();
+		Print.println("Made by 'dragon' of realDragon.");
+		Print.println();
 		
-		extra.println("Special thanks to many different communities across different programming languages and engines.");
-		extra.println();
+		Print.println("Special thanks to many different communities across different programming languages and engines.");
+		Print.println();
 		
-		extra.println(TrawelColor.STAT_HEADER+"Music:");
-		extra.println(" manicInsomniac");
-		extra.println();
+		Print.println(TrawelColor.STAT_HEADER+"Music:");
+		Print.println(" manicInsomniac");
+		Print.println();
 		
-		extra.println(TrawelColor.STAT_HEADER+"Java Libraries:");
-		extra.println(" Yellowstone Games' SquidSquad family");
-		extra.println(" Apache's Fury");
-		extra.println(" Esoteric Software's Kryo");
-		extra.println(" All dependencies of prior libraries");
-		extra.println();
+		Print.println(TrawelColor.STAT_HEADER+"Java Libraries:");
+		Print.println(" Yellowstone Games' SquidSquad family");
+		Print.println(" Apache's Fury");
+		Print.println(" Esoteric Software's Kryo");
+		Print.println(" All dependencies of prior libraries");
+		Print.println();
 		
-		extra.println(TrawelColor.STAT_HEADER+"Graphical Libraries:");
-		extra.println(" JujuAdams' Scribble");
-		extra.println(" Alynne's Input");
-		extra.println(" Pixelated Pope's Retro Palette Swapper");
-		extra.println();
+		Print.println(TrawelColor.STAT_HEADER+"Graphical Libraries:");
+		Print.println(" JujuAdams' Scribble");
+		Print.println(" Alynne's Input");
+		Print.println(" Pixelated Pope's Retro Palette Swapper");
+		Print.println();
 		
-		extra.println(TrawelColor.STAT_HEADER+"Legacy Art:");
-		extra.println("  Most Character and Armor Art: SmashCooper");
-		extra.println("  Some Weapons: Duster");
-		extra.println("  Scars, Weapon Placeholders: Jacobs");
-		extra.println(TrawelColor.STAT_HEADER+"Modern A:");
-		extra.println("  Art: Wasdd");
-		extra.println(TrawelColor.STAT_HEADER+"Other Art:");
-		extra.println(TrawelColor.ITEM_DESC_PROP+" Background Art:");
-		extra.println("  Damrok");
-		extra.println(TrawelColor.ITEM_DESC_PROP+" Concept/Splash Art:");
-		extra.println("  TamLinArt");
-		extra.println();
+		Print.println(TrawelColor.STAT_HEADER+"Legacy Art:");
+		Print.println("  Most Character and Armor Art: SmashCooper");
+		Print.println("  Some Weapons: Duster");
+		Print.println("  Scars, Weapon Placeholders: Jacobs");
+		Print.println(TrawelColor.STAT_HEADER+"Modern A:");
+		Print.println("  Art: Wasdd");
+		Print.println(TrawelColor.STAT_HEADER+"Other Art:");
+		Print.println(TrawelColor.ITEM_DESC_PROP+" Background Art:");
+		Print.println("  Damrok");
+		Print.println(TrawelColor.ITEM_DESC_PROP+" Concept/Splash Art:");
+		Print.println("  TamLinArt");
+		Print.println();
 		
-		extra.println(TrawelColor.STAT_HEADER+"Sounds:");
-		extra.println(" Stock Media provided by Soundrangers / FxProSound / SoundIdeasCom / PrankAudio / hdaudio / agcnf_media / sounddogs / AbloomAudio / Yurikud / SoundMorph / partnersinrhyme => through Pond5");
-		extra.println(" Metal sounds by Bluezone");
-		extra.println(" Clicking sound: One of the many CC0 stapler sounds on FreeSound");
-		extra.println();
+		Print.println(TrawelColor.STAT_HEADER+"Sounds:");
+		Print.println(" Stock Media provided by Soundrangers / FxProSound / SoundIdeasCom / PrankAudio / hdaudio / agcnf_media / sounddogs / AbloomAudio / Yurikud / SoundMorph / partnersinrhyme => through Pond5");
+		Print.println(" Metal sounds by Bluezone");
+		Print.println(" Clicking sound: One of the many CC0 stapler sounds on FreeSound");
+		Print.println();
 		
-		extra.println(TrawelColor.STAT_HEADER+"Steam Assets:");
+		Print.println(TrawelColor.STAT_HEADER+"Steam Assets:");
 		
-		extra.println("Achievement icons can be found on game-icons.net, modified using their website. They are CC BY 3.0");
-		extra.println(TrawelColor.ITEM_DESC_PROP+"Game-Icons.net list:");
-		extra.println(
+		Print.println("Achievement icons can be found on game-icons.net, modified using their website. They are CC BY 3.0");
+		Print.println(TrawelColor.ITEM_DESC_PROP+"Game-Icons.net list:");
+		Print.println(
 				"Lorc, http://lorcblog.blogspot.com; "
 				+ "Delapouite, https://delapouite.com; "
 				+ "John Colburn, http://ninmunanmu.com; "
@@ -1028,7 +1028,7 @@ public class mainGame {
 
 
 	private static void gameTypes() {
-		extra.menuGo(new MenuGenerator(){
+		Input.menuGo(new MenuGenerator(){
 
 			@Override
 			public List<MenuItem> gen() {
@@ -1073,7 +1073,7 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
+						Input.menuGo(new MenuGenerator() {
 
 							@Override
 							public List<MenuItem> gen() {
@@ -1101,8 +1101,8 @@ public class mainGame {
 									public boolean go() {
 										SaveHandler.clean();
 										while (true) {
-											extra.println(SciRunner.playProto() ? "You win!" : "You lose!"+ "\n Would you like the quit?");
-											if (extra.yesNo()) {
+											Print.println(SciRunner.playProto() ? "You win!" : "You lose!"+ "\n Would you like the quit?");
+											if (Input.yesNo()) {
 												return true;
 											}
 										}
@@ -1121,7 +1121,7 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
-						extra.menuGo(new MenuGenerator(){
+						Input.menuGo(new MenuGenerator(){
 
 							@Override
 							public List<MenuItem> gen() {
@@ -1234,7 +1234,7 @@ public class mainGame {
 			 player.bag.swapArmorSlot(new Armor(1,4,MaterialFactory.getMat("emerald")),4);*/
 		model.setPlayer();
 		Networking.charUpdate();
-		extra.yesNo();
+		Input.yesNo();
 
 	}
 
@@ -1368,7 +1368,7 @@ public class mainGame {
 			if (autoConnect) {
 				System.out.println("Please wait for the graphical to load...");
 				Networking.handleAnyConnection(legacyConnect ? ConnectType.LEGACY : ConnectType.GDX);
-				extra.println("Trawel, Gameplay Version "+Changelog.VERSION_STRING+Changelog.VERSION_DATE);
+				Print.println("Trawel, Gameplay Version "+Changelog.VERSION_STRING+Changelog.VERSION_DATE);
 			}
 		}catch(Exception e) {
 			System.out.println("There was an error when setting up Trawel.");
@@ -1376,7 +1376,7 @@ public class mainGame {
 
 			errorHandle(e);
 			System.out.println("Press enter to quit.");
-			extra.inString();
+			Input.inString();
 		}
 		boolean breakErr = false;
 		while (!breakErr) {
@@ -1393,7 +1393,7 @@ public class mainGame {
 				if (!breakErr) {
 					System.out.println("Press enter to attempt to recover from the error.");
 				}
-				extra.inString();
+				Input.inString();
 			}
 		}
 		//mainGame.log("exiting game");
@@ -1413,8 +1413,8 @@ public class mainGame {
 		}
 		System.out.println("Error Stacktrace:");
 		e.printStackTrace();
-		extra.println(TrawelColor.PRE_RED+"Trawel has encountered an exception. Please report to realDragon. More details can be found in log.txt and the terminal.");
-		extra.println("Error Preview: "+ e.toString());
+		Print.println(TrawelColor.PRE_RED+"Trawel has encountered an exception. Please report to realDragon. More details can be found in log.txt and the terminal.");
+		Print.println("Error Preview: "+ e.toString());
 	}
 
 	public static void adventureBody() {
@@ -1427,12 +1427,12 @@ public class mainGame {
 			TrawelTime.globalPassTime();
 		}
 		multiCanRun = false;
-		extra.println("You do not wake up.");
+		Print.println("You do not wake up.");
 	}
 	
 	public static void checkAutosave() {
 		if (doAutoSave && (new Date().getTime()-lastAutoSave.getTime() > 1000*60*2)) {
-			extra.println("Autosaving...");
+			Print.println("Autosaving...");
 			WorldGen.plane.prepareSave();
 			SaveManager.save("auto");
 			lastAutoSave = new Date();
@@ -1452,8 +1452,8 @@ public class mainGame {
 			if (cheaty) {
 				player.setStory(new StoryNone());
 			}else {
-				extra.println("Skip tutorial?");
-				if (extra.yesNo()) {
+				Print.println("Skip tutorial?");
+				if (Input.yesNo()) {
 					player.setStory(new StoryNone());
 				}else {
 					player.setStory(new StoryTutorial());
@@ -1467,7 +1467,7 @@ public class mainGame {
 		//
 		while (manOne == null) {
 			if (world == null) {
-				extra.println("Generating world...");
+				Print.println("Generating world...");
 				world = WorldGen.eoano();
 				WorldGen.finishPlane(WorldGen.plane);
 				extra.getThreadData().world = world;//init
@@ -1475,22 +1475,22 @@ public class mainGame {
 			manOne = RaceFactory.makePlayerValid(!rerolls);
 			manTwo = RaceFactory.makePlayerValid(!rerolls);
 			if (!displayFight) {
-				extra.changePrint(true);
+				Print.changePrint(true);
 			}
 			Combat c = Combat.CombatTwo(manOne,manTwo,null);
 			manOne = c.getNonSummonSurvivors().get(0);
 			player.getStory().setPerson(c.killed.get(0), 0);
 			//story.setPerson(manTwo, 0);
 			if (!displayFight) {
-				extra.changePrint(false);
+				Print.changePrint(false);
 			}
 			if (rerolls) {
 				manOne.getBag().graphicalDisplay(1, manOne);
 				if (advancedDisplay) {
 					manOne.displayStats(false);
 				}
-				extra.println("Play as " + manOne.getName() +"?");
-				if (extra.yesNo()) {
+				Print.println("Play as " + manOne.getName() +"?");
+				if (Input.yesNo()) {
 					break;
 				}
 				manOne = null;
@@ -1560,7 +1560,7 @@ public class mainGame {
 		}
 	}
 	public static void scrollTest() {
-		extra.menuGo(new ScrollMenuGenerator(30, "back <> more","forward (<> left)") {
+		Input.menuGo(new ScrollMenuGenerator(30, "back <> more","forward (<> left)") {
 
 			@Override
 			public List<MenuItem> header() {
@@ -1589,7 +1589,7 @@ public class mainGame {
 				return null;
 			}
 		});
-		extra.menuGo(new ScrollMenuGenerator(16,"a <>", "b<>") {
+		Input.menuGo(new ScrollMenuGenerator(16,"a <>", "b<>") {
 
 			@Override
 			public List<MenuItem> header() {
@@ -1702,7 +1702,7 @@ public class mainGame {
 					@Override
 					public boolean go() {
 						weaponMatTesterList = Collections.singletonList(allWeapMats.get(i));
-						extra.menuGo(weapMenu);
+						Input.menuGo(weapMenu);
 						return false;
 					}});
 				return list;
@@ -1721,7 +1721,7 @@ public class mainGame {
 					@Override
 					public boolean go() {
 						weaponMatTesterList = standardList;
-						extra.menuGo(weapMenu);
+						Input.menuGo(weapMenu);
 						return false;
 					}});
 				list.add(new MenuSelect() {
@@ -1740,7 +1740,7 @@ public class mainGame {
 						for (Skill s: skillStances.keySet()) {
 							overSkillList.add(s);
 						}
-						extra.menuGo(new ScrollMenuGenerator(overSkillList.size(),"previous <> skills", "next <> skills") {
+						Input.menuGo(new ScrollMenuGenerator(overSkillList.size(),"previous <> skills", "next <> skills") {
 
 							@Override
 							public List<MenuItem> forSlot(int i) {
@@ -1757,7 +1757,7 @@ public class mainGame {
 									public boolean go() {
 										Skill skillChosen = overSkillList.get(i);
 										List<IHasSkills> sourceList = skillStances.get(skillChosen);
-										extra.menuGo(new ScrollMenuGenerator(sourceList.size(),"previous <> sources", "next <> sources") {
+										Input.menuGo(new ScrollMenuGenerator(sourceList.size(),"previous <> sources", "next <> sources") {
 
 											@Override
 											public List<MenuItem> forSlot(int i) {
@@ -1819,7 +1819,7 @@ public class mainGame {
 				return list;
 			}
 		};
-		extra.menuGo(matMenu);
+		Input.menuGo(matMenu);
 	}
 
 }

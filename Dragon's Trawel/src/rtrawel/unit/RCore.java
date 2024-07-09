@@ -22,6 +22,7 @@ import rtrawel.jobs.PathFactory;
 import rtrawel.unit.RUnit.FightingStance;
 import rtrawel.unit.RUnit.RaceType;
 import rtrawel.village.RecipeFactory;
+import trawel.core.Print;
 import trawel.helper.methods.extra;
 
 public class RCore {
@@ -33,7 +34,7 @@ public class RCore {
 	
 	public static boolean doesHit(RUnit attacker, RUnit defender, double baseHitMult,boolean ranged) {
 		if (Math.random() < defender.shieldBlockChance()) {
-			extra.println(defender.getName() + " blocks!");
+			Print.println(defender.getName() + " blocks!");
 			return false;
 		}
 		double evadeMult = 1.35;
@@ -77,11 +78,11 @@ public class RCore {
 	public static int doAttack(RUnit attacker, RUnit defender, int attackStat, double baseHitMult, double d, boolean ranged, List<DamageType> list ) {
 		if (doesHit(attacker,defender,baseHitMult, ranged)) {
 			int dam = dealDamage(defender,attackStat,d * (!ranged && attacker.getStance().equals(RUnit.FightingStance.OFFENSIVE) && !ranged ? 1.1 : 1),list);
-			extra.println("It deals " + dam +" to "+ defender.getName() +"!");
+			Print.println("It deals " + dam +" to "+ defender.getName() +"!");
 			attacker.increaseTen(dam/10);
 			return dam;
 		}else {
-			extra.println("It misses "  + defender.getName()+ "!");
+			Print.println("It misses "  + defender.getName()+ "!");
 			return -1;
 		}
 	}
@@ -166,7 +167,7 @@ public class RCore {
 	}
 
 	public static void save() {
-		extra.println("saving...");
+		Print.println("saving...");
 		   FileOutputStream fos;
 			try {
 				fos = new FileOutputStream("rtrawel.save");
@@ -174,7 +175,7 @@ public class RCore {
 				 oos.writeObject(new SaveData());
 			     oos.close();
 			     fos.close();
-			     extra.println("saved!");
+			     Print.println("saved!");
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -183,7 +184,7 @@ public class RCore {
 	}
 	
 	public static String load() {
-		extra.println("loading...");
+		Print.println("loading...");
 		FileInputStream fos;
 		try {
 			fos = new FileInputStream("rtrawel.save");
@@ -192,11 +193,11 @@ public class RCore {
 			 Party.party = sd.getParty();
 			 oos.close();
 			 fos.close();
-			 extra.println("loaded!");
+			 Print.println("loaded!");
 			 return sd.curVillage;
 		} catch (Exception e) {
 			e.printStackTrace();
-			extra.println("Invalid load. Either no save file was found or it was outdated.");
+			Print.println("Invalid load. Either no save file was found or it was outdated.");
 			return null;
 		}
 	}

@@ -2,8 +2,8 @@ package trawel.personal;
 
 import java.util.List;
 
+import trawel.core.Rand;
 import trawel.factions.HostileTask;
-import trawel.helper.methods.extra;
 import trawel.personal.Person.AIJob;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
@@ -14,11 +14,11 @@ import trawel.personal.item.solid.DrawBane;
 public class NPCMutator {
 	
 	private static String name_Primal(String type) {
-		return extra.choose(", ","the ") +extra.choose("","Primal ")+type+extra.choose("Keeper","Defender","Servant","Judge","Warden");
+		return Rand.choose(", ","the ") +Rand.choose("","Primal ")+type+Rand.choose("Keeper","Defender","Servant","Judge","Warden");
 	}
 	
 	public static Person primal_Random(Person p) {
-		switch (extra.randRange(0,5)) {
+		switch (Rand.randRange(0,5)) {
 		case 0: default:
 			return primal_Mountain(p);
 		case 1:
@@ -36,37 +36,37 @@ public class NPCMutator {
 
 	public static Person primal_Mountain(Person p) {
 		p.setPerk(Perk.NPC_PRIMAL_MOUNTAIN);
-		p.setTitle(name_Primal(extra.choose("Mountain","Peak","Hill")));
+		p.setTitle(name_Primal(Rand.choose("Mountain","Peak","Hill")));
 		p.setPersonType(PersonType.LIFEKEEPER);
 		return p;
 	}
 	public static Person primal_Forest(Person p) {
 		p.setPerk(Perk.NPC_PRIMAL_FOREST);
-		p.setTitle(name_Primal(extra.choose("Forest","Jungle","Woods","Bush")));
+		p.setTitle(name_Primal(Rand.choose("Forest","Jungle","Woods","Bush")));
 		p.setPersonType(PersonType.LIFEKEEPER);
 		return p;
 	}
 	public static Person primal_Breeze(Person p) {
 		p.setPerk(Perk.NPC_PRIMAL_BREEZE);
-		p.setTitle(name_Primal(extra.choose("Breeze","Wind","Sky","Gale")));
+		p.setTitle(name_Primal(Rand.choose("Breeze","Wind","Sky","Gale")));
 		p.setPersonType(PersonType.LIFEKEEPER);
 		return p;
 	}
 	public static Person primal_Grove(Person p) {
 		p.setPerk(Perk.NPC_PRIMAL_GROVE);
-		p.setTitle(name_Primal(extra.choose("Grove","Copse","Thicket","Orchard")));
+		p.setTitle(name_Primal(Rand.choose("Grove","Copse","Thicket","Orchard")));
 		p.setPersonType(PersonType.LIFEKEEPER);
 		return p;
 	}
 	public static Person primal_Water(Person p) {
 		p.setPerk(Perk.NPC_PRIMAL_WATER);
-		p.setTitle(name_Primal(extra.choose("Spring","Geyser","Pond","River")));
+		p.setTitle(name_Primal(Rand.choose("Spring","Geyser","Pond","River")));
 		p.setPersonType(PersonType.LIFEKEEPER);
 		return p;
 	}
 	public static Person primal_Sea(Person p) {
 		p.setPerk(Perk.NPC_PRIMAL_SEA);
-		p.setTitle(name_Primal(extra.choose("Sea","Ocean","Brine","Tide")));
+		p.setTitle(name_Primal(Rand.choose("Sea","Ocean","Brine","Tide")));
 		p.setPersonType(PersonType.LIFEKEEPER);
 		return p;
 	}
@@ -77,14 +77,14 @@ public class NPCMutator {
 	public static Person cultLeader_Blood(Person p, boolean addDraws) {
 		if (addDraws) {
 			List<DrawBane> list = p.getBag().getDrawBanes();
-			if (extra.chanceIn(1,3)) {
+			if (Rand.chanceIn(1,3)) {
 				list.add(DrawBane.BEATING_HEART);
 			}else {
 				list.add(DrawBane.SINEW);
 			}
 			list.add(DrawBane.BLOOD);
 		}
-		p.setTitle(extra.choose("the Blood Queen",", Chosen by The Blood","the Blood Champion"));
+		p.setTitle(Rand.choose("the Blood Queen",", Chosen by The Blood","the Blood Champion"));
 		p.setPerk(Perk.CULT_CHOSEN_BLOOD);
 		p.setPerk(Perk.CULT_LEADER);
 		p.hTask = HostileTask.CULTIST;
@@ -97,13 +97,13 @@ public class NPCMutator {
 	public static Person cultist_Blood(Person p, boolean addDraws) {
 		if (addDraws) {
 			List<DrawBane> list = p.getBag().getDrawBanes();
-			if (extra.chanceIn(1,3)) {
+			if (Rand.chanceIn(1,3)) {
 				list.add(DrawBane.SINEW);
 			}else {
 				list.add(DrawBane.BLOOD);
 			}
 		}
-		p.setTitle(extra.choose(", Servant of Blood","the Bloodtender",", Sanguine Servant","the Crimson Cultist","the Bloodguard","the Bloody Believer","the Crimson Convert"));
+		p.setTitle(Rand.choose(", Servant of Blood","the Bloodtender",", Sanguine Servant","the Crimson Cultist","the Bloodguard","the Bloody Believer","the Crimson Convert"));
 		p.hTask = HostileTask.CULTIST;
 		return p;
 	}
@@ -114,14 +114,14 @@ public class NPCMutator {
 	public static Person cultLeader_Sky(Person p, boolean addDraws) {
 		if (addDraws) {
 			List<DrawBane> list = p.getBag().getDrawBanes();
-			if (extra.chanceIn(1,3)) {
+			if (Rand.chanceIn(1,3)) {
 				list.add(DrawBane.LIVING_FLAME);
 			}else {
 				list.add(DrawBane.UNICORN_HORN);
 			}
 			list.add(DrawBane.TELESCOPE);
 		}
-		p.setTitle(extra.choose("the Sky Queen",", Chosen by The Sky","the Sky Champion"));
+		p.setTitle(Rand.choose("the Sky Queen",", Chosen by The Sky","the Sky Champion"));
 		p.setPerk(Perk.CULT_CHOSEN_SKY);
 		p.setPerk(Perk.CULT_LEADER);
 		p.hTask = HostileTask.CULTIST;
@@ -134,11 +134,11 @@ public class NPCMutator {
 	public static Person cultist_Sky(Person p, boolean addDraws) {
 		if (addDraws) {
 			List<DrawBane> list = p.getBag().getDrawBanes();
-			if (extra.chanceIn(1,3)) {
+			if (Rand.chanceIn(1,3)) {
 				list.add(DrawBane.BAT_WING);
 			}
 		}
-		p.setTitle(extra.choose(", Servant of Sky","the Skywatcher",", Sky Servant","the Cloud Cultist","the Cloudguard","the Beyond Believer","the Cosmos Convert"));
+		p.setTitle(Rand.choose(", Servant of Sky","the Skywatcher",", Sky Servant","the Cloud Cultist","the Cloudguard","the Beyond Believer","the Cosmos Convert"));
 		p.hTask = HostileTask.CULTIST;
 		return p;
 	}

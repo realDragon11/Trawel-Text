@@ -7,6 +7,8 @@ import trawel.battle.Combat.AttackReturn;
 import trawel.battle.targets.Target;
 import trawel.battle.targets.TargetFactory;
 import trawel.battle.targets.TargetFactory.TypeBody.TargetReturn;
+import trawel.core.Print;
+import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
@@ -53,8 +55,8 @@ public class ImpairedAttack implements IAttack{
 		vals = new int[attack.valueSize()];
 		
 		double speedMult = _style.speed;
-		double speedModUp = extra.randRange(0,10);
-		double speedModDown = extra.randRange(-5,5);
+		double speedModUp = Rand.randRange(0,10);
+		double speedModDown = Rand.randRange(-5,5);
 		float hitMult = (float) (_style.hit*t.hit*_attack.getHitMult());
 		
 		double elementalDamMult = 1;
@@ -131,7 +133,7 @@ public class ImpairedAttack implements IAttack{
 			}
 		}
 		//no decay wounds
-		double counter = extra.getRand().nextDouble() * (vals[0] + vals[1] + vals[2] + vals[3] + vals[4] + vals[5]);
+		double counter = Rand.getRand().nextDouble() * (vals[0] + vals[1] + vals[2] + vals[3] + vals[4] + vals[5]);
 		counter-=vals[0];
 		if (counter<=0) {
 			this.wound = target.tar.rollWound(DamageType.SHARP);
@@ -160,27 +162,27 @@ public class ImpairedAttack implements IAttack{
 				
 			}
 		}
-		if (!alwaysWound && wound != Wound.NEGATED && extra.randRange(1,10) == 1) {
+		if (!alwaysWound && wound != Wound.NEGATED && Rand.randRange(1,10) == 1) {
 			this.wound = null;//null is not different from grazing, negating is a dedicated 'ineffective'
 		}
 		
 		level = w_lvl;
 		if (_attacker != null) {
 			if (wound == null && _attacker.hasSkill(Skill.ELEMENTALIST)){
-				switch (extra.randRange(1, 10)) {//10 is a hard fail, 1-9 depends on if they have the subskills
+				switch (Rand.randRange(1, 10)) {//10 is a hard fail, 1-9 depends on if they have the subskills
 				case 1: case 2: case 3:
 					if(_attacker.hasSkill(Skill.M_PYRO)) {
-						wound = extra.randList(TargetFactory.fireWounds);
+						wound = Rand.randList(TargetFactory.fireWounds);
 					} 
 					break;
 				case 4: case 5: case 6:
 					if(_attacker.hasSkill(Skill.M_CRYO)) {
-						wound = extra.randList(TargetFactory.freezeWounds);
+						wound = Rand.randList(TargetFactory.freezeWounds);
 					} 
 					break;
 				case 7: case 8: case 9:
 					if(_attacker.hasSkill(Skill.M_AERO)) {
-						wound = extra.randList(TargetFactory.shockWounds);
+						wound = Rand.randList(TargetFactory.shockWounds);
 					} 
 					break;
 				}
@@ -214,7 +216,7 @@ public class ImpairedAttack implements IAttack{
 				cooldown/=2;
 			}
 		}
-		hitroll = extra.lerp(hitMult*.8f,hitMult*1.2f, extra.hrandomFloat());
+		hitroll = extra.lerp(hitMult*.8f,hitMult*1.2f, Rand.hrandomFloat());
 		if (_weapon != null) {
 			hitroll +=_weapon.hasQual(Weapon.WeaponQual.ACCURATE) ? .1 : 0;
 		}
@@ -368,7 +370,7 @@ public class ImpairedAttack implements IAttack{
 				}	
 			}
 		}
-		return extra.randRange((int)(max*.7),(int)max);
+		return Rand.randRange((int)(max*.7),(int)max);
 		//don't need switch, strength code was already handled elsewhere???
 		/*
 		switch (dt) {
@@ -556,13 +558,13 @@ public class ImpairedAttack implements IAttack{
 			in[4] = 10;
 			in[5] = 6+4;
 			if (attack.isBypass()) {
-				extra.specialPrint(in,"MAGIC: "+getName(),extra.format(getHitMult()),extra.format(getWarmup()+getCooldown()),TrawelColor.COLOR_IGNITE+(getIgnite()),TrawelColor.COLOR_FROST+(getFrost()),TrawelColor.COLOR_ELEC+(getElec()));
+				Print.specialPrint(in,"MAGIC: "+getName(),Print.format(getHitMult()),Print.format(getWarmup()+getCooldown()),TrawelColor.COLOR_IGNITE+(getIgnite()),TrawelColor.COLOR_FROST+(getFrost()),TrawelColor.COLOR_ELEC+(getElec()));
 				break;
 			}
-			extra.specialPrint(in,getName(),extra.format(getHitMult()),extra.format(getWarmup()+getCooldown()),TrawelColor.COLOR_SHARP+(getSharp()),TrawelColor.COLOR_BLUNT+(getBlunt()),TrawelColor.COLOR_PIERCE+(getPierce()));
+			Print.specialPrint(in,getName(),Print.format(getHitMult()),Print.format(getWarmup()+getCooldown()),TrawelColor.COLOR_SHARP+(getSharp()),TrawelColor.COLOR_BLUNT+(getBlunt()),TrawelColor.COLOR_PIERCE+(getPierce()));
 			break;
 		case 2://two line 1
-			extra.println(getName());
+			Print.println(getName());
 			in = new int[10];
 			in[0] = 9;//hitchance, should be %9.99 >= x > 0.00 | 9 gives a 2 spot gap to the times
 			in[1] = 4;//instants, should be _999 >= x > 0 | 4 because we're okay with pressing up against the next one
@@ -601,21 +603,21 @@ public class ImpairedAttack implements IAttack{
 				dam5 = "";
 			}
 
-			extra.specialPrint(in,"  "+extra.CHAR_HITCHANCE + extra.format(getHitMult()),
-					extra.CHAR_INSTANTS +extra.formatInt(getWarmup())," ",extra.CHAR_INSTANTS+extra.formatInt(getCooldown()),
+			Print.specialPrint(in,"  "+extra.CHAR_HITCHANCE + Print.format(getHitMult()),
+					extra.CHAR_INSTANTS +Print.formatInt(getWarmup())," ",extra.CHAR_INSTANTS+Print.formatInt(getCooldown()),
 					"=",
 					dam1,dam2,dam3,dam4,dam5//unsure if spacing messes up narrator
 					);
 			break;
 		case 3://simplified
-			extra.println(getName());
+			Print.println(getName());
 			in = new int[3];
 			in[0] = 9;//hitchance, should be %9.99 >= x > 0.00 |
 			in[1] = 6;//instants, should be _999 >= x > 0
 			in[2] = 7;//5 damage digits
-			extra.specialPrint(in,
-					"  "+extra.CHAR_HITCHANCE + extra.format(getHitMult()),
-					extra.CHAR_INSTANTS + extra.formatInt(getWarmup()+getCooldown()),
+			Print.specialPrint(in,
+					"  "+extra.CHAR_HITCHANCE + Print.format(getHitMult()),
+					extra.CHAR_INSTANTS + Print.formatInt(getWarmup()+getCooldown()),
 					extra.CHAR_DAMAGE + getTotalDam()
 					);
 			break;
@@ -624,10 +626,10 @@ public class ImpairedAttack implements IAttack{
 		if (aWound == null) {
 			aWound = Wound.EMPTY;
 		}
-		extra.println("  "+aWound.getColor()+aWound.name + TrawelColor.PRE_WHITE+ " - " + String.format(aWound.desc,(Object[])Combat.woundNums(this,attacker,defender,null,aWound)));
+		Print.println("  "+aWound.getColor()+aWound.name + TrawelColor.PRE_WHITE+ " - " + String.format(aWound.desc,(Object[])Combat.woundNums(this,attacker,defender,null,aWound)));
 		if (hasBonusEffect()) {
 			AttackBonus ab = getAttack().getRider();
-			extra.println("  "+TrawelColor.ATK_BONUS+ab.label +TrawelColor.PRE_WHITE+": " + ab.desc);
+			Print.println("  "+TrawelColor.ATK_BONUS+ab.label +TrawelColor.PRE_WHITE+": " + ab.desc);
 		}
 	}
 

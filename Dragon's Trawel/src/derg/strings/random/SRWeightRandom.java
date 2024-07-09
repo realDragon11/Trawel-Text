@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import derg.strings.fluffer.StringResult;
 import derg.strings.misc.StringContext;
-import trawel.helper.methods.extra;
+import trawel.core.Rand;
 
 public class SRWeightRandom extends StringResult {
 
@@ -62,7 +62,7 @@ public class SRWeightRandom extends StringResult {
 		List<StringFloatWeight> list = contents.stream()
 		.filter(a -> a.weights.stream().map(base -> {return new Object[] {tolerance,base.f,context.floatMap.getOrDefault(base.s, -2f)};}).allMatch(flattener))
 		.collect(Collectors.toList());
-		return list.get(extra.getRand().nextInt(list.size())).result;
+		return list.get(Rand.getRand().nextInt(list.size())).result;
 	}
 	
 	//not keen to have so much overhead, but tuples

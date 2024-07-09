@@ -8,6 +8,7 @@ import scimech.mech.Fixture;
 import scimech.mech.Mech;
 import scimech.mech.Mount;
 import scimech.people.Trait;
+import trawel.core.Print;
 import trawel.helper.methods.extra;
 
 public class MechCombat {
@@ -45,7 +46,7 @@ public class MechCombat {
 					return o2.getSpeed()-o1.getSpeed();
 				}});
 			while (turnOrder.size() > 0) {
-				extra.println(activeMech().callsign + " goes!");
+				Print.println(activeMech().callsign + " goes!");
 				activeMech().activate(null,null);
 				turnOrder.remove(0);
 			}
