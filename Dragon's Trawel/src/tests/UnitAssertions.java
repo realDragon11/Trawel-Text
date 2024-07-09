@@ -3,10 +3,10 @@ package tests;
 import derg.ds.Chomp;
 import trawel.core.Rand;
 import trawel.core.mainGame;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.magic.EnchantConstant;
+import trawel.threads.ThreadData;
 import trawel.towns.contexts.Island;
 import trawel.towns.contexts.Town;
 import trawel.towns.data.WorldGen;
@@ -17,7 +17,7 @@ public class UnitAssertions {
 	//NOTE that you must use the vm arg "-ea" to enable assertions
 
 	public static void main(String[] args) {
-		extra.setMainThread();
+		ThreadData.setMainThread();
 		System.out.println("starting");
 		mainGame.unitTestSetup();
 		System.out.println("setup");

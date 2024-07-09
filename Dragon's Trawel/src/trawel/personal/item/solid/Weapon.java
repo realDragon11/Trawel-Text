@@ -24,6 +24,7 @@ import trawel.personal.item.magic.EnchantConstant;
 import trawel.personal.item.magic.EnchantHit;
 import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.people.Player;
+import trawel.threads.ThreadData;
 
 /**
  * 
@@ -343,7 +344,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 		double total = 0;
 		double weighted = 0;
 		final Stance stance = this.getMartialStance();
-		final int testSize = extra.getDumInvs().size();
+		final int testSize = ThreadData.getDumInvs().size();
 		double highest = 0;
 		double lowest = Double.MAX_VALUE;
 		for (int i = stance.getAttackCount()-1;i >=0;i--) {
@@ -353,7 +354,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 			for (int j = testSize-1; j >=0;j--) {
 				for (int ta = 0; ta < battleTests;ta++) {
 					AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,this,null)
-							,extra.getDumInvs().get(j).atLevel(level)
+							,ThreadData.getDumInvs().get(j).atLevel(level)
 							);
 					dam+= ret.damage/ret.attack.getTime();
 					if (ret.type == ATK_ResultType.IMPACT) {

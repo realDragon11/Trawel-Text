@@ -28,6 +28,7 @@ import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
+import trawel.threads.ThreadData;
 
 public class WeaponAttackFactory {
 	private static final Map<Weapon.WeaponType,Stance> stanceMap = new HashMap<Weapon.WeaponType,Stance>();
@@ -1082,7 +1083,7 @@ public class WeaponAttackFactory {
 	
 	public static final void dispTestWeapon(int level,WeaponType t,IHasSkills has, List<Material> mats) {
 		int tests = 1000;
-		int totalTests = tests*extra.getDumInvs().size();
+		int totalTests = tests*ThreadData.getDumInvs().size();
 		
 		if (has != null) {
 			for (Attack a: WeaponAttackFactory.getStance(has).giveList()) {
@@ -1114,9 +1115,9 @@ public class WeaponAttackFactory {
 				double hits = 0;
 				double fullhits = 0;
 				for (int ta = 0; ta < tests;ta++) {
-					for (int j = extra.getDumInvs().size()-1; j >=0;j--) {
+					for (int j = ThreadData.getDumInvs().size()-1; j >=0;j--) {
 						AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,w,null)
-								,extra.getDumInvs().get(j).atLevel(w.getLevel())
+								,ThreadData.getDumInvs().get(j).atLevel(w.getLevel())
 								);
 						damage += ret.damage;
 						if (ret.type == ATK_ResultType.IMPACT) {

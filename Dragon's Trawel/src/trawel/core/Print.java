@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Stack;
 
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
+import trawel.threads.ThreadData;
 
 public class Print {
 
@@ -59,7 +59,7 @@ public class Print {
 	 * some graphical functions still write, as well as most error messages
 	 */
 	public static final void changePrint(boolean disable) {
-		if (!extra.isMainThread()) {
+		if (!ThreadData.isMainThread()) {
 			return;
 		}
 		printMode = disable;
@@ -83,7 +83,7 @@ public class Print {
 	}
 
 	public static final void println(String str) {
-		if (!extra.isMainThread()) {
+		if (!ThreadData.isMainThread()) {
 			return;
 		}
 		if (!printMode || debugPrint) {
@@ -105,7 +105,7 @@ public class Print {
 	}
 
 	public static final void print(String str) {
-		if (!extra.isMainThread()) {
+		if (!ThreadData.isMainThread()) {
 			return;
 		}
 		if (!printMode) {
@@ -139,7 +139,7 @@ public class Print {
 	 * @return if you can't print
 	 */
 	public static final Boolean getPrint() {
-		if (!extra.isMainThread()){
+		if (!ThreadData.isMainThread()){
 			return true;
 		}
 		return printMode;
@@ -149,7 +149,7 @@ public class Print {
 	 * @return if you should attempt to println
 	 */
 	public static final Boolean canPrint() {
-		if (!extra.isMainThread()){
+		if (!ThreadData.isMainThread()){
 			return false;
 		}
 		return !printMode;
@@ -259,7 +259,7 @@ public class Print {
 	}
 
 	public static void offPrintStack() {
-		if (!extra.isMainThread()){
+		if (!ThreadData.isMainThread()){
 			return;
 		}
 		printStack.push(printMode);
@@ -267,7 +267,7 @@ public class Print {
 	}
 
 	public static void popPrintStack() {
-		if (!extra.isMainThread()){
+		if (!ThreadData.isMainThread()){
 			return;
 		}
 		printMode = printStack.pop();

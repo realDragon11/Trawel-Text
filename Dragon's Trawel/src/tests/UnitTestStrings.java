@@ -6,13 +6,13 @@ import derg.strings.random.SRInOrder;
 import derg.strings.random.SRPlainRandom;
 import trawel.core.Rand;
 import trawel.core.mainGame;
-import trawel.helper.methods.extra;
+import trawel.threads.ThreadData;
 import trawel.towns.data.Calender;
 
 public class UnitTestStrings {
 
 	public static void main(String[] args) {
-		extra.setMainThread();
+		ThreadData.setMainThread();
 		System.out.println("starting");
 		mainGame.unitTestSetup();
 		System.out.println("setup");

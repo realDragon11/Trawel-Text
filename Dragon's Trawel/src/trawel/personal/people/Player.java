@@ -27,7 +27,6 @@ import trawel.core.mainGame;
 import trawel.factions.FBox;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
-import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.AIClass;
 import trawel.personal.Effect;
@@ -56,6 +55,7 @@ import trawel.quests.locations.QuestR;
 import trawel.quests.types.Quest;
 import trawel.quests.types.CleanseSideQuest.CleanseType;
 import trawel.quests.types.Quest.TriggerType;
+import trawel.threads.ThreadData;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
@@ -174,7 +174,7 @@ public class Player extends SuperPerson{
 			}
 			Player.player.world = world;
 			world.setVisited();
-			extra.mainThreadDataUpdate();
+			ThreadData.mainThreadDataUpdate();
 		}
 	}
 	

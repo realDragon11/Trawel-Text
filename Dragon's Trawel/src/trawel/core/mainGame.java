@@ -50,6 +50,7 @@ import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
 import trawel.quests.events.BumperFactory;
 import trawel.quests.events.QuestReactionFactory;
+import trawel.threads.ThreadData;
 import trawel.time.TrawelTime;
 import trawel.towns.contexts.Town;
 import trawel.towns.contexts.World;
@@ -1251,7 +1252,7 @@ public class mainGame {
 	}
 
 	public static void log(String str) {
-		if (extra.isMainThread()) {
+		if (ThreadData.isMainThread()) {
 			logStream.println(str);
 			logStream.flush();
 		}
@@ -1259,7 +1260,7 @@ public class mainGame {
 	
 	public static void errLog(String str) {
 		str = "ERROR: "+str;
-		if (extra.isMainThread()) {
+		if (ThreadData.isMainThread()) {
 			logStream.println(str);
 			logStream.flush();
 		}
@@ -1276,7 +1277,7 @@ public class mainGame {
 		inEclipse = false;
 		try {
 			System.out.println(headerText());
-			extra.setMainThread();
+			ThreadData.setMainThread();
 			logStream = new PrintStream("log.txt");
 			for (String a: args) {
 				if (a.toLowerCase().equals("autoconnect")){
@@ -1420,7 +1421,7 @@ public class mainGame {
 	public static void adventureBody() {
 		lastAutoSave = new Date();
 		Player.isPlaying = true;
-		extra.mainThreadDataUpdate();
+		ThreadData.mainThreadDataUpdate();
 		while(Player.isPlaying) {
 			checkAutosave();
 			Player.player.getLocation().atTown();
@@ -1470,7 +1471,7 @@ public class mainGame {
 				Print.println("Generating world...");
 				world = WorldGen.eoano();
 				WorldGen.finishPlane(WorldGen.plane);
-				extra.getThreadData().world = world;//init
+				ThreadData.getThreadData().world = world;//init
 			}
 			manOne = RaceFactory.makePlayerValid(!rerolls);
 			manTwo = RaceFactory.makePlayerValid(!rerolls);

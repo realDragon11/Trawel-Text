@@ -16,6 +16,7 @@ import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.people.Player;
+import trawel.threads.ThreadData;
 import trawel.towns.data.Calender;
 
 public class Networking {
@@ -175,7 +176,7 @@ public class Networking {
 	}
 	
 	public static void sendStrong(String str) {
-		if (!extra.isMainThread() || !connected) {
+		if (!ThreadData.isMainThread() || !connected) {
 			return;
 		}
 		switch (type) {

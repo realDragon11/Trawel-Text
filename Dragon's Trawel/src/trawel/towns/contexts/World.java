@@ -8,11 +8,11 @@ import java.util.function.Predicate;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.factions.HostileTask;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
+import trawel.threads.ThreadData;
 import trawel.time.ContextLevel;
 import trawel.time.ContextType;
 import trawel.time.TContextOwner;
@@ -336,11 +336,11 @@ public class World extends TContextOwner{
 	}
 
 	public static String currentMoneyDisplay(int money) {
-		return extra.getThreadData().world.moneyString(money);
+		return ThreadData.getThreadData().world.moneyString(money);
 	}
 	
 	public static String currentMoneyString() {
-		return extra.getThreadData().world.moneyString();
+		return ThreadData.getThreadData().world.moneyString();
 	}
 
 	public String moneyString(int money) {

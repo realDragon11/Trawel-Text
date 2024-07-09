@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import trawel.core.Rand;
-import trawel.helper.methods.extra;
+import trawel.threads.ThreadData;
 
 
 public class LembdaTraitKeyShuffle implements CanLembdaUpdate{
@@ -89,7 +89,7 @@ public class LembdaTraitKeyShuffle implements CanLembdaUpdate{
 	 * use if not all lembdas have the forword you want in them
 	 */
 	public String safeNext(char forword) {
-		if (!extra.isMainThread()) {
+		if (!ThreadData.isMainThread()) {
 			throw new RuntimeException("Tried to trait shuffle outside of main thread.");
 		}
 		List<StringLembda> list = leafLayer(forword);
@@ -111,7 +111,7 @@ public class LembdaTraitKeyShuffle implements CanLembdaUpdate{
 	 * better to use if entire shuffler has all lembdas as valid with the keyword you want
 	 */
 	public String next(char forword) {
-		assert extra.isMainThread();
+		assert ThreadData.isMainThread();
 		StringLembda sl = tree.get(treeSize-Rand.getRand().nextInt(depthChunk));
 		sl.updateAll();
 		return sl.variants.get((int)forword);

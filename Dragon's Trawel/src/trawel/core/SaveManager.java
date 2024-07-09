@@ -27,11 +27,11 @@ import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import de.javakaffee.kryoserializers.EnumMapSerializer;
 import de.javakaffee.kryoserializers.EnumSetSerializer;
 import trawel.arc.misc.Changelog;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Player;
+import trawel.threads.ThreadData;
 import trawel.towns.contexts.Plane;
 import trawel.towns.contexts.Town;
 import trawel.towns.contexts.World;
@@ -165,7 +165,7 @@ public class SaveManager {
 			Player.bag = Player.player.getPerson().getBag();
 			Player.player.skillUpdate();
 			Player.passTime = 0;
-			extra.getThreadData().world = Player.player.getWorld();
+			ThreadData.getThreadData().world = Player.player.getWorld();
 			fos.close();
 			WorldGen.plane.reload();
 		} catch (IOException e) {
