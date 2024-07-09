@@ -1449,23 +1449,17 @@ public class mainGame {
 		Networking.richDesc("Character Select");
 		World world = null;//WorldGen.eoano();
 		Player player = new Player();
-		if (cheaty || rerolls) {
-			if (cheaty) {
-				player.setStory(new StoryNone());
-			}else {
-				Print.println("Skip tutorial?");
-				if (Input.yesNo()) {
-					player.setStory(new StoryNone());
-				}else {
-					player.setStory(new StoryTutorial());
-				}
-			}
+		if (debug) {
+			player.setStory(new StoryNone());
 		}else {
-			player.setStory(new StoryTutorial());
+			Print.println("Enable tutorial? (Recommended.)");
+			if (Input.yesNo()) {
+				player.setStory(new StoryTutorial());
+			}else {
+				player.setStory(new StoryNone());
+			}
 		}
 		Person manOne = null, manTwo;
-		
-		//
 		while (manOne == null) {
 			if (world == null) {
 				Print.println("Generating world...");
@@ -1522,7 +1516,6 @@ public class mainGame {
 		player.addGold(10);//give 10 gold to start to deal with death punishments mostly
 		if (cheaty) {
 			Player.player.setCheating();
-			player.setStory(new StoryNone());
 			if (debug) {
 				Player.player.getPerson().setFlag(PersonFlag.AUTOBATTLE,true);
 				Player.player.getPerson().setFlag(PersonFlag.AUTOLOOT,true);
