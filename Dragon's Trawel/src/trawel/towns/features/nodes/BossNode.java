@@ -69,7 +69,7 @@ public class BossNode{
 			peeps.add(p);
 		break;
 		case YORE:
-			level = Math.max(6,level);
+			level = Math.max(7,level);
 			p = RaceFactory.makeBoss(level);
 			p.cleanSetSkillHas(Perk.YORE_NPC);
 			p.setFirstName("Yore");
@@ -157,7 +157,7 @@ public class BossNode{
 		if (keep != null) {
 			peeps.removeIf(p -> p.getFlag(PersonFlag.IS_MOOK) && !keep.contains(p));
 		}
-		while (peeps.size() < 4) {
+		while (peeps.size() < size) {
 			peeps.add(filler.refill(nodeLevel));
 		}
 	}
