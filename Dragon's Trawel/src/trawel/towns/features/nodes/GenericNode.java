@@ -359,7 +359,7 @@ public class GenericNode implements NodeType {
 		holder.setFlag(node,NodeFlag.FORCEGO,false);
 		holder.setStateNum(node,0);
 		//keep visited the same
-		holder.setFlag(node, NodeFlag.REGROWN,false);
+		//holder.setFlag(node, NodeFlag.REGROWN,false);//don't set since it needs to display it was regrown
 		//holder.setFlag(node, NodeFlag.UNIQUE_1,false);//unsure how to handle this
 		
 		//clear storage to free space

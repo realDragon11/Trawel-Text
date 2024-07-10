@@ -477,6 +477,7 @@ public class NodeConnector implements Serializable {
 				setVisited(node,1);
 				if (NodeConnector.this.getFlag(node,NodeFlag.REGROWN)) {
 					visitColor = TrawelColor.VISIT_REGROWN;
+					setFlag(node,NodeFlag.REGROWN,false);
 				}
 				;break;
 				case 1: visitColor = TrawelColor.VISIT_SEEN; break;
