@@ -73,7 +73,7 @@ public class BossNode{
 			p = RaceFactory.makeBoss(level);
 			p.cleanSetSkillHas(Perk.YORE_NPC);
 			p.setFirstName("Yore");
-			p.setTitle("");
+			p.setTitle(", Storied One");
 			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
 			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
 			p.finishGeneration();
