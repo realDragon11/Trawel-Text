@@ -6,15 +6,23 @@ import trawel.core.Print;
 
 public class Changelog {
 	//b__X is in development, b_X is the actual release of that version
-		public static final String VERSION_STRING = "v0.8.b__12";
-		public static final String VERSION_DATE = " updated July 4th 2024";
+		public static final String VERSION_STRING = "v0.8.b_12";
+		public static final String VERSION_DATE = " updated July 10th 2024";
 		public static final String[][] changelog = new String[][] {
 			//add to front, changeviewer cycles to older ones when used
 			{"b_12",
+				//discuss death punishments
+				"Dying adds a Punishment Effect to your character, as with attribute contests in earlier versions. These can be cured as normal. They make it harder to win battles.",
+				//discuss cheat mode
+				"Cheat Trawel can now be enabled on existing saves, and finer tuned Cheats are available for those who want less of a boost.",
+				//discuss new save system
+				"Trawel has been updated to Java 21 and the Fury saving system. The first save or load each boot will take longer, but subsequent ones should be faster or the same speed. As with the last save system update, this might get reverted if it causes issues on other computers.",
+				//discuss examine and combat summary
+				"The combat summary that displays to introduce enemies has been reduced to only the important defensive info. The Examine action in battle is broken up into different sub-segments in a menu to allow more frequent usage without truly massive dumps.",
 				//discuss beach and regrowing
 				"Beach added as a new Node Feature. The Beach contains a wide area broken into branches which contain Caves, gated Dungeons, and deeper Beaches. Clarity can be used to open Doors and Chests in Node Features, rounding out the attributes. Node regrowth has been patched and adjusted in Node Exploration features.",
 				//discuss drawbane changes
-				"The draw and bane effects of DrawBanes are capped at 5 total. Cloth hides wealth, blood requires more blood to trigger, and you can view blood, wealth, and daylight meters from the State subsection of the Inventory Player menu.",
+				"The draw and bane effects of DrawBanes are capped at 5 total. Cloth hides wealth, blood requires more blood to trigger, and you can view blood, wealth, and daylight meters from the Status subsection of the Player Menu.",
 				//discuss people creation changes
 				"More types of NPCs can spawn with free bonus Feats or Archetypes, but more loot. AI Jobs (classes) now have preferred starting Archetypes, which makes them tend towards certain builds. Muggers now have two primary classes- Thieves and Thugs. Creatures can no longer learn new Archetypes after generation, restricting their Feat gain.",
 				//discuss graphical changes
