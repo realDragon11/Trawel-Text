@@ -281,7 +281,7 @@ public class Networking {
 		SLUM("dungeon","mine","store"),
 		
 		ARENA("arena","forest","arena"),
-		CHAMPION("champ","mountain","champion"),
+		CHAMPION("arena","mountain","champion"),//champs aren't real features anymore tbh
 		
 		FOREST("forest","forest","grove"),
 		MOUNTAIN("mountain","mountain","mountain"),
