@@ -155,6 +155,7 @@ public class Agent extends SuperPerson{
 
 	@Override
 	public void onlyGoal(AgentGoal goal) {
+		behaviors.clear();
 		current = null;
 		switch (goal) {
 		case DEATHCHEAT:
@@ -163,7 +164,6 @@ public class Agent extends SuperPerson{
 		case OWN_SOMETHING://if we ONLY own something we should stop moving around
 			break;
 		case NONE:
-			behaviors.clear();
 			current = new WanderEndless();
 			break;
 		case DELVE_HELP:
