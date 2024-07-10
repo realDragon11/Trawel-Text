@@ -263,7 +263,7 @@ public class GenericNode implements NodeType {
 		case DEAD_RACE_INDEX:
 		case MISC_TEXT_WITH_REGEN:
 		case DEAD_STRING_TOTAL:
-			if (holder.globalTimer > 16 && Player.player.atFeature != holder.parent) {
+			if (holder.globalTimer > 36 && Player.player.atFeature != holder.parent) {
 				regenNode(holder,node,false);
 			}
 			break;
@@ -281,14 +281,14 @@ public class GenericNode implements NodeType {
 		case CAVE:
 			if (force || Rand.chanceIn(1,3)) {
 				resetNode(holder,node,NodeType.NodeTypeNum.CAVE.singleton.rollRegrow());
-				holder.globalTimer-=16;
+				holder.globalTimer-=24;
 				return true;
 			}
 			break;
 		case DUNGEON:
 			if (force || Rand.chanceIn(1,3)) {
 				resetNode(holder,node,NodeType.NodeTypeNum.DUNGEON.singleton.rollRegrow());
-				holder.globalTimer-=12;
+				holder.globalTimer-=24;
 				return true;
 			}
 			break;
@@ -298,7 +298,7 @@ public class GenericNode implements NodeType {
 			if (force || Rand.chanceIn(2,3)) {
 				//groves are meant to be living, so this only rolls stuff that can likely regrow (or turn into a plant spot)
 				resetNode(holder,node,NodeType.NodeTypeNum.GROVE.singleton.rollRegrow());
-				holder.globalTimer-=8;
+				holder.globalTimer-=16;
 				return true;
 			}
 			break;
@@ -306,7 +306,7 @@ public class GenericNode implements NodeType {
 			if (force || Rand.chanceIn(1,3)) {
 				//veins can grow, but not regrow
 				resetNode(holder,node,NodeType.NodeTypeNum.MINE.singleton.rollRegrow());
-				holder.globalTimer-=24;
+				holder.globalTimer-=48;
 				return true;
 			}
 			break;
@@ -314,7 +314,7 @@ public class GenericNode implements NodeType {
 			if (force || Rand.chanceIn(1,3)) {
 				//avoids rolling things that can't regrow
 				resetNode(holder,node,NodeType.NodeTypeNum.BEACH.singleton.rollRegrow());
-				holder.globalTimer-=8;
+				holder.globalTimer-=16;
 				return true;
 			}
 			break;

@@ -657,12 +657,11 @@ public class GroveNode implements NodeType{
 						@Override
 						public boolean go() {
 							Print.println("\"We are in " + holder.parent.getName() + ". I don't venture away from my tree. It is a dangerous place, and this tree needs protection.\"");
-							if (holder.globalTimer >= 6d) {//can offer seeds if the node hasn't refreshed stuff lately
+							if (holder.globalTimer >= 6) {//can offer seeds if the node hasn't refreshed stuff lately
 								Print.println("\"Would you like a seed to help grow the forest?\"");
 								if (Input.yesNo()) {
 									Player.bag.addSeed(Seed.randSeed());
-									holder.globalTimer-=6;
-									//minus 6 (the time needed) and then div by 2 to avoid a large timer making it happen instantly forever
+									holder.globalTimer-=12;
 								}
 							}
 							return false;
