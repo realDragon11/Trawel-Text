@@ -1616,6 +1616,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		}
 		removeEffectAll(Effect.CURSE);
 		removeEffectAll(Effect.BURNOUT);
+		removeEffectAll(Effect.WOUNDED);
 		/*
 		removeEffectAll(Effect.TIRED);
 		removeEffectAll(Effect.BEES);*/
