@@ -36,7 +36,7 @@ public enum DrawBane {
 	GOLD("gold chunk","An enchantable metal of great value. Bring it to a Merchant's Guild!",8,10,false),
 	UNICORN_HORN("unicorn horn","An impressive magic horn hacked from a horse that holds harmful intent at bay. Brew it!",6,3,true),
 	VIRGIN("virgin","Bound and gagged, tied and dejected. Their soul has been claimed by evil powers. There is no happy ending here.",8,.5,true),
-	KNOW_FRAG("feat fragment","Aetheric wisdom partially bound to a scrap of paper. Bring it to a library to study and absorb for feat point progress!",2,1,false),
+	KNOW_FRAG("feat fragment","Aetheric wisdom partially bound to a scrap of paper. Bring it to a library to study and absorb for feat point progress!",100,1,false),
 	LIVING_FLAME("living flame","A fierce, fun-size fire that burns brightly without fuel. The perfect centerpiece to any forge!",4,3,true), 
 	GRAVE_DIRT("grave dirt","Dirt that's somewhat worse for wear after much mixing with mortality. Brew it!",1,.2,true),
 	TELESCOPE("telescope","A large telescope, fit for gazing into the sky over overlooking an area.",4,2,true),

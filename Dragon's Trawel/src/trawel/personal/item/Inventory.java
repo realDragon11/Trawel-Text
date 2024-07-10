@@ -963,17 +963,38 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	public DrawBane addNewDrawBanePlayer(DrawBane d) {
-		switch (d) {
-		case KNOW_FRAG:
-			Print.println("You found a Feat Fragment!");
-			Player.player.currentKFrags++;
-			if (Player.player.currentKFrags >= Player.player.fragmentReq) {
-				Print.println("Bring your Feat Fragments to a library to gain a feat point!");
-			}
-			//consume fragment
+		if (triggerDrawBane(d)) {
 			return null;
 		}
 		return handleDrawBane(d,false,"replace");
+	}
+	
+	public DrawBane buyNewDrawBanePlayer(DrawBane d) {
+		if (triggerDrawBane(d)) {
+			return null;
+		}
+		return handleDrawBane(d,true,"sell");
+	}
+	
+	/**
+	 * 
+	 * @return true if consumed
+	 */
+	public boolean triggerDrawBane(DrawBane d) {
+		if (d != null) {
+			//process obtain triggers
+			switch (d) {
+			case KNOW_FRAG:
+				Print.println("You found a Feat Fragment!");
+				Player.player.currentKFrags++;
+				if (Player.player.currentKFrags >= Player.player.fragmentReq) {
+					Print.println("Bring your Feat Fragments to a library to gain a feat point!");
+				}
+				//consume fragment
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public DrawBane handleDrawBane(DrawBane d, boolean offering, String text) {

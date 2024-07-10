@@ -255,7 +255,7 @@ public class Store extends Feature{
 			if (Player.bag.getGold() >= buyGold) {
 				Print.println("Buy the "+ db.getName() + "? (" + World.currentMoneyDisplay(buyGold) + ")");//TODO: explain aether conversion
 				if (Input.yesNo()) {
-					DrawBane sellItem = bag.handleDrawBane(db,true,"sell");
+					DrawBane sellItem = bag.buyNewDrawBanePlayer(db);
 					if (sellItem != null) {
 						Services.sellItem(sellItem, bag);
 					}
