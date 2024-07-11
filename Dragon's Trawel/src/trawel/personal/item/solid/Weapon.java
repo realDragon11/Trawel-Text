@@ -352,6 +352,10 @@ public class Weapon extends Item implements IEffectiveLevel {
 		return weap.getName();
 	}
 	
+	private void wipeBattleScore() {
+		bsCon = 0;
+	}
+	
 	private void refreshBattleScore() {
 		double impactChance = 0;
 		double total = 0;
@@ -645,15 +649,25 @@ public class Weapon extends Item implements IEffectiveLevel {
 				qualList.remove(worstQual);
 				removed++;
 			}else {
+				if (removed >= 0) {
+					updateStats();
+				}
 				return removed;
 			}
+		}
+		if (removed >= 0) {
+			updateStats();
 		}
 		return removed;
 	}
 	
 	@Override
 	public int improvePosQuality(int amount) {
-		return addQuals(weap.qList,amount);
+		int added = addQuals(weap.qList,amount);
+		if (added >= 0) {
+			updateStats();
+		}
+		return added;
 	}
 	
 
@@ -675,7 +689,8 @@ public class Weapon extends Item implements IEffectiveLevel {
 	@Override
 	public void updateStats() {
 		super.updateStats();
-		refreshBattleScore();
+		//can lazyload later if used
+		wipeBattleScore();
 	}
 	
 	public static void rarityMetrics() throws FileNotFoundException {
