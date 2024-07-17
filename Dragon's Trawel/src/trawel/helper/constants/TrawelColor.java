@@ -6,6 +6,8 @@ import trawel.core.Print;
 import trawel.helper.methods.extra;
 
 public class TrawelColor {
+	//MAYBELATER: could have trawel colors be their own class, and just have the toString be the color code, which would make passing them around
+	//easier in some cases but harder in others?
 
 	public static String COLOR_SHARP = TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED,Color.WHITE,.4f));
 	public static String COLOR_BLUNT = TrawelColor.inlineColor(TrawelColor.colorMix(Color.BLUE,Color.WHITE,.4f));

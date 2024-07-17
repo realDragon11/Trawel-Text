@@ -11,6 +11,7 @@ import derg.menus.ScrollMenuGenerator;
 import trawel.core.Input;
 import trawel.core.Networking.Area;
 import trawel.core.Print;
+import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
@@ -27,6 +28,36 @@ import trawel.towns.features.nodes.NodeFeature.Shape;
 import trawel.towns.features.services.Inn;
 
 public class Lot extends Feature {
+	
+	static {
+		FeatureData.registerFeature(Lot.class, new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" are plots of land that can have other Features built on them for currencies. "+fancyNamePlural()+" can also be donated to the town.");
+			}
+			
+			@Override
+			public int priority() {
+				return 0;
+			}
+			
+			@Override
+			public String name() {
+				return "Lot";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_BUILDABLE;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.ADVANCED_SERVICES;
+			}
+		});
+	}
 
 	private static final long serialVersionUID = 1L;
 	/**
@@ -47,21 +78,11 @@ public class Lot extends Feature {
 	}
 	
 	@Override
-	public String getColor() {
-		return TrawelColor.F_BUILDABLE;
-	}
-	
-	@Override
 	public String nameOfType() {
 		if (construct == null) {
 			return "Empty Lot";
 		}
 		return "Construction Site";
-	}
-	
-	@Override
-	public String nameOfFeature() {
-		return "Lot";
 	}
 	
 	@Override

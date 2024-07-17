@@ -15,6 +15,7 @@ import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.factions.HostileTask;
+import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.Effect;
 import trawel.personal.Person;
@@ -34,7 +35,6 @@ import trawel.quests.types.KillSideQuest;
 import trawel.quests.types.Quest;
 import trawel.quests.types.CleanseSideQuest.CleanseType;
 import trawel.quests.types.FetchSideQuest.FetchType;
-import trawel.quests.types.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
@@ -46,6 +46,38 @@ import trawel.towns.features.services.Store;
 import trawel.towns.features.services.WitchHut;
 
 public class Slum extends Store implements QuestBoardLocation{
+	
+	static {
+		FeatureData.registerFeature(Slum.class,
+				new FeatureData() {
+
+					@Override
+					public void tutorial() {
+						Print.println(fancyNamePlural()+" hold sidequests, backalley vendors, and are often controlled by a Crime Lord. If the Crime Lord is removed from the "+fancyName()+", it is possible to pay for reform programs to enfranchise the people there. The cost of such programs will increase with the danger still present in the "+fancyName()+".");
+					}
+
+					@Override
+					public String name() {
+						return "District";
+					}
+
+					@Override
+					public FeatureTutorialCategory category() {
+						return FeatureTutorialCategory.ENCOUNTERS;
+					}
+
+					@Override
+					public int priority() {
+						return 15;
+					}
+
+					@Override
+					public String color() {
+						return TrawelColor.F_MULTI;
+					}
+				});
+	}
+	
 
 	private boolean removable;
 	public Agent crimeLord;
@@ -72,17 +104,7 @@ public class Slum extends Store implements QuestBoardLocation{
 	}
 	
 	@Override
-	public String getColor() {
-		return TrawelColor.F_MULTI;
-	}
-	
-	@Override
 	public String nameOfType() {
-		return "District";
-	}
-	
-	@Override
-	public String nameOfFeature() {
 		return "District";
 	}
 	

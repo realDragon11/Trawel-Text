@@ -225,7 +225,9 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	/**
 	 * used to print what meta-feature type it is (per class only)
 	 */
-	public abstract String nameOfFeature();
+	public String nameOfFeature() {
+		return FeatureData.getData(this.getClass()).name();
+	}
 	
 	public Feature getReplaced() {
 		return replaced;

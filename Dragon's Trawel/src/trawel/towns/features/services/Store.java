@@ -11,6 +11,8 @@ import trawel.core.Input;
 import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
+import trawel.helper.constants.FeatureData;
+import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.extra;
@@ -38,6 +40,35 @@ import trawel.towns.features.Feature;
 import trawel.towns.features.fight.Slum;
 
 public class Store extends Feature{
+	
+	static {
+		FeatureData.registerFeature(Store.class,new FeatureData() {
+
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" sell various items. Equipment must be bought with "+TrawelChar.DISP_AETHER+". Other items require World Currency. "+fancyNamePlural()+" will hide their better wares to those who haven't proven themselves- either in battle or as a Merchant Guild partner.");
+			}
+
+			@Override
+			public String name() {
+				return "Store";
+			}
+
+			@Override
+			public String color() {
+				return TrawelColor.F_SERVICE;
+			}
+
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.ADVANCED_SERVICES;
+			}
+
+			@Override
+			public int priority() {
+				return 1;
+			}});
+	}
 
 	private static final long serialVersionUID = 1L;
 	protected int type;
@@ -136,16 +167,6 @@ public class Store extends Feature{
 			type = 6;
 			this.generate(tier, type);
 		}
-	}
-	
-	@Override
-	public String getColor() {
-		return TrawelColor.F_SERVICE;
-	}
-	
-	@Override
-	public String nameOfFeature() {
-		return "Store";
 	}
 	
 	@Override

@@ -41,7 +41,7 @@ public class Mountain extends ExploreFeature{
 			
 			@Override
 			public void tutorial() {
-				// TODO Auto-generated method stub
+				Print.println(fancyNamePlural()+" can be explored for events and loot, but do not have persistence. Each "+fancyName()+" has a fixed number of explores that restores over time.");
 			}
 
 			@Override
@@ -88,10 +88,6 @@ public class Mountain extends ExploreFeature{
 	
 	@Override
 	public String nameOfType() {
-		return "Mountain";
-	}
-	@Override
-	public String nameOfFeature() {
 		return "Mountain";
 	}
 	

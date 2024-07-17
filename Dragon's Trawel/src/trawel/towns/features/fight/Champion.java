@@ -28,7 +28,7 @@ public class Champion extends Feature{
 			
 			@Override
 			public void tutorial() {
-				// TODO Auto-generated method stub
+				Print.println(fancyNamePlural()+" host a single fighter that can be battled.");
 			}
 			
 			@Override
@@ -104,11 +104,6 @@ public class Champion extends Feature{
 	
 	@Override
 	public String nameOfType() {
-		return "Champion";
-	}
-	
-	@Override
-	public String nameOfFeature() {
 		return "Champion";
 	}
 	

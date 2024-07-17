@@ -99,11 +99,6 @@ public abstract class ExploreFeature extends Feature{
 	public String getTitle() {
 		return getName() + (exhausted ? " (Empty)" :"");
 	}
-
-	@Override
-	public String getColor() {
-		return TrawelColor.F_COMBAT;
-	}
 	
 	public void explore(){
 		if (exhausted) {

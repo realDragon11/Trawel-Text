@@ -43,6 +43,7 @@ public class TrawelChar {
 	
 	public static String DISP_WEIGHT = null;
 	public static String DISP_AETHER = null;
+	//TODO: have world currency have it's own DISP and logos for each world?
 	public static String DISP_AMP = null;
 	public static String DISP_QUALS = null;
 	public static String HP_I_FULL = null;

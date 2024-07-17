@@ -34,7 +34,7 @@ public class Arena extends Feature{
 
 					@Override
 					public void tutorial() {
-						Print.println(fancyNamePlural()+" host fighting Tournaments, providing an endless stream of battles. NPC Tournament winners will hang around for you to fight or rematch. You can also loiter in "+fancyNamePlural()+" to pass time for no cost.");
+						Print.println(fancyNamePlural()+" host fighting tournaments, providing an endless stream of battles. NPC tournament winners will hang around for you to fight or rematch. You can also loiter in "+fancyNamePlural()+" to pass time for no cost.");
 					}
 
 					@Override
@@ -79,11 +79,6 @@ public class Arena extends Feature{
 	
 	@Override
 	public String nameOfType() {
-		return "Arena";
-	}
-	
-	@Override
-	public String nameOfFeature() {
 		return "Arena";
 	}
 	
