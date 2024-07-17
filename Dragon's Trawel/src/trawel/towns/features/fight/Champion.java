@@ -10,6 +10,7 @@ import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelColor;
+import trawel.personal.NPCMutator;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent;
@@ -21,6 +22,10 @@ import trawel.towns.contexts.Town;
 import trawel.towns.features.Feature;
 
 public class Champion extends Feature{
+	
+	private static final String COLOR = TrawelColor.F_COMBAT;
+	private static final String NAME = COLOR+"Champion"+TrawelColor.COLOR_RESET;
+	private static final String NAMES = COLOR+"Champions"+TrawelColor.COLOR_RESET;
 	
 	static {
 		FeatureData.registerFeature(Champion.class,new FeatureData() {
@@ -52,13 +57,16 @@ public class Champion extends Feature{
 	double timeElapsed;
 	
 	public Champion(int level){
+		tier = level;
 		person = RaceFactory.getDueler(level);
+		NPCMutator.mutateImproveGear(person,1);
 		this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 		//tutorialText = "You should probably hold off on fighting champions until you're their level- explore the world and come back later.";
 		timeElapsed=0;
 	}
 	
 	public Champion(int level,int battleSize, Town t) {
+		tier = level;
 		//tutorialText = "Battleforged champions fought in a pit fight to survive.";
 		timeElapsed=0;/*
 		List<Person> people = new ArrayList<Person>();
@@ -110,7 +118,7 @@ public class Champion extends Feature{
 	
 	@Override
 	public String getColor() {
-		return TrawelColor.F_COMBAT;
+		return COLOR;
 	}
 	
 	@Override
@@ -141,7 +149,7 @@ public class Champion extends Feature{
 			timeElapsed+=time;
 			if (timeElapsed > Rand.randRange(24, 60)) {
 				Agent delete = town.getPersonableOccupants()
-						.filter(a -> a.getPerson().getLevel() == town.getTier())
+						.filter(a -> a.getPerson().getLevel() == tier)
 						.findFirst().orElse(null);
 					if (delete != null) {
 						person = delete.getPerson();
