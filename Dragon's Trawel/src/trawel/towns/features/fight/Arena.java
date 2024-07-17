@@ -12,10 +12,9 @@ import trawel.core.Input;
 import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
-import trawel.helper.constants.FeatureTutorialLists;
-import trawel.helper.constants.FeatureTutorialLists.FeatureTutorialCategory;
+import trawel.helper.constants.FeatureData;
+import trawel.helper.constants.FeatureData.FeatureTutorialCategory;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.FeatureTutorialPrinter;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent.AgentGoal;
@@ -31,14 +30,30 @@ import trawel.towns.features.Feature;
 public class Arena extends Feature{
 	
 	static {
-		FeatureTutorialLists.registerFeature(Arena.class,"Arena",
-				new FeatureTutorialPrinter() {
-					
+		FeatureData.registerFeature(Arena.class,
+				new FeatureData() {
+
 					@Override
-					public void print() {
-						Print.println("test Arena");
+					public void tutorial() {
+						// TODO Auto-generated method stub
+						
 					}
-				},FeatureTutorialCategory.ENCOUNTERS);
+
+					@Override
+					public String name() {
+						return "Arena";
+					}
+
+					@Override
+					public FeatureTutorialCategory category() {
+						return FeatureTutorialCategory.ENCOUNTERS;
+					}
+
+					@Override
+					public int priority() {
+						return 10;
+					}
+				});
 	}
 
 	private static final long serialVersionUID = 1L;

@@ -1,24 +1,35 @@
 package trawel.towns.features.nodes;
 import trawel.core.Networking.Area;
-import trawel.core.Print;
-import trawel.helper.constants.FeatureTutorialLists;
-import trawel.helper.constants.FeatureTutorialLists.FeatureTutorialCategory;
+import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.FeatureTutorialPrinter;
 import trawel.towns.contexts.Town;
 import trawel.towns.features.nodes.BossNode.BossType;
 
 public class Beach extends NodeFeature {
 	
 	static {
-		FeatureTutorialLists.registerFeature(Beach.class,"Beach",
-				new FeatureTutorialPrinter() {
-					
-					@Override
-					public void print() {
-						Print.println("test Beach");
-					}
-				},FeatureTutorialCategory.NODE_EXPLORATION);
+		FeatureData.registerFeature(Beach.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				// TODO Auto-generated method stub
+			}
+			
+			@Override
+			public int priority() {
+				return 80;
+			}
+			
+			@Override
+			public String name() {
+				return "Beach";
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.NODE_EXPLORATION;
+			}
+		});
 	}
 
 	private static final long serialVersionUID = 1L;

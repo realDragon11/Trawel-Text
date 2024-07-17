@@ -2,9 +2,7 @@ package trawel.towns.features.fight;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
@@ -19,6 +17,7 @@ import trawel.core.Networking;
 import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
+import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.Effect;
 import trawel.personal.Person;
@@ -33,9 +32,33 @@ import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.contexts.World;
-import trawel.towns.features.Feature;
 
 public class Mountain extends ExploreFeature{
+	
+	static {
+		FeatureData.registerFeature(Mountain.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				// TODO Auto-generated method stub
+			}
+			
+			@Override
+			public int priority() {
+				return 22;
+			}
+			
+			@Override
+			public String name() {
+				return "Mountain";
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.ENCOUNTERS;
+			}
+		});
+	}
 
 	private static final long serialVersionUID = 1L;
 	private double cleanTime;

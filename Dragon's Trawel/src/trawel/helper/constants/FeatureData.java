@@ -1,17 +1,19 @@
 package trawel.helper.constants;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.core.Input;
-import trawel.helper.methods.FeatureTutorialPrinter;
 import trawel.towns.features.Feature;
 
-public class FeatureTutorialLists {
+public abstract class FeatureData {
 
 	public enum FeatureTutorialCategory{
 		VITAL_SERVICES("Vital Services"),
@@ -30,34 +32,60 @@ public class FeatureTutorialLists {
 	//public static final List<List<Class<? extends Feature>>> ELEMENT_LISTS = new ArrayList<List<Class<? extends Feature>>>();
 	
 	private static final List<Class<? extends Feature>> class_list = new ArrayList<Class<? extends Feature>>();
-	private static final List<String> name_list = new ArrayList<String>();
-	private static final List<FeatureTutorialPrinter> printer_list = new ArrayList<FeatureTutorialPrinter>();
-	private static final List<FeatureTutorialCategory> category_list = new ArrayList<FeatureTutorialLists.FeatureTutorialCategory>();
+	private static final List<FeatureData> data_list = new ArrayList<FeatureData>();
 	
-	public static final void registerFeature(Class<? extends Feature> clazz,String name, FeatureTutorialPrinter printer, FeatureTutorialCategory category) {
+	private static final Map<FeatureTutorialCategory,List<FeatureData>> by_category = new HashMap<FeatureData.FeatureTutorialCategory, List<FeatureData>>();
+	static {
+		for (FeatureTutorialCategory c: FeatureTutorialCategory.values()) {
+			by_category.put(c,new ArrayList<FeatureData>());
+		}
+	}
+	
+	/*
+	public static final void finishInit() {
+		for (FeatureData d: data_list) {
+			//since we add it here, we can avoid a full sort + adding by just sorting while we add
+			List<FeatureData> insert = by_category.get(d.category());
+			int index = 0;
+			//while we're still in the list, and of higher line number than the current element, keep going down to list to find the insert point
+			while (index < insert.size() && insert.get(index).priority() <= d.priority()) {
+				index++;
+			}
+			insert.add(index,d);
+		}
+	}*/
+	
+	public static final void registerFeature(Class<? extends Feature> clazz,FeatureData data) {
 		class_list.add(clazz);
-		name_list.add(name);
-		printer_list.add(printer);
-		category_list.add(category);
+		data_list.add(data);
+		
+		//due to limitations, classes that aren't loaded won't be statically inited, but it should load all the classes actually in the world
+		//and the menu is only useable in-game for now
+		
+		//since we add it here, we can avoid a full sort + adding by just sorting while we add
+		List<FeatureData> insert = by_category.get(data.category());
+		int index = 0;
+		//while we're still in the list, and of higher line number than the current element, keep going down to list to find the insert point
+		while (index < insert.size() && insert.get(index).priority() <= data.priority()) {
+			index++;
+		}
+		insert.add(index,data);
 	}
 	
 	public static final String getName(Class<? extends Feature> clazz) {
-		return name_list.get(class_list.indexOf(clazz));
+		return data_list.get(class_list.indexOf(clazz)).name();
 	}
 	
 	public static final void printTutorial(Class<? extends Feature> clazz) {
-		printer_list.get(class_list.indexOf(clazz)).print();;
+		data_list.get(class_list.indexOf(clazz)).tutorial();;
 	}
 	
-	public static final List<Class<? extends Feature>> getFeaturesOf(FeatureTutorialCategory category){
-		List<Class<? extends Feature>> list = new ArrayList<Class<? extends Feature>>();
-		for (int i = 0; i < category_list.size();i++) {
-			//the order will be all out of whack, might fix later by just making it have a dedicated type I can sort by priority instead of a bunch of lists
-			if (category_list.get(i) == category) {
-				list.add(class_list.get(i));
-			}
-		}
-		return list;
+	public static final FeatureData getData(Class<? extends Feature> clazz) {
+		return data_list.get(class_list.indexOf(clazz));
+	}
+	
+	public static final List<FeatureData> getFeaturesOf(FeatureTutorialCategory category){
+		return by_category.get(category);
 	}
 	
 	public static final void getGlossary() {
@@ -81,18 +109,18 @@ public class FeatureTutorialLists {
 								@Override
 								public List<MenuItem> gen() {
 									List<MenuItem> list = new ArrayList<MenuItem>();
-									final List<Class<? extends Feature>> fList = getFeaturesOf(c);
-									for (Class<? extends Feature> f: fList) {
+									final List<FeatureData> fList = getFeaturesOf(c);
+									for (FeatureData f: fList) {
 										list.add(new MenuSelect() {
 
 											@Override
 											public String title() {
-												return getName(f);
+												return f.name();
 											}
 
 											@Override
 											public boolean go() {
-												printTutorial(f);
+												f.tutorial();
 												return false;
 											}});
 									}
@@ -108,6 +136,11 @@ public class FeatureTutorialLists {
 			}
 		});
 	}
+	
+	public abstract void tutorial();
+	public abstract String name();
+	public abstract FeatureTutorialCategory category();
+	public abstract int priority();
 	/*
 	static {
 		List<Class<? extends Feature>> list;

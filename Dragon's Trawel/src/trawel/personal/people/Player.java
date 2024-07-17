@@ -27,7 +27,7 @@ import trawel.core.Rand;
 import trawel.core.SaveManager;
 import trawel.core.mainGame;
 import trawel.factions.FBox;
-import trawel.helper.constants.FeatureTutorialLists;
+import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
@@ -1810,7 +1810,7 @@ public class Player extends SuperPerson{
 
 							@Override
 							public boolean go() {
-								FeatureTutorialLists.getGlossary();
+								FeatureData.getGlossary();
 								return false;
 							}});
 						slist.add(new MenuSelect() {

@@ -30,6 +30,7 @@ import trawel.battle.targets.TargetFactory;
 import trawel.core.Networking.ConnectType;
 import trawel.battle.attacks.StyleFactory;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.randomLists;

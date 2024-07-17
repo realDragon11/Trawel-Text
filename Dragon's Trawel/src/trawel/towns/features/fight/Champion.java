@@ -8,10 +8,8 @@ import trawel.core.Networking;
 import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
-import trawel.helper.constants.FeatureTutorialLists;
+import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.constants.FeatureTutorialLists.FeatureTutorialCategory;
-import trawel.helper.methods.FeatureTutorialPrinter;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent;
@@ -25,14 +23,28 @@ import trawel.towns.features.Feature;
 public class Champion extends Feature{
 	
 	static {
-		FeatureTutorialLists.registerFeature(Champion.class,"Champion",
-				new FeatureTutorialPrinter() {
-					
-					@Override
-					public void print() {
-						Print.println("test Champion");
-					}
-				},FeatureTutorialCategory.ENCOUNTERS);
+		FeatureData.registerFeature(Champion.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				// TODO Auto-generated method stub
+			}
+			
+			@Override
+			public int priority() {
+				return 100;
+			}
+			
+			@Override
+			public String name() {
+				return "Champion";
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.ENCOUNTERS;
+			}
+		});
 	}
 
 	private static final long serialVersionUID = 1L;
