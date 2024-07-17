@@ -26,25 +26,30 @@ public class Forest extends ExploreFeature{
 	
 	static {
 		FeatureData.registerFeature(Forest.class,new FeatureData() {
-			
+
 			@Override
 			public void tutorial() {
 				// TODO Auto-generated method stub
 			}
-			
-			@Override
-			public int priority() {
-				return 20;
-			}
-			
+
 			@Override
 			public String name() {
 				return "Forest";
 			}
-			
+
+			@Override
+			public String color() {
+				return TrawelColor.F_COMBAT;
+			}
+
 			@Override
 			public FeatureTutorialCategory category() {
 				return FeatureTutorialCategory.ENCOUNTERS;
+			}
+
+			@Override
+			public int priority() {
+				return 20;
 			}
 		});
 	}

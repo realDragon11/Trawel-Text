@@ -5,6 +5,7 @@ import trawel.core.Networking;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.core.mainGame;
+import trawel.helper.constants.FeatureData;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
@@ -85,7 +86,9 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 		this.owner = owner;
 	}
 
-	public abstract String getColor();
+	public String getColor() {
+		return FeatureData.getData(this.getClass()).color();
+	}
 	
 	public QRType getQRType() {
 		return QRType.NONE;

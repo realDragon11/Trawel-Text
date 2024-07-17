@@ -19,6 +19,7 @@ import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelColor;
+import trawel.helper.constants.FeatureData.FeatureTutorialCategory;
 import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -42,20 +43,25 @@ public class Mountain extends ExploreFeature{
 			public void tutorial() {
 				// TODO Auto-generated method stub
 			}
-			
-			@Override
-			public int priority() {
-				return 22;
-			}
-			
+
 			@Override
 			public String name() {
 				return "Mountain";
 			}
-			
+
+			@Override
+			public String color() {
+				return TrawelColor.F_COMBAT;
+			}
+
 			@Override
 			public FeatureTutorialCategory category() {
 				return FeatureTutorialCategory.ENCOUNTERS;
+			}
+
+			@Override
+			public int priority() {
+				return 22;
 			}
 		});
 	}

@@ -28,23 +28,18 @@ import trawel.towns.features.Feature;
 
 public class Arena extends Feature{
 	
-	//color goes through other function for non-tutorial text, so feature indicator text can be clean
-	private static final String COLOR = TrawelColor.F_COMBAT;
-	private static final String NAME = COLOR+"Arena"+TrawelColor.COLOR_RESET;
-	private static final String NAMES = COLOR+"Arenas"+TrawelColor.COLOR_RESET;
-	
 	static {
 		FeatureData.registerFeature(Arena.class,
 				new FeatureData() {
 
 					@Override
 					public void tutorial() {
-						Print.println(NAMES+" host fighting Tournaments, providing an endless stream of battles. NPC Tournament winners will hang around for you to fight or rematch. You can also loiter in "+NAMES+" to pass time for no cost.");
+						Print.println(fancyNamePlural()+" host fighting Tournaments, providing an endless stream of battles. NPC Tournament winners will hang around for you to fight or rematch. You can also loiter in "+fancyNamePlural()+" to pass time for no cost.");
 					}
 
 					@Override
 					public String name() {
-						return NAME;
+						return "Arena";
 					}
 
 					@Override
@@ -55,6 +50,11 @@ public class Arena extends Feature{
 					@Override
 					public int priority() {
 						return 10;
+					}
+
+					@Override
+					public String color() {
+						return TrawelColor.F_COMBAT;
 					}
 				});
 	}
@@ -90,11 +90,6 @@ public class Arena extends Feature{
 	@Override
 	public Area getArea() {
 		return Area.ARENA;
-	}
-	
-	@Override
-	public String getColor() {
-		return COLOR;
 	}
 	
 	public Arena(String name,int tier,int rounds, double interval, double timeLeft,int timesDone) {

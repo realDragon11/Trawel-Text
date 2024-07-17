@@ -23,10 +23,6 @@ import trawel.towns.features.Feature;
 
 public class Champion extends Feature{
 	
-	private static final String COLOR = TrawelColor.F_COMBAT;
-	private static final String NAME = COLOR+"Champion"+TrawelColor.COLOR_RESET;
-	private static final String NAMES = COLOR+"Champions"+TrawelColor.COLOR_RESET;
-	
 	static {
 		FeatureData.registerFeature(Champion.class,new FeatureData() {
 			
@@ -48,6 +44,11 @@ public class Champion extends Feature{
 			@Override
 			public FeatureTutorialCategory category() {
 				return FeatureTutorialCategory.ENCOUNTERS;
+			}
+
+			@Override
+			public String color() {
+				return TrawelColor.F_COMBAT;
 			}
 		});
 	}
@@ -114,11 +115,6 @@ public class Champion extends Feature{
 	@Override
 	public Area getArea() {
 		return Area.CHAMPION;
-	}
-	
-	@Override
-	public String getColor() {
-		return COLOR;
 	}
 	
 	@Override

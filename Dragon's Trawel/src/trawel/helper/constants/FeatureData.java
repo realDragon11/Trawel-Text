@@ -149,6 +149,16 @@ public abstract class FeatureData {
 	
 	public abstract void tutorial();
 	public abstract String name();
+	public String namePlural() {
+		return name()+"s";
+	}
+	public String fancyName() {
+		return color()+name()+TrawelColor.COLOR_RESET;
+	}
+	public String fancyNamePlural() {
+		return color()+namePlural()+TrawelColor.COLOR_RESET;
+	}
+	public abstract String color();
 	public abstract FeatureTutorialCategory category();
 	public abstract int priority();
 	/*

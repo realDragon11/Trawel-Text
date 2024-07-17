@@ -26,8 +26,18 @@ public class Beach extends NodeFeature {
 			}
 			
 			@Override
+			public String namePlural() {
+				return "Beaches";
+			}
+			
+			@Override
 			public FeatureTutorialCategory category() {
 				return FeatureTutorialCategory.NODE_EXPLORATION;
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_NODE;
 			}
 		});
 	}
