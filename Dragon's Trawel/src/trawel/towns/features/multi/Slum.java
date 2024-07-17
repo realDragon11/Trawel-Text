@@ -56,6 +56,7 @@ public class Slum extends Store implements QuestBoardLocation{
 
 					@Override
 					public void tutorial() {
+						//TODO
 						Print.println(fancyNamePlural()+" hold sidequests, backalley vendors, and are often controlled by a Crime Lord. If the Crime Lord is removed from the "+fancyName()+", it is possible to pay for reform programs to enfranchise the people there. The cost of such programs will increase with the danger still present in the "+fancyName()+".");
 					}
 
