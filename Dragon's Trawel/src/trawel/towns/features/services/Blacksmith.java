@@ -35,21 +35,32 @@ public class Blacksmith extends Feature {
 		this.name = name;
 		this.tier = tier;
 		this.store = s;
-		tutorialText = "Blacksmith";
-		area_type = Area.MISC_SERVICE;
 	}
 	
 	public Blacksmith(int tier, Store s){
 		this.tier = tier;
 		this.store = s;
 		name = store.getName() +" " + Rand.choose("Smith","Blacksmith","Smithy","Forge");
-		tutorialText = "Blacksmith";
-		area_type = Area.MISC_SERVICE;
 	}
 	
 	@Override
 	public String getColor() {
 		return TrawelColor.F_AUX_SERVICE;
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Blacksmith";
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Blacksmith";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ import trawel.core.Input;
 import trawel.core.Networking;
 import trawel.core.Print;
 import trawel.core.Rand;
+import trawel.core.Networking.Area;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.AIClass;
 import trawel.personal.Person;
@@ -64,6 +65,21 @@ public class FortHall extends FortFeature {
 	@Override
 	public String getColor() {
 		return TrawelColor.F_SERVICE;
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Fort Hall";
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Fort Hall";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
 	}
 
 	@Override

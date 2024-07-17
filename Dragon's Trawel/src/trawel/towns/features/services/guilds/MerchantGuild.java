@@ -52,10 +52,8 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	public MerchantGuild(String _name, int _tier){
 		name = _name;
 		tier = _tier;
-		tutorialText = "Merchant's Guild";
 		timePassed = Rand.randRange(1,30);
 		nextReset = Rand.randRange(8,30);
-		area_type = Area.MISC_SERVICE;
 	}
 	
 	@Override
@@ -66,6 +64,21 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	@Override
 	public String getColor() {
 		return TrawelColor.F_GUILD;
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Merchant Guild";
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Merchant Guild";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
 	}
 	
 	@Override

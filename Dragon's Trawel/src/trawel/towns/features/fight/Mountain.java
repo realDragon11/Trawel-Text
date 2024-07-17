@@ -46,22 +46,24 @@ public class Mountain extends ExploreFeature{
 		return QRType.MOUNTAIN;
 	}
 	
+	@Override
+	public Area getArea() {
+		return Area.MOUNTAIN;
+	}
+	
 	public Mountain(String name, int tier) {
 		this.tier = tier;
 		this.name = name;
-		background_area = "mountain";
 		background_variant = 1;
-		area_type = Area.MOUNTAIN;
-	}
-	
-	@Override
-	public String getTutorialText() {
-		return "Mountain";
 	}
 	
 	@Override
 	public String nameOfType() {
-		return "mountain";
+		return "Mountain";
+	}
+	@Override
+	public String nameOfFeature() {
+		return "Mountain";
 	}
 	
 	@Override

@@ -10,6 +10,7 @@ import derg.menus.MenuSelect;
 import derg.menus.MenuSelectNumber;
 import trawel.core.Input;
 import trawel.core.Print;
+import trawel.core.Networking.Area;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -29,13 +30,27 @@ public class Forge extends FortFeature {
 	public Forge(int tier) {
 		this.tier = tier;
 		this.name = "Blacksmith";
-		tutorialText = "Forge";
 		laborer = new Laborer(LaborType.BLACKSMITH);
 	}
 	
 	@Override
 	public String getColor() {
 		return TrawelColor.F_FORT;
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Forge";
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Forge";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
 	}
 	
 	@Override
@@ -53,6 +68,7 @@ public class Forge extends FortFeature {
 		return 0;
 	}
 
+	//FIXME: make it so they can cure damaged armor effect
 	@Override
 	public void go() {
 		if (this.getOwner() != Player.player) {

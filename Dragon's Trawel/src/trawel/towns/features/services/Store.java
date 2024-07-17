@@ -57,7 +57,6 @@ public class Store extends Feature{
 
 	private Store() {
 		time = 0;
-		tutorialText = "Store";
 		markup= extra.lerp(BASE_MARKUP,BASE_MARKUP*Rand.choose(.9f,.95f,1.2f,1.3f,1.5f),Rand.randFloat());
 		aetherRate = Player.NORMAL_AETHER_RATE;
 		/*if (extra.chanceIn(3,4)) {
@@ -71,7 +70,6 @@ public class Store extends Feature{
 			markup *= .95;
 		}
 		markup = Math.max(1.1f,markup);
-		area_type = Area.SHOP;
 	}
 	
 	public Store(Town t, int tier, int type) {
@@ -145,6 +143,48 @@ public class Store extends Feature{
 		return TrawelColor.F_SERVICE;
 	}
 	
+	@Override
+	public String nameOfFeature() {
+		return "Store";
+	}
+	
+	@Override
+	public String nameOfType() {
+		switch (getType()) {
+			default:
+				return "Store";
+			case 0:
+				return "Helmet Store";
+			case 1:
+				return "Armbands Store";
+			case 2:
+				return "Chestpiece Store";
+			case 3:
+				return "Pants Store";
+			case 4:
+				return "Boots Store";
+			case 5:
+				return "Weapon Store";
+			case 6:
+				return "Equipment Store";
+			case 7:
+				return "Species Store";
+			case 8:
+				return "Drawbane Store";
+			case 9:
+				return "Reagent Store";
+			case 10:
+				return "Food Store";
+			case 11:
+				return "Oddity Store";
+		}
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.SHOP;
+	}
+	
 	public int getType() {
 		return type;
 	}
@@ -167,40 +207,28 @@ public class Store extends Feature{
 		type = newType;
 		switch (type) {
 		case 0: name = Rand.choose("Hat","Headwear","Heads and Hair");
-			tutorialText = "Helmet Store";
 		break;
 		case 1: name = Rand.choose("Gloves","Handwear","Hand Protection","Mitten");
-		tutorialText = "Armbands Store";
 		break;
 		case 2: name = Rand.choose("Chestpiece","Bodywear","Chest Protector");
-			tutorialText = "Chestpiece Store";
 		break;
 		case 3: name = Rand.choose("Pants","Legwear","Leg Protector","Trouser","Pantaloon");
-		tutorialText = "Pants Store";
 		break;
 		case 4: name = Rand.choose("Boot","Footwear","Cobbler","Feet Protection");
-		tutorialText = "Boots Store";
 		break;
 		case 5: name = Rand.choose("Weapon","Arms","Armament","War");
-		tutorialText = "Weapon Store";
 		break;
 		case 6: name = Rand.choose("General","Flea","Convenience","Trading","Super","Tag","Jumble","Clearance","Retail");
-		tutorialText = "Equipment Store";
 		break;
 		case 7: name = Rand.choose("Race","Species","Body","New You");
-		tutorialText = "Species Store";
 		break;
 		case 8: name = Rand.choose("Drawbane");
-			tutorialText = "Drawbane Store";
 		break;//misc
 		case 9: name = Rand.choose("Witchery","Potion Material","Reagent","Catalyst","Reactant","Ingredient");
-		tutorialText = "Reagent Store";
 		break;
 		case 10: name = Rand.choose("Food","Provision","Comestible","Edible","Commissariat");
-			tutorialText = "Food Store";
 		break;
 		case 11: name = Rand.choose("Oddity","Bizarre","Peculiar","Curiosity","Souvenir","Trinket","Trophy");
-			tutorialText = "Oddity Store";
 		break;//collector
 		}
 		name += " " + Rand.choose("Store","Market","Shop","Post","Boutique","Emporium","Outlet","Center","Mart","Stand","Sale","Fair","Bazaar","Stall","Booth");

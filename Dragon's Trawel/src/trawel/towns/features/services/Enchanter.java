@@ -42,8 +42,6 @@ public class Enchanter extends Feature {
 	public Enchanter(String name,int tier){
 		this.name = name;
 		this.tier = tier;
-		tutorialText = "Enchanter";
-		area_type = Area.MISC_SERVICE;
 		aetherLerp = Rand.randFloat()/3f;
 		sellAmount = Rand.randRange(3, 6);
 	}
@@ -51,6 +49,21 @@ public class Enchanter extends Feature {
 	@Override
 	public String getColor() {
 		return TrawelColor.F_SERVICE_MAGIC;
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Enchanter";
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Enchanter";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
 	}
 	
 	@Override

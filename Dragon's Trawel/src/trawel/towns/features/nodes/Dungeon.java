@@ -56,12 +56,22 @@ public class Dungeon extends NodeFeature {
 		tier = _tier;
 		shape = s;
 		boss = bossType;
-		area_type = Area.DUNGEON;
 		generate(_size);
 	}
 	
+	
+	
+	public boolean hasHelpers() {
+		return delve_helpers != null;
+	}
+	
 	@Override
-	public String getTutorialText() {
+	public String getColor() {
+		return TrawelColor.F_NODE;
+	}
+	
+	@Override
+	public String nameOfType() {
 		switch (shape) {
 		case NONE:
 			return "Dungeon";
@@ -75,13 +85,14 @@ public class Dungeon extends NodeFeature {
 		return "Dungeon?";
 	}
 	
-	public boolean hasHelpers() {
-		return delve_helpers != null;
+	@Override
+	public String nameOfFeature() {
+		return "Dungeon";
 	}
 	
 	@Override
-	public String getColor() {
-		return TrawelColor.F_NODE;
+	public Area getArea() {
+		return Area.DUNGEON;
 	}
 	
 	@Override

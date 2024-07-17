@@ -38,16 +38,7 @@ public class Lot extends Feature {
 	public Lot(Town town) {
 		this.town = town;
 		tier = town.getTier();
-		name = "lot";
-		area_type = Area.LOT;
-	}
-	
-	@Override
-	public String getTutorialText() {
-		if (construct == null) {
-			return "Owned Lot, waiting for build order.";
-		}
-		return "Owned Lot (Constructing).";
+		name = "Lot";
 	}
 	
 	@Override
@@ -58,6 +49,24 @@ public class Lot extends Feature {
 	@Override
 	public String getColor() {
 		return TrawelColor.F_BUILDABLE;
+	}
+	
+	@Override
+	public String nameOfType() {
+		if (construct == null) {
+			return "Empty Lot";
+		}
+		return "Construction Site";
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Lot";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.LOT;
 	}
 	
 	private enum LotType{

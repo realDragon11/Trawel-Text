@@ -46,8 +46,6 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 	public RogueGuild(String _name, int _tier){
 		name = _name;
 		tier = _tier;
-		tutorialText = "Rogue's Guild";
-		area_type = Area.MISC_SERVICE;
 		activityTimer = 24f+Rand.randFloat()*24f;
 	}
 	
@@ -59,6 +57,21 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 	@Override
 	public String getColor() {
 		return TrawelColor.F_GUILD;
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Rogue Guild";
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Rogue Guild";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
 	}
 	
 	@Override

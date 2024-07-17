@@ -31,20 +31,25 @@ public class Forest extends ExploreFeature{
 		return QRType.FOREST;
 	}
 	
+	@Override
+	public Area getArea() {
+		return Area.FOREST;
+	}
+	
 	public Forest(String name, int tier) {
 		this.tier = tier;
 		this.name = name;
-		background_area = "forest";
 		background_variant = 1;
-		area_type = Area.FOREST;
 	}
-	@Override
-	public String getTutorialText() {
-		return "Forest";
-	}
+	
 	@Override
 	public String nameOfType() {
-		return "forest";
+		return "Forest";
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Forest";
 	}
 	
 	@Override

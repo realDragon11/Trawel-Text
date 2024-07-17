@@ -98,6 +98,11 @@ public class TrawelColor {
 	public static final String F_FORT = TIMID_GREY;
 	public static final String F_BUILDABLE = PRE_ORANGE;
 	public static final String F_GUILD = PRE_YELLOW;
+	//DOLATER: F_MULTI
+	/**
+	 * used for inns and districts
+	 */
+	public static final String F_MULTI = TIMID_ORANGE;
 	
 	//item values
 	public static final String ITEM_WANT_HIGHER = TrawelColor.inlineColor(TrawelColor.colorMix(Color.WHITE,TrawelColor.colorMix(Color.BLUE,Color.GREEN,.5f),.3f));

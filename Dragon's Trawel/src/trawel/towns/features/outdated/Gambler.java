@@ -22,13 +22,26 @@ public class Gambler extends Feature{
 		this.type = type;
 		this.name = name;
 		this.gold = gold;
-		tutorialText = "Lose money at gambling halls.";
-		area_type = Area.MISC_SERVICE;
 	}
 	
 	@Override
 	public String getColor() {
 		return TrawelColor.F_SERVICE;
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Gambling Hall";
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Gambling Hall";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
 	}
 	
 	@Override

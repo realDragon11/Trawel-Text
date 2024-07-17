@@ -45,19 +45,30 @@ public class Oracle extends Feature{ //extends feature later
 	public Oracle(String string, int level) {
 		name = string;
 		tier = level;
-		tutorialText = "Oracle";
-		area_type = Area.ORACLE;
 	}
 
 	public Oracle() {
 		//just for non-static single commands
-		tutorialText = "Oracles";
-		area_type = Area.ORACLE;
 	}
 	
 	@Override
 	public String getColor() {
 		return TrawelColor.F_SPECIAL;
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Oracle";
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Oracle";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.ORACLE;
 	}
 
 	public static void tip(String mask) {

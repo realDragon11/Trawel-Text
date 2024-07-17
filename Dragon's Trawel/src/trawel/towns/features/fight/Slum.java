@@ -66,6 +66,26 @@ public class Slum extends Store implements QuestBoardLocation{
 		return QRType.SLUM;
 	}
 	
+	@Override
+	public Area getArea() {
+		return Area.SLUM;
+	}
+	
+	@Override
+	public String getColor() {
+		return TrawelColor.F_MULTI;
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "District";
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "District";
+	}
+	
 	/**
 	 * the general contract of this interface is that it will generate a Feature to replace the Slum
 	 * <br>
@@ -87,8 +107,6 @@ public class Slum extends Store implements QuestBoardLocation{
 		super(_tier,Slum.class);
 		storename = name;
 		tier = _tier;
-		tutorialText = "District";
-		area_type = Area.SLUM;
 	}
 
 	public Slum(Town t, String name,boolean removable) {
@@ -103,11 +121,6 @@ public class Slum extends Store implements QuestBoardLocation{
 		town = t;
 		replacer = _replacer;
 		removable = true;
-	}
-	
-	@Override
-	public String getColor() {
-		return TrawelColor.F_NODE;//unsure
 	}
 	
 	@Override

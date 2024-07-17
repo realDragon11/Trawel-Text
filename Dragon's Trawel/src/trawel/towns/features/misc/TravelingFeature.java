@@ -43,15 +43,17 @@ public class TravelingFeature extends Store{
 	public static boolean exiting;//false by default
 	
 	protected enum TravelType{
-		CELEBRATION(TrawelColor.F_SERVICE,"Celebration"),
-		FIGHT(TrawelColor.F_COMBAT,"Fight"),
-		ORACLE(TrawelColor.F_SPECIAL,"Oracle"),
-		STALL(TrawelColor.F_SERVICE,"Store");
+		CELEBRATION(TrawelColor.F_SERVICE,"Celebration",Area.INN),
+		FIGHT(TrawelColor.F_COMBAT,"Fight",Area.ARENA),
+		ORACLE(TrawelColor.F_SPECIAL,"Oracle",Area.ORACLE),
+		STALL(TrawelColor.F_SERVICE,"Store",Area.SHOP);
 		
 		public final String color, name;
-		TravelType(String _color, String _name){
+		public final Area area;
+		TravelType(String _color, String _name, Area _area){
 			color = _color;
 			name = _name;
+			area = _area;
 		}
 	}
 	
@@ -68,13 +70,23 @@ public class TravelingFeature extends Store{
 	}
 	
 	@Override
+	public Networking.Area getArea() {
+		return contents != null ? contents.area : Area.MISC_SERVICE;
+	}
+	
+	@Override
 	public boolean canShow() {
 		return contents != null;
 	}
 	
 	@Override
-	public String getTutorialText() {
+	public String nameOfType() {
 		return "Varies: " + (contents != null ? contents.name : "nothing");
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Town Stall";
 	}
 
 	@Override
@@ -117,12 +129,10 @@ public class TravelingFeature extends Store{
 		case 1:
 			contents = TravelType.ORACLE;
 			name = "Traveling Oracle";
-			area_type = Area.ORACLE;
 			break;
 		case 2:
 			contents = TravelType.FIGHT;
 			name = "Event Fight";
-			area_type = Area.ARENA;
 			tier = Math.max(2,tier);
 			fighters.add(RaceFactory.getDueler(tier+1));
 			for (int i = Rand.randRange(2,3);i>=0;i--) {
@@ -134,7 +144,6 @@ public class TravelingFeature extends Store{
 			break;
 		case 3:
 			contents = TravelType.STALL;
-			area_type = Area.SHOP;
 			name = "Traveling Stall";
 			restock();
 			break;

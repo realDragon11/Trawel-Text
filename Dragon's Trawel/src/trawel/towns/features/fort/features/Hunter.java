@@ -3,6 +3,7 @@ package trawel.towns.features.fort.features;
 import java.util.List;
 
 import trawel.core.Print;
+import trawel.core.Networking.Area;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -32,12 +33,26 @@ public class Hunter extends FortFeature {
 		default: this.name = "Hunter's Den";break;
 		
 		}
-		tutorialText = "Hunter";
 	}
 	
 	@Override
 	public String getColor() {
 		return TrawelColor.F_FORT;
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Hunter";
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Hunter";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
 	}
 	
 	@Override

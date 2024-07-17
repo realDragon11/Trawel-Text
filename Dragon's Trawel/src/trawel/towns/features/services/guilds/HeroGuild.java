@@ -45,8 +45,6 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 	public HeroGuild(String _name, int _tier){
 		name = _name;
 		tier = _tier;
-		tutorialText = "Hero's Guild";
-		area_type = Area.MISC_SERVICE;
 		activityTimer = 24f+Rand.randFloat()*24f;
 	}
 	
@@ -58,6 +56,21 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 	@Override
 	public String getColor() {
 		return TrawelColor.F_GUILD;
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Hero Guild";
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Hero Guild";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
 	}
 	
 	@Override

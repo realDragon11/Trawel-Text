@@ -31,7 +31,6 @@ public class Doctor extends Feature {
 		this.name = name;
 		town = t;
 		tier = t.getTier();
-		area_type = Area.MISC_SERVICE;
 	}
 	@Override
 	public String getColor() {
@@ -39,8 +38,18 @@ public class Doctor extends Feature {
 	}
 	
 	@Override
-	public String getTutorialText() {
+	public String nameOfFeature() {
 		return "Doctor";
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Doctor";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
 	}
 	
 	@Override

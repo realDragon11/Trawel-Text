@@ -11,7 +11,7 @@ public class MenuSelectFeature implements MenuItem {
 
 	@Override
 	public String title() {
-		String tut = feature.getTutorialText();
+		String tut = feature.nameOfType();
 		return feature.getColor()+feature.getTitle()
 		+ (tut != null && mainGame.displayFeatureText ? TrawelColor.TIMID_MAGENTA+" ("+tut+")" : "")
 		;

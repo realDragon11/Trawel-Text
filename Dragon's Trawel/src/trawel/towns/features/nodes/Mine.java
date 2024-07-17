@@ -21,9 +21,6 @@ public class Mine extends NodeFeature {
 		owner = _owner;
 	}
 	public Mine(String _name,Town t,int _size, int _tier, Shape s, BossType _bossType) {
-		background_area = "mine";
-		tutorialText = "Mine";
-		area_type = Area.MINE;
 		name = _name;
 		town = t;
 		tier = _tier;
@@ -34,7 +31,12 @@ public class Mine extends NodeFeature {
 	}
 	
 	@Override
-	public String getTutorialText() {
+	public String getColor() {
+		return TrawelColor.F_NODE;
+	}
+	
+	@Override
+	public String nameOfType() {
 		switch (shape) {
 		case ELEVATOR:
 			return "Hellevator Mine";
@@ -45,8 +47,13 @@ public class Mine extends NodeFeature {
 	}
 	
 	@Override
-	public String getColor() {
-		return TrawelColor.F_NODE;
+	public String nameOfFeature() {
+		return "Mine";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MINE;
 	}
 	
 	@Override
@@ -57,10 +64,6 @@ public class Mine extends NodeFeature {
 		Networking.addMultiLight(1012,353);
 		start.start();
 		Networking.clearLights();
-	}
-	@Override
-	public void sendBackVariant() {
-		Networking.sendStrong("Backvariant|"+background_area+background_variant+"|1|0|");
 	}
 	
 	public void addVein() {

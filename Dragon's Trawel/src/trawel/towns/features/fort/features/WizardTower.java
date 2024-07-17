@@ -10,6 +10,7 @@ import derg.menus.MenuSelect;
 import derg.menus.MenuSelectNumber;
 import trawel.core.Input;
 import trawel.core.Print;
+import trawel.core.Networking.Area;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -31,13 +32,27 @@ public class WizardTower extends FortFeature {
 	public WizardTower(int tier) {
 		this.tier = tier;
 		this.name = "Wizard Tower";
-		tutorialText = "Wizard Tower";
 		laborer = new Laborer(LaborType.WIZARD);
 	}
 	
 	@Override
 	public String getColor() {
 		return TrawelColor.F_FORT;
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Wizard Tower";
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Wizard Tower";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
 	}
 	
 	@Override

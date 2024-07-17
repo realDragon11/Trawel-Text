@@ -15,9 +15,6 @@ public class Beach extends NodeFeature {
 	private BossType bossType;
 	
 	public Beach(String _name,Town t,int _size, int _tier, Shape s, BossType _bossType) {
-		background_area = "beach";
-		tutorialText = "Beach";
-		area_type = Area.BEACH;
 		name = _name;
 		town = t;
 		tier = _tier;
@@ -28,7 +25,12 @@ public class Beach extends NodeFeature {
 	}
 	
 	@Override
-	public String getTutorialText() {
+	public String getColor() {
+		return TrawelColor.F_NODE;
+	}
+	
+	@Override
+	public String nameOfType() {
 		switch (shape) {
 		case TREASURE_BEACH:
 			return "Treasure Beach";
@@ -39,19 +41,19 @@ public class Beach extends NodeFeature {
 	}
 	
 	@Override
-	public String getColor() {
-		return TrawelColor.F_NODE;
+	public String nameOfFeature() {
+		return "Beach";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.BEACH;
 	}
 	
 	@Override
 	public void go() {
 		start.start();
 	}
-	@Override
-	public void sendBackVariant() {
-		Networking.sendStrong("Backvariant|"+background_area+background_variant+"|1|0|");
-	}
-	
 	@Override
 	protected void generate(int size) {
 		start = NodeType.NodeTypeNum.BEACH.singleton.getStart(this, size, tier);

@@ -89,16 +89,24 @@ public class Inn extends Feature implements QuestBoardLocation{
 		resident = (byte) Rand.randRange(1,RES_COUNT);
 		nextReset = Rand.randRange(4,30);
 		rentTime = 0;
-		tutorialText = "Inn";
 		this.owner = owner;
 		beerCount = Rand.randRange(2,4);
 		beerCost = (int) (getUnEffectiveLevel() +Rand.randRange(0,2));
-		area_type = Area.INN;
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Tavern";
 	}
 	
 	@Override
 	public String nameOfType() {
-		return "tavern";
+		return "Tavern";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.INN;
 	}
 	
 	@Override

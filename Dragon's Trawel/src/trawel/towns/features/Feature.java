@@ -25,13 +25,10 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	private static final long serialVersionUID = 7285785408935895233L;
 	protected String name;
 	protected SuperPerson owner = null;
-	protected String tutorialText = null;
 	protected Town town;
 	protected int moneyEarned;
 	protected int background_variant = Rand.randRange(1, 3);
-	protected String background_area = "main";
 	protected int tier;
-	protected Networking.Area area_type;
 	protected String intro, outro;
 	
 	/**
@@ -50,15 +47,16 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	protected abstract void go();
 	protected void goHeader() {
 		Player.player.atFeature = this;
-		Networking.setArea(area_type);
+		Networking.setArea(getArea());
 		//Networking.setBackground(background_area);
 		//sendBackVariant();
 		
 	}
+	@Deprecated
 	public void sendBackVariant() {
 		double[] p = Calender.lerpLocation(town);
 		float[] b = Player.player.getWorld().getCalender().getBackTime(p[0],p[1]);
-		Networking.sendStrong("Backvariant|"+background_area+background_variant+"|"+b[0]+"|"+b[1]+"|");
+		Networking.sendStrong("Backvariant|"+getArea().backName+background_variant+"|"+b[0]+"|"+b[1]+"|");
 	}
 	public void sendBackVariantOf(String background) {
 		
@@ -86,10 +84,6 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	public void setOwner(SuperPerson owner) {
 		this.owner = owner;
 	}
-	
-	public void printTutorial() {
-		Print.println(getTutorialText());
-	}
 
 	public abstract String getColor();
 	
@@ -97,6 +91,8 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 		return QRType.NONE;
 	}
 	
+	public abstract Networking.Area getArea();
+
 	public enum QRType{
 		NONE(new QKey[0],null,0f),
 		MOUNTAIN(new QKey[] {QKey.DEST_MOUNTAIN},null,1f),
@@ -147,9 +143,6 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	}
 	public void setTownInternal(Town town2) {
 		town = town2;
-	}
-	public String getTutorialText() {
-		return tutorialText;
 	}
 	
 	@Override
@@ -222,9 +215,14 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	public float occupantDesire() {
 		return .5f;
 	}
-	public String nameOfType() {
-		return getTutorialText();
-	}
+	/**
+	 * used to print what exact feature type it is (can change)
+	 */
+	public abstract String nameOfType();
+	/**
+	 * used to print what meta-feature type it is (per class only)
+	 */
+	public abstract String nameOfFeature();
 	
 	public Feature getReplaced() {
 		return replaced;

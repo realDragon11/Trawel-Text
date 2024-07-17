@@ -31,8 +31,6 @@ public class Library extends Feature {
 		start();
 		name = _name;
 		town = _town;
-		tutorialText = "Library";
-		area_type = Area.MISC_SERVICE;
 	}
 	public enum LibraryFlag{
 		HAS_BONUS_FEAT_PICKED
@@ -49,6 +47,21 @@ public class Library extends Feature {
 	@Override
 	public String getColor() {
 		return TrawelColor.F_AUX_SERVICE;
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Library";
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Library";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
 	}
 
 	@Override

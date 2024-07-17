@@ -16,14 +16,27 @@ public class Appraiser extends Feature {
 
 	public Appraiser(String name) {
 		this.name = name;
-		tutorialText = "Appraiser";
 		//TODO: needs better overhaul
-		area_type = Area.MISC_SERVICE;
 	}
 	
 	@Override
 	public String getColor() {
 		return TrawelColor.F_AUX_SERVICE;
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Appraiser";
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Appraiser";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
 	}
 	
 	@Override

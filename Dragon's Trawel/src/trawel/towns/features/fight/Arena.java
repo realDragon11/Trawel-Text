@@ -42,9 +42,22 @@ public class Arena extends Feature{
 		this.timeLeft = timeLeft;
 		this.timesDone = timesDone;
 		winners = new ArrayList<Person>();
-		tutorialText = "Arena";
 		this.owner = owner;
-		area_type = Area.ARENA;
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Arena";
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Arena";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.ARENA;
 	}
 	
 	@Override

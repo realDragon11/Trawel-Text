@@ -142,12 +142,6 @@ public abstract class ExploreFeature extends Feature{
 	public List<MenuItem> extraMenu(){
 		return null;
 	}
-	@Override
-	public abstract String nameOfType();
-	@Override
-	public String getTutorialText() {
-		return Print.capFirst(nameOfType())+".";
-	}
 	
 	/**
 	 * will provide a variable level that resets each explore

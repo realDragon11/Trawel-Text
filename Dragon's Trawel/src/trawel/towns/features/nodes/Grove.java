@@ -11,11 +11,8 @@ public class Grove extends NodeFeature {
 		this.name = name;
 		town = t;
 		tier = _tier;
-		tutorialText = "Grove";
 		generate(capacity);
-		background_area = "forest";
 		background_variant = 1;
-		area_type = Area.FOREST;
 	}
 	
 	public Grove(String name,Town t) {
@@ -25,6 +22,21 @@ public class Grove extends NodeFeature {
 	@Override
 	public String getColor() {
 		return TrawelColor.F_NODE;
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Grove";
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Grove";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.FOREST;
 	}
 	
 	@Override

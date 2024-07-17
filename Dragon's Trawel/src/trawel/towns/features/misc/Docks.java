@@ -69,13 +69,21 @@ public class Docks extends Feature {
 		tier = Math.max(2,1+t.getTier());//min level of 2, but tries to be one higher
 		old_defenders = new ArrayList<Person>();
 		old_attackers = new ArrayList<Person>();
-		area_type = Area.PORT;
 	}
 	
 	@Override
-	public String getTutorialText() {
+	public String nameOfType() {
 		return "Docks";
-		//return "Docks are large ports, able to transport you across water. You can also defend them or travel to far-flung ports.";
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Docks";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.PORT;
 	}
 	
 	@Override

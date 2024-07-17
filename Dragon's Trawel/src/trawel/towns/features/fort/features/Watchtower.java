@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.core.Print;
+import trawel.core.Networking.Area;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -36,13 +37,28 @@ public class Watchtower extends FortFeature {
 		default: this.name = "Watchtower";break;
 		
 		}
-		tutorialText = "Watchtower";
 	}
 	
 	@Override
 	public String getColor() {
 		return TrawelColor.F_FORT;
 	}
+	
+	@Override
+	public String nameOfType() {
+		return "Watchtower";
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Watchtower";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
+	}
+	
 	@Override
 	public int getSize() {
 		return size;

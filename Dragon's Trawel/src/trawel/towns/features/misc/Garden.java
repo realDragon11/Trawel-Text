@@ -198,21 +198,33 @@ public class Garden extends Feature {
 		}
 		tier = town.getTier();
 		name = _name;
-		tutorialText = "Garden";
 		for (int i = 0; i < 6;i++) {
 			plants.add(new PlantSpot(tier));
 			plants.get(i).contains = defaultFill.roll();
 			//delay starting growth randomly
 			plants.get(i).timer = -(20+(50*Rand.randFloat()));
 		}
-		background_area = "forest";
 		background_variant = 1;
-		area_type = Area.GARDEN;
 	}
 	
 	@Override
 	public String getColor() {
 		return TrawelColor.F_SERVICE;
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Garden";
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Garden";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.GARDEN;
 	}
 
 	@Override

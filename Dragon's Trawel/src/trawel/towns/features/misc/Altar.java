@@ -29,16 +29,28 @@ public class Altar extends Feature{
 
 	private AltarForce force;
 	public Altar(String _name, AltarForce _type) {
-		//name = "Sky Slab";
 		name = _name;
 		force = _type;
-		tutorialText = "Altar";
-		area_type = Area.ALTAR;
 	}
 	
 	@Override
 	public String getColor() {
 		return TrawelColor.F_SPECIAL;
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Altar";
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Altar";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.ALTAR;
 	}
 	
 	@Override

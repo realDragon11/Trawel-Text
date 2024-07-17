@@ -56,10 +56,8 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		tier = t.getTier();
 		storename = name;
 		name = _name;
-		tutorialText = "Witch Hut";
 		town = t;
 		timecounter = 0;
-		area_type = Area.MISC_SERVICE;
 	}
 	@Override
 	public String getTitle() {
@@ -82,6 +80,21 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	@Override
 	public String getColor() {
 		return TrawelColor.F_SERVICE_MAGIC;
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Witch Hut";
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Witch Hut";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.MISC_SERVICE;
 	}
 	
 	@Override

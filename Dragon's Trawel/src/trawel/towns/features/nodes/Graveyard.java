@@ -9,8 +9,6 @@ public class Graveyard extends NodeFeature {
 	public Graveyard(String name,Town t, int goalSize) {
 		this.name = name;
 		town = t;
-		tutorialText = "Graveyard";
-		area_type = Area.GRAVEYARD;
 		tier = getTown().getTier();
 		generate(goalSize);
 	}
@@ -22,6 +20,21 @@ public class Graveyard extends NodeFeature {
 	@Override
 	public String getColor() {
 		return TrawelColor.F_NODE;
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "Graveyard";
+	}
+	
+	@Override
+	public String nameOfFeature() {
+		return "Graveyard";
+	}
+	
+	@Override
+	public Area getArea() {
+		return Area.GRAVEYARD;
 	}
 	
 	@Override
