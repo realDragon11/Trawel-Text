@@ -29,11 +29,45 @@ import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
 import trawel.towns.contexts.Town;
 import trawel.towns.contexts.World;
+import trawel.towns.data.FeatureData;
+import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.towns.features.Feature;
 import trawel.towns.features.fort.elements.SubSkill;
 import trawel.towns.features.nodes.BossNode.BossType;
 
 public class Dungeon extends NodeFeature {
+	
+	static {
+		FeatureData.registerFeature(Dungeon.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public int priority() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+			
+			@Override
+			public String name() {
+				return "Dungeon";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_NODE;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.NODE_EXPLORATION;
+			}
+		});
+	}
 
 	private static final long serialVersionUID = 1L;
 	private BossType boss;
@@ -59,15 +93,8 @@ public class Dungeon extends NodeFeature {
 		generate(_size);
 	}
 	
-	
-	
 	public boolean hasHelpers() {
 		return delve_helpers != null;
-	}
-	
-	@Override
-	public String getColor() {
-		return TrawelColor.F_NODE;
 	}
 	
 	@Override
@@ -83,11 +110,6 @@ public class Dungeon extends NodeFeature {
 			return "Rigged Tower Dungeon";
 		}
 		return "Dungeon?";
-	}
-	
-	@Override
-	public String nameOfFeature() {
-		return "Dungeon";
 	}
 	
 	@Override

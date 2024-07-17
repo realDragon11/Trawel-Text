@@ -9,9 +9,7 @@ import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.factions.Faction;
-import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.constants.FeatureData.FeatureTutorialCategory;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.IEffectiveLevel;
@@ -20,6 +18,8 @@ import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.types.Quest.TriggerType;
 import trawel.towns.contexts.World;
+import trawel.towns.data.FeatureData;
+import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.personal.people.Player;
 
 public class Forest extends ExploreFeature{

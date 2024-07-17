@@ -8,7 +8,6 @@ import trawel.core.Networking;
 import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
-import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.NPCMutator;
 import trawel.personal.Person;
@@ -19,6 +18,7 @@ import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.contexts.Town;
+import trawel.towns.data.FeatureData;
 import trawel.towns.features.Feature;
 
 public class Champion extends Feature{

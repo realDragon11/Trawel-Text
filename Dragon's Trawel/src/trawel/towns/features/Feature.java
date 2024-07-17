@@ -5,7 +5,6 @@ import trawel.core.Networking;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.core.mainGame;
-import trawel.helper.constants.FeatureData;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
@@ -20,6 +19,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.contexts.Town;
 import trawel.towns.data.Calender;
+import trawel.towns.data.FeatureData;
 
 public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	

@@ -1,8 +1,8 @@
 package trawel.towns.features.nodes;
 import trawel.core.Networking.Area;
-import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelColor;
 import trawel.towns.contexts.Town;
+import trawel.towns.data.FeatureData;
 import trawel.towns.features.nodes.BossNode.BossType;
 
 public class Beach extends NodeFeature {

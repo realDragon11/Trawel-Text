@@ -12,7 +12,6 @@ import trawel.core.Input;
 import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
-import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -24,6 +23,7 @@ import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
 import trawel.towns.contexts.World;
 import trawel.towns.data.Calender;
+import trawel.towns.data.FeatureData;
 import trawel.towns.features.Feature;
 
 public class Arena extends Feature{

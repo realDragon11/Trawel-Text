@@ -1,4 +1,4 @@
-package trawel.towns.features.services;
+package trawel.towns.features.multi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +40,7 @@ import trawel.towns.contexts.World;
 import trawel.towns.data.Calender;
 import trawel.towns.features.Feature;
 import trawel.towns.features.fight.ExploreFeature;
+import trawel.towns.features.services.Oracle;
 
 //sells booze which increases temp hp for a few fights,
 //has a resident which changes with time

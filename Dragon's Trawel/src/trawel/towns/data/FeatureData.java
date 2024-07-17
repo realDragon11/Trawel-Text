@@ -1,8 +1,7 @@
-package trawel.helper.constants;
+package trawel.towns.data;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +12,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.core.Input;
+import trawel.helper.constants.TrawelColor;
 import trawel.towns.features.Feature;
 
 public abstract class FeatureData {

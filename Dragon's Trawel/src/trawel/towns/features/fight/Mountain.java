@@ -17,9 +17,7 @@ import trawel.core.Networking;
 import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
-import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.constants.FeatureData.FeatureTutorialCategory;
 import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -33,6 +31,8 @@ import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.contexts.World;
+import trawel.towns.data.FeatureData;
+import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 
 public class Mountain extends ExploreFeature{
 	

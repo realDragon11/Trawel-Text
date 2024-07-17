@@ -1,4 +1,4 @@
-package trawel.towns.features.fight;
+package trawel.towns.features.multi;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +15,6 @@ import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.factions.HostileTask;
-import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.Effect;
 import trawel.personal.Person;
@@ -40,6 +39,7 @@ import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
 import trawel.towns.contexts.Town;
 import trawel.towns.contexts.World;
+import trawel.towns.data.FeatureData;
 import trawel.towns.features.Feature;
 import trawel.towns.features.services.Doctor;
 import trawel.towns.features.services.Store;
@@ -347,7 +347,7 @@ public class Slum extends Store implements QuestBoardLocation{
 	}
 	
 	private void crime() {
-		//Slum sl = this;
+		//FIXME: include some basic risky doctor services in here? maybe cure but a chance to cause a different punishment and have to go somewhere else before this refreshes?
 		Input.menuGo(new MenuGenerator() {
 
 			@Override
@@ -367,7 +367,7 @@ public class Slum extends Store implements QuestBoardLocation{
 						Print.println("You have "+Player.showGold()+".");
 						switch (Rand.randRange(1, 3)) {
 						case 1:
-							Print.println("Buy a low-quality potion? ("+World.currentMoneyDisplay(potionCost)+")");
+							Print.println(TrawelColor"Buy a low-quality potion? ("+World.currentMoneyDisplay(potionCost)+")");
 							if (Input.yesNo()) {
 								if (Player.player.getGold() < potionCost) {
 									Print.println("You cannot afford this. (You have "+Player.showGold()+".)");

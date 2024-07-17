@@ -11,7 +11,6 @@ import trawel.core.Input;
 import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
-import trawel.helper.constants.FeatureData;
 import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
@@ -36,8 +35,9 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.contexts.Town;
 import trawel.towns.contexts.World;
+import trawel.towns.data.FeatureData;
 import trawel.towns.features.Feature;
-import trawel.towns.features.fight.Slum;
+import trawel.towns.features.multi.Slum;
 
 public class Store extends Feature{
 	
