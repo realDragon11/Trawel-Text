@@ -13,7 +13,6 @@ import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.helper.constants.FeatureData;
-import trawel.helper.constants.FeatureData.FeatureTutorialCategory;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -29,19 +28,23 @@ import trawel.towns.features.Feature;
 
 public class Arena extends Feature{
 	
+	//color goes through other function for non-tutorial text, so feature indicator text can be clean
+	private static final String COLOR = TrawelColor.F_COMBAT;
+	private static final String NAME = COLOR+"Arena"+TrawelColor.COLOR_RESET;
+	private static final String NAMES = COLOR+"Arenas"+TrawelColor.COLOR_RESET;
+	
 	static {
 		FeatureData.registerFeature(Arena.class,
 				new FeatureData() {
 
 					@Override
 					public void tutorial() {
-						// TODO Auto-generated method stub
-						
+						Print.println(NAMES+" host fighting Tournaments, providing an endless stream of battles. NPC Tournament winners will hang around for you to fight or rematch. You can also loiter in "+NAMES+" to pass time for no cost.");
 					}
 
 					@Override
 					public String name() {
-						return "Arena";
+						return NAME;
 					}
 
 					@Override
@@ -91,7 +94,7 @@ public class Arena extends Feature{
 	
 	@Override
 	public String getColor() {
-		return TrawelColor.F_COMBAT;
+		return COLOR;
 	}
 	
 	public Arena(String name,int tier,int rounds, double interval, double timeLeft,int timesDone) {

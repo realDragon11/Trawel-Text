@@ -1,6 +1,7 @@
 package trawel.helper.constants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
+import derg.menus.ScrollMenuGenerator;
 import trawel.core.Input;
 import trawel.towns.features.Feature;
 
@@ -104,28 +106,36 @@ public abstract class FeatureData {
 
 						@Override
 						public boolean go() {
-							Input.menuGo(new MenuGenerator() {
-								
-								@Override
-								public List<MenuItem> gen() {
-									List<MenuItem> list = new ArrayList<MenuItem>();
-									final List<FeatureData> fList = getFeaturesOf(c);
-									for (FeatureData f: fList) {
-										list.add(new MenuSelect() {
+							final List<MenuItem> fList = new ArrayList<MenuItem>();
+							for (FeatureData f: getFeaturesOf(c)) {
+								fList.add(new MenuSelect() {
 
-											@Override
-											public String title() {
-												return f.name();
-											}
-
-											@Override
-											public boolean go() {
-												f.tutorial();
-												return false;
-											}});
+									@Override
+									public String title() {
+										return f.name();
 									}
-									list.add(new MenuBack());
-									return list;
+
+									@Override
+									public boolean go() {
+										f.tutorial();
+										return false;
+									}});
+							}
+							Input.menuGo(new ScrollMenuGenerator(fList.size(),"Prior <> Features","Next <> Features") {
+
+								@Override
+								public List<MenuItem> forSlot(int i) {
+									return Collections.singletonList(fList.get(i));
+								}
+
+								@Override
+								public List<MenuItem> header() {
+									return null;
+								}
+
+								@Override
+								public List<MenuItem> footer() {
+									return Collections.singletonList(new MenuBack());
 								}
 							});
 							return false;
