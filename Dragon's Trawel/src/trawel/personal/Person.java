@@ -365,9 +365,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		)
 		;
 		
-		public ArmorStyle[] amatType;
-		public WeaponType[] weapType;
-		public Archetype[] archType;
+		public final ArmorStyle[] amatType;
+		public final WeaponType[] weapType;
+		public final Archetype[] archType;
 		AIJob(ArmorStyle[] amatType, WeaponType[] weapType, Archetype[] archType) {
 			this.amatType = amatType;
 			this.weapType = weapType;
@@ -1606,20 +1606,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				Print.println(TrawelColor.RESULT_GOOD+"Your wounds are mended!");
 				Networking.unlockAchievement("recover1");
 			}
-			/*
-			if (hasEffect(Effect.TIRED)) {
-				extra.println(extra.RESULT_GOOD+"Your tiredness is treated!");
-			}
-			if (hasEffect(Effect.BEES)) {
-				extra.println(extra.RESULT_GOOD+"Your bees are cured!");
-			}*/
 		}
 		removeEffectAll(Effect.CURSE);
 		removeEffectAll(Effect.BURNOUT);
 		removeEffectAll(Effect.WOUNDED);
-		/*
-		removeEffectAll(Effect.TIRED);
-		removeEffectAll(Effect.BEES);*/
 	}
 	
 	/**
@@ -1671,6 +1661,16 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 */
 	public int effectsSize() {
 		return effects.size(); 
+	}
+	
+	public int punishmentSize() {
+		int i = 0;
+		for (Effect e: effects.keySet()) {
+			if (e.lasts() && e.isNegative()) {
+				i++;
+			}
+		}
+		return i;
 	}
 	
 	public boolean displayEffects() {	
@@ -2329,6 +2329,13 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 */
 	public void setFacLevel(Faction fac, float multFor, float multAgainst) {
 		facRep.addFactionRep(fac, multFor*getUnEffectiveLevel(), multAgainst*getUnEffectiveLevel());
+	}
+	
+	/**
+	 * can be null, remember case null exists and needs to be used alongside default?
+	 */
+	public AIJob getJob() {
+		return job;
 	}
 
 }

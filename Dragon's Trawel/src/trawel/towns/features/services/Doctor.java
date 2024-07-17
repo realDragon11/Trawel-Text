@@ -16,6 +16,7 @@ import trawel.personal.Effect;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.time.TrawelTime;
 import trawel.towns.contexts.Town;
 import trawel.towns.contexts.World;
 import trawel.towns.features.Feature;
@@ -72,9 +73,8 @@ public class Doctor extends Feature {
 						Player.player.getPerson().displayEffects();
 						return false;
 					}});
-				//TODO: includes effects which wore off which is bad now
-				int effectGuess = extra.clamp(Player.player.getPerson().effectsSize(), 3, 6);
-				int cost = Math.round(getUnEffectiveLevel()*(effectGuess/1.5f));
+				//costs for all punishments, even the ones they can't cure- it's harder work
+				int cost = Math.round(getUnEffectiveLevel()*(1+Player.player.getPerson().punishmentSize()));
 				list.add(new MenuSelect() {
 
 					@Override
@@ -85,12 +85,15 @@ public class Doctor extends Feature {
 					@Override
 					public boolean go() {
 						if (Player.player.getGold() < cost) {
-							Print.println("Not enough "+World.currentMoneyString()+"!");
+							Print.println(TrawelColor.RESULT_ERROR+"Not enough "+World.currentMoneyString()+"!");
 							return false;
 						}
-						Print.println("Pay for a check up?");
+						Print.println(TrawelColor.SERVICE_CURRENCY+"Pay for a check up?");
 						if (Input.yesNo()) {
+							Player.addTime(.5);//treatment time
+							TrawelTime.globalPassTime();
 							Player.player.addGold(-cost);
+							Print.println(TrawelColor.RESULT_PASS+"You pay and receive treatment.");
 							Player.player.getPerson().cureEffects();
 						}
 						return false;

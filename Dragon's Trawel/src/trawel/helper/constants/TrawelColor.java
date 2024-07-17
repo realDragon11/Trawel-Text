@@ -130,6 +130,12 @@ public class TrawelColor {
 	public static final String COLOR_OPTION_B = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.RED,Color.BLUE,.3f),Color.WHITE,.5f));
 	public static final String COLOR_OPTION_C = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.RED,Color.MAGENTA,.3f),Color.WHITE,.5f));
 	
+	//color tier indicators
+	public static final String INFORM_BAD = TIMID_RED;
+	public static final String INFORM_POOR = TIMID_ORANGE;
+	public static final String INFORM_OKAY = TIMID_BLUE;
+	public static final String INFORM_GOOD = TIMID_GREEN;
+	
 	//feature service grouping
 	public static final String SERVICE_FREE = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.PINK,Color.GREEN,.3f),Color.WHITE,.4f));
 	public static final String SERVICE_AETHER = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.MAGENTA,Color.CYAN,.5f),Color.WHITE,.5f));

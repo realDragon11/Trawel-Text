@@ -1415,7 +1415,7 @@ public class RaceFactory {
 	public static Person makeMugger(int level) {
 		int findMult;
 		Person w;
-		switch (Rand.randRange(1,4)) {
+		switch (Rand.randRange(1,5)) {
 			case 1: default://desperate random guy
 				w = new Person(level);
 				addWealth(WEALTH_SMALL,.3f,w);

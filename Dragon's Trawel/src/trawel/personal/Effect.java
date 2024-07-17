@@ -110,6 +110,10 @@ public enum Effect{
 		return getName() + TrawelColor.PRE_WHITE+": " +getDesc();
 	}
 	
+	public boolean isNegative() {
+		return goodNegNeut < 0;
+	}
+	
 	public static Effect[] estimEffects = new Effect[] {HASTE,HEARTY};//random drug effects
 	public static Effect[] minorBuffEffects = new Effect[] {HASTE,HEARTY,FORGED,TELESCOPIC,R_AIM};//used for TOXIC_BREWS as minor positive potions
 }
