@@ -1,14 +1,25 @@
 package trawel.towns.features.nodes;
-import trawel.core.Networking;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
+import trawel.helper.constants.FeatureTutorialLists;
+import trawel.helper.constants.FeatureTutorialLists.FeatureTutorialCategory;
 import trawel.helper.constants.TrawelColor;
-import trawel.personal.classless.Perk;
-import trawel.personal.people.Player;
-import trawel.personal.people.SuperPerson;
+import trawel.helper.methods.FeatureTutorialPrinter;
 import trawel.towns.contexts.Town;
 import trawel.towns.features.nodes.BossNode.BossType;
 
 public class Beach extends NodeFeature {
+	
+	static {
+		FeatureTutorialLists.registerFeature(Beach.class,"Beach",
+				new FeatureTutorialPrinter() {
+					
+					@Override
+					public void print() {
+						Print.println("test Beach");
+					}
+				},FeatureTutorialCategory.NODE_EXPLORATION);
+	}
 
 	private static final long serialVersionUID = 1L;
 	private int size;

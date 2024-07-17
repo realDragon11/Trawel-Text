@@ -12,7 +12,10 @@ import trawel.core.Input;
 import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
+import trawel.helper.constants.FeatureTutorialLists;
+import trawel.helper.constants.FeatureTutorialLists.FeatureTutorialCategory;
 import trawel.helper.constants.TrawelColor;
+import trawel.helper.methods.FeatureTutorialPrinter;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent.AgentGoal;
@@ -26,6 +29,17 @@ import trawel.towns.data.Calender;
 import trawel.towns.features.Feature;
 
 public class Arena extends Feature{
+	
+	static {
+		FeatureTutorialLists.registerFeature(Arena.class,"Arena",
+				new FeatureTutorialPrinter() {
+					
+					@Override
+					public void print() {
+						Print.println("test Arena");
+					}
+				},FeatureTutorialCategory.ENCOUNTERS);
+	}
 
 	private static final long serialVersionUID = 1L;
 	private int rounds;

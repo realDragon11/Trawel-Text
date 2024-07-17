@@ -27,6 +27,7 @@ import trawel.core.Rand;
 import trawel.core.SaveManager;
 import trawel.core.mainGame;
 import trawel.factions.FBox;
+import trawel.helper.constants.FeatureTutorialLists;
 import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
@@ -1798,6 +1799,18 @@ public class Player extends SuperPerson{
 								Print.println("Every time any Person levels up, they gain a Feat Point. As a player, you can use this in your character screen, if you have a Feat Pick. You get one Feat Pick per level up. Each Feat Point can buy one Feat or Archetype, from a list of up to 8 options. If you don't like your choices, you can choose to delay spending a point.");
 								Print.println("When you use a Pick, you actually get to keep choosing until you run out of Points or reject a choice. When you choose, the options are generated on the fly, however, with the exception of the 'discourage repeat skills' mechanic if you get a Perk, delaying will not change the odds or actual pool of choices you have.");
 								Print.println("Thus, waiting does let you save your Picks if you want to have more chances to reroll, but this is minor and will not change the potential outcomes on it's own. You will usually want to pick as soon as you can. There are also ways to get extra picks, such as libraries.");
+								return false;
+							}});
+						slist.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Features";
+							}
+
+							@Override
+							public boolean go() {
+								FeatureTutorialLists.getGlossary();
 								return false;
 							}});
 						slist.add(new MenuSelect() {
