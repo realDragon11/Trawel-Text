@@ -23,9 +23,41 @@ import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.contexts.World;
+import trawel.towns.data.FeatureData;
+import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.towns.features.Feature;
 
 public class Blacksmith extends Feature {
+	
+	static {
+		FeatureData.registerFeature(Blacksmith.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" forge items for shops, level and temper gear. "+fancyNamePlural() +" also can fix "+Effect.DAMAGED.getName()+".");
+			}
+			
+			@Override
+			public int priority() {
+				return 25;
+			}
+			
+			@Override
+			public String name() {
+				return "Blacksmith";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_AUX_SERVICE;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.VITAL_SERVICES;
+			}
+		});
+	}
 	
 	private static final long serialVersionUID = 1L;
 	private double time = 10.;
@@ -41,16 +73,6 @@ public class Blacksmith extends Feature {
 		this.tier = tier;
 		this.store = s;
 		name = store.getName() +" " + Rand.choose("Smith","Blacksmith","Smithy","Forge");
-	}
-	
-	@Override
-	public String getColor() {
-		return TrawelColor.F_AUX_SERVICE;
-	}
-	
-	@Override
-	public String nameOfFeature() {
-		return "Blacksmith";
 	}
 	
 	@Override
@@ -99,6 +121,7 @@ public class Blacksmith extends Feature {
 						}
 						return false;
 					}});
+				//MAYBELATER: level is represented by aether, so this would probably be better off in the enchanter
 				list.add(new MenuSelect() {
 
 					@Override

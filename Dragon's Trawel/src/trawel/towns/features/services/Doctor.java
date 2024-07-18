@@ -19,10 +19,42 @@ import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
 import trawel.towns.contexts.Town;
 import trawel.towns.contexts.World;
+import trawel.towns.data.FeatureData;
+import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.towns.features.Feature;
 import trawel.towns.features.elements.MenuMoney;
 
 public class Doctor extends Feature {
+	
+	static {
+		FeatureData.registerFeature(Doctor.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" can cure "+Effect.BURNOUT.getName() + ", "+Effect.CURSE.getName() +", and "+Effect.WOUNDED.getName()+".");
+			}
+			
+			@Override
+			public int priority() {
+				return 10;
+			}
+			
+			@Override
+			public String name() {
+				return "Doctor";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_SERVICE;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.VITAL_SERVICES;
+			}
+		});
+	}
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,15 +64,6 @@ public class Doctor extends Feature {
 		this.name = name;
 		town = t;
 		tier = t.getTier();
-	}
-	@Override
-	public String getColor() {
-		return TrawelColor.F_SERVICE;
-	}
-	
-	@Override
-	public String nameOfFeature() {
-		return "Doctor";
 	}
 	
 	@Override

@@ -21,14 +21,47 @@ import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
+import trawel.personal.Effect;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
 import trawel.towns.contexts.World;
+import trawel.towns.data.FeatureData;
+import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.towns.features.Feature;
 
 public class Oracle extends Feature{ //extends feature later
+	
+	static {
+		FeatureData.registerFeature(Oracle.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" utter random tips and tidbits from everywhere and everyone. If you pay them, the insight might be good enough to lift "+Effect.CURSE.getName()+" and cure "+Effect.BURNOUT.getName()+".");
+			}
+			
+			@Override
+			public int priority() {
+				return 30;
+			}
+			
+			@Override
+			public String name() {
+				return "Oracle";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_SPECIAL;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.VITAL_SERVICES;
+			}
+		});
+	}
 
 	private static final long serialVersionUID = 1L;
 	private static Map<String,List<String>> tips = new HashMap<String,List<String>>();
@@ -49,16 +82,6 @@ public class Oracle extends Feature{ //extends feature later
 
 	public Oracle() {
 		//just for non-static single commands
-	}
-	
-	@Override
-	public String getColor() {
-		return TrawelColor.F_SPECIAL;
-	}
-	
-	@Override
-	public String nameOfFeature() {
-		return "Oracle";
 	}
 	
 	@Override
@@ -232,6 +255,9 @@ public class Oracle extends Feature{ //extends feature later
 				if (visits == 50) {
 					Player.player.addAchieve(this, this.getName() + " consulter");
 				}
+				if (Rand.chanceIn(2,5)) {
+					Player.player.getPerson().insightEffects();
+				}
 			}
 		}else {
 			Print.println(TrawelColor.RESULT_ERROR+"You can't afford that!");
@@ -256,6 +282,9 @@ public class Oracle extends Feature{ //extends feature later
 				}
 				if (oldVisits < 50 && visits >= 50) {
 					Player.player.addAchieve(this, this.getName() + " consulter");
+				}
+				if (Rand.chanceIn(2,3)) {
+					Player.player.getPerson().insightEffects();
 				}
 			}
 		}else {

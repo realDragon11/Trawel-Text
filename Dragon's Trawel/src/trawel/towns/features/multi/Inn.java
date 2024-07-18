@@ -16,6 +16,7 @@ import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
+import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent;
@@ -38,6 +39,8 @@ import trawel.time.TrawelTime;
 import trawel.towns.contexts.Town;
 import trawel.towns.contexts.World;
 import trawel.towns.data.Calender;
+import trawel.towns.data.FeatureData;
+import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.towns.features.Feature;
 import trawel.towns.features.fight.ExploreFeature;
 import trawel.towns.features.services.Oracle;
@@ -45,6 +48,36 @@ import trawel.towns.features.services.Oracle;
 //sells booze which increases temp hp for a few fights,
 //has a resident which changes with time
 public class Inn extends Feature implements QuestBoardLocation{
+	
+	static {
+		FeatureData.registerFeature(Inn.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" have a quest board. " +fancyNamePlural()+" have rentable rooms to cure "+Effect.BURNOUT.getName()+" and "+Effect.TIRED.getName()+". "+fancyNamePlural()+"Sell beer, which increases MHP once each. "+fancyNamePlural()+" have residents to interact with or watch, which change over time.");
+			}
+			
+			@Override
+			public int priority() {
+				return 5;
+			}
+			
+			@Override
+			public String name() {
+				return "Tavern";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_MULTI;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.VITAL_SERVICES;
+			}
+		});
+	}
 
 	private static final long serialVersionUID = 1L;
 	private byte resident;

@@ -1590,14 +1590,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	
 	/**
-	 * use for doctor clearing certain effects like curse and burnout
+	 * use for doctor clearing certain effects like wounded and burnout
 	 */
 	public void cureEffects() {
 		if (isPlayer()) {
-			if (hasEffect(Effect.CURSE)) {
-				Print.println(TrawelColor.RESULT_GOOD+"Your curse is lifted!");
-				Networking.unlockAchievement("recover1");
-			}
 			if (hasEffect(Effect.BURNOUT)) {
 				Print.println(TrawelColor.RESULT_GOOD+"Your burnout is treated!");
 				Networking.unlockAchievement("recover1");
@@ -1607,7 +1603,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				Networking.unlockAchievement("recover1");
 			}
 		}
-		removeEffectAll(Effect.CURSE);
 		removeEffectAll(Effect.BURNOUT);
 		removeEffectAll(Effect.WOUNDED);
 	}
@@ -1665,6 +1660,24 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				Networking.unlockAchievement("recover1");
 			}
 		}
+		removeEffectAll(Effect.CURSE);
+	}
+	
+	/**
+	 * removes burnout and curse
+	 */
+	public void insightEffects(){
+		if (isPlayer()) {
+			if (hasEffect(Effect.BURNOUT)) {
+				Print.println(TrawelColor.RESULT_GOOD+"You overcome your burnout!");
+				Networking.unlockAchievement("recover1");
+			}
+			if (hasEffect(Effect.CURSE)) {
+				Print.println(TrawelColor.RESULT_GOOD+"Your curse is lifted!");
+				Networking.unlockAchievement("recover1");
+			}
+		}
+		removeEffectAll(Effect.BURNOUT);
 		removeEffectAll(Effect.CURSE);
 	}
 	
