@@ -1655,6 +1655,18 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		}
 		removeEffectAll(Effect.DAMAGED);
 	}
+	/**
+	 * cures cursed only
+	 */
+	public void magicEffects() {
+		if (isPlayer()) {
+			if (hasEffect(Effect.CURSE)) {
+				Print.println(TrawelColor.RESULT_GOOD+"Your curse is lifted!");
+				Networking.unlockAchievement("recover1");
+			}
+		}
+		removeEffectAll(Effect.CURSE);
+	}
 	
 	/**
 	 * currently includes all effects, even removed ones, since last clear

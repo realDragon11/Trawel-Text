@@ -15,6 +15,7 @@ import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
+import trawel.personal.Effect;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Item;
@@ -23,10 +24,43 @@ import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.time.TrawelTime;
 import trawel.towns.contexts.World;
+import trawel.towns.data.FeatureData;
+import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.towns.features.Feature;
 
 public class Enchanter extends Feature {
+	
+	static {
+		FeatureData.registerFeature(Enchanter.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" apply enchantments to equipment. "+fancyNamePlural()+" also lift "+Effect.CURSE.getName()+".");
+			}
+			
+			@Override
+			public int priority() {
+				return 100;
+			}
+			
+			@Override
+			public String name() {
+				return "Enchanter";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_SERVICE_MAGIC;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.VITAL_SERVICES;
+			}
+		});
+	}
 	
 	private static final long serialVersionUID = 1L;
 	/**
@@ -44,16 +78,6 @@ public class Enchanter extends Feature {
 		this.tier = tier;
 		aetherLerp = Rand.randFloat()/3f;
 		sellAmount = Rand.randRange(3, 6);
-	}
-	
-	@Override
-	public String getColor() {
-		return TrawelColor.F_SERVICE_MAGIC;
-	}
-	
-	@Override
-	public String nameOfFeature() {
-		return "Enchanter";
 	}
 	
 	@Override
@@ -213,6 +237,36 @@ public class Enchanter extends Feature {
 							return false;
 						}});
 				}
+				
+				if (Player.player.getPerson().hasEffect(Effect.CURSE)) {
+					//reduced cost from doctor since it only cures curse
+					//should increase to doctor if add more effects it can cure
+					int cureCost = Math.round(getUnEffectiveLevel());//*(1+Player.player.getPerson().punishmentSize())
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return TrawelColor.SERVICE_CURRENCY+"Lift Curse ("+World.currentMoneyDisplay(cureCost)+")";
+						}
+
+						@Override
+						public boolean go() {
+							if (Player.player.getGold() < cureCost) {
+								Print.println(TrawelColor.RESULT_ERROR+"Not enough "+World.currentMoneyString()+"!");
+								return false;
+							}
+							Print.println(TrawelColor.SERVICE_CURRENCY+"Pay to lift your curse?");
+							if (Input.yesNo()) {
+								Player.addTime(.5);//treatment time
+								TrawelTime.globalPassTime();
+								Player.player.addGold(-cureCost);
+								Print.println(TrawelColor.RESULT_PASS+"You pay and receive treatment.");
+								Player.player.getPerson().magicEffects();
+							}
+							return false;
+						}});
+				}
+				
 				/*
 				float aetherRate = 1f/extra.lerp(Player.NORMAL_AETHER_RATE,Player.PURE_AETHER_RATE,aetherLerp);
 				//how much aether per 5 world currency
