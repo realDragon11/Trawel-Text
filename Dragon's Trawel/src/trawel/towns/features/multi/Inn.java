@@ -247,12 +247,12 @@ public class Inn extends Feature implements QuestBoardLocation{
 												return false;
 											}});
 									}
-									if (rentTime < 24 && !playerOwns) {
+									if (rentTime <= 24 && !playerOwns) {
 										list.add(new MenuSelect() {
 
 											@Override
 											public String title() {
-												return (playerOwns ? TrawelColor.SERVICE_FREE : TrawelColor.SERVICE_SPECIAL_PAYMENT)+"Wait " + Print.F_TWO_TRAILING.format(rentTime)+" hours.";
+												return (playerOwns ? TrawelColor.SERVICE_FREE : TrawelColor.SERVICE_SPECIAL_PAYMENT)+"Rest " + Print.F_TWO_TRAILING.format(rentTime)+" hours.";
 											}
 
 											@Override
@@ -268,7 +268,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 											@Override
 											public String title() {
-												return (playerOwns ? TrawelColor.SERVICE_FREE : TrawelColor.SERVICE_SPECIAL_PAYMENT)+"Wait 24 hours.";
+												return (playerOwns ? TrawelColor.SERVICE_FREE : TrawelColor.SERVICE_SPECIAL_PAYMENT)+"Rest 24 hours.";
 											}
 
 											@Override
@@ -284,7 +284,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 												@Override
 												public String title() {
-													return (playerOwns ? TrawelColor.SERVICE_FREE : TrawelColor.SERVICE_SPECIAL_PAYMENT)+"Wait 3 days.";
+													return (playerOwns ? TrawelColor.SERVICE_FREE : TrawelColor.SERVICE_SPECIAL_PAYMENT)+"Rest 3 days.";
 												}
 
 												@Override
@@ -302,7 +302,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 											@Override
 											public String title() {
-												return "Rent more time.";
+												return TrawelColor.SERVICE_CURRENCY+"Rent more time.";
 											}
 
 											@Override
@@ -310,7 +310,6 @@ public class Inn extends Feature implements QuestBoardLocation{
 												rent();
 												return false;
 											}});
-										
 									}
 									list.add(new MenuBack());
 									return list;
@@ -628,6 +627,9 @@ public class Inn extends Feature implements QuestBoardLocation{
 	}
 	
 	private void rent() {
+		if (rentTime < 0) {
+			rentTime = 0;
+		}
 		Input.menuGo(new MenuGenerator() {
 
 			@Override

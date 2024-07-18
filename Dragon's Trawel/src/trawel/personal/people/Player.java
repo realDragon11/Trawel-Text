@@ -473,7 +473,7 @@ public class Player extends SuperPerson{
 			knowledgeFragments-=fragmentReq;
 			Player.player.getPerson().addFeatPoint();
 			fragmentReq+=2;
-			Print.println("Your knowledge has gained you a feat point!");
+			Print.println(TrawelColor.RESULT_GOOD+"Your knowledge has gained you a feat point!");
 			Networking.unlockAchievement("learned1");
 		}
 	}
