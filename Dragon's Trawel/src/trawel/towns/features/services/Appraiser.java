@@ -28,7 +28,7 @@ public class Appraiser extends Feature {
 			
 			@Override
 			public void tutorial() {
-				// TODO Auto-generated method stub
+				Print.println(fancyNamePlural()+" examine gear to fix "+Effect.DAMAGED.getName()+".");
 			}
 			
 			@Override

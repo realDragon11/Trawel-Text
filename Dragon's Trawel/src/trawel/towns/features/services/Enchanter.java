@@ -42,7 +42,7 @@ public class Enchanter extends Feature {
 			
 			@Override
 			public int priority() {
-				return 100;
+				return 15;
 			}
 			
 			@Override

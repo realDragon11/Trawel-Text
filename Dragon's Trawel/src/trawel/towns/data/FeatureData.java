@@ -112,7 +112,7 @@ public abstract class FeatureData {
 
 									@Override
 									public String title() {
-										return f.name();
+										return f.fancyName();
 									}
 
 									@Override

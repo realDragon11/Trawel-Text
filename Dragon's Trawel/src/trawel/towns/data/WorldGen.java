@@ -104,7 +104,7 @@ public class WorldGen {
 		homa.addFeature(new Store(1,6));
 		homa.addFeature(new Arena("Basena Arena",1,1,24,2,476));
 		homa.addFeature(new Grove("The Woody Tangle",homa,30,1));
-		homa.addFeature(new Doctor("Melissa's Clinic",homa).setIntro("Melissa greets you, 'Don't get many customers not from the Arena, but if you've got something more exotic like a curse, I can fix that.'"));
+		homa.addFeature(new Doctor("Melissa's Clinic",homa).setIntro("Melissa greets you, 'Don't get many customers not from the Arena, but if you've got worse wounds, I can fix that.'"));
 		w.setStartTown(homa);
 		homa.tTags.add(TownTag.SMALL_TOWN);
 		homa.tTags.add(TownTag.HIDDEN);

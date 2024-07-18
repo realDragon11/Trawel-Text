@@ -1138,22 +1138,22 @@ public class Player extends SuperPerson{
 					@Override
 					public boolean go() {
 						if (person.hasEffect(Effect.BURNOUT)) {
-							Print.println(TrawelColor.RESULT_BAD+"You are burned out. Cure at Doctor or rest off in Inn.");
+							Print.println(TrawelColor.RESULT_BAD+"You are burned out. Cure at Doctor; or rest off in Tavern or Library.");
 						}
 						if (person.hasEffect(Effect.CURSE)) {
-							Print.println(TrawelColor.RESULT_BAD+"You are cursed. Cure at Doctor.");
+							Print.println(TrawelColor.RESULT_BAD+"You are cursed. Lift at Enchanter or Oracle.");
 						}
 						if (person.hasEffect(Effect.TIRED)) {
-							Print.println(TrawelColor.RESULT_BAD+"You are tired. Rest off at Inn.");
+							Print.println(TrawelColor.RESULT_BAD+"You are tired. Rest off at Tavern or Library.");
 						}
 						if (person.hasEffect(Effect.WOUNDED)) {
-							Print.println(TrawelColor.RESULT_BAD+"You are badly wounded. Cure at Doctor.");
+							Print.println(TrawelColor.RESULT_BAD+"You are badly wounded. Cure at Doctor or District.");
 						}
 						if (person.hasEffect(Effect.DAMAGED)) {
-							Print.println(TrawelColor.RESULT_BAD+"Your gear is damaged. Repair at Blacksmith.");
+							Print.println(TrawelColor.RESULT_BAD+"Your gear is damaged. Repair at Blacksmith or Appraiser.");
 						}
 						if (person.hasEffect(Effect.BEES)) {
-							Print.println(TrawelColor.RESULT_BAD+"You are beset by bees. Wash off in water.");
+							Print.println(TrawelColor.RESULT_BAD+"You are beset by bees. Wash off in water or bathe in Tavern.");
 						}
 						switch ((int)Math.round(getPerson().getBag().calculateDrawBaneFor(DrawBane.EV_DAYLIGHT))) {
 						case 0:

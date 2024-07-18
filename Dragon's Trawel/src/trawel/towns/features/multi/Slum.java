@@ -57,7 +57,7 @@ public class Slum extends Store implements QuestBoardLocation{
 					@Override
 					public void tutorial() {
 						//TODO
-						Print.println(fancyNamePlural()+" hold sidequests, backalley vendors, and are often controlled by a Crime Lord. If the Crime Lord is removed from the "+fancyName()+", it is possible to pay for reform programs to enfranchise the people there. The cost of such programs will increase with the danger still present in the "+fancyName()+".");
+						Print.println(fancyNamePlural()+" hold sidequests, backalley vendors, and are often controlled by a Crime Lord. If the Crime Lord is removed from the "+fancyName()+", it is possible to pay for reform programs to enfranchise the people there. The cost of such programs will increase with the danger still present in the "+fancyName()+". If there isn't too much heat, black-market doctors in "+fancyNamePlural()+" cure "+Effect.WOUNDED.getName()+" and "+Effect.BURNOUT.getName()+".");
 					}
 
 					@Override
@@ -72,7 +72,7 @@ public class Slum extends Store implements QuestBoardLocation{
 
 					@Override
 					public int priority() {
-						return 40;
+						return 25;
 					}
 
 					@Override

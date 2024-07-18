@@ -34,7 +34,7 @@ public class Library extends Feature {
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" have the materials needed to study Feat Fragments to turn them into Feat Points." +fancyNamePlural()+" also have rooms to reserve which can be rested in to cure "+Effect.BURNOUT.getName()+" and "+Effect.TIRED.getName()+".");
+				Print.println(fancyNamePlural()+" have the materials needed to study Feat Fragments to turn them into Feat Points. " +fancyNamePlural()+" also have rooms to reserve and rest in to cure "+Effect.BURNOUT.getName()+" and "+Effect.TIRED.getName()+".");
 			}
 			
 			@Override

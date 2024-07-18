@@ -3,17 +3,21 @@ package trawel.personal;
 import trawel.helper.constants.TrawelColor;
 
 public enum Effect{
+	//FIXME: could switch to functional interfaces for storing description, which would allow recoloring the effects that reference features
+	//would also be better to switch those effects to their own Punishment type, since they behave differently
+	//this would also have technical gains since that would mean effects could always be cleared and reset since only punishments Last
+	
 	//negative lasting status effects the player has to remove somewhere
 	//used as punishments/costs for events, or as skill tie ins
-	CURSE("Curse","Base HP is decreased by half. Cure at Doctor.",true,false,-4),
 	/**
 	 * used on failed OOB rolls to make the player less likely to spam them while the consequence can't stack
 	 */
-	BURNOUT("Burnout","Halves attributes in out of battle contested rolls. Cure at Doctor or rest off in Inn.",true,false,-2),
-	DAMAGED("Damaged","Armor starts at 50% condition each battle. Repair at Blacksmith.",true,false,-4),
-	BEES("BEEEES","Bees sting them occasionally, dealing random damage between 1 flat and 4% LHP. Wash off in water.",true,false,-2),
-	TIRED("Tired","Halves dodge multiplier. Rest off at Inn.",true,false,-3),
-	WOUNDED("Wounded","Every Impactful attack suffered also inflicts the Cut wound. Cure at Doctor.",true,false,-4),
+	BURNOUT("Burnout","Halves attributes in out of battle contested rolls. Cure at Doctor; or rest off in Tavern or Library.",true,false,-2),
+	CURSE("Curse","Base HP is decreased by half. Lift at Enchanter or Oracle.",true,false,-4),
+	DAMAGED("Damaged","Armor starts at 50% condition each battle. Repair at Blacksmith or Appraiser.",true,false,-4),
+	BEES("BEEEES","Bees sting them occasionally, dealing random damage between 1 flat and 4% LHP. Wash off in water or bathe in Tavern.",true,false,-2),
+	TIRED("Tired","Halves dodge multiplier. Rest off at Tavern or Library.",true,false,-3),
+	WOUNDED("Wounded","Every Impactful attack suffered also inflicts the Cut wound. Cure at Doctor or District.",true,false,-4),
 	//other
 	CONFUSED_TARGET("Confused","Their next attack will have a random defender from any side.",false,false,-2),
 	FLUMMOXED("Flummoxed","Next queued attack will be around 1% less accurate per stack.",false,true,-2),

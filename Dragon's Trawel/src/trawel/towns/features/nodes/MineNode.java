@@ -473,7 +473,7 @@ public class MineNode implements NodeType{
 								if (Input.yesNo()) {
 									Print.println("You are stabbed to death.");
 									Deaths.die("You rise from the altar!");
-									Print.println("The cultists praise you as the second coming of flagjaij! You feel sick, but powerful.");
+									Print.println("The cultists praise you as the second coming of flagjaij! You feel cursed, but powerful.");
 									Player.player.getPerson().addEffect(Effect.CURSE);
 									Player.unlockPerk(Perk.CULT_CHOSEN_BLOOD);
 									Player.player.hasCult = true;

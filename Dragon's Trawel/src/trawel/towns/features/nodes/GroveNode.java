@@ -1050,8 +1050,7 @@ public class GroveNode implements NodeType{
 						Print.println("Really pay?");
 						if (Input.yesNo()) {
 							Player.player.addGold(-cost);
-							Player.player.getPerson().removeEffectAll(Effect.CURSE);
-							Player.player.getPerson().cureEffects();
+							Player.player.getPerson().insightEffects();
 							Print.println("You feel better.");
 							return false;
 						}

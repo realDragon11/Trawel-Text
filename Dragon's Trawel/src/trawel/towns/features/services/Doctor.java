@@ -31,7 +31,7 @@ public class Doctor extends Feature {
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" can cure "+Effect.BURNOUT.getName() + ", "+Effect.CURSE.getName() +", and "+Effect.WOUNDED.getName()+".");
+				Print.println(fancyNamePlural()+" cure "+Effect.BURNOUT.getName() + " and "+Effect.WOUNDED.getName()+".");
 			}
 			
 			@Override

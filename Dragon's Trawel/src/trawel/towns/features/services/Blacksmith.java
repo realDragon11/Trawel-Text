@@ -34,12 +34,12 @@ public class Blacksmith extends Feature {
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" forge items for shops, level and temper gear. "+fancyNamePlural() +" also can fix "+Effect.DAMAGED.getName()+".");
+				Print.println(fancyNamePlural()+" forge items for shops. "+fancyNamePlural()+" level and temper equipment. "+fancyNamePlural() +" also fix "+Effect.DAMAGED.getName()+".");
 			}
 			
 			@Override
 			public int priority() {
-				return 25;
+				return 20;
 			}
 			
 			@Override
