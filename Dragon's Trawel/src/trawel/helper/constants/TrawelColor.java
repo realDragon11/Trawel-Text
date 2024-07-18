@@ -130,11 +130,25 @@ public class TrawelColor {
 	public static final String COLOR_OPTION_B = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.RED,Color.BLUE,.3f),Color.WHITE,.5f));
 	public static final String COLOR_OPTION_C = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.RED,Color.MAGENTA,.3f),Color.WHITE,.5f));
 	
-	//color tier indicators
-	public static final String INFORM_BAD = TIMID_RED;
-	public static final String INFORM_POOR = TIMID_ORANGE;
-	public static final String INFORM_OKAY = TIMID_BLUE;
-	public static final String INFORM_GOOD = TIMID_GREEN;
+	//https://colorbrewer2.org/ good color picking resource
+	
+	//colors become less noticeable as they go to 1, because 1 is less 'significant'
+	//wheras a high amount is more 'critical' to know about
+	//sequential 6-class PuRd
+	public static final String ADVISE_1 = inlineColor(colorMix(new Color(241,238,246),Color.WHITE,.3f));
+	public static final String ADVISE_2 = inlineColor(colorMix(new Color(212,185,218),Color.WHITE,.3f));
+	public static final String ADVISE_3 = inlineColor(colorMix(new Color(201,148,199),Color.WHITE,.3f));
+	public static final String ADVISE_4 = inlineColor(colorMix(new Color(223,101,176),Color.WHITE,.3f));
+	public static final String ADVISE_5 = inlineColor(colorMix(new Color(221,28,119),Color.WHITE,.3f));
+	public static final String ADVISE_6 = inlineColor(colorMix(new Color(152,0,67),Color.WHITE,.3f));
+	
+	//color tier indicators, diverging 6-class RdYlBu
+	public static final String INFORM_BAD_STRONG = inlineColor(colorMix(new Color(215,48,39),Color.WHITE,.3f));
+	public static final String INFORM_BAD_MID = inlineColor(colorMix(new Color(252,141,89),Color.WHITE,.3f));
+	public static final String INFORM_BAD_WEAK = inlineColor(colorMix(new Color(254,224,144),Color.WHITE,.3f));
+	public static final String INFORM_GOOD_WEAK = inlineColor(colorMix(new Color(224,243,248),Color.WHITE,.3f));
+	public static final String INFORM_GOOD_MID = inlineColor(colorMix(new Color(145,191,219),Color.WHITE,.3f));
+	public static final String INFORM_GOOD_STRONG = inlineColor(colorMix(new Color(69,117,180),Color.WHITE,.3f));
 	
 	//feature service grouping
 	public static final String SERVICE_FREE = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.PINK,Color.GREEN,.3f),Color.WHITE,.4f));

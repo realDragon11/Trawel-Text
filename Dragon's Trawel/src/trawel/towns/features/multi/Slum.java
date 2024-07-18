@@ -381,18 +381,18 @@ public class Slum extends Store implements QuestBoardLocation{
 					@Override
 					public String title() {
 						if (heat > 24f) {//if more than one day of heat
-							return TrawelColor.INFORM_BAD+"There's a lot of heat on you here.";
+							return TrawelColor.INFORM_BAD_STRONG+"There's a lot of heat on you here.";
 						}
 						if (heat > HEAT_CRIME_ALLOW) {
-							return TrawelColor.INFORM_POOR+"You have a fair bit of heat on you here.";
+							return TrawelColor.INFORM_BAD_MID+"You have a fair bit of heat on you here.";
 						}
 						if (heat > HEAT_DOCTOR_ALLOW) {
-							return TrawelColor.INFORM_POOR+"You have some heat on you here.";
+							return TrawelColor.INFORM_BAD_WEAK+"You have some heat on you here.";
 						}
 						if (heat > 0) {
-							return TrawelColor.INFORM_OKAY+"You have a small amount of heat left here.";
+							return TrawelColor.INFORM_GOOD_WEAK+"You have a small amount of heat left here.";
 						}
-						return TrawelColor.INFORM_GOOD+"You have no heat on you here.";
+						return TrawelColor.INFORM_GOOD_STRONG+"You have no heat on you here.";
 					}});
 				mList.add(new MenuSelect() {
 

@@ -236,20 +236,36 @@ public class Calender implements Serializable, CanPassTime {
 		return extra.lerpDepth((float)(moonRise),(float)(moonSet),(float) ((thour)),.25f)*maxLum;
 	}
 	
+	/**
+	 * used for drawbanes
+	 * @param lata
+	 * @param longa
+	 * @return 0d to 5d based on sunlight amount
+	 */
 	public double sunlightAmount(double lata, double longa) {
 		double hourOfDay = getLocalTime((timeCounter/24),longa);
 		double unwrappedHour = timeCounter/24;//is /24 since our formula itself is in days
 		double[] rns = this.getSunTime(timeCounter,lata,longa);
 		double sunRise = getLocalTime(rns[0],longa);
 		double sunSet = getLocalTime(rns[2],longa);
-		//double noon = getLocalTime(rns[1],longa);
+		double noon = getLocalTime(rns[1],longa);
 		double unwrappedNoon = rns[1];
-		if (hourOfDay < sunRise || hourOfDay > sunSet) {
-			return 0f;
+		//night-time
+		if (hourOfDay < sunRise-sunsetRadius || hourOfDay > sunSet+sunsetRadius) {
+			return 0d;
 		}
-		//the further away from noon (up til sunrise/set) the closer to 0
-		//sunSet-sunRise gives day length
-		return extra.lerp(4d,0d,Math.abs(unwrappedNoon-unwrappedHour)/((sunSet-sunRise)/2f));
+		//night already caught above, so don't need to catch both sides of these next statements
+		//twilight (dawn)
+		if (hourOfDay < sunRise+sunsetRadius) {
+			return extra.lerp(0d,3.5d,((sunRise+sunsetRadius)-hourOfDay)/(2d*sunsetRadius));
+		}
+		//twilight (dusk)
+		if (hourOfDay > sunSet-sunsetRadius) {
+			return extra.lerp(3.5d,0d,(hourOfDay-(sunSet-sunsetRadius))/(2d*sunsetRadius));
+		}
+		//mid-day
+		//sunSet-sunRise gives daytime length
+		return extra.lerp(5d,3.5d,Math.abs(noon-hourOfDay)/(sunSet-sunRise));
 	}
 
 	public static void timeTest() {

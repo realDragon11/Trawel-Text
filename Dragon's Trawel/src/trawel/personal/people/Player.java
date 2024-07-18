@@ -1157,62 +1157,62 @@ public class Player extends SuperPerson{
 						}
 						switch ((int)Math.round(getPerson().getBag().calculateDrawBaneFor(DrawBane.EV_DAYLIGHT))) {
 						case 0:
-							Print.println("It is very dark outside.");
+							Print.println(TrawelColor.ADVISE_6+"It is very dark outside.");
 							break;
 						case 1:
-							Print.println("It is dark outside.");
+							Print.println(TrawelColor.ADVISE_5+"It is dark outside.");
 							break;
 						case 2:
-							Print.println("It is twilight outside.");
+							Print.println(TrawelColor.ADVISE_4+"It is twilight outside.");
 							break;
 						case 3:
-							Print.println("It is dim outside.");
+							Print.println(TrawelColor.ADVISE_3+"It is dim outside.");
 							break;
 						case 4:
-							Print.println("It is light outside.");
+							Print.println(TrawelColor.ADVISE_2+"It is light outside.");
 							break;
 						case 5:
-							Print.println("It is bright outside.");
+							Print.println(TrawelColor.ADVISE_1+"It is bright outside.");
 							break;
 						}
 						switch ((int)Math.round(getPerson().getBag().calculateDrawBaneFor(DrawBane.EV_WEALTH))) {
 						case 0:
-							Print.println("You do not look worth robbing.");
+							Print.println(TrawelColor.ADVISE_1+"You do not look worth robbing.");
 							break;
 						case 1:
-							Print.println("You look like a poor crime target.");
+							Print.println(TrawelColor.ADVISE_2+"You look like a poor crime target.");
 							break;
 						case 2:
-							Print.println("You look like you might have some meager wealth to take.");
+							Print.println(TrawelColor.ADVISE_3+"You look like you might have some meager wealth to take.");
 							break;
 						case 3:
-							Print.println("You look like a potential crime target.");
+							Print.println(TrawelColor.ADVISE_4+"You look like a potential crime target.");
 							break;
 						case 4:
-							Print.println("You look like a good crime target.");
+							Print.println(TrawelColor.ADVISE_5+"You look like a good crime target.");
 							break;
 						case 5:
-							Print.println("You look like you have more money than you know what to do with.");
+							Print.println(TrawelColor.ADVISE_6+"You look like you have more money than you know what to do with.");
 							break;
 						}
 						switch ((int)Math.round(getPerson().getBag().calculateDrawBaneFor(DrawBane.EV_BLOOD))) {
 						case 0:
-							Print.println("You have next to no blood on your person.");
+							Print.println(TrawelColor.ADVISE_1+"You have next to no blood on your person.");
 							break;
 						case 1:
-							Print.println("You have very little blood on your person.");
+							Print.println(TrawelColor.ADVISE_2+"You have very little blood on your person.");
 							break;
 						case 2:
-							Print.println("You have a small amount of blood on your person.");
+							Print.println(TrawelColor.ADVISE_3+"You have a small amount of blood on your person.");
 							break;
 						case 3:
-							Print.println("You have some blood on your person.");
+							Print.println(TrawelColor.ADVISE_4+"You have some blood on your person.");
 							break;
 						case 4:
-							Print.println("You have a fair bit of blood on your person.");
+							Print.println(TrawelColor.ADVISE_5+"You have a fair bit of blood on your person.");
 							break;
 						case 5:
-							Print.println("You smell strongly of blood.");
+							Print.println(TrawelColor.ADVISE_6+"You smell strongly of blood.");
 							break;
 						}
 						return false;
