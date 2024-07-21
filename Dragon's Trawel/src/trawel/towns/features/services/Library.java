@@ -69,9 +69,10 @@ public class Library extends Feature {
 	private byte libFlags = Chomp.emptyByte;
 	private double reserveTime = 0d;
 	
-	public Library(String _name, Town _town) {
+	public Library(String _name, Town _town, int _level) {
 		name = _name;
 		town = _town;
+		tier = _level;
 	}
 	public enum LibraryFlag{
 		HAS_BONUS_FEAT_PICKED

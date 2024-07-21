@@ -181,9 +181,9 @@ public class WorldGen {
 		Town lokan = new Town("Lokan",4,rona,new Point(5,10));
 		addConnection(lokan,tanak,"road","flat walk");
 		addConnection(lokan,hemo,"ship","two way current");
-		lokan.addFeature(new Library("Records of Value", lokan));
+		lokan.addFeature(new Library("Records of Value",lokan,3));
 		lokan.addFeature(new Oracle("Appraiser of Fortune",3));
-		lokan.addFeature(new Appraiser("Appraiser of Steel").setIntro("A clerk raises their head to greet you, 'This place is mostly for sentimental reasons, my mentors have spread their teachings well. We can look over your gear, but I doubt we'll find anything new.'"));
+		lokan.addFeature(new Appraiser("Appraiser of Steel",3).setIntro("A clerk raises their head to greet you, 'This place is mostly for sentimental reasons, my mentors have spread their teachings well. We can look over your gear, but I doubt we'll find anything new.'"));
 		lokan.addFeature(new Doctor("Appraiser of Wellness",lokan));
 		lokan.addTravel();
 		lokan.addTravel();
@@ -286,8 +286,8 @@ public class WorldGen {
 		addConnection(erin,yena,"road","pear road");
 		addConnection(erin,denok,"road","orange road");
 		erin.addFeature(new Inn("Scholar's Respite",6,erin,null));
-		erin.addFeature(new Library("Alex's Library",erin));
-		erin.addFeature(new Appraiser("Material Patent Offices").setIntro("'We only handle physical patents, if you have new spells or magicks, head to Alex's.'"));
+		erin.addFeature(new Library("Alex's Library",erin,6));
+		erin.addFeature(new Appraiser("Material Patent Offices",6).setIntro("'We only handle physical patents, if you have new spells or magicks, head to Alex's.'"));
 		erin.addFeature(new Enchanter("Enchantment Prototyping",6));
 		store = new Store("'Recycled Gear'",6,6);
 		erin.addFeature(store);
@@ -377,7 +377,7 @@ public class WorldGen {
 		Town quen = new Town("Quen",9,epan,(byte)12,(byte)10);
 		addConnection(quen,senal,ConnectType.PATH,"Derelict Pass");
 		quen.addFeature(new Dungeon("Blasted Palace", quen,30,12, Shape.TOWER,BossType.OLD_QUEEN));
-		quen.addFeature(new Library("Empire Records Bookstore", quen).setIntro("'While all our books may be copies, they came straight from the source. Some of which are still cursed to never leave the Blasted Palace.'"));
+		quen.addFeature(new Library("Empire Records Bookstore",quen,9).setIntro("'While all our books may be copies, they came straight from the source. Some of which are still cursed to never leave the Blasted Palace.'"));
 		quen.addFeature(new Dungeon("Crumbling Fort", quen,40,10, Shape.NONE, BossType.NONE));
 		quen.addFeature(new Mine("'The Last Ditch that Failed'", quen, 20,9, Shape.ELEVATOR,BossType.NONE));
 		quen.addFeature(new Grove("Dilapidated Hamlet", quen,100,8));
@@ -490,7 +490,7 @@ public class WorldGen {
 		pipa.addFeature(new WitchHut("Oak Coven's Hut",pipa));
 		pipa.addFeature(new Grove("Deciduous Sprawl",pipa));
 		pipa.addFeature(new Altar("Thorny Throne",AltarForce.FOREST));
-		pipa.addFeature(new Library("'Primal Knowledge'", pipa).setIntro("You enter the hut and find yourself face to face with a giant plant lifting countless books. Most are faintly glowing from their paper."));
+		pipa.addFeature(new Library("'Primal Knowledge'",pipa,13).setIntro("You enter the hut and find yourself face to face with a giant plant lifting countless books. Most are faintly glowing from their paper."));
 		pipa.tTags.add(TownTag.ALCHEMY);
 		pipa.tTags.add(TownTag.DRUIDIC);
 		pipa.tTags.add(TownTag.HIDDEN);
@@ -517,7 +517,7 @@ public class WorldGen {
 		mikol.addFeature(new HeroGuild("Empyphic Palace",12));//empyphic - empyrean + seraphic
 		mikol.addFeature(new MerchantGuild("Central Tariff Offices",13));
 		mikol.addFeature(new Store(12));
-		mikol.addFeature(new Appraiser("Shipment Inspectors"));
+		mikol.addFeature(new Appraiser("Shipment Inspectors",13));
 		mikol.tTags.add(TownTag.LAW);
 		mikol.tTags.add(TownTag.SERVICES);
 		mikol.setLoreText("The Empyphic royals in Mikol are largely bureaucratic, having survived the ages via offering administrative services. Those in the dusk-soaked dimension a portal has opened to seem to be quite the opposite, preferring spears to pens.");
@@ -613,7 +613,7 @@ public class WorldGen {
 		beola.addFeature(new Store(beola,15,6));//general store
 		beola.addFeature(new Store(beola,15,10));//food store
 		beola.addFeature(new Doctor("Beolan Clinic", beola));
-		beola.addFeature(new Library("'Publics'", beola));
+		beola.addFeature(new Library("'Publics'",beola,15));
 		//crammed full since it's a city
 		beola.tTags.add(TownTag.CITY);
 		beola.tTags.add(TownTag.TRAVEL);
