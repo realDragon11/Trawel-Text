@@ -12,6 +12,7 @@ import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
+import trawel.personal.Effect;
 import trawel.personal.classless.Perk;
 import trawel.personal.item.Seed;
 import trawel.personal.item.solid.DrawBane;
@@ -21,9 +22,40 @@ import trawel.quests.locations.QuestR;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
+import trawel.towns.data.FeatureData;
 import trawel.towns.features.Feature;
 
 public class Altar extends Feature{
+	
+	static {
+		FeatureData.registerFeature(Altar.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" accept offerings of Drawbanes in return for blessings. "+fancyNamePlural()+" can provide insight to lift "+Effect.CURSE.getName()+" and overcome "+Effect.BURNOUT.getName()+" to those with a close enough connection.");
+			}
+			
+			@Override
+			public int priority() {
+				return 12;
+			}
+			
+			@Override
+			public String name() {
+				return "Altar";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_SPECIAL;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.VITAL_SERVICES;
+			}
+		});
+	}
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,17 +66,7 @@ public class Altar extends Feature{
 	}
 	
 	@Override
-	public String getColor() {
-		return TrawelColor.F_SPECIAL;
-	}
-	
-	@Override
 	public String nameOfType() {
-		return "Altar";
-	}
-	
-	@Override
-	public String nameOfFeature() {
 		return "Altar";
 	}
 	
@@ -92,7 +114,7 @@ public class Altar extends Feature{
 							Player.player.getPerson().insightEffects();
 							Print.println("The Altar gives you its guidance.");
 						}else {
-							Print.println("You do not have a close enough connection with the primal force of the "+getForceName()+" to get guidance here.");
+							Print.println(TrawelColor.RESULT_ERROR+"You do not have a close enough connection with the primal force of the "+getForceName()+" to get guidance here.");
 						}
 						Player.addTime(0.5d);
 						TrawelTime.globalPassTime();

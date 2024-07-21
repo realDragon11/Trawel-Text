@@ -54,7 +54,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" have a quest board. " +fancyNamePlural()+" have rentable rooms to cure "+Effect.BURNOUT.getName()+" and "+Effect.TIRED.getName()+". "+fancyNamePlural()+" sell beer, which increases MHP once each. "+fancyNamePlural()+" have residents to interact with or watch, which change over time.");
+				Print.println(fancyNamePlural()+" have a quest board. " +fancyNamePlural()+" have rentable rooms to cure "+Effect.BURNOUT.getName()+" and "+Effect.TIRED.getName()+", as well as bathe in. "+fancyNamePlural()+" sell beer, which increases MHP once each. "+fancyNamePlural()+" have residents to interact with or watch, which change over time.");
 			}
 			
 			@Override

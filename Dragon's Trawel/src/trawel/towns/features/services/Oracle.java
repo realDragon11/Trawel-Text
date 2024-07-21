@@ -38,7 +38,7 @@ public class Oracle extends Feature{ //extends feature later
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" utter random tips and tidbits from everywhere and everyone. If you pay them, the insight might be good enough to lift "+Effect.CURSE.getName()+" and cure "+Effect.BURNOUT.getName()+".");
+				Print.println(fancyNamePlural()+" utter random tips and tidbits from everywhere and everyone. If you pay them, the insight might be good enough to lift "+Effect.CURSE.getName()+" and overcome "+Effect.BURNOUT.getName()+".");
 			}
 			
 			@Override
