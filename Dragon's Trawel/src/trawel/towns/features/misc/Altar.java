@@ -137,22 +137,27 @@ public class Altar extends Feature{
 		DrawBane inter = Player.bag.playerOfferDrawBane("sacrifice");
 		boolean specialInteraction = false;
 		boolean accepted = true;
+		//special sacrifice: 2+ hours
+		//tiny sacrifice: 0.5 hours ADVISE_1 <.1 relation
+		//small sacrifice: 0.5 hours ADVISE_2 .1 relation
+		//medium sacrifice: 0.5 hours ADVISE_3 .5 relation
+		//large sacrifice: 1 hours ADVISE_4 1 relation
 		if (inter != null && !inter.equals(DrawBane.EV_NOTHING)) {
 			switch (inter) {
 			case BEATING_HEART:
 				if (force == AltarForce.SKY) {
-					addRelation(8);
+					addRelation(8f);
 					int aReward = (int) ((getRelation()*100)+Rand.randRange(4000,5000));
 					Print.println(TrawelColor.RESULT_GOOD+"You spend hours upon hours preparing your great sacrifice, and stab the heart when the time is right. The very heavens seem to look down upon you with favor, and a storm brews... aether rains from the sky. +"+aReward + " aether.");
-					Player.addTime(40);
+					Player.addTime(40d);
 					Player.bag.addAether(aReward);
 					specialInteraction = true;
 					break;
 				}
 				if (force == AltarForce.FOREST) {
-					addRelation(10);
+					addRelation(10f);
 					Print.println(TrawelColor.RESULT_GOOD+"You spend hours upon hours preparing your great sacrifice, and stab the heart when the time is right. Knowledge spills into your mind, and the Forest willingly gives its own flesh to record eldritch lore, in recognition of an equal trade- blood for blood, sap for sap.");
-					Player.addTime(40);
+					Player.addTime(40d);
 					Player.player.getPerson().addXp(4);
 					Player.bag.addNewDrawBanePlayer(DrawBane.KNOW_FRAG);
 					Player.bag.addNewDrawBanePlayer(DrawBane.KNOW_FRAG);
@@ -160,33 +165,51 @@ public class Altar extends Feature{
 					break;
 				}
 				//cannot give special gift back rn
-				Print.println("The "+getForceName()+" seems very unsure of itself...");
-				addRelation(5);
+				Print.println(TrawelColor.ADVISE_6+"The "+getForceName()+" seems very unsure of itself...");
+				addRelation(5f);
 				//accepted = false;
 				break;
-			case BLOOD: case MEAT:
+			case BLOOD: case MEAT: case SINEW: case MIMIC_GUTS: case BAT_WING:
 				addRelation(0.1f);
-				Print.println("You offer the gift of flesh- in any form.");
-				Player.addTime(1);
+				Print.println(TrawelColor.ADVISE_2+"You offer the gift of flesh- in any form.");
+				Player.addTime(0.5d);
 				break;
 			case CEON_STONE:
-				addRelation(1);
-				Print.println("You offer the gift of decay, unreason, and insane change.");
-				Player.addTime(1);
+				addRelation(1f);
+				Print.println(TrawelColor.ADVISE_4+"You offer the gift of decay, unreason, and insane change.");
+				Player.addTime(1d);
+				break;
+			case LIVING_FLAME:
+				if (force == AltarForce.FOREST) {//forest doesn't accept fire
+					accepted = false;
+					break;
+				}
+				addRelation(1f);
+				Print.println(TrawelColor.ADVISE_4+"You offer the gift of an enduring flame, abrim with vitality.");
+				Player.addTime(1d);
+				break;
+			case TELESCOPE:
+				if (force == AltarForce.SKY) {//only sky accepts telescope
+					addRelation(1f);
+					Print.println(TrawelColor.ADVISE_4+"You offer the gift of a venerative tool, peering into the majestic heavens.");
+					Player.addTime(1d);
+					break;
+				}
+				accepted = false;
 				break;
 			case ENT_CORE:
 				if (force == AltarForce.FOREST) {//doesn't like how you got this, most likely
 					accepted = false;
 					break;
 				}
-				addRelation(2);
-				Print.println("You offer the gift of primal life.");
-				Player.addTime(1);
+				addRelation(2f);
+				Print.println(TrawelColor.ADVISE_5+"You offer the gift of primal life.");
+				Player.addTime(1d);
 				break;
 			case TRUFFLE: case PUMPKIN: case GARLIC: case HONEY: case APPLE: case EGGCORN:
 				addRelation(0.1f);
-				Print.println("You offer a gift of the harvest.");
-				Player.addTime(.2);
+				Print.println(TrawelColor.ADVISE_2+"You offer a gift of the harvest.");
+				Player.addTime(0.5d);
 				if (force == AltarForce.FOREST) {
 					Print.println(TrawelColor.RESULT_GOOD+"The Forest gives you a seed, that you may continue the cycle of life.");
 					Player.bag.addSeed(Seed.randSeed());
@@ -195,34 +218,34 @@ public class Altar extends Feature{
 				break;
 			case GOLD: case SILVER:
 				addRelation(0.5f);
-				Print.println("You offer a gift of the earthly viscera, painful taken from the deep bowels of the soil below.");
-				Player.addTime(.2);
+				Print.println(TrawelColor.ADVISE_3+"You offer a gift of the earthly viscera, painful taken from the deep bowels of the soil below.");
+				Player.addTime(0.5);
 				break;
 			case VIRGIN:
-				addRelation(4);
-				Print.println(TrawelColor.RESULT_GOOD+"You spend hours preparing your great sacrifice, and stab the innocent when the time is right. The "+getForceName()+" gives a gift back... but the unspoken message that it would accept this gift for itself lingers in your mind.");
-				Player.addTime(24);
+				addRelation(4f);
+				Print.println(TrawelColor.ADVISE_6+"You spend hours preparing your great sacrifice, and stab the innocent when the time is right. The "+getForceName()+" gives a gift back... but the unspoken message that it would accept this gift for itself lingers in your mind.");
+				Player.addTime(24d);
 				Player.bag.addNewDrawBanePlayer(DrawBane.BEATING_HEART);
 				specialInteraction = true;
 				break;
-			case WAX: case WOOD:
-				addRelation(0.02f);
-				Print.println("You offer a gift of the primal forces, a minor piece of a greater whole.");
-				Player.addTime(.05);
+			case WAX: case WOOD: 
+				addRelation(0.05f);
+				Print.println(TrawelColor.ADVISE_1+"You offer a gift of the primal forces, a minor piece of a greater whole.");
+				Player.addTime(0.5d);
 				break;
 			case GRAVE_DIRT:
-				if (force != AltarForce.FOREST) {
-					accepted = false;
+				if (force == AltarForce.FOREST) {
+					addRelation(0.5f);
+					Print.println(TrawelColor.ADVISE_3+"You offer a gift of nourishment, that the soil may feast on the succor from fruit it has bourne.");
+					Player.addTime(0.5);
 					break;
 				}
-				addRelation(1f);
-				Print.println("You offer a gift of nourishment, that the soil may feast on the succor from fruit it has bourne.");
-				Player.addTime(.2);
+				accepted = false;
 				break;
 			case GRAVE_DUST:
 				addRelation(0.5f);
-				Print.println("You offer proof that the primal forces have been respected, that their laws have been enforced.");
-				Player.addTime(0.05f);
+				Print.println(TrawelColor.ADVISE_3+"You offer proof that the primal forces have been respected, that their laws have been enforced.");
+				Player.addTime(0.5d);
 				break;
 			default:
 				accepted = false;
