@@ -90,7 +90,8 @@ public class Player extends SuperPerson{
 	public static boolean isPlaying = true;
 	public int duel_wins = 0;
 	public int deaths;
-	public boolean cheating = false;
+	private boolean cheating = false;
+	public boolean gameMode_NoPunishments = false;
 	/**
 	 * the instance copy of the player's world
 	 */
@@ -1713,6 +1714,23 @@ public class Player extends SuperPerson{
 													return list;
 												}
 											});
+											return false;
+										}});
+									hackList.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "Cure Punishments.";
+										}
+
+										@Override
+										public boolean go() {
+											getPerson().removeEffectAll(Effect.BURNOUT);
+											getPerson().removeEffectAll(Effect.CURSE);
+											getPerson().removeEffectAll(Effect.TIRED);
+											getPerson().removeEffectAll(Effect.DAMAGED);
+											getPerson().removeEffectAll(Effect.WOUNDED);
+											getPerson().removeEffectAll(Effect.BEES);
 											return false;
 										}});
 									hackList.add(new MenuSelect() {

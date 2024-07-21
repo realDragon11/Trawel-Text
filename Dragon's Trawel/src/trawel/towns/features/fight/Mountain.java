@@ -502,8 +502,10 @@ public class Mountain extends ExploreFeature{
 									Networking.unlockAchievement("cult1");
 									return true;
 								}else {
-									Print.println(TrawelColor.RESULT_BAD+"The sky curses you for your hubris!");
-									Player.player.getPerson().addEffect(Effect.CURSE);
+									if (!Player.player.gameMode_NoPunishments) {
+										Print.println(TrawelColor.RESULT_BAD+"The sky curses you for your hubris!");
+										Player.player.getPerson().addEffect(Effect.CURSE);
+									}
 									Mountain.super.town.addOccupant(leader.setOrMakeAgentGoal(AgentGoal.NONE));
 									return true;
 								}

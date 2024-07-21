@@ -782,7 +782,9 @@ public class GenericNode implements NodeType {
 										holder.setStorage(node,newName);
 									}else {
 										//failed
-										Player.player.getPerson().addEffect(Effect.BURNOUT);
+										if (!Player.player.gameMode_NoPunishments) {
+											Player.player.getPerson().addEffect(Effect.BURNOUT);
+										}
 										Print.println(TrawelColor.RESULT_FAIL+"You fail to bash open the "+name+".");
 									}
 									return true;
@@ -834,7 +836,9 @@ public class GenericNode implements NodeType {
 										holder.setStorage(node,newName);
 									}else {
 										//failed
-										Player.player.getPerson().addEffect(Effect.BURNOUT);
+										if (!Player.player.gameMode_NoPunishments) {
+											Player.player.getPerson().addEffect(Effect.BURNOUT);
+										}
 										Print.println(TrawelColor.RESULT_FAIL+"Your Knock cantrip on the "+name+" fizzles.");
 									}
 									return true;

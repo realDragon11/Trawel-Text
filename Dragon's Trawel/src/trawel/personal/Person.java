@@ -1737,7 +1737,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public void clearBattleEffects() {
 		//only goes over keyset because those are the ones it bothered to add
 		for (Effect e: effects.keySet()) {
-			if (!e.lasts()) {
+			if (!e.lasts() || Player.player.gameMode_NoPunishments) {
 				effects.put(e,0);
 			}
 		}

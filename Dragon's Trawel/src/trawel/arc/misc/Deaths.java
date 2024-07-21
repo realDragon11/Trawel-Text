@@ -42,6 +42,9 @@ public class Deaths {
 	 * mostly used for death fights, other deaths tend to have their own penalties
 	 */
 	public static void deathPenalty() {
+		if (Player.player.gameMode_NoPunishments) {
+			return;
+		}
 		//don't set burnout, for now, to see if it causes players to try to explore more?
 		List<Effect> penaltyList = new ArrayList<Effect>();
 		Person p = Player.player.getPerson();

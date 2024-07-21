@@ -508,7 +508,9 @@ public class BeachNode implements NodeType {
 										GenericNode.setMiscText(holder, node,"Smashed "+chestname,"Examine "+chestname+".","This chest has already been smashed and looted.",chestname);
 									}else {
 										//failed
-										Player.player.getPerson().addEffect(Effect.BURNOUT);
+										if (!Player.player.gameMode_NoPunishments) {
+											Player.player.getPerson().addEffect(Effect.BURNOUT);
+										}
 										Print.println(TrawelColor.RESULT_FAIL+"You fail to bash open the "+chestname+".");
 										holder.findBehind(node,chestname);
 									}
@@ -534,7 +536,9 @@ public class BeachNode implements NodeType {
 										GenericNode.setMiscText(holder, node,"Picked "+chestname,"Examine "+chestname+".","This chest has already been picked and looted.",chestname);
 									}else {
 										//failed
-										Player.player.getPerson().addEffect(Effect.BURNOUT);
+										if (!Player.player.gameMode_NoPunishments) {
+											Player.player.getPerson().addEffect(Effect.BURNOUT);
+										}
 										Print.println(TrawelColor.RESULT_FAIL+"You fail to lockpick the "+chestname+".");
 										holder.findBehind(node,chestname);
 									}
@@ -560,7 +564,9 @@ public class BeachNode implements NodeType {
 										GenericNode.setMiscText(holder, node,"Opened "+chestname,"Examine "+chestname+".","This chest has already been opened and looted.",chestname);
 									}else {
 										//failed
-										Player.player.getPerson().addEffect(Effect.BURNOUT);
+										if (!Player.player.gameMode_NoPunishments) {
+											Player.player.getPerson().addEffect(Effect.BURNOUT);
+										}
 										Print.println(TrawelColor.RESULT_FAIL+"Your Knock cantrip on the "+chestname+" fizzles.");
 										holder.findBehind(node,chestname);
 									}
