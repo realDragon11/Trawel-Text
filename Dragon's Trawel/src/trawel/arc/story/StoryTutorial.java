@@ -11,6 +11,7 @@ import trawel.core.Rand;
 import trawel.core.mainGame;
 import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
+import trawel.helper.methods.PrintTutorial;
 import trawel.personal.Person;
 import trawel.personal.classless.Archetype;
 import trawel.personal.classless.Feat;
@@ -95,54 +96,21 @@ public class StoryTutorial extends Story{
 			Print.println("Oh jeez, it's been a while since you've fought a stranger, you feel weird.");
 			Print.println("A mysterious voice is telling you to \"Choose your attack below\"???");
 			Print.println("...");
-		}
-		if (disp) {
-			Print.println("Show the combat tutorial?");
+			
+			Print.println("Show the Combat Tutorial?");
 			disp = Input.yesNo();
-		}else {
-			if (offerCombatTutorial()) {
-				Print.println("Display the combat tutorial again?");
-				disp = Input.yesNo();
+			if (disp) {
+				PrintTutorial.battleTutorial(massFight);
+				if (battleFam == 0) {
+					Print.println(TrawelColor.PRE_BATTLE+"Good luck!");
+				}
+				battleFam = 1;
 			}
+		}
+		if (!disp && offerCombatTutorial()) {
+			Print.println("You can review the Combat Tutorial in the Manual.");
 		}
 		
-		if (disp) {
-			Print.println("Higher numbers are better, except in the case of delay.");
-			Print.println("Delay is how long an action takes- it determines turn order and skipping.");
-			Print.println("For example, two 30 delay actions would go through before one 100 delay action, and then still have 40 instants left.");
-			Print.println("Delay on abilities is combined from a warmup and a cooldown. The first number is the warmup- how long until the attack goes through. The second number is the cooldown- how long after that until you can choose another attack.");
-			Print.println(
-					massFight ?
-							TrawelChar.CHAR_SHARP+TrawelChar.CHAR_BLUNT+TrawelChar.CHAR_PIERCE+TrawelColor.PRE_WHITE+" stands for sharp blunt pierce- the three main damage types. Your opponents also have sbp-based armor. Yeah, you got a mass fight for your first battle. Good luck."
-							:
-								TrawelChar.CHAR_SHARP+TrawelChar.CHAR_BLUNT+TrawelChar.CHAR_PIERCE+TrawelColor.PRE_WHITE+" stands for sharp blunt pierce- the three main damage types. Your opponent also has sbp-based armor."
-					);
-			Print.println("Hitpoints only matter in combat- you steel yourself fully before each battle, restoring to your current maximum. Very few things can reduce this maximum, the most notable being the CURSE status effect.");
-			switch (mainGame.attackDisplayStyle) {
-			case CLASSIC:
-				Print.println("You have classic display mode on, and will show attacks as if they were plain tables.");
-				Print.println("     name                hit    delay    sharp    blunt     pierce");
-				Print.println("Classic mode doesn't show you cooldown and warmup- just the combined delay.");
-				break;
-			case TWO_LINE1: 
-				Print.println("You have modern display on, and will see attacks in a hybrid table/label format.");
-				Print.println("Instead of only table headers, each cell is labeled. "
-						+TrawelChar.CHAR_HITMULT+" is hitmult. "
-						+TrawelChar.CHAR_INSTANTS+" is 'instants' (warmup and cooldown time.) "
-						+TrawelChar.CHAR_SHARP+TrawelColor.PRE_WHITE+" is sharp damage, "
-						+TrawelChar.CHAR_BLUNT+TrawelColor.PRE_WHITE+" is blunt damage, and "
-						+TrawelChar.CHAR_PIERCE+TrawelColor.PRE_WHITE+" is pierce damage.");
-				Print.println("There are more damage types, such as elemental, but those are beyond the scope of this tutorial.");
-				break;
-			case TWO_LINE1_WITH_KEY:
-				Print.println("You have modern display on with a key/legend, and will see attacks in a hybrid table/label format.");
-				Print.println("This display style will provide instructions on how to read the table at the top of each instance.");
-				break;
-			}
-			Print.println("Displayed hit mult isn't a flat percent to hit- when the attack happens, it is a multiplier on your 'hit roll'- just like the enemies' dodge. Whoever rolls the higher number wins. Thus, if your total hit mult equals their total dodge, you have a 50% chance to hit. Most enemies will have a dodge multiplier of less than one.");
-			Print.println("Attacks often come with wounds, which have special effects. Good luck!");
-			battleFam = 1;
-		}
 		combats++;
 	}
 	
@@ -167,9 +135,9 @@ public class StoryTutorial extends Story{
 		deaths++;
 		switch (deaths) {
 		case 1:
-			Print.println("Welcome to your first death! In Trawel, dying is very temporary. If you're in an exploration area, you likely got kicked out of it. On Death, you suffer a random Punishment Effect, which makes you worse in battle until you resolve. Check the Status Player Menu option for your current Punishments and how to fix them. Enemies can't loot you, but they can gain XP and level up from you demise!");
-			Networking.unlockAchievement("die1");
-		;break;
+			Print.println("Welcome to your first death! In Trawel, dying is a minor setback.");
+			PrintTutorial.deathTutorial();
+		break;
 		default:
 			boolean doReminder = false;
 			if (levelReminders <= 2) {

@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.helper.constants.TrawelColor;
+import trawel.helper.methods.PrintTutorial;
 import trawel.helper.methods.extra;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
@@ -243,6 +244,10 @@ public class Networking {
 	public static final boolean preProcessInput(String in) {
 		if (Player.isPlaying) {
 			if (in.equals("t")) {
+				if (inBattle != BattleType.NONE) {
+					PrintTutorial.battleTutorial(false);
+					return true;
+				}
 				if (Player.player.atFeature != null) {
 					FeatureData data = FeatureData.getData(Player.player.atFeature.getClass());
 					if (data != null) {

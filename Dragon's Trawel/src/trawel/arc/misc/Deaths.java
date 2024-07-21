@@ -19,6 +19,7 @@ public class Deaths {
 		Networking.statAddUpload("deaths","total_deaths",1);
 		//Networking.sendStrong("StatUp|deaths|1|");
 		Networking.leaderboard("most_deaths",++Player.player.deaths);
+		Networking.unlockAchievement("die1");
 		Player.player.getStory().onDeath();
 		Print.println(deathMessage);
 		Player.player.getStory().onDeathPart2();
@@ -42,7 +43,7 @@ public class Deaths {
 	 * mostly used for death fights, other deaths tend to have their own penalties
 	 */
 	public static void deathPenalty() {
-		if (Player.player.isGameMode_NoPunishments()) {
+		if (Player.isGameMode_NoPunishments()) {
 			return;
 		}
 		//don't set burnout, for now, to see if it causes players to try to explore more?

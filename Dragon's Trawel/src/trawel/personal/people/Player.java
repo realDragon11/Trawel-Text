@@ -29,6 +29,7 @@ import trawel.core.mainGame;
 import trawel.factions.FBox;
 import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
+import trawel.helper.methods.PrintTutorial;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.randomLists;
 import trawel.personal.AIClass;
@@ -1839,10 +1840,8 @@ public class Player extends SuperPerson{
 
 							@Override
 							public boolean go() {
-								Print.println("Every Person in Trawel has a level. This starts at 1 and goes up. They also have an Effective Level, which is usually 10+ their actual level. This effective level is used so that a level 2 person isn't twice as good as a level 1 person- often effectiveness (damage, armor, etc) is multiplied by effective level divided by 10.");
-								Print.println("Every time any Person levels up, they gain a Feat Point. As a player, you can use this in your character screen, if you have a Feat Pick. You get one Feat Pick per level up. Each Feat Point can buy one Feat or Archetype, from a list of up to 8 options. If you don't like your choices, you can choose to delay spending a point.");
-								Print.println("When you use a Pick, you actually get to keep choosing until you run out of Points or reject a choice. When you choose, the options are generated on the fly, however, with the exception of the 'discourage repeat skills' mechanic if you get a Perk, delaying will not change the odds or actual pool of choices you have.");
-								Print.println("Thus, waiting does let you save your Picks if you want to have more chances to reroll, but this is minor and will not change the potential outcomes on it's own. You will usually want to pick as soon as you can. There are also ways to get extra picks, such as libraries.");
+								Print.println("Every Person in Trawel has a level. This starts at 1 and goes up. They also have an Effective Level, which is 10 higher than their actual level. This effective level is used so that a level 2 person isn't twice as good as a level 1 person- often effectiveness (damage, armor, etc) is multiplied by effective level divided by 10.");
+								PrintTutorial.featPickPointTutorial();
 								return false;
 							}});
 						slist.add(new MenuSelect() {
@@ -2155,6 +2154,30 @@ public class Player extends SuperPerson{
 						return false;
 					}
 				});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Combat Tutorial";
+					}
+
+					@Override
+					public boolean go() {
+						PrintTutorial.battleTutorial(false);
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Death Tutorial";
+					}
+
+					@Override
+					public boolean go() {
+						PrintTutorial.deathTutorial();
+						return false;
+					}});
 				list.add(new MenuSelect() {
 
 					@Override
