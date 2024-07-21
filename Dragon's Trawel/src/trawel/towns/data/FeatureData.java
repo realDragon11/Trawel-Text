@@ -88,15 +88,27 @@ public abstract class FeatureData {
 	}
 	
 	public static final String getName(Class<? extends Feature> clazz) {
-		return data_list.get(class_list.indexOf(clazz)).name();
+		int index = class_list.indexOf(clazz);
+		if (index < 0) {
+			return null;
+		}
+		return data_list.get(index).name();
 	}
 	
 	public static final void printTutorial(Class<? extends Feature> clazz) {
-		data_list.get(class_list.indexOf(clazz)).tutorial();;
+		int index = class_list.indexOf(clazz);
+		if (index < 0) {
+			return;
+		}
+		data_list.get(index).tutorial();
 	}
 	
 	public static final FeatureData getData(Class<? extends Feature> clazz) {
-		return data_list.get(class_list.indexOf(clazz));
+		int index = class_list.indexOf(clazz);
+		if (index < 0) {
+			return null;
+		}
+		return data_list.get(index);
 	}
 	
 	public static final List<FeatureData> getFeaturesOf(FeatureTutorialCategory category){

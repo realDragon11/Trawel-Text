@@ -10,6 +10,8 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.helper.methods.extra;
+import trawel.personal.people.Player;
+import trawel.towns.data.FeatureData;
 
 public class Input {
 
@@ -47,7 +49,9 @@ public class Input {
 					return false;
 				}
 				Networking.sendStrong("Entry|Reset|");
-				Print.println("Please type 1 or 9.");
+				if (ini != -4) {//redo, input was consumed for some other purpose
+					Print.println("Please type 1 or 9.");
+				}
 				Print.println("1 yes");
 				Print.println("9 no");
 				ini=  Networking.nextInt();
@@ -112,10 +116,16 @@ public class Input {
 				ini = 9;
 				break;
 			}
+			
 			if (ini != -2) {//silent loading
 				Networking.sendStrong("Entry|Reset|");
-				Print.println("Please type a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
+				if (ini == -4) {//redo, input was consumed for some other purpose
+					Print.println("Input: 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
+				}else {//normal redo
+					Print.println("Please type a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
+				}
 			}
+			
 			ini = Networking.nextInt();
 	
 			if (ini == -99) {

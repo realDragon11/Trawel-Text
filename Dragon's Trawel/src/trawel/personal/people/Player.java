@@ -87,7 +87,7 @@ public class Player extends SuperPerson{
 	public static Inventory bag;
 	public static transient String lastAttackStringer;
 	public static boolean exitMenu = false;
-	public static boolean isPlaying = true;
+	public static boolean isPlaying = false;
 	public int duel_wins = 0;
 	public int deaths;
 	private boolean cheating = false;

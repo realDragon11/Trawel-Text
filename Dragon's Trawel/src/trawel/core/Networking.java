@@ -18,6 +18,7 @@ import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.people.Player;
 import trawel.threads.ThreadData;
 import trawel.towns.data.Calender;
+import trawel.towns.data.FeatureData;
 
 public class Networking {
 
@@ -224,12 +225,36 @@ public class Networking {
 			}
 		}else {
 			//terminal only
+			String inString = in.nextLine();
+			if (preProcessInput(inString)) {
+				return -4;//return was consumed
+			}
 			try {
-				return Math.max(0,Integer.parseInt(in.nextLine()));
+				return Math.max(0,Integer.parseInt(inString));
 			}catch(NumberFormatException e) {
 				return -3;
 			}
 		}
+	}
+	
+	/**
+	 * @return if input was consumed
+	 */
+	public static final boolean preProcessInput(String in) {
+		if (Player.isPlaying) {
+			if (in.equals("t")) {
+				if (Player.player.atFeature != null) {
+					FeatureData data = FeatureData.getData(Player.player.atFeature.getClass());
+					if (data != null) {
+						data.tutorial();
+					}else {
+						Print.println(TrawelColor.RESULT_ERROR+"This feature has no tutorial.");
+					}
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	public static boolean connected() {
