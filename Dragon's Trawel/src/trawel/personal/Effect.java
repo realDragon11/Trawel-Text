@@ -12,8 +12,8 @@ public enum Effect{
 	/**
 	 * used on failed OOB rolls to make the player less likely to spam them while the consequence can't stack
 	 */
-	BURNOUT("Burnout","Halves attributes in out of battle contested rolls. Cure at Doctor; or rest off in Tavern or Library.",true,false,-2),
-	CURSE("Curse","Base HP is decreased by half. Lift at Enchanter or Oracle.",true,false,-4),
+	BURNOUT("Burnout","Halves attributes in out of battle contested rolls. Cure at Doctor or District; rest off in Tavern or Library; or overcome at Oracle or Altar.",true,false,-2),
+	CURSE("Curse","Base HP is decreased by half. Lift at Enchanter, Oracle, or Altar.",true,false,-4),
 	DAMAGED("Damaged","Armor starts at 50% condition each battle. Repair at Blacksmith or Appraiser.",true,false,-4),
 	BEES("BEEEES","Bees sting them occasionally, dealing random damage between 1 flat and 4% LHP. Wash off in water or bathe in Tavern.",true,false,-2),
 	TIRED("Tired","Halves dodge multiplier. Rest off at Tavern or Library.",true,false,-3),

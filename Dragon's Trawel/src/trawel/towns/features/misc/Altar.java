@@ -64,7 +64,7 @@ public class Altar extends Feature{
 
 					@Override
 					public String title() {
-						return "Examine the Altar.";
+						return TrawelColor.SERVICE_FLAVOR+"Examine the Altar.";
 					}
 
 					@Override
@@ -80,14 +80,23 @@ public class Altar extends Feature{
 
 					@Override
 					public String title() {
-						return "Stand on the altar.";
+						return TrawelColor.SERVICE_FREE+"Pray to the altar.";
 					}
 
 					@Override
 					public boolean go() {
-						Print.println("Nothing happens. Nothing ever could happen. You spend an hour staring at your hands, lost in thought.");
-						Player.addTime(1);
+						Print.println("You kneel before the Altar and pray to the primal force it venerates.");
+						Player.addTime(0.5d);
 						TrawelTime.globalPassTime();
+						if (getRelation() >= 2f) {
+							Player.player.getPerson().insightEffects();
+							Print.println("The Altar gives you its guidance.");
+						}else {
+							Print.println("You do not have a close enough connection with the primal force of the "+getForceName()+" to get guidance here.");
+						}
+						Player.addTime(0.5d);
+						TrawelTime.globalPassTime();
+						
 						return false;
 					}
 				});
@@ -325,9 +334,9 @@ public class Altar extends Feature{
 	protected String getForceName() {
 		switch (force) {
 		case FOREST:
-			return "Forest";
+			return TrawelColor.F_SPECIAL+"Forest"+TrawelColor.COLOR_RESET;
 		case SKY:
-			return "Sky";
+			return TrawelColor.F_SPECIAL+"Sky"+TrawelColor.COLOR_RESET;
 		}
 		return "ERR";
 	}

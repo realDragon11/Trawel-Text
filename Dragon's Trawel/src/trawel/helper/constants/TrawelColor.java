@@ -151,6 +151,7 @@ public class TrawelColor {
 	public static final String INFORM_GOOD_STRONG = inlineColor(colorMix(new Color(69,117,180),Color.WHITE,.3f));
 	
 	//feature service grouping
+	public static final String SERVICE_FLAVOR = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.PINK,Color.GREEN,.2f),Color.WHITE,.6f));
 	public static final String SERVICE_FREE = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.PINK,Color.GREEN,.3f),Color.WHITE,.4f));
 	public static final String SERVICE_AETHER = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.MAGENTA,Color.CYAN,.5f),Color.WHITE,.5f));
 	public static final String SERVICE_CURRENCY = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.PINK,Color.MAGENTA,.3f),Color.WHITE,.4f));

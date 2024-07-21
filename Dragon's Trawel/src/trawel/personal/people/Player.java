@@ -1138,10 +1138,10 @@ public class Player extends SuperPerson{
 					@Override
 					public boolean go() {
 						if (person.hasEffect(Effect.BURNOUT)) {
-							Print.println(TrawelColor.RESULT_BAD+"You are burned out. Cure at Doctor; or rest off in Tavern or Library.");
+							Print.println(TrawelColor.RESULT_BAD+"You are burned out. Cure at Doctor or District; rest off in Tavern or Library; or overcome at Oracle or Altar.");
 						}
 						if (person.hasEffect(Effect.CURSE)) {
-							Print.println(TrawelColor.RESULT_BAD+"You are cursed. Lift at Enchanter or Oracle.");
+							Print.println(TrawelColor.RESULT_BAD+"You are cursed. Lift at Enchanter, Oracle, or Altar.");
 						}
 						if (person.hasEffect(Effect.TIRED)) {
 							Print.println(TrawelColor.RESULT_BAD+"You are tired. Rest off at Tavern or Library.");

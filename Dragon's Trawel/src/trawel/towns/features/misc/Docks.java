@@ -204,7 +204,7 @@ public class Docks extends Feature {
 
 							@Override
 							public String title() {
-								return TrawelColor.SERVICE_FREE+"Admire Port.";
+								return TrawelColor.SERVICE_FLAVOR+"Admire Port.";
 							}
 
 							@Override
