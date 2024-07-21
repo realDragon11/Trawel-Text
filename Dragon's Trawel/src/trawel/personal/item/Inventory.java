@@ -1017,7 +1017,7 @@ public class Inventory implements java.io.Serializable{
 
 					@Override
 					public String title() {
-						return Print.capFirst(text)+" " +b.getName() + " ("+b.getValue()+"): " + b.getFlavor();
+						return Print.capFirst(text)+" " +b.getName() + " ("+TrawelColor.ITEM_VALUE+b.getValue()+TrawelColor.COLOR_RESET+"): " + b.getFlavor();
 					}
 
 					@Override

@@ -5,7 +5,10 @@ import trawel.core.mainGame;
 import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.Effect;
+import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
+import trawel.towns.data.FeatureData;
+import trawel.towns.features.services.Library;
 
 public class PrintTutorial {
 
@@ -79,5 +82,6 @@ public class PrintTutorial {
 		Print.println("If you have both a Feat Pick and a Feat Point, you can select a new Feat or Archetype from the Character sub-menu.");
 		Print.println("If you have multiple Feat Points, you can keep choosing options until you run out, for no additional Feat Picks.");
 		Print.println("If you choose not to select any of the options presented, you save that Feat Point, but require a new Feat Pick to choose again.");
+		Print.println(FeatureData.getName(Library.class,true,true)+" can be used to study "+DrawBane.KNOW_FRAG.getNamePlural()+", which will give you extra Feat Points. If you are low on Feat Picks, you can also study general lore to gain an extra Feat Pick, once per "+FeatureData.getName(Library.class,true,false)+".");
 	}
 }

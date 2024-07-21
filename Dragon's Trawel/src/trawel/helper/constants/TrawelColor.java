@@ -112,6 +112,13 @@ public class TrawelColor {
 	public static final String ITEM_DESC_PROP = TIMID_BLUE;
 	public static final String ITEM_VALUE = TIMID_MAGENTA;
 	
+	//names of things that don't have personalized tints
+	public static final String NAME_ITEM_MISC = inlineColor(colorMix(Color.RED,Color.WHITE,.6f));
+	public static final String NAME_ITEM_FOOD = inlineColor(colorMix(Color.ORANGE,Color.WHITE,.6f));
+	public static final String NAME_ITEM_MAGIC = inlineColor(colorMix(Color.MAGENTA,Color.WHITE,.6f));
+	public static final String NAME_ITEM_VALUE = inlineColor(colorMix(Color.PINK,Color.WHITE,.6f));
+	public static final String NAME_ITEM_MATERIAL = inlineColor(colorMix(Color.BLUE,Color.WHITE,.6f));
+	
 	public static final String STAT_HEADER = TrawelColor.inlineColor(TrawelColor.colorMix(Color.WHITE,TrawelColor.colorMix(Color.BLUE,Color.MAGENTA,.5f),.6f));
 	
 	//attributes

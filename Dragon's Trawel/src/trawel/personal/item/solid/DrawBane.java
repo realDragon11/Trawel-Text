@@ -3,6 +3,7 @@ package trawel.personal.item.solid;
 import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.core.Rand;
+import trawel.helper.constants.TrawelColor;
 
 public enum DrawBane {
 	//values:
@@ -12,48 +13,50 @@ public enum DrawBane {
 	//5 = decent value, silver
 	//6 = rare magical (unicorn horn)
 	//8 = expensive (gold/virgin)
-	GARLIC("garlic","Used to repel vampires. Edible.",1,.3,true),
-	SILVER("silver","A shiny metal of decent value. Alchemists have given up trying to transmute other metals into gold.",5,2,true),
-	MEAT("meat","A cut of meat. Slightly edible.",1,.5,true),
-	CEON_STONE("eon stone","A cracked stone with infinite choices- all are terrible. Useful for transmutation.",4,1,true),
-	PROTECTIVE_WARD("protective ward","Used to ward off monsters and other maladies when out and about.",6,8,false),
-	ENT_CORE("ent heartwood","The central core of a living tree. Brew it!",4,2,true),
-	BLOOD("blood","A vial of blood. Brew it!",1,.1,true),
-	REPEL("beast repellant","Repels wolves, bears, and other mostly mundane creatures.",3,1,false),
+	GARLIC("Garlic",null,TrawelColor.NAME_ITEM_FOOD,"Used to repel vampires. Edible.",1,.3,true),
+	SILVER("Silver Chunk",null,TrawelColor.NAME_ITEM_VALUE,"A shiny metal of decent value. Alchemists have given up trying to transmute other metals into gold.",5,2,true),
+	MEAT("Meat",null,TrawelColor.NAME_ITEM_FOOD,"A cut of meat. Slightly edible.",1,.5,true),
+	CEON_STONE("Eon Stone",null,TrawelColor.NAME_ITEM_MAGIC,"A cracked stone with infinite choices- all are terrible. Useful for transmutation.",4,1,true),
+	PROTECTIVE_WARD("Ward",null,TrawelColor.NAME_ITEM_MAGIC,"Used to ward off monsters and other maladies when out and about.",6,8,false),
+	ENT_CORE("Heartwood",null,TrawelColor.NAME_ITEM_MAGIC,"The central core of a living tree. Brew it!",4,2,true),
+	BLOOD("Blood",null,TrawelColor.NAME_ITEM_MATERIAL,"A vial of blood. Brew it!",1,.1,true),
+	REPEL("Repellant",null,TrawelColor.NAME_ITEM_VALUE,"Repels wolves, bears, and other mostly mundane creatures.",3,1,false),
 	//bat wing not edible
-	BAT_WING("bat wing","A flappy appendage torn from a bat. Brew it!",1,.4,true),
+	BAT_WING("Bat Wing",null,TrawelColor.NAME_ITEM_MATERIAL,"A flappy appendage torn from a bat. Brew it!",1,.4,true),
 	//mimic guts not edible
-	MIMIC_GUTS("mimic guts","An alternative reward from a treasure chest. Brew it!",1,.75,true),
-	CLOTH("cloth","Hides Wealth. Discard to clean blood off of your equipment.",1,0,false),
-	APPLE("apple","Used to increase potion thickness, but might turn it into a stew instead. Edible.",1,.3,true),
-	WOOD("wood","A good building resource. Can be used to boost potion thickness, but risks a botch.",1,.3,true),
-	HONEY("honey","Edible and quite tasty.",2,.5,true),
-	WAX("wax","Used to increase potion thickness with little side effects... unless you add honey.",1,.5,true),
-	PUMPKIN("pumpkin","A hearty meal. Edible.",1,.6,true), 
-	BEATING_HEART("beating heart","Is it... still alive?!",4,1,false), 
-	EGGCORN("eggcorn","What is this plant? Edible?",1,.5,true),
-	TRUFFLE("truffle","A prized mushroom. Edible.",5,2,true), 
-	GOLD("gold chunk","An enchantable metal of great value. Bring it to a Merchant's Guild!",8,10,false),
-	UNICORN_HORN("unicorn horn","An impressive magic horn hacked from a horse that holds harmful intent at bay. Brew it!",6,3,true),
-	VIRGIN("virgin","Bound and gagged, tied and dejected. Their soul has been claimed by evil powers. There is no happy ending here.",8,.5,true),
-	KNOW_FRAG("feat fragment","Aetheric wisdom partially bound to a scrap of paper. Bring it to a library to study and absorb for feat point progress!",100,1,false),
-	LIVING_FLAME("living flame","A fierce, fun-size fire that burns brightly without fuel. The perfect centerpiece to any forge!",4,3,true), 
-	GRAVE_DIRT("grave dirt","Dirt that's somewhat worse for wear after much mixing with mortality. Brew it!",1,.2,true),
-	TELESCOPE("telescope","A large telescope, fit for gazing into the sky over overlooking an area.",4,2,true),
-	SINEW("mystic sinew","Slightly possessed flesh. Brew it!",1,.1,true),
-	GRAVE_DUST("grave dust","The ashen remains of heavily necromantic bones. Not to be confused with grave dirt. Brew it!",3,.9,true),
+	MIMIC_GUTS("Mimic Guts",null,TrawelColor.NAME_ITEM_MATERIAL,"An alternative reward from a treasure chest. Brew it!",1,.75,true),
+	CLOTH("Cloth",null,TrawelColor.NAME_ITEM_MISC,"Hides Wealth. Discard to clean blood off of your equipment.",1,0,false),
+	APPLE("Apple",null,TrawelColor.NAME_ITEM_FOOD,"Used to increase potion thickness, but might turn it into a stew instead. Edible.",1,.3,true),
+	WOOD("Wood","Wood",TrawelColor.NAME_ITEM_MATERIAL,"A good building resource. Can be used to boost potion thickness, but risks a botch.",1,.3,true),
+	HONEY("Honey",null,TrawelColor.NAME_ITEM_FOOD,"Edible and quite tasty.",2,.5,true),
+	WAX("Wax","Waxes",TrawelColor.NAME_ITEM_MATERIAL,"Used to increase potion thickness with little side effects... unless you add honey.",1,.5,true),
+	PUMPKIN("Pumpkin",null,TrawelColor.NAME_ITEM_FOOD,"A hearty meal. Edible.",1,.6,true), 
+	BEATING_HEART("Beating Heart",null,TrawelColor.NAME_ITEM_MAGIC,"Is it... still alive?!",4,1,false), 
+	EGGCORN("Eggcorn",null,TrawelColor.NAME_ITEM_FOOD,"What is this plant? Edible?",1,.5,true),
+	TRUFFLE("Truffle",null,TrawelColor.NAME_ITEM_FOOD,"A prized mushroom. Edible.",5,2,true), 
+	GOLD("Gold Chunk",null,TrawelColor.NAME_ITEM_VALUE,"An enchantable metal of great value. Bring it to a Merchant's Guild!",8,10,false),
+	UNICORN_HORN("Unicorn Horn",null,TrawelColor.NAME_ITEM_MAGIC,"An impressive magic horn hacked from a horse that holds harmful intent at bay. Brew it!",6,3,true),
+	VIRGIN("Virgin",null,TrawelColor.NAME_ITEM_VALUE,"Bound and gagged, tied and dejected. Their soul has been claimed by evil powers. There is no happy ending here.",8,.5,true),
+	KNOW_FRAG("Feat Fragment",null,TrawelColor.NAME_ITEM_VALUE,"Aetheric wisdom partially bound to a scrap of paper. Bring it to a library to study and absorb for feat point progress!",100,1,false),
+	LIVING_FLAME("Living Flame",null,TrawelColor.NAME_ITEM_MAGIC,"A fierce, fun-size fire that burns brightly without fuel. The perfect centerpiece to any forge!",4,3,true), 
+	GRAVE_DIRT("Grave Dirt",null,TrawelColor.NAME_ITEM_MATERIAL,"Dirt that's somewhat worse for wear after much mixing with mortality. Brew it!",1,.2,true),
+	TELESCOPE("Telescope",null,TrawelColor.NAME_ITEM_MATERIAL,"A large telescope, fit for gazing into the sky over overlooking an area.",4,2,true),
+	SINEW("Mystic Sinew",null,TrawelColor.NAME_ITEM_MATERIAL,"Slightly possessed flesh. Brew it!",1,.1,true),
+	GRAVE_DUST("Grave Dust",null,TrawelColor.NAME_ITEM_MAGIC,"The ashen remains of heavily necromantic bones. Not to be confused with grave dirt. Brew it!",3,.9,true),
 	//for draws and banes, not items
-	EV_NOTHING("nothing","Empty slot.",0,0,false),
-	EV_DAYLIGHT("daylight","daytime",0,0,false),
-	EV_WEALTH("money","money",0,0,false),
-	EV_BLOOD("bloody","blood",0,0,false)
+	EV_NOTHING("nothing",null,TrawelColor.RESULT_ERROR,"Empty slot.",0,0,false),
+	EV_DAYLIGHT("daylight",null,TrawelColor.RESULT_ERROR,"daytime",0,0,false),
+	EV_WEALTH("money",null,TrawelColor.RESULT_ERROR,"money",0,0,false),
+	EV_BLOOD("bloody",null,TrawelColor.RESULT_ERROR,"blood",0,0,false)
 	;
-	private String name, flavorText;
-	private int value;
-	private double mVal;
-	private boolean anyBrew;
-	DrawBane(String name, String flavorText,int val, double mVal, boolean _anyBrew) {
+	private final String name, namePlural, flavorText, color;
+	private final int value;
+	private final double mVal;
+	private final boolean anyBrew;
+	DrawBane(String name, String namePlural, String color, String flavorText,int val, double mVal, boolean _anyBrew) {
 		this.name = name;
+		this.namePlural = namePlural;
+		this.color = color;
 		this.flavorText = flavorText;
 		this.value = val;
 		this.mVal = mVal;
@@ -61,7 +64,23 @@ public enum DrawBane {
 	}
 	
 	public String getName() {
+		if (color != null) {
+			return color+name+TrawelColor.COLOR_RESET;
+		}
 		return name;
+	}
+	
+	public String getNamePlural() {
+		if (namePlural != null) {
+			if (color != null) {
+				return color+namePlural+TrawelColor.COLOR_RESET;
+			}
+			return namePlural;
+		}
+		if (color != null) {
+			return color+name+"s"+TrawelColor.COLOR_RESET;
+		}
+		return name+"s";
 	}
 	
 	public String getFlavor() {

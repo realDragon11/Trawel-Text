@@ -87,10 +87,19 @@ public abstract class FeatureData {
 		insert.add(index,data);
 	}
 	
-	public static final String getName(Class<? extends Feature> clazz) {
+	public static final String getName(Class<? extends Feature> clazz,boolean fancy, boolean plural) {
 		int index = class_list.indexOf(clazz);
 		if (index < 0) {
 			return null;
+		}
+		if (fancy) {
+			if (plural) {
+				return data_list.get(index).fancyNamePlural();
+			}
+			return data_list.get(index).fancyName();
+		}
+		if (plural) {
+			return data_list.get(index).namePlural();
 		}
 		return data_list.get(index).name();
 	}
