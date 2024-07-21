@@ -32,7 +32,8 @@ public class Altar extends Feature{
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" accept offerings of Drawbanes in return for blessings. "+fancyNamePlural()+" can provide insight to lift "+Effect.CURSE.getName()+" and overcome "+Effect.BURNOUT.getName()+" to those with a close enough connection.");
+				Print.println(fancyNamePlural()+" accept offerings of Drawbanes in return for blessings."+
+						(Player.isGameMode_NoPunishments() ? "" : " "+fancyNamePlural()+" can provide insight to lift "+Effect.CURSE.getName()+" and overcome "+Effect.BURNOUT.getName()+" to those with a close enough connection."));
 			}
 			
 			@Override
@@ -98,30 +99,32 @@ public class Altar extends Feature{
 				for (QuestR qr: Player.player.QRFor(Altar.this)) {
 					mList.add(new QRMenuItem(qr));
 				}
-				mList.add(new MenuSelect() {
+				if (!Player.player.isGameMode_NoPunishments()) {
+					mList.add(new MenuSelect() {
 
-					@Override
-					public String title() {
-						return TrawelColor.SERVICE_FREE+"Pray to the altar.";
-					}
-
-					@Override
-					public boolean go() {
-						Print.println("You kneel before the Altar and pray to the primal force it venerates.");
-						Player.addTime(0.5d);
-						TrawelTime.globalPassTime();
-						if (getRelation() >= 2f) {
-							Player.player.getPerson().insightEffects();
-							Print.println("The Altar gives you its guidance.");
-						}else {
-							Print.println(TrawelColor.RESULT_ERROR+"You do not have a close enough connection with the primal force of the "+getForceName()+" to get guidance here.");
+						@Override
+						public String title() {
+							return TrawelColor.SERVICE_FREE+"Pray to the altar.";
 						}
-						Player.addTime(0.5d);
-						TrawelTime.globalPassTime();
-						
-						return false;
-					}
-				});
+
+						@Override
+						public boolean go() {
+							Print.println("You kneel before the Altar and pray to the primal force it venerates.");
+							Player.addTime(0.5d);
+							TrawelTime.globalPassTime();
+							if (getRelation() >= 2f) {
+								Player.player.getPerson().insightEffects();
+								Print.println("The Altar gives you its guidance.");
+							}else {
+								Print.println(TrawelColor.RESULT_ERROR+"You do not have a close enough connection with the primal force of the "+getForceName()+" to get guidance here.");
+							}
+							Player.addTime(0.5d);
+							TrawelTime.globalPassTime();
+							
+							return false;
+						}
+					});
+				}
 				mList.add(new MenuSelect() {
 
 					@Override

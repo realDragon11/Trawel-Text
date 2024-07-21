@@ -42,6 +42,7 @@ import trawel.time.TrawelTime;
 import trawel.towns.contexts.Town;
 import trawel.towns.contexts.World;
 import trawel.towns.data.FeatureData;
+import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.towns.features.Feature;
 import trawel.towns.features.elements.MenuMoney;
 import trawel.towns.features.services.Doctor;
@@ -57,7 +58,8 @@ public class Slum extends Store implements QuestBoardLocation{
 					@Override
 					public void tutorial() {
 						//TODO
-						Print.println(fancyNamePlural()+" hold sidequests, backalley vendors, and are often controlled by a Crime Lord. If the Crime Lord is removed from the "+fancyName()+", it is possible to pay for reform programs to enfranchise the people there. The cost of such programs will increase with the danger still present in the "+fancyName()+". If there isn't too much heat, black-market doctors in "+fancyNamePlural()+" cure "+Effect.WOUNDED.getName()+" and "+Effect.BURNOUT.getName()+".");
+						Print.println(fancyNamePlural()+" hold sidequests, backalley vendors, and are often controlled by a Crime Lord. If the Crime Lord is removed from the "+fancyName()+", it is possible to pay for reform programs to enfranchise the people there. The cost of such programs will increase with the danger still present in the "+fancyName()+"."
+						+(Player.isGameMode_NoPunishments() ? "" : ". If there isn't too much heat, black-market doctors in "+fancyNamePlural()+" cure "+Effect.WOUNDED.getName()+" and "+Effect.BURNOUT.getName()+"."));
 					}
 
 					@Override
@@ -67,6 +69,9 @@ public class Slum extends Store implements QuestBoardLocation{
 
 					@Override
 					public FeatureTutorialCategory category() {
+						if (Player.isGameMode_NoPunishments()) {
+							return FeatureTutorialCategory.ADVANCED_SERVICES;
+						}
 						return FeatureTutorialCategory.VITAL_SERVICES;
 					}
 
@@ -394,50 +399,52 @@ public class Slum extends Store implements QuestBoardLocation{
 						}
 						return TrawelColor.INFORM_GOOD_STRONG+"You have no heat on you here.";
 					}});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return TrawelColor.SERVICE_CURRENCY+"Seek black-market treatment.";
-					}
-
-					@Override
-					public boolean go() {
-						Player.addTime(1);//search time
-						TrawelTime.globalPassTime();
-						if (heat > HEAT_DOCTOR_ALLOW) {//5 hours of heat leeway
-							Print.println(TrawelColor.RESULT_ERROR+"You fail to find a doctor- there is too much heat on you here.");
-							return false;
+				if (!Player.player.isGameMode_NoPunishments()) {
+					mList.add(new MenuSelect() {
+	
+						@Override
+						public String title() {
+							return TrawelColor.SERVICE_CURRENCY+"Seek black-market treatment.";
 						}
-						//costs for all punishments, even the ones they can't cure- it's harder work
-						//doctor cost is 1f, this is .5f to 2f
-						int cost = IEffectiveLevel.cleanRangeReward(getLevel(),2f*(1+Player.player.getPerson().punishmentSize()),.25f);
-						Print.println(TrawelColor.SERVICE_CURRENCY+"Spend "+World.currentMoneyDisplay(cost) + " on a black-market treatment?");
-						if (Input.yesNo()) {
-							if (Player.player.getGold() < cost) {
-								Print.println(TrawelColor.RESULT_ERROR+"Not enough "+World.currentMoneyString()+"! The doctor is angry.");
-								//add 4 days of heat
-								heat += 24d*4;
+	
+						@Override
+						public boolean go() {
+							Player.addTime(1);//search time
+							TrawelTime.globalPassTime();
+							if (heat > HEAT_DOCTOR_ALLOW) {//5 hours of heat leeway
+								Print.println(TrawelColor.RESULT_ERROR+"You fail to find a doctor- there is too much heat on you here.");
 								return false;
-							}else {
-								Player.addTime(1);//treatment time
-								TrawelTime.globalPassTime();
-								//perform curing service
-								Player.player.addGold(-cost);
-								Print.println(TrawelColor.RESULT_PASS+"You pay and receive treatment.");
-								Player.player.getPerson().cureEffects();
-								//MAYBELATER: could possibly do random side effects, but the money and heat is probably enough to make it unreliable
-								//and also not telling you exactly what you have, but the player menu does that so it's less a factor
-								//add 2 days of heat to prevent re-treatment
-								heat += 48d;
 							}
-						}else {
-							Print.println(TrawelColor.RESULT_WARN+"The doctor mutters something about attention before going back into hiding.");
-							//add a half day of heat so they can't repeatedly attempt for a better deal without going somewhere else
-							heat += 12d;
-						}
-						return false;
-					}});
+							//costs for all punishments, even the ones they can't cure- it's harder work
+							//doctor cost is 1f, this is .5f to 2f
+							int cost = IEffectiveLevel.cleanRangeReward(getLevel(),2f*(1+Player.player.getPerson().punishmentSize()),.25f);
+							Print.println(TrawelColor.SERVICE_CURRENCY+"Spend "+World.currentMoneyDisplay(cost) + " on a black-market treatment?");
+							if (Input.yesNo()) {
+								if (Player.player.getGold() < cost) {
+									Print.println(TrawelColor.RESULT_ERROR+"Not enough "+World.currentMoneyString()+"! The doctor is angry.");
+									//add 4 days of heat
+									heat += 24d*4;
+									return false;
+								}else {
+									Player.addTime(1);//treatment time
+									TrawelTime.globalPassTime();
+									//perform curing service
+									Player.player.addGold(-cost);
+									Print.println(TrawelColor.RESULT_PASS+"You pay and receive treatment.");
+									Player.player.getPerson().cureEffects();
+									//MAYBELATER: could possibly do random side effects, but the money and heat is probably enough to make it unreliable
+									//and also not telling you exactly what you have, but the player menu does that so it's less a factor
+									//add 2 days of heat to prevent re-treatment
+									heat += 48d;
+								}
+							}else {
+								Print.println(TrawelColor.RESULT_WARN+"The doctor mutters something about attention before going back into hiding.");
+								//add a half day of heat so they can't repeatedly attempt for a better deal without going somewhere else
+								heat += 12d;
+							}
+							return false;
+						}});
+				}
 				mList.add(new MenuSelect() {
 
 					@Override

@@ -54,7 +54,9 @@ public class Inn extends Feature implements QuestBoardLocation{
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" have a quest board. " +fancyNamePlural()+" have rentable rooms to cure "+Effect.BURNOUT.getName()+" and "+Effect.TIRED.getName()+", as well as bathe in. "+fancyNamePlural()+" sell beer, which increases MHP once each. "+fancyNamePlural()+" have residents to interact with or watch, which change over time.");
+				Print.println(fancyNamePlural()+" have a quest board. "
+						+(Player.isGameMode_NoPunishments() ? fancyNamePlural()+" have rentable rooms to wait and bathe in." : fancyNamePlural()+" have rentable rooms to cure "+Effect.BURNOUT.getName()+" and "+Effect.TIRED.getName()+", as well as bathe in. ")
+						+fancyNamePlural()+" sell beer, which increases MHP once each. "+fancyNamePlural()+" have residents to interact with or watch, which change over time.");
 			}
 			
 			@Override
@@ -74,6 +76,9 @@ public class Inn extends Feature implements QuestBoardLocation{
 			
 			@Override
 			public FeatureTutorialCategory category() {
+				if (Player.isGameMode_NoPunishments()) {
+					return FeatureTutorialCategory.ADVANCED_SERVICES;
+				}
 				return FeatureTutorialCategory.VITAL_SERVICES;
 			}
 		});

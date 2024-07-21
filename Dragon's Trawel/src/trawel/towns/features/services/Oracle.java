@@ -38,7 +38,8 @@ public class Oracle extends Feature{ //extends feature later
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" utter random tips and tidbits from everywhere and everyone. If you pay them, the insight might be good enough to lift "+Effect.CURSE.getName()+" and overcome "+Effect.BURNOUT.getName()+".");
+				Print.println(fancyNamePlural()+" utter random tips and tidbits from everywhere and everyone."
+						+(Player.isGameMode_NoPunishments() ? "" : " If you pay the "+fancyName()+", the insight might be good enough to lift "+Effect.CURSE.getName()+" and overcome "+Effect.BURNOUT.getName()+"."));
 			}
 			
 			@Override
@@ -58,6 +59,9 @@ public class Oracle extends Feature{ //extends feature later
 			
 			@Override
 			public FeatureTutorialCategory category() {
+				if (Player.isGameMode_NoPunishments()) {
+					return FeatureTutorialCategory.ADVANCED_SERVICES;
+				}
 				return FeatureTutorialCategory.VITAL_SERVICES;
 			}
 		});

@@ -41,7 +41,7 @@ public class Mountain extends ExploreFeature{
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" can be explored for events and loot, but do not have persistence. Each "+fancyName()+" has a fixed number of explores that restores over time.");
+				Print.println(fancyNamePlural()+" can be explored for events and loot, but do not have persistence. "+fancyNamePlural()+" have hotsprings to bathe in. Each "+fancyName()+" has a fixed number of explores that restores over time.");
 			}
 
 			@Override

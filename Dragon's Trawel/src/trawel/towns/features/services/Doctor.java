@@ -31,7 +31,9 @@ public class Doctor extends Feature {
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" cure "+Effect.BURNOUT.getName() + " and "+Effect.WOUNDED.getName()+".");
+				Print.println(fancyNamePlural()+
+						(Player.isGameMode_NoPunishments() ? " do nothing." : " cure "+Effect.BURNOUT.getName() + " and "+Effect.WOUNDED.getName()+".")
+						);
 			}
 			
 			@Override
@@ -51,6 +53,9 @@ public class Doctor extends Feature {
 			
 			@Override
 			public FeatureTutorialCategory category() {
+				if (Player.isGameMode_NoPunishments()) {
+					return FeatureTutorialCategory.ADVANCED_SERVICES;
+				}
 				return FeatureTutorialCategory.VITAL_SERVICES;
 			}
 		});
@@ -96,31 +101,33 @@ public class Doctor extends Feature {
 						Player.player.getPerson().displayEffects();
 						return false;
 					}});
-				//costs for all punishments, even the ones they can't cure- it's harder work
-				int cost = Math.round(getUnEffectiveLevel()*(1+Player.player.getPerson().punishmentSize()));
-				list.add(new MenuSelect() {
+				if (!Player.player.isGameMode_NoPunishments()) {
+					//costs for all punishments, even the ones they can't cure- it's harder work
+					int cost = Math.round(getUnEffectiveLevel()*(1+Player.player.getPerson().punishmentSize()));
+					list.add(new MenuSelect() {
 
-					@Override
-					public String title() {
-						return TrawelColor.SERVICE_CURRENCY+"Cure ("+World.currentMoneyDisplay(cost)+")";
-					}
+						@Override
+						public String title() {
+							return TrawelColor.SERVICE_CURRENCY+"Cure ("+World.currentMoneyDisplay(cost)+")";
+						}
 
-					@Override
-					public boolean go() {
-						if (Player.player.getGold() < cost) {
-							Print.println(TrawelColor.RESULT_ERROR+"Not enough "+World.currentMoneyString()+"!");
+						@Override
+						public boolean go() {
+							if (Player.player.getGold() < cost) {
+								Print.println(TrawelColor.RESULT_ERROR+"Not enough "+World.currentMoneyString()+"!");
+								return false;
+							}
+							Print.println(TrawelColor.SERVICE_CURRENCY+"Pay for a check up?");
+							if (Input.yesNo()) {
+								Player.addTime(.5);//treatment time
+								TrawelTime.globalPassTime();
+								Player.player.addGold(-cost);
+								Print.println(TrawelColor.RESULT_PASS+"You pay and receive treatment.");
+								Player.player.getPerson().cureEffects();
+							}
 							return false;
-						}
-						Print.println(TrawelColor.SERVICE_CURRENCY+"Pay for a check up?");
-						if (Input.yesNo()) {
-							Player.addTime(.5);//treatment time
-							TrawelTime.globalPassTime();
-							Player.player.addGold(-cost);
-							Print.println(TrawelColor.RESULT_PASS+"You pay and receive treatment.");
-							Player.player.getPerson().cureEffects();
-						}
-						return false;
-					}});
+						}});
+				}
 				list.add(new MenuBack("Leave"));
 				return list;
 			}});

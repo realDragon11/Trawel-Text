@@ -19,6 +19,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.contexts.World;
 import trawel.towns.data.FeatureData;
+import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.towns.features.Feature;
 
 public class Appraiser extends Feature {
@@ -28,7 +29,8 @@ public class Appraiser extends Feature {
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" examine gear to fix "+Effect.DAMAGED.getName()+".");
+				Print.println(fancyNamePlural()+" examine gear"
+						+(Player.isGameMode_NoPunishments() ? "." : " to fix "+Effect.DAMAGED.getName()+"."));
 			}
 			
 			@Override
@@ -48,6 +50,9 @@ public class Appraiser extends Feature {
 			
 			@Override
 			public FeatureTutorialCategory category() {
+				if (Player.isGameMode_NoPunishments()) {
+					return FeatureTutorialCategory.ADVANCED_SERVICES;
+				}
 				return FeatureTutorialCategory.VITAL_SERVICES;
 			}
 		});

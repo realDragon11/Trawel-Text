@@ -65,6 +65,19 @@ public abstract class FeatureData {
 		//and the menu is only useable in-game for now
 		
 		//since we add it here, we can avoid a full sort + adding by just sorting while we add
+		insertFeatureData(data);
+	}
+	
+	public static final void refreshFeatures() {
+		for (FeatureTutorialCategory c: FeatureTutorialCategory.values()) {
+			by_category.put(c,new ArrayList<FeatureData>());
+		}
+		for (Class<? extends Feature> clazz: class_list) {
+			insertFeatureData(getData(clazz));
+		}
+	}
+	
+	private static final void insertFeatureData(FeatureData data) {
 		List<FeatureData> insert = by_category.get(data.category());
 		int index = 0;
 		//while we're still in the list, and of higher line number than the current element, keep going down to list to find the insert point

@@ -91,7 +91,7 @@ public class Player extends SuperPerson{
 	public int duel_wins = 0;
 	public int deaths;
 	private boolean cheating = false;
-	public boolean gameMode_NoPunishments = false;
+	private boolean gameMode_NoPunishments = false;
 	/**
 	 * the instance copy of the player's world
 	 */
@@ -934,17 +934,19 @@ public class Player extends SuperPerson{
 
 														@Override
 														public String title() {
-															return "Toggle No Punishments, Currently "+gameMode_NoPunishments;
+															return "Toggle No Punishments, Currently "+isGameMode_NoPunishments();
 														}
 
 														@Override
 														public boolean go() {
-															gameMode_NoPunishments = !gameMode_NoPunishments;
-															if (gameMode_NoPunishments) {
+															setGameMode_NoPunishments(!isGameMode_NoPunishments());
+															if (isGameMode_NoPunishments()) {
 																Print.println("Punishments disabled. Current punishments will be cleared after a battle.");
 															}else {
 																Print.println("Punishments re-enabled.");
 															}
+															//refresh gamemode featuredata
+															FeatureData.refreshFeatures();
 															return false;
 														}});
 												}
@@ -2525,7 +2527,7 @@ public class Player extends SuperPerson{
 	}
 	
 	public boolean addPunishment(Effect punishment) {
-		if (gameMode_NoPunishments) {
+		if (isGameMode_NoPunishments()) {
 			return false;
 		}
 		if (getPerson().hasEffect(punishment) && !punishment.stacks()) {
@@ -2536,10 +2538,21 @@ public class Player extends SuperPerson{
 	}
 	
 	public void checkWipePunishments() {
-		if (!gameMode_NoPunishments) {
+		if (!isGameMode_NoPunishments()) {
 			return;
 		}
 		getPerson().clearEffects();
+	}
+
+	public static boolean isGameMode_NoPunishments() {
+		if (player == null) {
+			return false;
+		}
+		return player.gameMode_NoPunishments;
+	}
+
+	public void setGameMode_NoPunishments(boolean gameMode_NoPunishments) {
+		this.gameMode_NoPunishments = gameMode_NoPunishments;
 	}
 	
 }

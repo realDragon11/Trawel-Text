@@ -37,7 +37,9 @@ public class Enchanter extends Feature {
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" apply enchantments to equipment. "+fancyNamePlural()+" also lift "+Effect.CURSE.getName()+".");
+				Print.println(fancyNamePlural()+" apply enchantments to equipment."
+			+ (Player.isGameMode_NoPunishments() ? "" : " "+fancyNamePlural()+" also lift "+Effect.CURSE.getName()+".")
+			);
 			}
 			
 			@Override
