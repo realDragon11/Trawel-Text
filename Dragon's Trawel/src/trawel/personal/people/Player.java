@@ -923,6 +923,30 @@ public class Player extends SuperPerson{
 															}
 															return false;
 														}});
+												}else {
+													list.add(new MenuLine() {
+
+														@Override
+														public String title() {
+															return "With Punishments off, status effects will not linger after battle or be applied outside of combat to the player.";
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Toggle No Punishments, Currently "+gameMode_NoPunishments;
+														}
+
+														@Override
+														public boolean go() {
+															gameMode_NoPunishments = !gameMode_NoPunishments;
+															if (gameMode_NoPunishments) {
+																Print.println("Punishments disabled. Current punishments will be cleared after a battle.");
+															}else {
+																Print.println("Punishments re-enabled.");
+															}
+															return false;
+														}});
 												}
 												list.add(new MenuBack());
 												return list;
@@ -2498,6 +2522,24 @@ public class Player extends SuperPerson{
 		Print.println("6 Weapon ("+Player.bag.getHand().getName()+")");
 		Print.println("9 Cancel.");
 		return Input.inInt(6,true,true);
+	}
+	
+	public boolean addPunishment(Effect punishment) {
+		if (gameMode_NoPunishments) {
+			return false;
+		}
+		if (getPerson().hasEffect(punishment) && !punishment.stacks()) {
+			return false;
+		}
+		getPerson().addEffect(punishment);
+		return true;
+	}
+	
+	public void checkWipePunishments() {
+		if (!gameMode_NoPunishments) {
+			return;
+		}
+		getPerson().clearEffects();
 	}
 	
 }

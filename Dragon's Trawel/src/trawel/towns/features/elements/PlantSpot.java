@@ -136,10 +136,8 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 								switch (Rand.randRange(1,6)) {
 								case 1:
 									Print.println(TrawelColor.RESULT_BAD+"The bees sting!");
-									if (!Player.player.gameMode_NoPunishments) {
-										Player.player.getPerson().addEffect(Effect.BEES);
-										Networking.unlockAchievement("bees_hive");
-									}
+									Player.player.addPunishment(Effect.BEES);
+									Networking.unlockAchievement("bees_hive");
 									break;
 								case 2:
 									Print.println(TrawelColor.RESULT_FAIL+"You escape unscathed but with wounded pride.");
@@ -215,7 +213,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 			Player.bag.addSeed(Seed.SEED_BEE);
 			
 			Print.println("The bees sting!");
-			Player.player.getPerson().addEffect(Effect.BEES);
+			Player.player.addPunishment(Effect.BEES);
 			Networking.unlockAchievement("bees_hive");
 		break;
 		case SEED_BEE: Player.bag.addSeed(Seed.SEED_BEE);break;

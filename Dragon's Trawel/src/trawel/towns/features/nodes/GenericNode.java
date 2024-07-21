@@ -782,9 +782,7 @@ public class GenericNode implements NodeType {
 										holder.setStorage(node,newName);
 									}else {
 										//failed
-										if (!Player.player.gameMode_NoPunishments) {
-											Player.player.getPerson().addEffect(Effect.BURNOUT);
-										}
+										Player.player.addPunishment(Effect.BURNOUT);
 										Print.println(TrawelColor.RESULT_FAIL+"You fail to bash open the "+name+".");
 									}
 									return true;
@@ -810,7 +808,7 @@ public class GenericNode implements NodeType {
 										holder.setStorage(node,newName);
 									}else {
 										//failed
-										Player.player.getPerson().addEffect(Effect.BURNOUT);
+										Player.player.addPunishment(Effect.BURNOUT);
 										Print.println(TrawelColor.RESULT_FAIL+"You fail to lockpick the "+name+".");
 									}
 									return true;
@@ -836,9 +834,7 @@ public class GenericNode implements NodeType {
 										holder.setStorage(node,newName);
 									}else {
 										//failed
-										if (!Player.player.gameMode_NoPunishments) {
-											Player.player.getPerson().addEffect(Effect.BURNOUT);
-										}
+										Player.player.addPunishment(Effect.BURNOUT);
 										Print.println(TrawelColor.RESULT_FAIL+"Your Knock cantrip on the "+name+" fizzles.");
 									}
 									return true;
@@ -1458,7 +1454,7 @@ public class GenericNode implements NodeType {
 			Player.addTime(1);//full hour of failing time
 			TrawelTime.globalPassTime();
 			//failed check, suffer burnout
-			Player.player.getPerson().addEffect(Effect.BURNOUT);
+			Player.player.addPunishment(Effect.BURNOUT);
 			Print.println(TrawelColor.RESULT_FAIL+trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
 			TrapPunishment punishment = trapFluff[1] == null ? null : TrapPunishment.valueOf(trapFluff[1]);
 			switch (punishment) {//type of trap punishment

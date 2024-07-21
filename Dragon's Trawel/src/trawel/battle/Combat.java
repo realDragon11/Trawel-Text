@@ -2375,6 +2375,7 @@ public class Combat {
 			//so if this is true, first_man is the player
 			//this gets used a lot in the background so every bit helps
 			if (hasPlayer) {
+				Player.player.checkWipePunishments();
 				Player.player.duel_wins++;
 				Networking.leaderboard("most_duel_wins", Player.player.duel_wins);
 				Networking.statAddUpload("duel_wins","total_duel_wins",1);
@@ -2528,6 +2529,7 @@ public class Combat {
 				Networking.setBattle(Networking.BattleType.NONE);
 				AIClass.playerStashOldItems();
 				playerIsLooting = true;
+				Player.player.checkWipePunishments();
 			}
 			surv.addXp(subReward);
 			if (canLoot) {
@@ -2562,6 +2564,7 @@ public class Combat {
 				Networking.setBattle(Networking.BattleType.NONE);
 				Networking.clearSide(1);
 				Deaths.dieFight();
+				Player.player.checkWipePunishments();
 				continue;
 			}
 			if (kill.getFlag(PersonFlag.PLAYER_LOOT_ONLY) && !playerIsLooting) {

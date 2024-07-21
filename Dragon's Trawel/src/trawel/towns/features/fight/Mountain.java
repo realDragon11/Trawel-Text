@@ -219,8 +219,8 @@ public class Mountain extends ExploreFeature{
 			}else {
 				Print.println(TrawelColor.RESULT_FAIL+"The rocks crush you!");
 				Deaths.die("You pull yourself out from under the rocks, your armor is all dinged up.");
-				Player.player.getPerson().addEffect(Effect.DAMAGED);
-				Player.player.getPerson().addEffect(Effect.BURNOUT);
+				Player.player.addPunishment(Effect.DAMAGED);
+				Player.player.addPunishment(Effect.BURNOUT);
 			}
 			;break;
 		case 2:
@@ -230,8 +230,8 @@ public class Mountain extends ExploreFeature{
 			}else {
 				Print.println(TrawelColor.RESULT_FAIL+"The rocks crush you!");
 				Deaths.die("You pull yourself out from under the rocks, your armor is all dinged up.");
-				Player.player.getPerson().addEffect(Effect.DAMAGED);
-				Player.player.getPerson().addEffect(Effect.BURNOUT);
+				Player.player.addPunishment(Effect.DAMAGED);
+				Player.player.addPunishment(Effect.BURNOUT);
 			}
 			;break;
 		case 3:
@@ -502,10 +502,8 @@ public class Mountain extends ExploreFeature{
 									Networking.unlockAchievement("cult1");
 									return true;
 								}else {
-									if (!Player.player.gameMode_NoPunishments) {
-										Print.println(TrawelColor.RESULT_BAD+"The sky curses you for your hubris!");
-										Player.player.getPerson().addEffect(Effect.CURSE);
-									}
+									Print.println(TrawelColor.RESULT_BAD+"The sky curses you for your hubris!");
+									Player.player.addPunishment(Effect.CURSE);
 									Mountain.super.town.addOccupant(leader.setOrMakeAgentGoal(AgentGoal.NONE));
 									return true;
 								}

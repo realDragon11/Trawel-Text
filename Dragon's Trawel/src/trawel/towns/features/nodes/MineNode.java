@@ -474,7 +474,7 @@ public class MineNode implements NodeType{
 									Print.println("You are stabbed to death.");
 									Deaths.die("You rise from the altar!");
 									Print.println("The cultists praise you as the second coming of flagjaij! You feel cursed, but powerful.");
-									Player.player.getPerson().addEffect(Effect.CURSE);
+									Player.player.addPunishment(Effect.CURSE);
 									Player.unlockPerk(Perk.CULT_CHOSEN_BLOOD);
 									Player.player.hasCult = true;
 									Networking.unlockAchievement("cult1");
