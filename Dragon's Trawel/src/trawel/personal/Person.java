@@ -52,6 +52,7 @@ import trawel.personal.item.Potion;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.item.solid.Armor;
+import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
@@ -1396,6 +1397,32 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		": "+TrawelColor.ITEM_WANT_HIGHER+Print.F_WHOLE.format(bag.getSharpResist())+"/"+Print.F_WHOLE.format(bag.getBluntResist())+"/"+Print.F_WHOLE.format(bag.getPierceResist())
 				);
 		Print.println(bag.quickInventory());
+		
+	}
+	
+	public void displayVisual() {
+		Print.println(getName() +": "+TrawelColor.ITEM_DESC_PROP+"LvL " +TrawelColor.ITEM_WANT_HIGHER+ this.getLevel() +TrawelColor.PRE_WHITE+" " + this.getBag().getRace().renderName(false)+".");
+		Print.println(bag.quickInventory());
+		switch ((int)Math.round(getBag().calculateDrawBaneFor(DrawBane.EV_BLOOD))) {
+		case 0:
+			Print.println(TrawelColor.ADVISE_1+"They are clean of blood.");
+			break;
+		case 1:
+			Print.println(TrawelColor.ADVISE_2+"They have a tiny amount of bloodstains on them.");
+			break;
+		case 2:
+			Print.println(TrawelColor.ADVISE_3+"They have a small amount of bloodstains on them.");
+			break;
+		case 3:
+			Print.println(TrawelColor.ADVISE_4+"They have a medium amount of bloodstains on them.");
+			break;
+		case 4:
+			Print.println(TrawelColor.ADVISE_5+"They have a significant amount of bloodstains on them.");
+			break;
+		case 5:
+			Print.println(TrawelColor.ADVISE_6+"They are caked in bloodstains.");
+			break;
+		}
 	}
 	
 	public void displayStats(boolean inCombat) {

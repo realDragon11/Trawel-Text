@@ -13,6 +13,7 @@ import trawel.battle.attacks.ImpairedAttack;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.PrintTutorial;
 import trawel.helper.methods.extra;
+import trawel.personal.Person;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.Race.RaceType;
@@ -23,8 +24,6 @@ import trawel.towns.data.FeatureData;
 
 public class Networking {
 
-	public static final String AGGRO = TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED, Color.WHITE, 0.5f));//not sure if pre red comes first so
-	
 	//public static InputStream in;
 	public static Socket socket;
 	private static boolean connected = false;
@@ -37,6 +36,8 @@ public class Networking {
 	private static PrintWriter netOut, out;
 	private static OutputStream gdxOut;
 	private static Process commandPrompt;
+	
+	private static Person enemyDisplay, friendlyDisplay;
 	
 	private static boolean simpleTransmit = false;//DOLATER
 	
@@ -242,8 +243,9 @@ public class Networking {
 	 * @return if input was consumed
 	 */
 	public static final boolean preProcessInput(String in) {
+		String string = in.toLowerCase();
 		if (Player.isPlaying) {
-			if (in.equals("t")) {
+			if (string.equals("t") || string.equals("tutorial")) {//"tutorial"
 				if (inBattle != BattleType.NONE) {
 					PrintTutorial.battleTutorial(false);
 					return true;
@@ -258,6 +260,22 @@ public class Networking {
 					return true;
 				}
 			}
+			if (string.equals("i") || string.equals("inventory")  || string.equals("friendly")) {//"inventory"
+				if (friendlyDisplay != null) {
+					friendlyDisplay.displayVisual();
+				}else {
+					Print.println(TrawelColor.RESULT_ERROR+"There is no friendly to display.");
+				}
+				return true;
+			}
+			if (string.equals("o") || string.equals("opponent") || string.equals("enemy")) {
+				if (enemyDisplay != null) {
+					enemyDisplay.displayVisual();
+				}else {
+					Print.println(TrawelColor.RESULT_ERROR+"There is no enemy to display.");
+				}
+				return true;
+			}
 		}
 		return false;
 	}
@@ -267,6 +285,7 @@ public class Networking {
 	}
 
 	public static void charUpdate() {
+		friendlyDisplay = Player.player.getPerson();
 		Player.bag.graphicalDisplay(-1,Player.player.getPerson());
 		//Networking.sendStrong("Discord|imagelarge|"+Player.bag.getRace().name+"|" + Player.player.getPerson().getName() + " level "+ Player.player.getPerson().getLevel() +"|/");//replace icon with player.player.race later
 		Networking.sendStrong("Discord|imagelarge|icon|" + Player.player.getPerson().getName() + " level "+ Player.player.getPerson().getLevel() +"|");//replace icon with player.player.race later
@@ -274,12 +293,19 @@ public class Networking {
 
 	public static void clearSides() {
 		Networking.sendStrong("ClearInv|1|");
+		enemyDisplay = null;
 		Networking.sendStrong("ClearInv|-1|");
-		
+		friendlyDisplay = null;
 	}
 
 	public static void clearSide(int i) {
 		Networking.sendStrong("ClearInv|"+i+"|");
+		if (i == 1) {
+			enemyDisplay = null;
+		}
+		if (i == -1) {
+			friendlyDisplay = null;
+		}
 	}
 	
 	public static void richDesc(String desc) {
@@ -567,6 +593,15 @@ public class Networking {
 		if (race.racialType.equals(RaceType.PERSONABLE)) {
 			sendStrong("RaceInv|"+side+"|" +spriteName +"_hands|"+mapName+"|"+mapIndex+"|"+raceFlag+"|"+bloodSeed + "|" + bloodCount+"|-8|"+clearLayer+"|");
 			//sendStrong("RaceInv|"+side+"|" +spriteName +"_lefthand|" +mapName+"|"+mapIndex+"|"+raceFlag+"|"+bloodSeed + "|" + bloodCount+"|-8|"+clearLayer+"|");
+		}
+	}
+
+	public static void setSideAs(int side, Person p) {
+		if (side == -1) {
+			friendlyDisplay = p;
+		}
+		if (side == 1) {
+			enemyDisplay = p;
 		}
 	}
 	

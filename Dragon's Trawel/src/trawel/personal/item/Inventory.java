@@ -529,6 +529,7 @@ public class Inventory implements java.io.Serializable{
 	 * legacy, use a converter later to decide if to use this function or a new system based on starting args
 	 */
 	public void graphicalDisplay(int side, Person p) {
+		Networking.setSideAs(side,p);
 		Race r_race = getRace();
 		switch (mainGame.graphicStyle) {
 		case LEGACY:
