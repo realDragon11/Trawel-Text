@@ -520,14 +520,8 @@ public class Inventory implements java.io.Serializable{
 		}
 	
 	}
-	//FIXME: have a way to request the last displayed graphical stats from the terminal, for both
-	//command prompt and 'closer look' mechanics
-	//perhaps like, 11; we also DO know when it gets cleared, so we could store the actually being displayed
-	//graphical armors ourself!
-	//just need to link up those systems to actual java code and not opcode messages
-	/**
-	 * legacy, use a converter later to decide if to use this function or a new system based on starting args
-	 */
+
+	
 	public void graphicalDisplay(int side, Person p) {
 		Networking.setSideAs(side,p);
 		Race r_race = getRace();

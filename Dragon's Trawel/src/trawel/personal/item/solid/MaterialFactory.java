@@ -884,6 +884,51 @@ public class MaterialFactory {
 		misc.color = TrawelColor.inlineColor(new Color(224,166,225));
 		register(misc);
 		
+		misc = new Material();
+		misc.name = "hardwood";
+		misc.typeList.add(ArmorStyle.GROWN);
+		misc.armor = true;
+		misc.weapon = true;
+		misc.weight = 15;
+		misc.cost = 20;
+		misc.baseEnchant = 1f;
+		misc.baseResist = 6;
+		misc.sharpResist = 1f;
+		misc.bluntResist = 1f;
+		misc.pierceResist = 1f;
+		misc.dexMod = .9f;
+		misc.sharpMult = 1f;
+		misc.bluntMult = 1f;
+		misc.pierceMult = 1f;
+		misc.tier = 0;
+		misc.rarity = 1f;
+		misc.palIndex = 8;
+		misc.soundType = "wood";
+		misc.color = TrawelColor.inlineColor(new Color(131,94,35));
+		register(misc);
+		
+		misc = new Material();
+		misc.name = "softwood";
+		misc.typeList.add(ArmorStyle.GROWN);
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 10;
+		misc.cost = 20;
+		misc.baseEnchant = 1.5f;
+		misc.baseResist = 4;
+		misc.sharpResist = .8f;
+		misc.bluntResist = 1.2f;
+		misc.pierceResist = 1f;
+		misc.dexMod = .95f;
+		misc.sharpMult = .6f;
+		misc.bluntMult = .6f;
+		misc.pierceMult = .6f;
+		misc.tier = 0;
+		misc.rarity = 0.5f;
+		misc.palIndex = 8;
+		misc.soundType = "wood";
+		misc.color = TrawelColor.inlineColor(new Color(131,94,35));
+		register(misc);
 		
 		//beast materials
 		misc = new Material();
@@ -995,7 +1040,7 @@ public class MaterialFactory {
 		misc.name = "wood";//now only mimic bodywood
 		misc.typeList.add(ArmorStyle.BODY);
 		misc.armor = true;
-		misc.weapon = true;
+		misc.weapon = false;
 		misc.weight = 2;
 		misc.cost = 3;
 		misc.baseEnchant = 0;

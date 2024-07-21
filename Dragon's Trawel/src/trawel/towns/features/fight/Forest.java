@@ -1,8 +1,14 @@
 package trawel.towns.features.fight;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
+import derg.menus.MenuBack;
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
+import derg.menus.MenuSelect;
 import trawel.battle.Combat;
 import trawel.core.Input;
 import trawel.core.Networking.Area;
@@ -16,10 +22,8 @@ import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
-import trawel.quests.types.Quest.TriggerType;
 import trawel.towns.contexts.World;
 import trawel.towns.data.FeatureData;
-import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.personal.people.Player;
 
 public class Forest extends ExploreFeature{
@@ -165,95 +169,127 @@ public class Forest extends ExploreFeature{
 	
 	private void funkyMushroom() {
 		Print.println("You spot a glowing mushroom on the forest floor.");
-		Print.println("1 eat it");
-		Print.println("2 sell it");
-		Print.println("3 crush it");
-		Print.println("9 leave it");
-		int in =  Input.inInt(4,true,true);
-		switch (in) {
-		default: Print.println("You decide to leave it alone.");break;
-		case 1:
-			Print.println("You eat the mushroom...");
-			switch(Rand.randRange(1,3)) {
-			case 1: Print.println("The mushroom is delicious!");break;
-			case 2: Print.println("Eating the mushroom is very difficult... but you manage.");
-			Player.player.getPerson().addXp(getTempLevel()*2);break;
-			case 3: Print.println("You feel lightheaded.... you pass out!");
-			Print.println("When you wake up, you notice someone went through your bags!");
-			Print.println(Player.loseGold(IEffectiveLevel.cleanRangeReward(getTempLevel(),10f,.2f),true));
-			break;
+		Input.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return TrawelColor.PRE_MAYBE_BATTLE+"Eat it.";
+					}
+
+					@Override
+					public boolean go() {
+						Print.println("You eat the mushroom...");
+						switch(Rand.randRange(1,3)) {
+						case 1:
+							Print.println(TrawelColor.RESULT_NO_CHANGE_GOOD+"The mushroom is delicious!");
+							break;
+						case 2:
+							Print.println(TrawelColor.RESULT_GOOD+"Eating the mushroom is very difficult... but you manage.");
+							Player.player.getPerson().addXp(getTempLevel()*2);
+							break;
+						case 3:
+							Print.println("You feel lightheaded.... you pass out!");
+							Print.println(TrawelColor.RESULT_BAD+"When you wake up, you notice someone went through your bags!");
+							Print.println(Player.loseGold(IEffectiveLevel.cleanRangeReward(getTempLevel(),10f,.2f),true));
+							return true;//skip battle check
+						}
+						if (Math.random() > .7) {
+							Print.println(TrawelColor.PRE_BATTLE+"As you eat the mushroom, you hear a voice cry out: ");
+							switch(Rand.randRange(1,3)) {
+							case 1: 
+								Print.println("\"You dare violate the forest?!\"");
+								Player.player.fightWith(RaceFactory.makeDryad(getTempLevel()));
+								break;
+							case 2:
+								Print.println("\"Hey, I wanted that!\"");
+								Player.player.fightWith(RaceFactory.makeCollector(getTempLevel()));
+								break;
+							case 3:
+								Print.println("\"You dirty plant-thief!\"");
+								Player.player.fightWith(RaceFactory.makeLawman(getTempLevel()));
+								break;
+							}
+						
+						}
+						return true;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return TrawelColor.PRE_MAYBE_BATTLE+"Sell it.";
+					}
+
+					@Override
+					public boolean go() {
+						Print.println("You pick up the mushroom to sell it.");
+						if (Math.random() > .3) {
+							Print.println(TrawelColor.PRE_BATTLE+"You hear someone cry out from behind you: ");
+							Combat c;
+							switch(Rand.randRange(1,3)) {
+							default:
+								Print.println("\"You dare violate the forest?!\"");
+								c = Player.player.fightWith(RaceFactory.makeDryad(getTempLevel()));
+								break;
+							case 2:
+								Print.println("\"Hey, I wanted that!\"");
+								c = Player.player.fightWith(RaceFactory.makeCollector(getTempLevel()));
+								break;
+							case 3:
+								Print.println("\"You dirty plant-thief!\"");
+								c = Player.player.fightWith(RaceFactory.makeLawman(getTempLevel()));
+								break;
+							}
+							if (c.playerWon() > 0) {
+								int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),3f,.7f);
+								Print.println(TrawelColor.RESULT_PASS+"You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
+								Player.player.addGold(gold);
+							}else {
+								Print.println(TrawelColor.RESULT_FAIL+"They take the mushroom.");
+							}
+						}else {
+							int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),2f,.2f);
+							Print.println(TrawelColor.RESULT_PASS+"You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
+							Player.player.addGold(gold);
+						}
+						return true;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return TrawelColor.PRE_BATTLE+"Crush it.";
+					}
+
+					@Override
+					public boolean go() {
+						Print.println("You crush the mushroom under your heel.");
+						Print.print(TrawelColor.PRE_BATTLE+"You hear someone cry out from behind you: ");
+						switch(Rand.randRange(1,3)) {
+						case 1: 
+							Print.println("\"You dare violate the forest?!\"");
+							Player.player.fightWith(RaceFactory.makeDryad(getTempLevel()+1));
+							break;
+						case 2:
+							Print.println("\"Hey, I wanted that!\"");
+							Player.player.fightWith(RaceFactory.makeCollector(getTempLevel()+1));
+							break;
+						case 3:
+							Print.println("\"You dirty plant-crusher!\"");
+							Player.player.fightWith(RaceFactory.makeLawman(getTempLevel()+1));
+							break;
+						}
+						return true;
+					}});
+				list.add(new MenuBack("Leave it."));
+				return list;
 			}
-			if (Math.random() > .8) {
-				Print.println("As you eat the mushroom, you hear a voice cry out:");
-				Print.print(TrawelColor.PRE_BATTLE);
-				switch(Rand.randRange(1,3)) {
-				case 1: 
-					Print.println("\"You dare violate the forest?!\"");
-					Player.player.fightWith(RaceFactory.makeDryad(getTempLevel()));
-					break;
-				case 2:
-					Print.println("\"Hey, I wanted that!\"");
-					Player.player.fightWith(RaceFactory.makeCollector(getTempLevel()));
-					break;
-				case 3:
-					Print.println("\"You dirty plant-thief!\"");
-					Player.player.fightWith(RaceFactory.makeLawman(getTempLevel()));
-					break;
-				}
-			
-			}
-			
-			;break;
-		case 2:
-			Print.println("You pick up the mushroom to sell it.");
-			if (Math.random() > .3) {
-			Print.println("You hear someone cry out from behind you!");
-			Print.print(TrawelColor.PRE_BATTLE);
-			Combat c;
-			switch(Rand.randRange(1,3)) {
-			default:
-				Print.println("\"You dare violate the forest?!\"");
-				c = Player.player.fightWith(RaceFactory.makeDryad(getTempLevel()));
-				break;
-			case 2:
-				Print.println("\"Hey, I wanted that!\"");
-				c = Player.player.fightWith(RaceFactory.makeCollector(getTempLevel()));
-				break;
-			case 3:
-				Print.println("\"You dirty plant-thief!\"");
-				c = Player.player.fightWith(RaceFactory.makeLawman(getTempLevel()));
-				break;
-			}
-			if (c.playerWon() > 0) {
-				int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),3f,.7f);
-				Print.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
-				Player.player.addGold(gold);
-			}
-			}else {
-				int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),2f,.2f);
-				Print.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
-				Player.player.addGold(gold);
-			};break;
-		case 3:
-			Print.println("You crush the mushroom under your heel.");
-			Print.println("You hear someone cry out from behind you!");
-			Print.print(TrawelColor.PRE_BATTLE);
-			switch(Rand.randRange(1,3)) {
-			case 1: 
-				Print.println("\"You dare violate the forest?!\"");
-				Player.player.fightWith(RaceFactory.makeDryad(getTempLevel()+1));
-				break;
-			case 2:
-				Print.println("\"Hey, I wanted that!\"");
-				Player.player.fightWith(RaceFactory.makeCollector(getTempLevel()+1));
-				break;
-			case 3:
-				Print.println("\"You dirty plant-crusher!\"");
-				Player.player.fightWith(RaceFactory.makeLawman(getTempLevel()+1));
-				break;
-			}
-		}
-		
+		});		
 	}
 	
 	private void hangedMan() {

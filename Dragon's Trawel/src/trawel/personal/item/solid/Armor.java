@@ -294,6 +294,13 @@ public class Armor extends Item implements IEffectiveLevel{
 				}
 			}
 			break;
+		case GROWN:
+			ArmorStyle armorStyle = ArmorStyle.fetch(style);
+			if (!armorStyle.addBonusQuals.isEmpty()) {
+				quals.add(Rand.randCollection(armorStyle.addBonusQuals));
+				quals.add(Rand.randCollection(armorStyle.addBonusQuals));
+			}
+			break;
 		}
 
 	}

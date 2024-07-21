@@ -24,6 +24,7 @@ public enum ArmorStyle {
 	SEWN,
 	GEM,
 	BODY,
+	GROWN
 	;//example
 	
 	public StyleNum[] genner = new StyleNum[5];
@@ -150,6 +151,24 @@ public enum ArmorStyle {
 		BODY.genner[3] = new NameStyleNum("legs");
 		BODY.genner[4] = new NameStyleNum("feet");
 		BODY.wasddName = "halfplate";
+		
+		GROWN.sharpMult = 1f;//less sharp mult than plate
+		GROWN.bluntMult = 1f;
+		GROWN.pierceMult = 1.1f;
+		GROWN.totalMult = 1.2f;
+		GROWN.enchantMult = 1.2f;//more enchant mult than plate
+		GROWN.weightMult = 1.5f;//less heavy than plate
+		GROWN.costMult = 2f;//less expensive than plate
+		GROWN.dexMultBase = .5f;
+		GROWN.genner[0] = new NameStyleNum("grown helm");
+		GROWN.genner[1] = new NameStyleNum("grown gauntlets");
+		GROWN.genner[2] = new NameStyleNum("grown chestplate");
+		GROWN.genner[3] = new NameStyleNum("grown greaves");
+		GROWN.genner[4] = new NameStyleNum("grown boots");
+		GROWN.legacyName = new String[] {"plackan_helm","plackan_gauntlets","plackan_chestplate","plackan_greaves","plackan_boots"};
+		GROWN.wasddName = "halfplate";
+		GROWN.addBonusQuals = EnumSet.of(ArmorQuality.BLOCKING,ArmorQuality.RELIABLE,ArmorQuality.LIGHT,ArmorQuality.STURDY);
+		
 
 		//Set<ArmorStyle> have = EnumSet.noneOf(ArmorStyle.class);
 		List<ArmorStyle> vals = Arrays.asList(ArmorStyle.values());

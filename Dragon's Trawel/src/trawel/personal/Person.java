@@ -342,7 +342,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		,COLLECTOR(
 				new ArmorStyle[] {ArmorStyle.GEM,ArmorStyle.PLATE},
 				new WeaponType[] {WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.MACE,WeaponType.AXE,WeaponType.SPEAR,WeaponType.SHOVEL,WeaponType.RAPIER},
-				new Archetype[] {Archetype.RUNEBLADE,Archetype.RUNEBLADE}
+				new Archetype[] {Archetype.RUNEBLADE,Archetype.CHEF_ARCH}
 				)
 		,DUELER(
 				new ArmorStyle[] {ArmorStyle.PLATE,ArmorStyle.PLATE,ArmorStyle.PLATE,ArmorStyle.SEWN},
@@ -364,6 +364,12 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 					},
 				new Archetype[] {Archetype.HIRED_HATCHET,Archetype.CUT_THROAT}
 		)
+		,DRYAD(
+				new ArmorStyle[] {ArmorStyle.GROWN},
+				//no cutting weapons
+				new WeaponType[] {WeaponType.SPEAR,WeaponType.MACE,WeaponType.LANCE},
+				new Archetype[] {Archetype.FIGHTING_FURY,Archetype.HEDGE_MAGE}
+				)
 		;
 		
 		public final ArmorStyle[] amatType;

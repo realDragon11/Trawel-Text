@@ -1204,10 +1204,9 @@ public class RaceFactory {
 	}
 	public static Person makeEnt(int level) {
 		Person w = Person.animal(level, RaceID.B_ENT, MaterialFactory.getMat("wood"), false);
-		//Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("wood"),Person.RaceFlag.NONE,false);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("wood"),WeaponType.BRANCHES));
 		w.getBag().addDrawBaneSilently(DrawBane.ENT_CORE);
-		//w.getBag().swapRace(RaceFactory.getRace("ent"));
+		w.getBag().addDrawBaneSilently(DrawBane.WOOD);
 		w.setFirstName(randomLists.randomEntName());
 		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
@@ -1616,9 +1615,17 @@ public class RaceFactory {
 	}
 	
 	public static Person makeDryad(int level) {
-		Person w = new Person(level);
+		Person w = new Person(level,AIJob.DRYAD);
 		w.hTask = HostileTask.ANIMAL;
 		w.setFacLevel(Faction.FOREST,15,0);
+		if (Rand.chanceIn(2,3)) {
+			w.setPerk(Perk.FOREST_BLESS_1);
+			w.getBag().addDrawBaneSilently(DrawBane.WOOD);
+		}
+		if (Rand.chanceIn(1,10)) {//independent chances and different perk gains
+			w.setPerk(Perk.FOREST_BLESS_2);
+			w.getBag().addDrawBaneSilently(DrawBane.ENT_CORE);
+		}
 		w.finishGeneration();
 		return w;
 	}
