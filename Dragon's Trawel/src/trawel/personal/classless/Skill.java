@@ -76,7 +76,7 @@ public enum Skill{
 		P_BREWER("Brewer","Created potions can be sipped two more times before running out."
 				,"Stacks with normal filler ingredients."
 				,Type.CRAFT),
-		TOXIC_BREWS("Toxic Brews","When drinking a cursed potion, gain up to 3 random minor positive potion effects. Curse reduces MHP by 20% instead of 50%. Created potions can be sipped one more time."
+		TOXIC_BREWS("Toxic Brews","When drinking a "+Effect.CURSE.getName()+" potion, gain up to 3 random minor positive potion effects. After drinking "+Effect.CURSE.getName()+" in battle, only lose 25% MHP. Created potions can be sipped one more time."
 				,"Stacks with normal filler ingredients."
 				,Type.CRAFT),
 		CURSE_MAGE("Curse Whisperer","On Death: Curse Killer."

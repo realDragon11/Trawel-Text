@@ -790,12 +790,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		}
 		total*=bag.getHealth();
 		if (this.hasEffect(Effect.CURSE)) {
-			if (hasSkill(Skill.TOXIC_BREWS)) {
-				total*=.8f;
-			}else {
-				total/=2;
-			}
-			
+			total/=2;
 		}
 		return total;
 	}
@@ -857,10 +852,18 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			bodystatus = new TargetHolder(bodyType);//now reused
 		}
 		
+		if (hasEffect(Effect.WOUNDED)) {
+			bodystatus.multStatusAll(.5d);
+		}
+		
 		//HP calculations
 		tempMaxHp = getOOB_HP();//curse indicator handled in first player check
 		if (this.hasEffect(Effect.HEARTY) || this.hasEffect(Effect.FORGED)) {
 			tempMaxHp+= IEffectiveLevel.cleanLHP(level, 0.05);
+		}
+		
+		if (hasSkill(Skill.TOXIC_BREWS) && sipped == Effect.CURSE) {
+			tempMaxHp*=1.5;// (1/2)*1.5 = 75%
 		}
 		
 		hp = tempMaxHp;

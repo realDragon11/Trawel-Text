@@ -1415,9 +1415,9 @@ public class Combat {
 				defender.getBag().burnArmor(.1f,atr.attack.getSlot());
 			}
 			//wounded OOB punishment effect
-			if (defender.hasEffect(Effect.WOUNDED)) {
+			/*if (defender.hasEffect(Effect.WOUNDED)) {
 				inflictWound(attacker,defender,atr,Wound.BLEED);
-			}
+			}*/
 			//only processes on an impactful attack, to be consistent with wounds (plus make code easier)
 			List<Wound> wounds = defender.processBodyStatus();
 			if (wounds != null) {

@@ -125,6 +125,18 @@ public class TargetHolder {
 		}
 		return store;
 	}
+	
+	public void multStatusAll(double mult) {
+		for (int i = condition.length-1;i >= 0;i--) {
+			condition[i]*=mult;
+		}
+	}
+	
+	public void addStatusAll(double add) {
+		for (int i = condition.length-1;i >= 0;i--) {
+			condition[i]*=Math.max(0,condition[i]+add);
+		}
+	}
 
 	public TargetType getConfig() {
 		return config;

@@ -17,7 +17,7 @@ public enum Effect{
 	DAMAGED("Damaged","Armor starts at 50% condition each battle. Repair at Blacksmith or Appraiser.",true,false,-4),
 	BEES("BEEEES","Bees sting them occasionally, dealing random damage between 1 flat and 4% LHP. Wash off in water or bathe in Tavern.",true,false,-2),
 	TIRED("Tired","Halves dodge multiplier. Rest off at Tavern or Library.",true,false,-3),
-	WOUNDED("Wounded","Every Impactful attack suffered also inflicts the Cut wound. Cure at Doctor or District.",true,false,-4),
+	WOUNDED("Wounded","Body starts at 50% condition each battle. Cure at Doctor or District.",true,false,-4),
 	//other
 	CONFUSED_TARGET("Confused","Their next attack will have a random defender from any side.",false,false,-2),
 	FLUMMOXED("Flummoxed","Next queued attack will be around 1% less accurate per stack.",false,true,-2),
