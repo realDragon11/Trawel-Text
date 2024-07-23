@@ -54,9 +54,9 @@ public class Inn extends Feature implements QuestBoardLocation{
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" have a quest board. "
-						+(Player.isGameMode_NoPunishments() ? fancyNamePlural()+" have rentable rooms to wait and bathe in." : fancyNamePlural()+" have rentable rooms to cure "+Effect.BURNOUT.getName()+" and "+Effect.TIRED.getName()+", as well as bathe in. ")
-						+fancyNamePlural()+" sell beer, which increases MHP once each. "+fancyNamePlural()+" have residents to interact with or watch, which change over time.");
+				Print.println(fancyNamePlural()+" have a "+TrawelColor.SERVICE_QUEST+"quest board"+TrawelColor.COLOR_RESET+". "
+						+(Player.isGameMode_NoPunishments() ? fancyNamePlural()+" have "+TrawelColor.SERVICE_CURRENCY+"rentable"+TrawelColor.COLOR_RESET+" rooms to wait and bathe in." : fancyNamePlural()+" have "+TrawelColor.SERVICE_CURRENCY+"rentable"+TrawelColor.COLOR_RESET+" rooms to cure "+Effect.BURNOUT.getName()+" and "+Effect.TIRED.getName()+", as well as bathe in. ")
+						+fancyNamePlural()+" "+TrawelColor.SERVICE_CURRENCY+"sell"+TrawelColor.COLOR_RESET+" beer, which increases MHP once each. "+fancyNamePlural()+" have residents to "+TrawelColor.SERVICE_FREE+"interact"+TrawelColor.COLOR_RESET+" with or watch, which change over time.");
 			}
 			
 			@Override
@@ -226,7 +226,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return TrawelColor.FSERVICE_QUEST+"Backroom (Sidequests)";
+						return TrawelColor.SERVICE_QUEST+"Backroom (Sidequests)";
 					}
 
 					@Override

@@ -58,8 +58,13 @@ public class Slum extends Store implements QuestBoardLocation{
 					@Override
 					public void tutorial() {
 						//TODO
-						Print.println(fancyNamePlural()+" hold sidequests, backalley vendors, and are often controlled by a Crime Lord. If the Crime Lord is removed from the "+fancyName()+", it is possible to pay for reform programs to enfranchise the people there. The cost of such programs will increase with the danger still present in the "+fancyName()+"."
-						+(Player.isGameMode_NoPunishments() ? "" : ". If there isn't too much heat, black-market doctors in "+fancyNamePlural()+" cure "+Effect.WOUNDED.getName()+" and "+Effect.BURNOUT.getName()+"."));
+						Print.println(
+								fancyNamePlural()+" hold "+TrawelColor.SERVICE_QUEST+"sidequests"+TrawelColor.COLOR_RESET
+								+", "+TrawelColor.SERVICE_CURRENCY+"backalley vendors"+TrawelColor.COLOR_RESET+
+								", and are often controlled by a "+TrawelColor.SERVICE_COMBAT+"Crime Lord"+TrawelColor.COLOR_RESET+". If the "+TrawelColor.SERVICE_COMBAT+"Crime Lord"+TrawelColor.COLOR_RESET+" is removed from the "+fancyName()
+								+", it is possible for "+TrawelColor.SERVICE_CURRENCY+"reform programs"+TrawelColor.COLOR_RESET
+								+" to enfranchise the people there. The cost of such programs will increase with the danger still present in the "+fancyName()+", which changes with "+TrawelColor.SERVICE_COMBAT+"crime"+TrawelColor.COLOR_RESET+"."
+						+(Player.isGameMode_NoPunishments() ? "" : ". If there isn't too much heat, "+TrawelColor.SERVICE_CURRENCY+"black-market doctors"+TrawelColor.COLOR_RESET+" in "+fancyNamePlural()+" cure "+Effect.WOUNDED.getName()+" and "+Effect.BURNOUT.getName()+"."));
 					}
 
 					@Override
@@ -218,7 +223,7 @@ public class Slum extends Store implements QuestBoardLocation{
 					
 					@Override
 					public String title() {
-						return TrawelColor.FSERVICE_QUEST+"Speak to Fixer (Sidequests).";
+						return TrawelColor.SERVICE_QUEST+"Speak to Fixer (Sidequests).";
 					}
 	
 					@Override

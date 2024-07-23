@@ -34,7 +34,9 @@ public class Library extends Feature {
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" have the materials needed to study Feat Fragments to turn them into Feat Points. "+fancyNamePlural()+" also have rooms to reserve "
+				Print.println(fancyNamePlural()+" have the materials needed to "+TrawelColor.SERVICE_FREE+"study"+TrawelColor.COLOR_RESET
+						+" Feat Fragments to turn them into Feat Points, as well as gain more Feat Picks. "
+						+fancyNamePlural()+" also have rooms to "+TrawelColor.SERVICE_CURRENCY+"reserve "+TrawelColor.COLOR_RESET
 						+(Player.isGameMode_NoPunishments() ? "to wait in." :  "and rest in to cure "+Effect.BURNOUT.getName()+" and "+Effect.TIRED.getName()+"."));
 			}
 			

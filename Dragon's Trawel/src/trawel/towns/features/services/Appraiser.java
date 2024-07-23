@@ -29,8 +29,8 @@ public class Appraiser extends Feature {
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" examine gear"
-						+(Player.isGameMode_NoPunishments() ? "." : " to fix "+Effect.DAMAGED.getName()+"."));
+				Print.println(fancyNamePlural()+TrawelColor.SERVICE_FREE+" examine"+TrawelColor.COLOR_RESET+" gear"
+						+(Player.isGameMode_NoPunishments() ? "." : " to "+TrawelColor.SERVICE_CURRENCY+"fix "+TrawelColor.COLOR_RESET+Effect.DAMAGED.getName()+"."));
 			}
 			
 			@Override

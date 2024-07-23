@@ -106,7 +106,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return TrawelColor.FSERVICE_QUEST+"Job Board (Sidequests).";
+						return TrawelColor.SERVICE_QUEST+"Job Board (Sidequests).";
 					}
 
 					@Override

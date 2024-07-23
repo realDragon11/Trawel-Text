@@ -26,10 +26,41 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
 import trawel.towns.contexts.Town;
+import trawel.towns.data.FeatureData;
 import trawel.towns.features.services.Oracle;
 import trawel.towns.features.services.Store;
 
 public class TravelingFeature extends Store{
+	
+	static {
+		FeatureData.registerFeature(TravelingFeature.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+ " have community services and events hosted by the Townspeople. These services and events vary greatly.");
+			}
+			
+			@Override
+			public int priority() {
+				return 70;
+			}
+			
+			@Override
+			public String name() {
+				return "Town Stall";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_VARIES;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.ADVANCED_SERVICES;
+			}
+		});
+	}
 
 	private static final long serialVersionUID = 1L;
 	
@@ -64,6 +95,7 @@ public class TravelingFeature extends Store{
 		timeLeft = Rand.randFloat()*24f;
 	}
 	
+	//overrides with own method
 	@Override
 	public String getColor() {
 		return (contents != null ? contents.color : TrawelColor.F_SPECIAL);
@@ -82,11 +114,6 @@ public class TravelingFeature extends Store{
 	@Override
 	public String nameOfType() {
 		return "Varies: " + (contents != null ? contents.name : "nothing");
-	}
-	
-	@Override
-	public String nameOfFeature() {
-		return "Town Stall";
 	}
 
 	@Override

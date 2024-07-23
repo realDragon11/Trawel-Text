@@ -38,8 +38,8 @@ public class Oracle extends Feature{ //extends feature later
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" utter random tips and tidbits from everywhere and everyone."
-						+(Player.isGameMode_NoPunishments() ? "" : " If you pay the "+fancyName()+", the insight might be good enough to lift "+Effect.CURSE.getName()+" and overcome "+Effect.BURNOUT.getName()+"."));
+				Print.println(fancyNamePlural()+" "+TrawelColor.SERVICE_FREE+"utter"+TrawelColor.COLOR_RESET+" random tips and tidbits from everywhere and everyone."
+						+(Player.isGameMode_NoPunishments() ? "" : " If you "+TrawelColor.SERVICE_CURRENCY+"pay"+TrawelColor.COLOR_RESET+" the "+fancyName()+", the insight might be good enough to lift "+Effect.CURSE.getName()+" and overcome "+Effect.BURNOUT.getName()+"."));
 			}
 			
 			@Override

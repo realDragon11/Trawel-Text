@@ -32,8 +32,8 @@ public class Altar extends Feature{
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" accept offerings of Drawbanes in return for blessings."+
-						(Player.isGameMode_NoPunishments() ? "" : " "+fancyNamePlural()+" can provide insight to lift "+Effect.CURSE.getName()+" and overcome "+Effect.BURNOUT.getName()+" to those with a close enough connection."));
+				Print.println(fancyNamePlural()+" accept "+TrawelColor.SERVICE_SPECIAL_PAYMENT+"offerings"+TrawelColor.COLOR_RESET+" of Drawbanes in return for blessings."+
+						(Player.isGameMode_NoPunishments() ? "" : " "+fancyNamePlural()+" can provide "+TrawelColor.SERVICE_FREE+"insight"+TrawelColor.COLOR_RESET+" to lift "+Effect.CURSE.getName()+" and overcome "+Effect.BURNOUT.getName()+" to those with a close enough connection."));
 			}
 			
 			@Override

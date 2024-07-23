@@ -34,7 +34,8 @@ public class Lot extends Feature {
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" are plots of land that can have other Features built on them for currencies. "+fancyNamePlural()+" can also be donated to the town.");
+				Print.println(fancyNamePlural()+" are plots of land that can have other Features built on them for "+TrawelColor.SERVICE_BOTH_PAYMENT+"currencies"+TrawelColor.COLOR_RESET+". "
+						+fancyNamePlural()+" can also be "+TrawelColor.SERVICE_FREE+"donated"+TrawelColor.COLOR_RESET+" to the town.");
 			}
 			
 			@Override

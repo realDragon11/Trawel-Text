@@ -1,7 +1,6 @@
 package trawel.towns.features.misc;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +22,6 @@ import trawel.helper.constants.TrawelColor;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
-import trawel.personal.classless.Archetype;
 import trawel.personal.classless.Perk;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
@@ -37,9 +35,48 @@ import trawel.towns.data.Connection;
 import trawel.towns.data.TownFlavorFactory;
 import trawel.towns.data.WorldGen;
 import trawel.towns.data.Connection.ConnectClass;
+import trawel.towns.data.FeatureData;
 import trawel.towns.features.Feature;
 
 public class Docks extends Feature {
+	
+	static {
+		FeatureData.registerFeature(Docks.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" act as a "+TrawelColor.PRE_SHIP+"port"+TrawelColor.COLOR_RESET+" that has extended reach to "+TrawelColor.SERVICE_FREE+"travel"+TrawelColor.COLOR_RESET+" with."
+						+" Traveling to a far-flung port will require you to be of that town's level, and is blocked if Drudger armies control the "+fancyName()+"."
+						+" Townspeople reward help with "+TrawelColor.SERVICE_COMBAT+"defending or reclaiming "+TrawelColor.COLOR_RESET+fancyNamePlural()+" from Drudger armies."
+						+" It is possible to "+TrawelColor.SERVICE_EXPLORE+"wander"+TrawelColor.COLOR_RESET+" at sea and "+TrawelColor.SERVICE_FLAVOR+"admire"+TrawelColor.COLOR_RESET+" secured "+fancyNamePlural()+".");
+			}
+			
+			@Override
+			public int priority() {
+				return 50;
+			}
+			
+			@Override
+			public String name() {
+				return "Docks";
+			}
+			
+			@Override
+			public String namePlural() {
+				return name();//is always plural
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.PRE_SHIP;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.ADVANCED_SERVICES;
+			}
+		});
+	}
 	
 	/**
 	 * if the townspeople currently own it
@@ -77,11 +114,6 @@ public class Docks extends Feature {
 	}
 	
 	@Override
-	public String nameOfFeature() {
-		return "Docks";
-	}
-	
-	@Override
 	public Area getArea() {
 		return Area.PORT;
 	}
@@ -89,11 +121,6 @@ public class Docks extends Feature {
 	@Override
 	public boolean canShow() {
 		return false;//displayed higher in the menu another way
-	}
-	
-	@Override
-	public String getColor() {
-		return TrawelColor.PRE_SHIP;
 	}
 
 	@Override

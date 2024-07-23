@@ -33,7 +33,7 @@ public class Forest extends ExploreFeature{
 
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" can be explored for events and loot, but do not have persistence. Each "+fancyName()+" has a fixed number of explores that restores over time.");
+				Print.println(fancyNamePlural()+" can be "+TrawelColor.SERVICE_EXPLORE+"explored"+TrawelColor.COLOR_RESET+" for events and loot, but do not have persistence. Each "+fancyName()+" has a fixed number of explores that restores over time.");
 			}
 
 			@Override

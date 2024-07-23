@@ -8,6 +8,7 @@ import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import trawel.core.Input;
+import trawel.core.Print;
 import trawel.core.Networking.Area;
 import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
@@ -15,10 +16,41 @@ import trawel.personal.item.Seed;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.contexts.Town;
+import trawel.towns.data.FeatureData;
 import trawel.towns.features.Feature;
 import trawel.towns.features.elements.PlantSpot;
 
 public class Garden extends Feature {
+	
+	static {
+		FeatureData.registerFeature(Garden.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" "+TrawelColor.SERVICE_FREE+"grow"+TrawelColor.COLOR_RESET+" plants over time. All "+fancyNamePlural()+" accept all plants, but will be automatically refilled based on the Townspeople's needs.");
+			}
+			
+			@Override
+			public int priority() {
+				return 80;
+			}
+			
+			@Override
+			public String name() {
+				return "Garden";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_AUX_SERVICE;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.ADVANCED_SERVICES;
+			}
+		});
+	}
 	
 	private static Seed[] fills = new Seed[] {
 			Seed.EMPTY,
@@ -208,17 +240,7 @@ public class Garden extends Feature {
 	}
 	
 	@Override
-	public String getColor() {
-		return TrawelColor.F_SERVICE;
-	}
-	
-	@Override
 	public String nameOfType() {
-		return "Garden";
-	}
-	
-	@Override
-	public String nameOfFeature() {
 		return "Garden";
 	}
 	

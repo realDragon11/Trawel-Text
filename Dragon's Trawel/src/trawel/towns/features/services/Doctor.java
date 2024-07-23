@@ -32,7 +32,7 @@ public class Doctor extends Feature {
 			@Override
 			public void tutorial() {
 				Print.println(fancyNamePlural()+
-						(Player.isGameMode_NoPunishments() ? " do nothing." : " cure "+Effect.BURNOUT.getName() + " and "+Effect.WOUNDED.getName()+".")
+						(Player.isGameMode_NoPunishments() ? " do nothing." : TrawelColor.SERVICE_CURRENCY+" cure "+TrawelColor.COLOR_RESET+Effect.BURNOUT.getName() + " and "+Effect.WOUNDED.getName()+".")
 						);
 			}
 			

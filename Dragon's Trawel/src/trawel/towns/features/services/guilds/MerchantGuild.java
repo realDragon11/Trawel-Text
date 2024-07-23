@@ -150,7 +150,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public String title() {
-						return TrawelColor.FSERVICE_QUEST+"Quest Board. (Sidequests)";
+						return TrawelColor.SERVICE_QUEST+"Quest Board. (Sidequests)";
 					}
 
 					@Override

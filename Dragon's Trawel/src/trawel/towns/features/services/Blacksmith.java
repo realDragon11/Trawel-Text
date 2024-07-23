@@ -34,8 +34,9 @@ public class Blacksmith extends Feature {
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" forge items for shops. "+fancyNamePlural()+" level and temper equipment."
-						+(Player.isGameMode_NoPunishments() ? "" : " "+fancyNamePlural() +" also fix "+Effect.DAMAGED.getName()+"."));
+				Print.println(fancyNamePlural()+" "+TrawelColor.SERVICE_CURRENCY+"forge"+TrawelColor.COLOR_RESET+" items for shops. "
+						+fancyNamePlural()+TrawelColor.SERVICE_CURRENCY+"improve"+TrawelColor.COLOR_RESET+" equipment by leveling and tempering."
+						+(Player.isGameMode_NoPunishments() ? "" : " "+fancyNamePlural() +" also "+TrawelColor.SERVICE_CURRENCY+"fix "+TrawelColor.COLOR_RESET+Effect.DAMAGED.getName()+"."));
 			}
 			
 			@Override

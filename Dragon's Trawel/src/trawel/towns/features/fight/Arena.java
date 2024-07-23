@@ -34,7 +34,9 @@ public class Arena extends Feature{
 
 					@Override
 					public void tutorial() {
-						Print.println(fancyNamePlural()+" host fighting tournaments, providing an endless stream of battles. NPC tournament winners will hang around for you to fight or rematch. You can also loiter in "+fancyNamePlural()+" to pass time for no cost.");
+						Print.println(fancyNamePlural()+" host fighting "+TrawelColor.SERVICE_COMBAT+"tournaments"+TrawelColor.COLOR_RESET
+								+", providing an endless stream of battles. NPC tournament winners will hang around for you to "+TrawelColor.SERVICE_COMBAT+"fight or rematch"+TrawelColor.COLOR_RESET
+								+". You can also "+TrawelColor.SERVICE_FREE+"loiter"+TrawelColor.COLOR_RESET+" in "+fancyNamePlural()+" to pass time for no cost.");
 					}
 
 					@Override

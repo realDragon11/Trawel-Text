@@ -122,7 +122,7 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return TrawelColor.FSERVICE_QUEST+"Assignment Board (Sidequests).";
+						return TrawelColor.SERVICE_QUEST+"Assignment Board (Sidequests).";
 					}
 
 					@Override

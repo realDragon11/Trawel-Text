@@ -105,6 +105,7 @@ public class TrawelColor {
 	 * used for inns and districts
 	 */
 	public static final String F_MULTI = TIMID_ORANGE;
+	public static final String F_VARIES = PRE_MAGENTA;
 	
 	//item values
 	public static final String ITEM_WANT_HIGHER = TrawelColor.inlineColor(TrawelColor.colorMix(Color.WHITE,TrawelColor.colorMix(Color.BLUE,Color.GREEN,.5f),.3f));
@@ -165,7 +166,10 @@ public class TrawelColor {
 	public static final String SERVICE_BOTH_PAYMENT = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.MAGENTA,Color.BLUE,.5f),Color.WHITE,.5f));
 	public static final String SERVICE_SPECIAL_PAYMENT = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.PINK,Color.ORANGE,.3f),Color.WHITE,.4f));
 	//shared common other feature behaviors
-	public static final String FSERVICE_QUEST = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.ORANGE,Color.GREEN,.3f),Color.WHITE,.5f));
+	public static final String SERVICE_QUEST = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.ORANGE,Color.GREEN,.3f),Color.WHITE,.5f));
+	//TODO: tweak following colors
+	public static final String SERVICE_COMBAT = inlineColor(colorMix(colorMix(Color.RED,Color.GREEN,.3f),Color.WHITE,.5f));
+	public static final String SERVICE_EXPLORE = inlineColor(colorMix(colorMix(Color.ORANGE,Color.BLUE,.3f),Color.WHITE,.5f));
 	
 	public static final Color colorMix(Color c1, Color c2, float f) {
 		return new Color((int) extra.lerp(c1.getRed(),c2.getRed(), f),(int) extra.lerp(c1.getGreen(),c2.getGreen(), f),(int) extra.lerp(c1.getBlue(),c2.getBlue(), f));

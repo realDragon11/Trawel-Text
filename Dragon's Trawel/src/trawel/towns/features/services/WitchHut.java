@@ -135,7 +135,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return TrawelColor.FSERVICE_QUEST+"Enter Coven Common Room (Sidequests).";
+						return TrawelColor.SERVICE_QUEST+"Enter Coven Common Room (Sidequests).";
 					}
 
 					@Override

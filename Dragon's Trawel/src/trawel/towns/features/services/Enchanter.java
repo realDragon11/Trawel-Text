@@ -37,8 +37,9 @@ public class Enchanter extends Feature {
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" apply enchantments to equipment."
-			+ (Player.isGameMode_NoPunishments() ? "" : " "+fancyNamePlural()+" also lift "+Effect.CURSE.getName()+".")
+				Print.println(fancyNamePlural()+" "+TrawelColor.SERVICE_CURRENCY+"apply"+TrawelColor.COLOR_RESET+" enchantments to equipment."
+			+ (Player.isGameMode_NoPunishments() ? "" : 
+				" "+fancyNamePlural()+" also "+TrawelColor.SERVICE_CURRENCY+"lift "+TrawelColor.COLOR_RESET+Effect.CURSE.getName()+".")
 			);
 			}
 			
