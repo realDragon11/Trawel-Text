@@ -16,7 +16,7 @@ public class TrawelColor {
 	public static String COLOR_FROST = TrawelColor.inlineColor(TrawelColor.colorMix(Color.CYAN,Color.WHITE,.4f));
 	public static String COLOR_ELEC = TrawelColor.inlineColor(TrawelColor.colorMix(Color.YELLOW,Color.WHITE,.4f));
 	public static String COLOR_DECAY = TrawelColor.inlineColor(TrawelColor.colorMix(Color.MAGENTA,Color.WHITE,.4f));
-	public static final String COLOR_RESET = "[]";
+	public static final String COLOR_RESET = "[reset_color]";
 	//NOTE: predefined color mixes inlined
 	public static final String PRE_WHITE = TrawelColor.inlineColor(Color.WHITE);
 	public static final String PRE_RED = TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED,Color.WHITE,.5f));

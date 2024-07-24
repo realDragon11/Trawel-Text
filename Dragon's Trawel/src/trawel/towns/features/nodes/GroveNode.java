@@ -751,7 +751,7 @@ public class GroveNode implements NodeType{
 		int state = holder.getStateNum(node);
 		int startstate = state;
 		if (state == 0) {
-			Print.println("You spot a glowing "+holder.getStorageFirstClass(node, String.class)+" mushroom on the forest floor.");
+			Print.println("You spot a glowing "+holder.getStorageFirstClass(node, String.class)+TrawelColor.COLOR_RESET+" mushroom on the forest floor.");
 			Input.menuGo(new MenuGenerator() {
 
 				@Override

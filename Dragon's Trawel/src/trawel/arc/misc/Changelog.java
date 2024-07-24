@@ -3,13 +3,18 @@ package trawel.arc.misc;
 import derg.menus.MenuSelect;
 import trawel.core.Input;
 import trawel.core.Print;
+import trawel.helper.constants.TrawelColor;
 
 public class Changelog {
 	//b__X is in development, b_X is the actual release of that version
-		public static final String VERSION_STRING = "v0.8.b_12";
-		public static final String VERSION_DATE = " updated July 10th 2024";
+		public static final String VERSION_STRING = "v0.8.b__13";
+		public static final String VERSION_DATE = " updated July 23rd 2024";
 		public static final String[][] changelog = new String[][] {
 			//add to front, changeviewer cycles to older ones when used
+			{"b_13",
+				//test color changes
+				TrawelColor.ADVISE_3+"Be advised, this is a color test "+TrawelColor.ADVISE_5+"that just tested."+TrawelColor.COLOR_RESET+" And then this should be back."
+			},
 			{"b_12",
 				//discuss death punishments
 				"Dying adds a Punishment Effect to your character, as with attribute contests in earlier versions. These can be cured as normal. They make it harder to win battles.",

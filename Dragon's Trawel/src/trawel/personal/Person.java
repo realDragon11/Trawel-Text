@@ -1598,7 +1598,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		//at 1 index
 	}
 
-	public void displayArmor() {
+	public void displayDefenses() {
 		int sharp=0, blunt=0, pierce=0, sharpm =0, bluntm = 0, piercem = 0;
 		for (Armor a: bag.getArmor()) {
 			sharp += a.getSharp();
@@ -1609,6 +1609,8 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			bluntm += a.getBluntResist();
 			piercem += a.getPierceResist();
 		}
+		Print.println(TrawelColor.ITEM_DESC_PROP+"HP: "+TrawelColor.ITEM_WANT_HIGHER+ hp +"/" +tempMaxHp);
+		Print.println(TrawelColor.ITEM_DESC_PROP+"Dodge: "+TrawelColor.ITEM_WANT_HIGHER+ Print.format2(bag.getDodge()) +"x");
 		Print.println(TrawelColor.ITEM_DESC_PROP+"Sharp: "+TrawelColor.ITEM_WANT_HIGHER+ sharp + "/" +sharpm);
 		Print.println(TrawelColor.ITEM_DESC_PROP+"Blunt: "+TrawelColor.ITEM_WANT_HIGHER+ blunt + "/" +bluntm);
 		Print.println(TrawelColor.ITEM_DESC_PROP+"Pierce: "+TrawelColor.ITEM_WANT_HIGHER+ pierce + "/" +piercem);

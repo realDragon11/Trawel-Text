@@ -1114,14 +1114,13 @@ public class AIClass {
 
 								@Override
 								public String title() {
-									return "Your HP, Armor, and Effects.";
+									return "Your Defenses, and Effects.";
 								}
 
 								@Override
 								public boolean go() {
 									Print.println(TrawelColor.STAT_HEADER+attacker.getName()+": ");
-									attacker.displayHp();
-									attacker.displayArmor();
+									attacker.displayDefenses();
 									attacker.displayEffects();
 									return false;
 								}});
@@ -1145,14 +1144,13 @@ public class AIClass {
 
 								@Override
 								public String title() {
-									return "Target HP, Armor, and Effects.";
+									return "Target Defenses, and Effects.";
 								}
 
 								@Override
 								public boolean go() {
 									Print.println(TrawelColor.STAT_HEADER+defender.getName()+": ");
-									defender.displayHp();
-									defender.displayArmor();
+									defender.displayDefenses();
 									defender.displayEffects();
 									return false;
 								}});
