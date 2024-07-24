@@ -495,11 +495,12 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		}
 		//if they don't have a flask, check potion skills
 		if (getSuper() != null && !superperson.hasFlask()) {
-			if (hasSkill(Skill.TOXIC_BREWS)) {
-				superperson.setFlask(new Potion(Effect.CURSE,4));
+			if (hasSkill(Skill.P_BREWER)) {
+				superperson.setFlask(new Potion(Rand.randList(Effect.randomPositivePotion),4));
 			}else {
-				if (hasSkill(Skill.P_BREWER)) {
-					superperson.setFlask(new Potion(Rand.randList(WitchHut.randomPotion),3));
+				//never activates right now, but better to give them a real potion
+				if (hasSkill(Skill.TOXIC_BREWS)) {
+					superperson.setFlask(new Potion(Effect.CURSE,6));
 				}
 			}
 		}

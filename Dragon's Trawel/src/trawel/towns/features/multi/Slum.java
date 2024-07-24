@@ -472,9 +472,9 @@ public class Slum extends Store implements QuestBoardLocation{
 								}
 								Player.player.addGold(-potionCost);
 								if (Rand.chanceIn(1, 3)) {
-									Player.player.setFlask(new Potion(Effect.CURSE,Rand.randRange(2, 3)));
+									Player.player.setFlask(new Potion(Rand.randList(Effect.randomNegativePotion),Rand.randRange(2,3)));
 								}else {
-									Player.player.setFlask(new Potion(Rand.randList(Arrays.asList(Effect.estimEffects)),Rand.randRange(2, 3)));	
+									Player.player.setFlask(new Potion(Rand.randList(Effect.randomPositivePotion),Rand.randRange(2,3)));	
 								}
 								Print.println(TrawelColor.RESULT_PASS+"You buy the potion.");
 							}
@@ -489,9 +489,9 @@ public class Slum extends Store implements QuestBoardLocation{
 								}
 								Player.player.addGold(-potionCost);
 								if (Rand.chanceIn(1, 4)) {
-									Player.player.setFlask(new Potion(Effect.CURSE,Rand.randRange(3, 4)));
+									Player.player.setFlask(new Potion(Rand.randList(Effect.randomNegativePotion),Rand.randRange(3,4)));
 								}else {
-									Player.player.setFlask(new Potion(Rand.randList(Arrays.asList(Effect.estimEffects)),Rand.randRange(3, 4)));	
+									Player.player.setFlask(new Potion(Rand.randList(Effect.randomPositivePotion),Rand.randRange(3,4)));	
 								}
 								Print.println(TrawelColor.RESULT_PASS+"You buy the potion.");
 							}
@@ -506,9 +506,9 @@ public class Slum extends Store implements QuestBoardLocation{
 								}
 								Player.player.addGold(-potionCost);
 								if (Rand.chanceIn(1, 6)) {
-									Player.player.setFlask(new Potion(Effect.CURSE,Rand.randRange(3, 5)));
+									Player.player.setFlask(new Potion(Rand.randList(Effect.randomNegativePotion),Rand.randRange(3,5)));
 								}else {
-									Player.player.setFlask(new Potion(Rand.randList(Arrays.asList(Effect.estimEffects)),Rand.randRange(3, 5)));	
+									Player.player.setFlask(new Potion(Rand.randList(Effect.randomPositivePotion),Rand.randRange(3,5)));	
 								}
 								Print.println(TrawelColor.RESULT_PASS+"You buy the potion.");
 							}

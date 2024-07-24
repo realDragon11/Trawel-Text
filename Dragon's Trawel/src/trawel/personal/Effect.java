@@ -70,11 +70,7 @@ public enum Effect{
 	CHALLENGE_BACK("Temerity","Negates the next wound from a suffered Impactful attack, or adds +20% damage to the next attack choice, whichever comes first.",false,false,2),
 	PLANNED_TAKEDOWN("Takedown","Causes next impactful attack to inflict the Knockout Wound.",false,false,1),
 	//armor and maybe skills/potions
-	PADDED("Padded","1/5th chance of negating a wound per stack, once per stack.",false,true,2),
-	
-	//unused
-	ARMOR_BLOCKS("Blocking Armor","Increases block threshold by +2% per stack.",false,true,2),
-	ARMOR_RELIABLE("Reliable Armor","Increases minimum armor mitigation roll by 5% per stack.",false,true,2)
+	PADDED("Padded","1/5th chance of negating a wound per stack, once per stack.",false,true,2)
 	;
 	
 	private String name,desc;
@@ -118,6 +114,23 @@ public enum Effect{
 		return goodNegNeut < 0;
 	}
 	
-	public static Effect[] estimEffects = new Effect[] {HASTE,HEARTY};//random drug effects
 	public static Effect[] minorBuffEffects = new Effect[] {HASTE,HEARTY,FORGED,TELESCOPIC,R_AIM};//used for TOXIC_BREWS as minor positive potions
+	
+	public static final Effect[] randomPotion = new Effect[] {
+			Effect.HEARTY,Effect.BEES,Effect.BEE_SHROUD,Effect.CURSE,Effect.FORGED,
+			Effect.HASTE,Effect.CLOTTER,Effect.R_AIM,Effect.SUDDEN_START,SIP_GRAVE_ARMOR
+		};
+	
+	public static final Effect[] randomQuestionablePotion = new Effect[] {
+			Effect.CURSE,Effect.CURSE,Effect.BEES,Effect.BLEED,Effect.MAJOR_BLEED,
+			Effect.HEARTY,Effect.BEE_SHROUD,Effect.FORGED,Effect.HASTE,
+			Effect.CLOTTER,Effect.R_AIM,Effect.SUDDEN_START,SIP_GRAVE_ARMOR
+		};
+	public static final Effect[] randomNegativePotion = new Effect[] {
+			Effect.CURSE,Effect.CURSE,Effect.BEES,Effect.BLEED,Effect.MAJOR_BLEED
+	};
+	public static final Effect[] randomPositivePotion = new Effect[] {
+			Effect.HEARTY,Effect.BEE_SHROUD,Effect.FORGED,Effect.HASTE,
+			Effect.CLOTTER,Effect.R_AIM,Effect.SUDDEN_START,SIP_GRAVE_ARMOR
+	};
 }

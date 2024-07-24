@@ -158,7 +158,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 							Print.println("Potions made from brew waste will be of questionable content. Do it anyway?");
 						}
 						if (Input.yesNo()) {
-							Player.player.setFlask(new Potion(Rand.randList(randomQuestionablePotion),8));
+							Player.player.setFlask(new Potion(Rand.randList(Effect.randomQuestionablePotion),8));
 							Print.println("You scoop the strange mix of discarded fluid into a glass jar. At least there's a lot of it.");
 						}else {
 							Print.println("You look away from the goup.");
@@ -644,20 +644,8 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	
 	private void buyRandomPotion(SuperPerson p,int price) {
 		p.buyMoneyAmount(price);
-		p.setFlask(new Potion(Rand.randList(randomPotion),5));
+		p.setFlask(new Potion(Rand.randList(Effect.randomPotion),5));
 	}
-	
-	public static final Effect[] randomPotion = new Effect[] {
-			Effect.HEARTY,Effect.BEES,Effect.BEE_SHROUD,Effect.CURSE,Effect.FORGED,
-			Effect.HASTE,Effect.CLOTTER,Effect.R_AIM,Effect.SUDDEN_START
-		};
-	
-	public static final Effect[] randomQuestionablePotion = new Effect[] {
-			Effect.CURSE,Effect.CURSE,Effect.BEES,Effect.BLEED,Effect.MAJOR_BLEED,
-			Effect.HEARTY,Effect.BEE_SHROUD,Effect.FORGED,Effect.HASTE,
-			Effect.CLOTTER,Effect.R_AIM,Effect.SUDDEN_START
-		};
-	
 	
 	public static void randomRefillsAtTown(Town t,int cost) {
 		t.getPersonableOccupants().filter(a -> a.wantsRefill() && a.canBuyMoneyAmount(cost)).limit(3).forEach(a -> a.refillWithPrice(cost));
