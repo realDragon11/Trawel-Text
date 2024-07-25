@@ -125,6 +125,7 @@ public class Print {
 			//"]" might have shifted back or forwards, but we know where it starts and can start searching from there instead
 			index = out.indexOf("[",index+1);
 		}
+		TagFormatter.clearStack();
 		return out.toString();
 	}
 

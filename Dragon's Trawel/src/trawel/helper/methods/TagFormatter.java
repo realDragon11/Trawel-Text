@@ -15,6 +15,9 @@ public class TagFormatter {
 
 	private static final HashMap<String,String> tagMap = new HashMap<String, String>();
 	static {
+		addTag("clear",TrawelColor.PRE_WHITE);
+		//revert hardcoded
+		
 		addTag("p_new",TrawelColor.COLOR_NEW);
 		addTag("p_seen",TrawelColor.COLOR_SEEN);
 		addTag("p_own",TrawelColor.COLOR_OWN);
@@ -58,8 +61,8 @@ public class TagFormatter {
 		addTag("r_error",TrawelColor.RESULT_ERROR);
 	}
 	
-	private static final void addTag(String code, String color) {
-		tagMap.put(code,color);
+	private static final void addTag(String code, String full) {
+		tagMap.put(code,full.substring(1,full.length()-1));
 	}
 	
 	public static final void clearStack() {
@@ -92,7 +95,7 @@ public class TagFormatter {
 			//get last, do not pop so pop->peek works if revert twice
 			return tagStack.peek();
 		}catch (EmptyStackException e) {
-			return TrawelColor.PRE_WHITE;
+			return tagMap.get("clear");
 		}
 	}
 }
