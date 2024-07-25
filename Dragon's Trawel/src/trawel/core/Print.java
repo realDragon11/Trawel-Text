@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Stack;
 
 import trawel.helper.constants.TrawelColor;
+import trawel.helper.methods.TagFormatter;
 import trawel.threads.ThreadData;
 
 public class Print {
@@ -88,9 +89,10 @@ public class Print {
 		}
 		if (!printMode || debugPrint) {
 			//mainGame.log(str);
-			Networking.printlocalln(stripPrint(printStuff+str));
-			detectInputString(stripPrint(printStuff +str));
-			Networking.printlnTo(printStuff + str);
+			printStuff+=str;
+			Networking.printlocalln(stripPrint(printStuff));
+			detectInputString(stripPrint(printStuff));
+			Networking.printlnTo(formatTags(printStuff));
 			printStuff = "";
 	
 			if (debugPrint) {
@@ -111,6 +113,19 @@ public class Print {
 		if (!printMode) {
 			printStuff+=str;
 		}
+	}
+	
+	protected static final String formatTags(String str) {
+		StringBuilder out = new StringBuilder(str);
+		int index = out.indexOf("[");
+		while (index != -1) {
+			int lastindex = out.indexOf("]",index);
+			//replace, but leave in []'s
+			out.replace(index+1,lastindex,TagFormatter.get(out.substring(index+1,lastindex)));
+			//"]" might have shifted back or forwards, but we know where it starts and can start searching from there instead
+			index = out.indexOf("[",index+1);
+		}
+		return out.toString();
 	}
 
 	private static final String stripPrint(String str) {
