@@ -72,6 +72,27 @@ public interface IAttack {
 	public static int getDecayFromWeap(int[] vals) {
 		return vals[6];
 	}
+	public static double getSharpFromWeap(double[] vals) {
+		return vals[0];
+	}
+	public static double getBluntFromWeap(double[] vals) {
+		return vals[1];
+	}
+	public static double getPierceFromWeap(double[] vals) {
+		return vals[2];
+	}
+	public static double getIgniteFromWeap(double[] vals) {
+		return vals[3];
+	}
+	public static double getFrostFromWeap(double[] vals) {
+		return vals[4];
+	}
+	public static double getElecFromWeap(double[] vals) {
+		return vals[5];
+	}
+	public static double getDecayFromWeap(double[] vals) {
+		return vals[6];
+	}
 
 	public int getTotalDam();
 }

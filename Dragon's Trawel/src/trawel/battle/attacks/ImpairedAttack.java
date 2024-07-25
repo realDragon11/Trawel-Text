@@ -32,7 +32,7 @@ public class ImpairedAttack implements IAttack{
 	
 	private double warmup, cooldown;
 	
-	private int[] vals;
+	private double[] vals;
 	
 	private float hitroll;
 	
@@ -50,10 +50,9 @@ public class ImpairedAttack implements IAttack{
 		attacker = _attacker;
 		defender = _defender;
 		
-		potencyMult = 1;
 		//compution
 		Target t = target.tar;
-		vals = new int[attack.valueSize()];
+		vals = new double[attack.valueSize()];
 		
 		double speedMult = _style.speed;
 		double speedModUp = Rand.randRange(0,10);
@@ -98,41 +97,54 @@ public class ImpairedAttack implements IAttack{
 			}
 
 		}
-		
-		double damMult = effectiveLevel*_style.damage;
+		//now uses potency mult for base power
+		potencyMult = effectiveLevel*_style.damage;
 		
 		if (_attacker != null) {
 			if (attacker.hasEffect(Effect.CHALLENGE_BACK)) {
-				damMult*=1.2;
+				potencyMult*=1.2;
 			}
 		}
 
-		vals[0] = damageRoll(DamageType.SHARP,sMult*damMult*physicalDamMult);
-		vals[1] = damageRoll(DamageType.BLUNT,bMult*damMult*physicalDamMult);
-		vals[2] = damageRoll(DamageType.PIERCE,pMult*damMult*physicalDamMult);
+		vals[0] = damageRoll(DamageType.SHARP,sMult);
+		vals[1] = damageRoll(DamageType.BLUNT,bMult);
+		vals[2] = damageRoll(DamageType.PIERCE,pMult);
+		
+		double baseDam =vals[0]+vals[1]+vals[2];//set base damage (might still be zero)
+		
 		if (attack.isBypass()) {// || !(_weapon != null && _weapon.isEnchantedHit())
-			vals[3] = damageRoll(DamageType.IGNITE,attack.getIgnite()*damMult*elementalDamMult);
-			vals[4] = damageRoll(DamageType.FROST,attack.getFrost()*damMult*elementalDamMult);
-			vals[5] = damageRoll(DamageType.ELEC,attack.getElec()*damMult*elementalDamMult);
-		}else {
-			//now uses the actual damage to scale, but without the physical damage mult
-			double totalPhysDam = (sMult+bMult+pMult)*damMult;
+			vals[3] = damageRoll(DamageType.IGNITE,attack.getIgnite());
+			vals[4] = damageRoll(DamageType.FROST,attack.getFrost());
+			vals[5] = damageRoll(DamageType.ELEC,attack.getElec());
+			//bypass attacks have their elemental damage count as base damage
+			baseDam+=vals[3]+vals[4]+vals[5];
 			
+		}else {
 			//enchant hit weapon with no bypass
 			if (_weapon != null && _weapon.isEnchantedHit()) {
 				Enchant enc = _weapon.getEnchant();
 				//dam mult included in totalDam already
-				double onhitMult = elementalDamMult * (_attacker != null && _attacker.hasSkill(Skill.RUNESMITH) ? 1.3d : 1d);
-				vals[3] = damageRoll(DamageType.IGNITE,enc.getFireMod()*totalPhysDam*onhitMult);
-				vals[4] = damageRoll(DamageType.FROST,enc.getFreezeMod()*totalPhysDam*onhitMult);
-				vals[5] = damageRoll(DamageType.ELEC,enc.getShockMod()*totalPhysDam*onhitMult);
-			}
-			if (attacker != null && defender != null && attacker.hasSkill(Skill.FEVER_STRIKE) && defender.hasEffect(Effect.MIASMA)) {
-				//decay damage bonus if defender has miasma
-				//goes off of the rolled values because it itself does not roll
-				vals[6] += (vals[0]+vals[1]+vals[2])*.1f;
+				double onhitMult = (_attacker != null && _attacker.hasSkill(Skill.RUNESMITH) ? 1.3d : 1d);
+				vals[3] = damageRoll(DamageType.IGNITE,enc.getFireMod()*baseDam*onhitMult);
+				vals[4] = damageRoll(DamageType.FROST,enc.getFreezeMod()*baseDam*onhitMult);
+				vals[5] = damageRoll(DamageType.ELEC,enc.getShockMod()*baseDam*onhitMult);
 			}
 		}
+		if (attacker != null && defender != null && attacker.hasSkill(Skill.FEVER_STRIKE) && defender.hasEffect(Effect.MIASMA)) {
+			//decay damage bonus if defender has miasma
+			//goes off of the rolled values because it itself does not roll
+			vals[6] += baseDam*.1f;
+		}
+		
+		//strength/clarity and other damage mults applied step
+		vals[0]*=physicalDamMult;
+		vals[1]*=physicalDamMult;
+		vals[2]*=physicalDamMult;
+		vals[3]*=elementalDamMult;
+		vals[4]*=elementalDamMult;
+		vals[5]*=elementalDamMult;
+		vals[6]*=elementalDamMult;
+		
 		//no decay wounds
 		double counter = Rand.getRand().nextDouble() * (vals[0] + vals[1] + vals[2] + vals[3] + vals[4] + vals[5]);
 		counter-=vals[0];
@@ -235,7 +247,7 @@ public class ImpairedAttack implements IAttack{
 		defender = _defender;
 		
 		//none
-		vals = new int[attack.valueSize()];
+		vals = new double[attack.valueSize()];
 		hitroll = 10;
 		potencyMult = 0;
 		wound = null;
@@ -359,11 +371,9 @@ public class ImpairedAttack implements IAttack{
 		return null;
 	}
 	
-	private int damageRoll(DamageType dt, double max) {
+	private double damageRoll(DamageType dt, double max) {
 		if (attacker != null) {
 			max*= attacker.getBag().getDam();//DOLATER make physical damage mult seperate;
-			//already added above?
-			//max*= attacker.fetchAttributes().multStrength();//DOLATER see if working
 		}else {
 			if (weapon != null) {//if attacker is null, but there is still a weapon
 				if (weapon.getEnchant() != null) {
@@ -371,37 +381,7 @@ public class ImpairedAttack implements IAttack{
 				}	
 			}
 		}
-		return Rand.randRange((int)(max*.7),(int)max);
-		//don't need switch, strength code was already handled elsewhere???
-		/*
-		switch (dt) {
-		case SHARP: case BLUNT: case PIERCE:
-			if (attacker != null) {
-				max*= attacker.getBag().getDam();//DOLATER make physical damage mult seperate;
-				//already added above?
-				//max*= attacker.fetchAttributes().multStrength();//DOLATER see if working
-			}else {
-				if (weapon != null) {//if attacker is null, but there is still a weapon
-					if (weapon.getEnchant() != null) {
-						max*=weapon.getEnchant().getDamMod();//DOLATER make physical damage mult seperate
-					}	
-				}
-			}
-			return extra.randRange((int)(max*.7),(int)max);
-		case IGNITE: case FROST: case ELEC:
-			if (attacker != null) {
-				max*= attacker.getBag().getDam();//DOLATER make physical damage mult seperate;
-			}else {
-				if (weapon != null) {//if attacker is null, but there is still a weapon
-					if (weapon.getEnchant() != null) {
-						max*=weapon.getEnchant().getDamMod();//DOLATER make physical damage mult seperate
-					}	
-				}
-			}
-			return extra.randRange((int)(max*.7),(int)max);
-		default: 
-			return 0;
-		}*/
+		return Rand.getRand().nextDouble(max*.7,max);
 	}
 	
 	/**
