@@ -1,5 +1,6 @@
 package trawel.towns.features.nodes;
 import trawel.core.Networking.Area;
+import trawel.core.Print;
 import trawel.helper.constants.TrawelColor;
 import trawel.towns.contexts.Town;
 import trawel.towns.data.FeatureData;
@@ -12,7 +13,10 @@ public class Beach extends NodeFeature {
 			
 			@Override
 			public void tutorial() {
-				// TODO Auto-generated method stub
+				Print.println(fancyNamePlural()+" can be [act_explore]explored[revert]. "+fancyNamePlural()+" host a branching area that splits into "
+						//TODO: have cave type be printed with special text here as well
+						+"[f_combat]Caves[revert] and "+FeatureData.getData(Dungeon.class).fancyNamePlural()+"."
+						+ " Over time, new events [p_regrown]wash up[revert] on the shores.");
 			}
 			
 			@Override

@@ -54,7 +54,7 @@ public class Oracle extends Feature{ //extends feature later
 			
 			@Override
 			public String color() {
-				return TrawelColor.F_SPECIAL;
+				return TrawelColor.F_SERVICE_MAGIC;
 			}
 			
 			@Override

@@ -1,5 +1,6 @@
 package trawel.helper.methods;
 
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -14,22 +15,51 @@ public class TagFormatter {
 
 	private static final HashMap<String,String> tagMap = new HashMap<String, String>();
 	static {
-		addColor("new",TrawelColor.COLOR_NEW);
-		addColor("seen",TrawelColor.COLOR_SEEN);
-		addColor("own",TrawelColor.COLOR_OWN);
-		addColor("been",TrawelColor.COLOR_BEEN);
-		addColor("regrown",TrawelColor.COLOR_REGROWN);
+		addTag("p_new",TrawelColor.COLOR_NEW);
+		addTag("p_seen",TrawelColor.COLOR_SEEN);
+		addTag("p_own",TrawelColor.COLOR_OWN);
+		addTag("p_been",TrawelColor.COLOR_BEEN);
+		addTag("p_regrown",TrawelColor.COLOR_REGROWN);
 		
-		addColor("a1",TrawelColor.ADVISE_1);
-		addColor("a2",TrawelColor.ADVISE_2);
-		addColor("a3",TrawelColor.ADVISE_3);
-		addColor("a4",TrawelColor.ADVISE_4);
-		addColor("a5",TrawelColor.ADVISE_5);
-		addColor("a6",TrawelColor.ADVISE_6);
+		addTag("a1",TrawelColor.ADVISE_1);
+		addTag("a2",TrawelColor.ADVISE_2);
+		addTag("a3",TrawelColor.ADVISE_3);
+		addTag("a4",TrawelColor.ADVISE_4);
+		addTag("a5",TrawelColor.ADVISE_5);
+		addTag("a6",TrawelColor.ADVISE_6);
+		
+		addTag("pay_aether",TrawelColor.SERVICE_AETHER);
+		addTag("pay_money",TrawelColor.SERVICE_CURRENCY);
+		addTag("pay_both",TrawelColor.SERVICE_BOTH_PAYMENT);
+		addTag("pay_free",TrawelColor.SERVICE_FREE);
+		addTag("pay_flavor",TrawelColor.SERVICE_FLAVOR);
+		
+		addTag("act_explore",TrawelColor.SERVICE_EXPLORE);
+		addTag("act_combat",TrawelColor.SERVICE_COMBAT);
+		addTag("act_quest",TrawelColor.SERVICE_QUEST);
+		
+		addTag("f_node",TrawelColor.F_NODE);
+		addTag("f_guild",TrawelColor.F_GUILD);
+		addTag("f_multi",TrawelColor.F_MULTI);
+		addTag("f_service",TrawelColor.F_SERVICE);
+		addTag("f_aux",TrawelColor.F_AUX_SERVICE);
+		addTag("f_magic",TrawelColor.F_SERVICE_MAGIC);
+		addTag("f_special",TrawelColor.F_SPECIAL);
+		addTag("f_combat",TrawelColor.F_COMBAT);
+		addTag("f_build",TrawelColor.F_BUILDABLE);
+		
+		addTag("r_pass",TrawelColor.RESULT_PASS);
+		addTag("r_good",TrawelColor.RESULT_GOOD);
+		addTag("r_bad",TrawelColor.RESULT_BAD);
+		addTag("r_same_bad",TrawelColor.RESULT_NO_CHANGE_BAD);
+		addTag("r_same_good",TrawelColor.RESULT_NO_CHANGE_GOOD);
+		addTag("r_same",TrawelColor.RESULT_NO_CHANGE_NONE);
+		addTag("r_warn",TrawelColor.RESULT_WARN);
+		addTag("r_error",TrawelColor.RESULT_ERROR);
 	}
 	
-	private static final void addColor(String code, String color) {
-		tagMap.put("c:"+code,color);
+	private static final void addTag(String code, String color) {
+		tagMap.put(code,color);
 	}
 	
 	public static final void clearStack() {
@@ -56,9 +86,13 @@ public class TagFormatter {
 	}
 	
 	public static final String revertTag() {
-		//remove current
-		tagStack.pop();
-		//get last, do not pop so pop->peek works if revert twice
-		return tagStack.peek();
+		try {
+			//remove current
+			tagStack.pop();
+			//get last, do not pop so pop->peek works if revert twice
+			return tagStack.peek();
+		}catch (EmptyStackException e) {
+			return TrawelColor.PRE_WHITE;
+		}
 	}
 }

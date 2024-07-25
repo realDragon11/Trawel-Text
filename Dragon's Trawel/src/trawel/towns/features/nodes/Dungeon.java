@@ -42,14 +42,14 @@ public class Dungeon extends NodeFeature {
 			
 			@Override
 			public void tutorial() {
-				// TODO Auto-generated method stub
-				
+				Print.println(fancyNamePlural()+" can be [act_explore]explored[revert]. "+fancyNamePlural()+" come in various shapes and sizes- all are heavily guarded."
+						+" Some "+fancyNamePlural()+" have groups of guards, and adventurers can be [pay_money]recruited[revert] to help in fights."
+						+" These hired adventurers will [r_warn]leave over time[revert] if their employer does not visit the "+fancyName()+".");
 			}
 			
 			@Override
 			public int priority() {
-				// TODO Auto-generated method stub
-				return 0;
+				return 20;
 			}
 			
 			@Override
