@@ -32,7 +32,6 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.contexts.World;
 import trawel.towns.data.FeatureData;
-import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.towns.features.Feature;
 
 public class RogueGuild extends Feature implements QuestBoardLocation{
@@ -42,7 +41,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" have a [act_quest]quest board[revert] of mostly illegal tasks that often pay extra. "
+				Print.println(fancyNamePlural()+" have a [act_quest]quest board[revert] of mostly illegal tasks that often [pay_money]pay extra[revert]. "
 						+fancyNamePlural()+ " accept [pay_rep]donations of and requests for[revert] "+Gem.SAPPHIRE.fancyNamePlural()
 						+", and allow [pay_special]laundering[revert] between gem types."
 						);

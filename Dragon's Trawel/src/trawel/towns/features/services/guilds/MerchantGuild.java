@@ -35,9 +35,42 @@ import trawel.quests.types.FetchSideQuest.FetchType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.contexts.World;
+import trawel.towns.data.FeatureData;
 import trawel.towns.features.Feature;
 
 public class MerchantGuild extends Feature implements QuestBoardLocation {
+	
+	static {
+		FeatureData.registerFeature(MerchantGuild.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" have a [act_quest]quest board[revert] which reward [pay_special]merchant standing[revert] and [pay_money]extra money[revert]."
+						+" Each "+fancyName() + " also accepts [pay_rep]donations[revert] of "+Gem.EMERALD.fancyNamePlural()+" and Drawbanes."
+						+" Large shipments of Beer and Books are available for [pay_money]purchase[revert].");
+			}
+			
+			@Override
+			public int priority() {
+				return 5;
+			}
+			
+			@Override
+			public String name() {
+				return "Merchant Guild";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_GUILD;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.MAJOR_GUILDS;
+			}
+		});
+	}
 
 	private static final long serialVersionUID = 1L;
 	
@@ -59,16 +92,6 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	@Override
 	public QRType getQRType() {
 		return QRType.MGUILD;
-	}
-	
-	@Override
-	public String getColor() {
-		return TrawelColor.F_GUILD;
-	}
-	
-	@Override
-	public String nameOfFeature() {
-		return "Merchant Guild";
 	}
 	
 	@Override
