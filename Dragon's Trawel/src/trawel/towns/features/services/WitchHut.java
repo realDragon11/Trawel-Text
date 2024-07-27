@@ -37,8 +37,42 @@ import trawel.quests.types.Quest;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.contexts.Town;
+import trawel.towns.data.FeatureData;
 
 public class WitchHut extends Store implements QuestBoardLocation{
+	
+	static {
+		FeatureData.registerFeature(WitchHut.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" have a [pay_free]pot[revert] to [pay_special]brew[revert] potions in. "
+						+fancyNamePlural() + " offer services to [pay_money]fill up[revert] existing potions, and you can [pay_free]take the byproducts[revert] of other's works. "
+						+"Each "+fancyName() +" also has guides on how to [act_quest]collect Drawbanes[revert] for potions or other usages.");
+				// TODO Auto-generated method stub
+			}
+			
+			@Override
+			public int priority() {
+				return 23;
+			}
+			
+			@Override
+			public String name() {
+				return "Witch Hut";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_SERVICE_MAGIC;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.ADVANCED_SERVICES;
+			}
+		});
+	}
 	
 	private static final long serialVersionUID = 1L;
 	private List<DrawBane> reagents = null;
@@ -75,16 +109,6 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	@Override
 	protected String getStoreName() {
 		return storename;
-	}
-	
-	@Override
-	public String getColor() {
-		return TrawelColor.F_SERVICE_MAGIC;
-	}
-	
-	@Override
-	public String nameOfFeature() {
-		return "Witch Hut";
 	}
 	
 	@Override
