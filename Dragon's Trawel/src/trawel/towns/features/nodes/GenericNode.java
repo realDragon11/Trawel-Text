@@ -647,7 +647,8 @@ public class GenericNode implements NodeType {
 			if (gem != null) {
 				int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),gem.reward(1.5f, themed), .5f);
 				gem.changeGem(gemAmount);
-				Print.println("You mine the vein and claim "+gemAmount+" "+m.color+(gemAmount == 0 ? gem.name : gem.plural)+TrawelColor.COLOR_RESET+"!");
+				//TODO: color is overwritten immediately now
+				Print.println("You mine the vein and claim "+gemAmount+" "+m.color+gem.fancyName(gemAmount)+TrawelColor.COLOR_RESET+"!");
 			}
 			holder.setStateNum(node,1);
 			holder.removeVein();
@@ -1311,7 +1312,7 @@ public class GenericNode implements NodeType {
 									//+= since above can give more gems for some
 									gemCount += IEffectiveLevel.cleanRangeReward(level,gem.reward(trapArray.length/2.0f, themed),.8f);
 									Print.println(TrawelColor.RESULT_GOOD+"The vault contains a "+gType + " guild cache!");
-									Print.println(TrawelColor.RESULT_PASS+"You find " + gemCount + " " + (gemCount == 1 ? gem.name : gem.plural)+"!");
+									Print.println(TrawelColor.RESULT_PASS+"You find " + gemCount + " " + gem.fancyName(gemCount)+"!");
 									gem.changeGem(gemCount);
 									if (bonusDrawBanes != null) {
 										for (int i = 0; i < bonusDrawBanes.size(); i++) {

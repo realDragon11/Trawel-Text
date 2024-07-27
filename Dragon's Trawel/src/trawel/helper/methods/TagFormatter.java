@@ -43,6 +43,8 @@ public class TagFormatter {
 		addTag("pay_both",TrawelColor.SERVICE_BOTH_PAYMENT);
 		addTag("pay_free",TrawelColor.SERVICE_FREE);
 		addTag("pay_flavor",TrawelColor.SERVICE_FLAVOR);
+		addTag("pay_rep",TrawelColor.SERVICE_REP);
+		addTag("pay_special",TrawelColor.SERVICE_SPECIAL_PAYMENT);
 		
 		addTag("act_explore",TrawelColor.SERVICE_EXPLORE);
 		addTag("act_combat",TrawelColor.SERVICE_COMBAT);

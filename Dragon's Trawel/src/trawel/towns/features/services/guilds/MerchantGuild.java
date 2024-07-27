@@ -178,7 +178,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 						@Override
 						public String title() {
-							return TrawelColor.SERVICE_SPECIAL_PAYMENT+"Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.EMERALD.name : Gem.EMERALD.plural)+". (Have "+Gem.EMERALD.getGem()+")";
+							return TrawelColor.SERVICE_SPECIAL_PAYMENT+"Donate "+gemAmount+" "+Gem.EMERALD.fancyName(gemAmount)+". (Have "+Gem.EMERALD.getGem()+")";
 						}
 
 						@Override
@@ -186,7 +186,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 							if (Gem.EMERALD.getGem() > gemAmount) {
 								//scales directly on amount, since the amount scales on eLevel
 								Player.player.addMPoints(10*gemAmount);
-								Print.println("You donate "+gemAmount+" "+(gemAmount == 1 ? Gem.EMERALD.name : Gem.EMERALD.plural)+".");
+								Print.println("You donate "+gemAmount+" "+Gem.EMERALD.fancyName(gemAmount)+".");
 								Gem.EMERALD.changeGem(-gemAmount);
 								DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.TRADE_ALIGN,1f,1);
 								if (gain != null) {

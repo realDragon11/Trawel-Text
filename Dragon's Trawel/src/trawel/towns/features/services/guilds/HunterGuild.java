@@ -101,12 +101,12 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 						while (true) {
 							float cost = 10*gemAmount;//amount is scaled by level
 							float spenda = FBox.getSpendableFor(Faction.HUNTER);
-							Print.println("Request "+gemAmount+" "+(gemAmount == 1 ? Gem.AMBER.name : Gem.AMBER.plural)+"? cost: " +cost + " of "+Print.format2(spenda));
+							Print.println("Request "+gemAmount+" "+Gem.AMBER.fancyName(gemAmount)+"? cost: " +cost + " of "+Print.format2(spenda));
 							if (Input.yesNo()) {
 								if (cost <= spenda) {
 									Player.player.factionSpent.addFactionRep(Faction.HUNTER,cost,0);
 									Gem.AMBER.changeGem(gemAmount);
-									Print.println(TrawelColor.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.AMBER.name : Gem.AMBER.plural)+", new total: " + Gem.AMBER.getGem()+".");
+									Print.println(TrawelColor.RESULT_PASS+"Gained "+gemAmount+" "+Gem.AMBER.fancyName(gemAmount)+", new total: " + Gem.AMBER.getGem()+".");
 								}else {
 									Print.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
 									break;

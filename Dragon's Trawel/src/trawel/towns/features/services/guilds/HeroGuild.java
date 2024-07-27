@@ -137,12 +137,12 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 						while (true) {
 						int cost = 20*gemAmount;
 						float spenda = FBox.getSpendableFor(Faction.HEROIC);
-						Print.println("Request "+gemAmount+" "+(gemAmount == 1 ? Gem.RUBY.name : Gem.RUBY.plural)+"? cost: " +cost + " of "+Print.format2(spenda));
+						Print.println("Request "+gemAmount+" "+Gem.RUBY.fancyName(gemAmount)+"? cost: " +cost + " of "+Print.format2(spenda));
 						if (Input.yesNo()) {
 							if (cost <= spenda) {
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
 								Gem.RUBY.changeGem(gemAmount);
-								Print.println(TrawelColor.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.RUBY.name : Gem.RUBY.plural)+", new total: " + Gem.RUBY.getGem()+".");
+								Print.println(TrawelColor.RESULT_PASS+"Gained "+gemAmount+" "+Gem.RUBY.fancyName(gemAmount)+", new total: " + Gem.RUBY.getGem()+".");
 							}else {
 								Print.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
 								break;

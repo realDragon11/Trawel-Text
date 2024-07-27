@@ -31,9 +31,44 @@ import trawel.quests.types.FetchSideQuest.FetchType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.contexts.World;
+import trawel.towns.data.FeatureData;
+import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.towns.features.Feature;
 
 public class RogueGuild extends Feature implements QuestBoardLocation{
+	
+	static {
+		FeatureData.registerFeature(RogueGuild.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" have a [act_quest]quest board[revert] of mostly illegal tasks that often pay extra. "
+						+fancyNamePlural()+ " accept [pay_rep]donations of and requests for[revert] "+Gem.SAPPHIRE.fancyNamePlural()
+						+", and allow [pay_special]laundering[revert] between gem types."
+						);
+			}
+			
+			@Override
+			public int priority() {
+				return 80;
+			}
+			
+			@Override
+			public String name() {
+				return "Rogue Guild";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_GUILD;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.MAJOR_GUILDS;
+			}
+		});
+	}
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -52,16 +87,6 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 	@Override
 	public QRType getQRType() {
 		return QRType.RGUILD;
-	}
-	
-	@Override
-	public String getColor() {
-		return TrawelColor.F_GUILD;
-	}
-	
-	@Override
-	public String nameOfFeature() {
-		return "Rogue Guild";
 	}
 	
 	@Override
@@ -141,12 +166,12 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 						while (true) {
 							int cost = 25*gemAmount;
 							float spenda = FBox.getSpendableFor(Faction.ROGUE);
-							Print.println("Request "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+"? cost: " +cost + "/"+Print.format2(spenda));
+							Print.println("Request "+gemAmount+" "+Gem.SAPPHIRE.fancyName(gemAmount)+"? cost: " +cost + "/"+Print.format2(spenda));
 							if (Input.yesNo()) {
 								if (cost <= spenda) {
 									Player.player.factionSpent.addFactionRep(Faction.ROGUE,cost,0);
 									Gem.SAPPHIRE.changeGem(gemAmount);
-									Print.println(TrawelColor.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+", new total: " + Gem.SAPPHIRE.getGem()+".");
+									Print.println(TrawelColor.RESULT_PASS+"Gained "+gemAmount+" "+Gem.SAPPHIRE.fancyName(gemAmount)+", new total: " + Gem.SAPPHIRE.getGem()+".");
 								}else {
 									Print.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
 									break;
@@ -163,14 +188,14 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 						@Override
 						public String title() {
-							return TrawelColor.SERVICE_SPECIAL_PAYMENT+"Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+". (Have "+Gem.SAPPHIRE.getGem()+")";
+							return TrawelColor.SERVICE_SPECIAL_PAYMENT+"Donate "+gemAmount+" "+Gem.SAPPHIRE.fancyName(gemAmount)+". (Have "+Gem.SAPPHIRE.getGem()+")";
 						}
 
 						@Override
 						public boolean go() {
 							while (true) {
 								int reward = 8;
-								Print.println("Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+"? You have " + Gem.SAPPHIRE.getGem());
+								Print.println("Donate "+gemAmount+" "+Gem.SAPPHIRE.fancyName(gemAmount)+"? You have " + Gem.SAPPHIRE.getGem());
 								if (Input.yesNo()) {
 									if (Gem.SAPPHIRE.getGem() >=gemAmount) {
 										float gain = reward*gemAmount;
@@ -324,7 +349,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 									return Collections.singletonList(new MenuSelect() {
 										@Override
 										public String title() {
-											return known.get(i).plural;
+											return known.get(i).fancyNamePlural();
 										}
 										@Override
 										public boolean go() {
@@ -407,7 +432,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 		
 		@Override
 		public String title() {
-			return "Launder "+from.unitSize + " " +from.plural +" ("+from.getGem()+") to " + toInt + " " + to.plural + "("+to.getGem()+")" + (credits == 0 ? " NO CREDIT" : "");
+			return "Launder "+fromInt + " " +from.fancyName(from.unitSize) +" ("+from.getGem()+") to " + toInt + " " + to.fancyName(toInt) + "("+to.getGem()+")" + (credits == 0 ? " NO CREDIT" : "");
 		}
 
 		@Override
@@ -417,12 +442,12 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 				return false;
 			}
 			if (from.getGem() >= fromInt) {
-				Print.println(TrawelColor.RESULT_PASS+"You trade "+fromInt+" " + from.plural + " for " + toInt + to.plural+".");
+				Print.println(TrawelColor.RESULT_PASS+"You trade "+fromInt+" " + from.fancyName(fromInt) + " for " + toInt + to.fancyName(toInt)+".");
 				from.changeGem(-fromInt);
 				to.changeGem(toInt);
 				credits--;
 			}else {
-				Print.println(TrawelColor.RESULT_ERROR+"You need " + (fromInt-from.getGem()) + " more " + from.plural+"!");
+				Print.println(TrawelColor.RESULT_ERROR+"You need " + (fromInt-from.getGem()) + " more " + from.fancyName(fromInt)+"!");
 			}
 			return false;
 		}

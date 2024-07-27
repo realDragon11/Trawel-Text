@@ -4,35 +4,57 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.helper.constants.TrawelColor;
-import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
 
 public enum Gem {
 	/**
 	 * merchant, taken
 	 */
-	EMERALD("emerald","emeralds","E",2)
+	EMERALD("emerald","emeralds","E",TrawelColor.TIMID_GREEN,2)
 	/**
 	 * hero, granted
 	 */
-	,RUBY("ruby","rubies","R",3)
+	,RUBY("ruby","rubies","R",TrawelColor.TIMID_RED,3)
 	/**
 	 * rogue, granted and taken
 	 */
-	,SAPPHIRE("sapphire","sapphires","S",3)
+	,SAPPHIRE("sapphire","sapphires","S",TrawelColor.TIMID_BLUE,3)
 	/**
 	 * hunter, granted
 	 */
-	,AMBER("amber","amber","A",10)
+	,AMBER("amber","amber","A",TrawelColor.TIMID_ORANGE,10)
 	;
 		
-	public final String name, plural, icon;
+	private final String name, plural, icon, color;
 	public final int unitSize;
-	Gem(String _name, String _plural, String _icon, int _unitSize){
+	Gem(String _name, String _plural, String _icon, String _color, int _unitSize){
 		name = _name;
 		plural = _plural;
 		icon = _icon;
 		unitSize = _unitSize;
+		color = _color;
+	}
+	
+	public String fancyName() {
+		return color+name+TrawelColor.COLOR_RESET;
+	}
+	
+	public String fancyNamePlural() {
+		return color+plural+TrawelColor.COLOR_RESET;
+	}
+	
+	public String fancyName(boolean plural) {
+		if (plural) {
+			return fancyNamePlural();
+		}
+		return fancyName();
+	}
+	
+	public String fancyName(int amount) {
+		if (amount != 1) {
+			return fancyNamePlural();
+		}
+		return fancyName();
 	}
 	
 	public boolean knowsGem() {
@@ -70,7 +92,7 @@ public enum Gem {
 			if (g.getGem() == 0) {
 				continue;//doesn't have, continue
 			}
-			names += g.icon;
+			names += g.color+g.icon+TrawelColor.COLOR_RESET;
 			if (values == null) {
 				values = ""+g.getGem();
 			}else {

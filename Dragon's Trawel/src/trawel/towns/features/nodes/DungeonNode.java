@@ -547,7 +547,7 @@ public class DungeonNode implements NodeType{
 				}
 				int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),gem.reward(1.5f, themed), .5f);
 				gem.changeGem(gemAmount);
-				Print.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find "+gemAmount+" "+(gemAmount == 0 ? gem.name : gem.plural)+"!");
+				Print.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find "+gemAmount+" "+gem.fancyName(gemAmount)+"!");
 			}
 			Networking.clearSide(1);
 			return false;
