@@ -32,7 +32,6 @@ import trawel.quests.types.FetchSideQuest.FetchType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.data.FeatureData;
-import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.towns.features.Feature;
 
 public class HeroGuild extends Feature implements QuestBoardLocation{

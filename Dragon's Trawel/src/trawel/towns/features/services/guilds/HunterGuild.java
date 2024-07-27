@@ -16,7 +16,6 @@ import trawel.factions.FBox.FSub;
 import trawel.helper.constants.TrawelColor;
 import trawel.factions.Faction;
 import trawel.personal.classless.IEffectiveLevel;
-import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.quests.locations.QBMenuItem;
@@ -31,9 +30,41 @@ import trawel.quests.types.CleanseSideQuest.CleanseType;
 import trawel.quests.types.FetchSideQuest.FetchType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.towns.data.FeatureData;
 import trawel.towns.features.Feature;
 
 public class HunterGuild extends Feature implements QuestBoardLocation{
+	
+	static {
+		FeatureData.registerFeature(HunterGuild.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" have a [act_quest]quest board[revert] of tasks that they [pay_special]reward extra[revert] "+Gem.AMBER.fancyNamePlural()+" for."
+						+ fancyNamePlural()+ " also grant "+Gem.AMBER.fancyNamePlural()+" to known hunters [pay_rep]upon request[revert] to better their gear.");
+			}
+			
+			@Override
+			public int priority() {
+				return 40;
+			}
+			
+			@Override
+			public String name() {
+				return "Hunter Guild";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_GUILD;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.MAJOR_GUILDS;
+			}
+		});
+	}
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -51,16 +82,6 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 	@Override
 	public QRType getQRType() {
 		return QRType.HUNT_GUILD;
-	}
-	
-	@Override
-	public String getColor() {
-		return TrawelColor.F_GUILD;
-	}
-	
-	@Override
-	public String nameOfFeature() {
-		return "Hunter Guild";
 	}
 	
 	@Override
