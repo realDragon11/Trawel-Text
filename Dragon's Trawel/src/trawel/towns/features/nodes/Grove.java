@@ -1,9 +1,41 @@
 package trawel.towns.features.nodes;
+import trawel.core.Print;
 import trawel.core.Networking.Area;
 import trawel.helper.constants.TrawelColor;
 import trawel.towns.contexts.Town;
+import trawel.towns.data.FeatureData;
 
 public class Grove extends NodeFeature {
+	
+	static {
+		FeatureData.registerFeature(Grove.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" can be [act_explore]explored[revert]. Over time, the "+fancyName()+" will [p_regrown]regrow[revert].");
+			}
+			
+			@Override
+			public int priority() {
+				return 30;
+			}
+			
+			@Override
+			public String name() {
+				return "Grove";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_NODE;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.NODE_EXPLORATION;
+			}
+		});
+	}
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,17 +52,7 @@ public class Grove extends NodeFeature {
 	}
 	
 	@Override
-	public String getColor() {
-		return TrawelColor.F_NODE;
-	}
-	
-	@Override
 	public String nameOfType() {
-		return "Grove";
-	}
-	
-	@Override
-	public String nameOfFeature() {
 		return "Grove";
 	}
 	

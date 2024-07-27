@@ -31,6 +31,13 @@ public class TagFormatter {
 		addTag("a5",TrawelColor.ADVISE_5);
 		addTag("a6",TrawelColor.ADVISE_6);
 		
+		addTag("ibw",TrawelColor.INFORM_BAD_WEAK);//inform bad weak
+		addTag("ibm",TrawelColor.INFORM_BAD_MID);//mid/moderate
+		addTag("ibs",TrawelColor.INFORM_BAD_STRONG);
+		addTag("igw",TrawelColor.INFORM_GOOD_WEAK);//inform good weak
+		addTag("igm",TrawelColor.INFORM_GOOD_MID);
+		addTag("igs",TrawelColor.INFORM_GOOD_STRONG);
+		
 		addTag("pay_aether",TrawelColor.SERVICE_AETHER);
 		addTag("pay_money",TrawelColor.SERVICE_CURRENCY);
 		addTag("pay_both",TrawelColor.SERVICE_BOTH_PAYMENT);

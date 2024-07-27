@@ -17,10 +17,8 @@ import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.Person;
-import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
-import trawel.personal.people.Behavior;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.personal.people.behaviors.AbandonPostBehavior;
@@ -30,7 +28,6 @@ import trawel.time.TrawelTime;
 import trawel.towns.contexts.Town;
 import trawel.towns.contexts.World;
 import trawel.towns.data.FeatureData;
-import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.towns.features.Feature;
 import trawel.towns.features.fort.elements.SubSkill;
 import trawel.towns.features.nodes.BossNode.BossType;
@@ -43,6 +40,7 @@ public class Dungeon extends NodeFeature {
 			@Override
 			public void tutorial() {
 				Print.println(fancyNamePlural()+" can be [act_explore]explored[revert]. "+fancyNamePlural()+" come in various shapes and sizes- all are heavily guarded."
+						+" Over time, the guards within will [p_regrown]rebuild[revert] their defenses and [p_regrown]replace[revert] looted rooms."
 						+" Some "+fancyNamePlural()+" have groups of guards, and adventurers can be [pay_money]recruited[revert] to help in fights."
 						+" These hired adventurers will [r_warn]leave over time[revert] if their employer does not visit the "+fancyName()+".");
 			}

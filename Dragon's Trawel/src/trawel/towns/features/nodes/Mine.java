@@ -1,14 +1,46 @@
 package trawel.towns.features.nodes;
 import trawel.core.Networking;
+import trawel.core.Print;
 import trawel.core.Networking.Area;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.classless.Perk;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.towns.contexts.Town;
+import trawel.towns.data.FeatureData;
 import trawel.towns.features.nodes.BossNode.BossType;
 
 public class Mine extends NodeFeature {
+	
+	static {
+		FeatureData.registerFeature(Mine.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" can be [act_explore]explored[revert]. Over time, digging will continue, [p_regrown]unearthing[revert] new veins until the "+fancyName()+" is tapped dry.");
+			}
+			
+			@Override
+			public int priority() {
+				return 25;
+			}
+			
+			@Override
+			public String name() {
+				return "Mine";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_NODE;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.NODE_EXPLORATION;
+			}
+		});
+	}
 
 	private static final long serialVersionUID = 1L;
 	private int veinsLeft = 0;
@@ -31,11 +63,6 @@ public class Mine extends NodeFeature {
 	}
 	
 	@Override
-	public String getColor() {
-		return TrawelColor.F_NODE;
-	}
-	
-	@Override
 	public String nameOfType() {
 		switch (shape) {
 		case ELEVATOR:
@@ -44,11 +71,6 @@ public class Mine extends NodeFeature {
 			return "Mine";
 		}
 		return "Mine?";
-	}
-	
-	@Override
-	public String nameOfFeature() {
-		return "Mine";
 	}
 	
 	@Override
