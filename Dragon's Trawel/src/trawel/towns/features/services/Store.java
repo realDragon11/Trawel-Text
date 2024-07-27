@@ -38,6 +38,7 @@ import trawel.towns.contexts.World;
 import trawel.towns.data.FeatureData;
 import trawel.towns.features.Feature;
 import trawel.towns.features.multi.Slum;
+import trawel.towns.features.services.guilds.MerchantGuild;
 
 public class Store extends Feature{
 	
@@ -46,7 +47,7 @@ public class Store extends Feature{
 
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" sell various items. Equipment must be bought with "+TrawelChar.DISP_AETHER+". Other items require World Currency. "+fancyNamePlural()+" will hide their better wares to those who haven't proven themselves- either in battle or as a Merchant Guild partner.");
+				Print.println(fancyNamePlural()+" sell various items. Equipment must be bought with "+TrawelChar.DISP_AETHER+". Other items require World Currency. "+fancyNamePlural()+" will hide their better wares to those who haven't proven themselves- either in battle or as a "+FeatureData.getData(MerchantGuild.class).fancyName()+" partner.");
 			}
 
 			@Override
