@@ -72,6 +72,9 @@ import trawel.towns.data.FeatureData;
 import trawel.towns.data.WorldGen;
 import trawel.towns.features.Feature;
 import trawel.towns.features.misc.Docks;
+import trawel.towns.features.misc.Garden;
+import trawel.towns.features.misc.Lot;
+import trawel.towns.features.misc.Altar;
 import trawel.towns.features.misc.Altar.AltarForce;
 
 public class Player extends SuperPerson{
@@ -1823,12 +1826,12 @@ public class Player extends SuperPerson{
 
 							@Override
 							public boolean go() {
-								Print.println("Aether is a magical substance infused into many objects to increase their potency. When infused into items, it can be freed with a basic spell all Personable creatures are capable of.");
-								Print.println("When infused in people or animals, it cannot be freed this way, however, it does build up.");
+								Print.println("[pay_aether]Aether[revert] ("+TrawelChar.DISP_AETHER+") is a magical substance infused into many objects to increase their potency. When infused into items, it can be freed with a basic spell all Personable creatures are capable of.");
+								Print.println("When infused in people or animals, it cannot be freed this way, however, it does build up and is transferred on death as XP.");
 								Print.println("In both these cases, this results in a level. Improving items is an arduous process, but even a bat can level up by fighting other creatures. The conflict itself also generates some aether from the souls of the participants, but the bulk of the aether comes from creatures being slain.");
 								Print.println("Aether is a universal currency, however it is not particularly easy to transfer outside of breaking things down and conflict, so stores not trading in Aether-infused items use 'World Currency' as their preferred trade item.");
-								Print.println("World Currency, as the name implies, is only good for the world that it's issued in. Other worlds will not accept it, and while many are valuable for their materials, this is never worth the effort of selling compared to how much time it would take to find a buyer.");
-								Print.println("World Currencies are also needed to buy land and forts. Both Aether and World Currencies are needed to build on land, but forts often have better connections once the initial hurdle of obtaining the deed is passed.");
+								Print.println("[pay_money]World Currency[revert], as the name implies, is only good for the world that it's issued in. Other worlds will not accept it, and while many are valuable for their materials, this is never worth the effort of selling compared to how much time it would take to find a buyer.");
+								Print.println("World Currencies are also needed to [pay_money]buy[revert] "+FeatureData.getData(Lot.class).fancyNamePlural()+" and Forts. Both Aether and World Currencies are needed to build on "+FeatureData.getData(Lot.class).fancyNamePlural()+", but Forts often have better connections once the initial hurdle of obtaining the deed is passed.");
 								return false;
 							}});
 						slist.add(new MenuSelect() {
@@ -1840,7 +1843,7 @@ public class Player extends SuperPerson{
 
 							@Override
 							public boolean go() {
-								Print.println("Every Person in Trawel has a level. This starts at 1 and goes up. They also have an Effective Level, which is 10 higher than their actual level. This effective level is used so that a level 2 person isn't twice as good as a level 1 person- often effectiveness (damage, armor, etc) is multiplied by effective level divided by 10.");
+								Print.println("Every Person in Trawel has a level. This starts at 1 and goes up. They also have an Effective Level, which is 10 higher than their actual level. Effectiveness is used for most leveled statistics, like MHP (Max HP). A level 1 Person would have an effectiveness of 1.1x, a Level 2 would have 1.2x, and a Level 10 would have 2.0x- and so on and soforth.");
 								PrintTutorial.featPickPointTutorial();
 								return false;
 							}});
@@ -1866,9 +1869,10 @@ public class Player extends SuperPerson{
 							@Override
 							public boolean go() {
 								Print.println("Armors are Aether-infused items meant to block blows.");
-								Print.println("The main three properties of an Armor are how well it defends against physical damage types. This is a result of it's effective level, material, and style.");
-								Print.println("Armors also influence your agility multiplier penalty, have a weight which can weigh you down if you can't fit all your used equipment in your capacity, and have elemental damage multipliers.");
-								Print.println("Unlike weapons, armors have positive (Quality), negative (Flaw), and neutral (trait) traits.");
+								Print.println("The main three properties of an Armor are how well it defends against physical damage types. These stats are derived from the armor's effective level, material, and style.");
+								Print.println("Armors also influence your agility multiplier penalty ("+TrawelChar.DISP_AMP+"), and a weight ("+TrawelChar.DISP_WEIGHT+") which can burden you if you can't fit all your used equipment in your capacity.");
+								Print.println("Unlike weapons, armors have positive (Quality), negative (Flaw), and neutral (trait) traits ("+TrawelChar.DISP_QUALS+").");
+								Print.println("Some armors come with Constant Enchantments, which buff and debuff your stats when the armor is worn.");
 								Print.println(" ");
 								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of armor traits?");
 								if (Input.yesNo()) {
@@ -1888,8 +1892,12 @@ public class Player extends SuperPerson{
 							@Override
 							public boolean go() {
 								Print.println("Weapons are Aether-infused items meant to inflict harm on other Persons and creatures.");
-								Print.println("The main importance of weapons are for their attacks- every weapon type has a set, and the final numbers are determined by it's effective level and material.");
+								Print.println("The main importance of weapons are for their attacks- every weapon type has a set, and the final numbers are determined by the weapon's effective level and material.");
 								Print.println("Weapons also tend to have weapon qualities, which are positive traits. This glossary does not include a list of all weapon attacks, but you can browse them in a format that tests their effectiveness from one of the main menu tests.");
+								Print.println("Weapons can come with two types of enchantments: Constant Enchantments, which alter character stats, as with Armor, and On-Hit enchantments. Most On-Hit enchantments deal bonus damage based on a percent of the damage the attack would inflict. Other On-Hit enchantments are 'Keen', which makes all the weapon's attacks have wounds.");
+								Print.println("When looting a weapon, you will be shown the battlescore stats of a weapon alongside the raw stats- these are simulated numbers of what you can expect from the weapon.");
+								Print.println("Impact Chance (ic) is how likely the weapon was to land a blow and not get blocked by the defender's armor. Best Damage (bd) is the highest DPI (damage per instant) achieved by a single attack's average. Weighted Average (wa) is the averaged DPI of all attacks, weighted for how often they present themselves.");
+								Print.println("The performance you can expect from a weapon tends to lie between the Best Damage and Weighted Average, because you can choose the better attacks when they appear. The more attack options you get per attack, the closer the output will be to the Best Damage.");
 								Print.println(" ");
 								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of weapon qualities?");
 								if (Input.yesNo()) {
@@ -1908,7 +1916,7 @@ public class Player extends SuperPerson{
 
 							@Override
 							public boolean go() {
-								Print.println("Skills are abilities, typically conditional, that add things that your character can do. Most of them apply automatically, some give you more options, and others must be set up.");
+								Print.println("Skills are abilities, often conditional, that add things that your character can do. Most of them apply automatically, some give you more options, and others must be set up.");
 								Print.println("There are a lot of skills, but having a skill is a binary state- if you get it from another skill source, you still 'only' have it once. Simply put, skills don't stack with themselves.");
 								Print.println(" ");
 								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of skills?");
@@ -1928,10 +1936,11 @@ public class Player extends SuperPerson{
 
 							@Override
 							public boolean go() {
-								Print.println("Archetypes are a skill source, and uniquely unlock Feat Types that you can pick Feats from when you level up. They also grant attributes. Some archetypes also require similar archetypes to be obtained before they can be picked.");
-								Print.println("The game encourages you to have 2 + 1 for every 5 levels archetypes, but you are only required to unlock one before you can start picking Feats instead.");
+								Print.println("Archetypes are a skill source (granting skills), might grant a skill config action to use, and uniquely unlock Feat Types that you can pick Feats from when you level up. They also grant attributes. Some archetypes also require similar archetypes to be obtained before they can be picked.");
+								Print.println("Each character has a limited number of Archetype slots- 2 base plus 1 every five levels. If a character does not have any Archetypes, they cannot select Feats.");
+								Print.println("If you pick a Feat instead of an Archetype when the option is presented, you will still get the choice of a new Archetype on your next level up, so you can save your slots for the ones you want.");
 								Print.println(" ");
-								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of archetypes?");
+								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of Archetypes?");
 								List<MenuItem> alist = new ArrayList<MenuItem>();
 								if (!Input.yesNo()) {
 									return false;
@@ -1966,10 +1975,10 @@ public class Player extends SuperPerson{
 
 							@Override
 							public boolean go() {
-								Print.println("Feats are a skill source, meaning they grant skills, might grant a skill config action to use, and attributes. Feats tend to give attributes based on how many skills they grant 5 for 3 skills, 15 for two skills, or 30 for one skill.");
+								Print.println("Feats are a skill source (granting skills), might grant a skill config action to use, and attributes. Feats tend to give attributes based on how many skills they grant: +5 for 3 skills, +15 for two skills, or +30 for one skill.");
 								Print.println("All level up skill sources that aren't Archetypes are Feats.");
 								Print.println(" ");
-								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of feats?");
+								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of Feats?");
 								if (!Input.yesNo()) {
 									return false;
 								}
@@ -2005,10 +2014,10 @@ public class Player extends SuperPerson{
 							@Override
 							public boolean go() {
 								Print.println("Perks are a skill source, granting skills and attributes.");
-								Print.println("Unlike Feats and Archetypes, you get Perks from fulfilling specific conditions, like killing bosses or making offerings at altars, instead of by leveling up.");
-								Print.println("Most of the perks displayed below are only for NPCs.");
+								Print.println("Unlike Feats and Archetypes, you get Perks from fulfilling specific conditions, like killing bosses or making offerings at "+FeatureData.getData(Altar.class).fancyNamePlural()+", instead of by leveling up.");
+								Print.println("Most of the Perks displayed below are only for NPCs.");
 								Print.println(" ");
-								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of perks?");
+								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of Perks?");
 								if (!Input.yesNo()) {
 									return false;
 								}
@@ -2046,11 +2055,11 @@ public class Player extends SuperPerson{
 								Print.println("Wounds are ailments caused by an attack. They can be further divided into two categories: normal wounds and condition wounds.");
 								Print.println("Normal wounds have a 90% chance to occur on all attacks, and are chosen based on the attack's damage types and the body part that is being attacked.");
 								Print.println("Keen weapons always roll wounds on their attacks, bypassing the normal 10% chance of a 'Grazed'. This does not change the result of a 'Negated', which is a wound signifying an attack that hits but isn't very effective outside of the damage.");
-								Print.println("Rolled wounds typically have instant or short-term effects. They also can be inflicted through skills. The main exception to this is wounds involving Bleed.");
+								Print.println("Rolled wounds typically have instant or short-term effects. They also can be inflicted through skills. The main exception to this is wounds involving Bleed, which last for longer.");
 								Print.println("Condition wounds occur automatically when a body part reaches 50% 'condition'. They tend to be long lasting effects that highlight the downward spiral of combat.");
-								Print.println("There are several ways to negate inflicted wounds, but Condition wounds ignore these affects. Condition wounds are also often called Injuries.");
+								Print.println("There are several ways to negate inflicted wounds, but Condition wounds ignore these affects. Condition wounds are also called Injuries.");
 								Print.println(" ");
-								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of wounds? Values will not display if they vary.");
+								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of Wounds? Values will not display if they vary.");
 								if (Input.yesNo()) {
 									for (Wound w: Wound.values()) {
 										try {
@@ -2073,7 +2082,8 @@ public class Player extends SuperPerson{
 							public boolean go() {
 								Print.println("Effects are temporary status effects. They are all counters, although many have that counter limited to 1.");
 								Print.println("Effects don't store any information in themselves other how many a Person has.");
-								Print.println("Some effects persist after battle, and through death, which means they need to be resolved- Doctors, Shamans, Blacksmiths, water sources, and Inns can heal different types.");
+								Print.println("Some Effects persist after battle and through death, which means they need to be resolved- these Effects are called Punishments. You can determine which Punishments you have in the Status screen. Both the Punishment and the Status screen will display how to fix them.");
+								Print.println("[r_warn]Most Punishments make battles excessively difficult, and should be fixed before attempting to fight more.[revert]");
 								Print.println(" ");
 								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of Effects?");
 								if (Input.yesNo()) {
@@ -2117,8 +2127,8 @@ public class Player extends SuperPerson{
 
 							@Override
 							public boolean go() {
-								Print.println("Seeds can be planted in Plant Spots, either in Node Exploration town Features, or Garden town Features. They will then grow as time passes. Some seeds grow into items that can be harvested, while others can only be taken.");
-								Print.println("Seeds have a limited inventory space, but are quite rare, so it is a bit harder to reach that cap. They can't be used for anything else, but often can be used to grow DrawBanes.");
+								Print.println("Seeds can be planted in Plant Spots, either in Node Exploration town Features, or "+FeatureData.getData(Garden.class).fancyName()+" town Features. They will then grow as time passes. Some seeds grow into items that can be harvested, while others can only be taken.");
+								Print.println("Seeds have a limited inventory space, but are rare, so it is a bit harder to reach that cap. They can't be used for anything else, but often can be used to grow DrawBanes.");
 								Print.println(" ");
 								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of plant states?");
 								if (Input.yesNo()) {
@@ -2182,7 +2192,7 @@ public class Player extends SuperPerson{
 
 					@Override
 					public String title() {
-						return "Infodump Tutorial (partly outdated)";
+						return "Infodump Tutorial (outdated)";
 					}
 
 					@Override
