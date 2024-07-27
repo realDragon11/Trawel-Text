@@ -34,6 +34,7 @@ import trawel.quests.types.CleanseSideQuest.CleanseType;
 import trawel.quests.types.FetchSideQuest.FetchType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.time.TrawelTime;
 import trawel.towns.contexts.World;
 import trawel.towns.data.FeatureData;
 import trawel.towns.features.Feature;
@@ -256,6 +257,8 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 						}
 						Print.println("Buying lots of books might find you a feat fragment- buy?");
 						if (Input.yesNo()) {
+							Player.addTime(4);
+							TrawelTime.globalPassTime();
 							Player.player.addGold(-merchantBookPrice);
 							//chance of success declines from 3/5ths to 1/2th as the number of passes approaches infinity
 							if (passes < 3 || Rand.chanceIn(3+passes,5+(2*passes))) {
@@ -284,6 +287,8 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 						}
 						Print.println("Beer increases your starting HP in battle, one use per beer- buy 20 of them?");
 						if (Input.yesNo()) {
+							Player.addTime(1);
+							TrawelTime.globalPassTime();
 							Player.player.addGold(-bShipmentCost);
 							Player.player.beer+=20;
 							Print.println(TrawelColor.RESULT_PASS+"You gain 20 beers.");
