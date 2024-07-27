@@ -31,9 +31,43 @@ import trawel.quests.types.CleanseSideQuest.CleanseType;
 import trawel.quests.types.FetchSideQuest.FetchType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.towns.data.FeatureData;
+import trawel.towns.data.FeatureData.FeatureTutorialCategory;
 import trawel.towns.features.Feature;
 
 public class HeroGuild extends Feature implements QuestBoardLocation{
+	
+	static {
+		FeatureData.registerFeature(HeroGuild.class,new FeatureData() {
+			
+			@Override
+			public void tutorial() {
+				Print.println(fancyNamePlural()+" have a [act_quest]quest board[revert] of mostly heroic tasks that help the community. "
+						+fancyNamePlural()+ " accept [pay_rep]donations of[revert] "+Gem.RUBY.fancyNamePlural() + " and [pay_rep]offer[revert] "+DrawBane.KNOW_FRAG.getNamePlural()
+						+" to do-gooders.");
+			}
+			
+			@Override
+			public int priority() {
+				return 20;
+			}
+			
+			@Override
+			public String name() {
+				return "Hero Guild";
+			}
+			
+			@Override
+			public String color() {
+				return TrawelColor.F_GUILD;
+			}
+			
+			@Override
+			public FeatureTutorialCategory category() {
+				return FeatureTutorialCategory.MAJOR_GUILDS;
+			}
+		});
+	}
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -51,16 +85,6 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 	@Override
 	public QRType getQRType() {
 		return QRType.HGUILD;
-	}
-	
-	@Override
-	public String getColor() {
-		return TrawelColor.F_GUILD;
-	}
-	
-	@Override
-	public String nameOfFeature() {
-		return "Hero Guild";
 	}
 	
 	@Override
