@@ -8,12 +8,14 @@ import trawel.helper.constants.TrawelColor;
 public class Changelog {
 	//b__X is in development, b_X is the actual release of that version
 		public static final String VERSION_STRING = "v0.8.b__13";
-		public static final String VERSION_DATE = " updated July 23rd 2024";
+		public static final String VERSION_DATE = " updated Aug 1st 2024";
 		public static final String[][] changelog = new String[][] {
 			//add to front, changeviewer cycles to older ones when used
 			{"b_13",
-				//test color changes
-				TrawelColor.ADVISE_3+"Be advised, this is a color test "+TrawelColor.ADVISE_5+"that just tested."+TrawelColor.COLOR_RESET+" And then this should be back."
+				//talk about terminal only (for now) changes
+				"Terminal Only: Access special printouts by inputting 't' (tutorial) to display the current Feature's tutorial (if any) or the battle tutorial, 'i' to show the ally inventory (usually you), and 'o' to show your opponent's inventory (if visible). This should give the terminal more parity with the Graphical.",
+				//talk about graphical only (for now) changes
+				"Graphical Only: Added UI tray from hamburger menu in top left. Can change volume options, and displays Fancy/Autoscroll better."
 			},
 			{"b_12",
 				//discuss death punishments
