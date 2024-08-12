@@ -47,7 +47,7 @@ public class Store extends Feature{
 
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" sell various items. Equipment must be bought with "+TrawelChar.DISP_AETHER+". Other items require World Currency. "+fancyNamePlural()+" will hide their better wares to those who haven't proven themselves- either in battle or as a "+FeatureData.getData(MerchantGuild.class).fancyName()+" partner.");
+				Print.println(fancyNamePlural()+" sell various items. Equipment must be bought with [pay_aether]"+TrawelChar.DISP_AETHER+"[revert]. Other items require [pay_money]World Currency[revert]. "+fancyNamePlural()+" will hide their better wares to those who haven't proven themselves- either in battle or as a "+FeatureData.getData(MerchantGuild.class).fancyName()+" partner.");
 			}
 
 			@Override
