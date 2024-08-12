@@ -19,6 +19,7 @@ public class NPCMutator {
 	}
 	
 	public static Person primal_Random(Person p) {
+		//TODO: make detect if already has the type they are being changed to, and add another, as well as a fallback
 		switch (Rand.randRange(0,5)) {
 		case 0: default:
 			return primal_Mountain(p);

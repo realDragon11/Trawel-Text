@@ -931,8 +931,33 @@ public class Town extends TContextOwner{
 					AIClass.loot(p.getBag(), new Inventory(pLevel, Race.RaceType.PERSONABLE, null, null, null), false,p,false);
 					Print.popPrintStack();
 				}
-				int part1 = Rand.randRange(0, 1);
+				List<Integer> attempts = new ArrayList<Integer>();
+				if (!p.hasFeat(Feat.AMBUSHER)) {
+					attempts.add(0);
+				}
+				if (!p.hasFeat(Feat.HEMOVORE)) {
+					attempts.add(1);
+				}
+				if (!p.hasFeat(Feat.UNDERHANDED)) {
+					attempts.add(2);
+				}
+				if (!p.hasFeat(Feat.SWIFT)) {
+					attempts.add(3);
+				}
+				if (!p.hasFeat(Feat.COMMON_TOUGH)) {
+					attempts.add(4);
+				}
+				int part1 = -1;//if no other valid choices, will get this
+				if (!attempts.isEmpty()) {
+					part1 = Rand.randList(attempts);
+				}
+				
+				//all of these choices print the old name of the character before being changed in the next step, so the player has a greater chance to remember them and notice the change
 				switch (part1) {
+				default://includes -1
+					//for when no other options would grant anything
+					Print.print(TrawelColor.PRE_BATTLE+p.getName() + " is back! ");
+					break;
 				case 0:
 					Print.print(TrawelColor.PRE_BATTLE+p.getName() +" charges you out of nowhere! They're back for more, and this time they're not fighting fair! ");
 					p.setSkillHas(Feat.AMBUSHER);
@@ -941,11 +966,29 @@ public class Town extends TContextOwner{
 					Print.print(TrawelColor.PRE_BATTLE+p.getName() +" charges you, screaming bloody murder! Their thirst for blood has not yet been satiated! ");
 					p.setSkillHas(Feat.HEMOVORE);
 					break;
-				default:
-					Print.print(TrawelColor.PRE_BATTLE+p.getName() + " is back!");
+				case 2:
+					Print.print(TrawelColor.PRE_BATTLE+p.getName() +" charges you from behind! They're back for more, and this time they're not fighting fair! ");
+					p.setFeat(Feat.UNDERHANDED);
+					break;
+				case 3:
+					//kinda a corny joke
+					Print.print(TrawelColor.PRE_BATTLE+p.getName() +" darts in for revenge! Looks like they're quick, not dead! ");
+					p.setFeat(Feat.SWIFT);
+					break;
+				case 4:
+					Print.print(TrawelColor.PRE_BATTLE+p.getName() +" swaggers forward, scarred but alive. Looks like they're forcing a rematch! ");
+					p.setFeat(Feat.COMMON_TOUGH);
 					break;
 				}
-				switch (Rand.randRange(0, 1)) {
+				attempts.clear();
+				attempts.add(1);//always can be a random primal type
+				if (!p.hasFeat(Feat.UNBREAKABLE)) {
+					attempts.add(0);
+				}
+				//can never be empty
+				int part2 = Rand.randList(attempts);
+				
+				switch (part2) {
 				case 0:
 					if (p.getPersonType() == PersonType.COWARDLY) {
 						Print.println("\"I was once weak and broken... no more! I will be better! I shall not break again!\"");
@@ -957,6 +1000,7 @@ public class Town extends TContextOwner{
 					p.setFeat(Feat.UNBREAKABLE);
 					p.setPersonType(PersonType.DEATHCHEATED);
 					break;
+				default:
 				case 1:
 					if (part1 == 1) {
 						Print.println("\"Primal forces demand I take back what you took from me!\"");

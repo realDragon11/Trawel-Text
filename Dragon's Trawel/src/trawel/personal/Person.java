@@ -584,9 +584,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		perkSet.add(p);
 		updateSkills();//just update instantly now
 	}
-	public boolean hasPerk(Perk p) {
-		return perkSet.contains(p);
-	}
+	
 	public void setFeat(Feat f) {
 		featSet.add(f);
 		switch (f) {
@@ -602,6 +600,18 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public void setArch(Archetype a) {
 		archSet.add(a);
 		updateSkills();//just update instantly now
+	}
+	
+	public boolean hasPerk(Perk p) {
+		return perkSet.contains(p);
+	}
+	
+	public boolean hasFeat(Feat f) {
+		return featSet.contains(f);
+	}
+	
+	public boolean hasArch(Archetype a) {
+		return archSet.contains(a);
 	}
 	
 	public Set<Perk> getPerkSet(){
