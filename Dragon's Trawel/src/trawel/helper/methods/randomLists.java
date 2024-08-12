@@ -1,8 +1,14 @@
 package trawel.helper.methods;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import derg.strings.fluffer.StringNum;
 import derg.strings.fluffer.StringResult;
@@ -12,9 +18,11 @@ import derg.strings.random.SRPlainRandom;
 import trawel.battle.Combat.ATK_ResultCode;
 import trawel.core.Print;
 import trawel.core.Rand;
+import trawel.core.mainGame;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
+import trawel.towns.features.services.Oracle;
 
 /**
  * @author dragon
@@ -25,7 +33,8 @@ public class randomLists {
 	//holding lists, internal
 	//initers
 	private static StringResult commonElements, rareElements, randMats = null, colorList, normalFirstNames, theTitles,
-			doerTitles, animals,plants, wolfNames,bearNames,batNames, entNames, waterNames,
+			doerTitles, animals,plants, wolfNames,wolfPrefixes,wolfSuffixes,wolfAdjPrefixes,wolfAdjSuffixes,
+			bearNames,batNames, entNames, waterNames,
 			fighterTypes,drifterTypes,thiefTypes,thugTypes,pirateTypes,collectTypes,theAlphaTitles,theLargeTitles, attackMisses, attackNegates, attackDodges
 			,hunterTitles,thingsToSlay,slayerTitleToSlay,dGuardTitles,oldTitles, colorListPrintable,
 			violateForestQuote, chestAdjectives
@@ -93,7 +102,13 @@ public class randomLists {
 		enchantHitElec = new SRPlainRandom("shock","lightning","shocking","sparks","thundering","zapping");
 		enchantHitKeen = new SRPlainRandom("keen","honed","whetted");
 		//https://www.fantasynamegenerators.com/scripts/wolfNames.js
-		wolfNames = new SRPlainRandom("Ace","Akira","Alistair","Alpha","Apache","Apollo","Archer","Artemis","Astro","Athene","Atlas","Avalanche","Axis","Bandit","Bane","Baron","Beacon","Bear","Blaze","Blitz","Bolt","Bones","Boomer","Boon","Booth","Boulder","Brawn","Brick","Brock","Browne","Bruno","Brutus","Buck","Bud","Buddy","Bullet","Buster","Butch","Buzz","Caesar","Camelot","Chase","Chewy","Chronos","Cloud","Colt","Comet","Conan","Courage","Dagger","Dane","Danger","Dash","Delta","Dexter","Diablo","Digger","Drake","Duke","Dust","Dutch","Echo","Edge","Excalibur","Fang","Farkas","Flash","Frost","Fury","Ghost","Goliath","Gray","Grunt","Hannibal","Havoc","Hawke","Hawkeye","Hector","Hercules","Hooch","Hulk","Hunter","Hyde","Ice","Jaws","Jax","Jeckyll","Jethro","Judge","Kaine","Kane","Khan","Killer","King","Lad","Laika","Lecter","Lightning","Logan","Loki","Lupin","Lupus","Magnus","Mako","Mason","Maverick","Max","Maximus","Mayhem","Menace","Midnight","Miles","Murdoch","Myst","Nanook","Nero","Nightmare","Nova","Oak","Obsidian","Odin","Omega","Omen","Onyx","Orbit","Outlaw","Patriot","Phantom","Prince","Pyro","Quicksilver","Rage","Ralph","Ranger","Razor","Rebel","Rex","Rider","Riggs","Ripley","Riptide","Rogue","Rover","Scar","Scout","Shade","Shadow","Shepherd","Shredder","Silver","Skye","Slate","Sly","Smoke","Splinter","Steele","Storm","Striker","Summit","Tank","Thor","Thunder","Timber","Titan","Tooth","Trace","Trapper","Trouble","Tundra","Vapor","Whisper","Wolf","Acadia","Aiyana","Akita","Alaska","Alexia","Alexis","Alize","Alpine","Amber","Amethyst","Angel","Ares","Ari","Aspen","Astral","Athena","Atilla","Aura","Aurora","Avril","Babe","Banshee","Beauty","Blaze","Blitz","Blitzen","Blossom","Bo","Boone","Breeze","Charm","Chronis","Clarity","Cleo","Codex","Coral","Crystal","Dakota","Dash","Dawn","Delphi","Destiny","Dharma","Diva","Dodger","Dot","Duchess","Ebony","Echo","Eclipse","Enigma","Faith","Fern","Gemini","Gia","Girl","Grace","Hailey","Heather","Heaven","Helen","Hope","Ice","Indigo","Iris","Ivory","Ivy","Jade","Jasmine","Jewel","Jinx","June","Juno","Justice","Jynx","Karma","Kenya","Lady","Laika","Levi","Lexis","Liberty","Lore","Lotus","Luna","Maple","Maxima","Meadow","Mello","Melody","Mercy","Midnight","Mona","Moone","Myst","Mysti","Mystique","Myth","Nanook","Nova","Nymph","Nyx","Omen","Onyxia","Opal","Oracle","Pandora","Paws","Pearl","Pepper","Phantom","Phoenix","Precious","Princess","Pyro","Queen","Rags","Raine","Raven","Rogue","Sable","Saffron","Sapphire","Satin","Scarlet","Shade","Shadow","Silver","Snow","Snowball","Snowflake","Solstice","Star","Twilight","Vapor","Velvet","Violet","Vixen","Whisper","Willow","Winter","Xena","Zelda");
+		//wolfNames = new SRPlainRandom("Ace","Akira","Alistair","Alpha","Apache","Apollo","Archer","Artemis","Astro","Athene","Atlas","Avalanche","Axis","Bandit","Bane","Baron","Beacon","Bear","Blaze","Blitz","Bolt","Bones","Boomer","Boon","Booth","Boulder","Brawn","Brick","Brock","Browne","Bruno","Brutus","Buck","Bud","Buddy","Bullet","Buster","Butch","Buzz","Caesar","Camelot","Chase","Chewy","Chronos","Cloud","Colt","Comet","Conan","Courage","Dagger","Dane","Danger","Dash","Delta","Dexter","Diablo","Digger","Drake","Duke","Dust","Dutch","Echo","Edge","Excalibur","Fang","Farkas","Flash","Frost","Fury","Ghost","Goliath","Gray","Grunt","Hannibal","Havoc","Hawke","Hawkeye","Hector","Hercules","Hooch","Hulk","Hunter","Hyde","Ice","Jaws","Jax","Jeckyll","Jethro","Judge","Kaine","Kane","Khan","Killer","King","Lad","Laika","Lecter","Lightning","Logan","Loki","Lupin","Lupus","Magnus","Mako","Mason","Maverick","Max","Maximus","Mayhem","Menace","Midnight","Miles","Murdoch","Myst","Nanook","Nero","Nightmare","Nova","Oak","Obsidian","Odin","Omega","Omen","Onyx","Orbit","Outlaw","Patriot","Phantom","Prince","Pyro","Quicksilver","Rage","Ralph","Ranger","Razor","Rebel","Rex","Rider","Riggs","Ripley","Riptide","Rogue","Rover","Scar","Scout","Shade","Shadow","Shepherd","Shredder","Silver","Skye","Slate","Sly","Smoke","Splinter","Steele","Storm","Striker","Summit","Tank","Thor","Thunder","Timber","Titan","Tooth","Trace","Trapper","Trouble","Tundra","Vapor","Whisper","Wolf","Acadia","Aiyana","Akita","Alaska","Alexia","Alexis","Alize","Alpine","Amber","Amethyst","Angel","Ares","Ari","Aspen","Astral","Athena","Atilla","Aura","Aurora","Avril","Babe","Banshee","Beauty","Blaze","Blitz","Blitzen","Blossom","Bo","Boone","Breeze","Charm","Chronis","Clarity","Cleo","Codex","Coral","Crystal","Dakota","Dash","Dawn","Delphi","Destiny","Dharma","Diva","Dodger","Dot","Duchess","Ebony","Echo","Eclipse","Enigma","Faith","Fern","Gemini","Gia","Girl","Grace","Hailey","Heather","Heaven","Helen","Hope","Ice","Indigo","Iris","Ivory","Ivy","Jade","Jasmine","Jewel","Jinx","June","Juno","Justice","Jynx","Karma","Kenya","Lady","Laika","Levi","Lexis","Liberty","Lore","Lotus","Luna","Maple","Maxima","Meadow","Mello","Melody","Mercy","Midnight","Mona","Moone","Myst","Mysti","Mystique","Myth","Nanook","Nova","Nymph","Nyx","Omen","Onyxia","Opal","Oracle","Pandora","Paws","Pearl","Pepper","Phantom","Phoenix","Precious","Princess","Pyro","Queen","Rags","Raine","Raven","Rogue","Sable","Saffron","Sapphire","Satin","Scarlet","Shade","Shadow","Silver","Snow","Snowball","Snowflake","Solstice","Star","Twilight","Vapor","Velvet","Violet","Vixen","Whisper","Willow","Winter","Xena","Zelda");
+		wolfNames = new SRPlainRandom(loadNames("wolf"));
+		wolfPrefixes = new SRPlainRandom(loadNames("wolfPrefix"));
+		wolfSuffixes = new SRPlainRandom(loadNames("wolfSuffix"));
+		wolfAdjPrefixes = new SRPlainRandom(loadNames("wolfAdjPrefix"));
+		wolfAdjSuffixes = new SRPlainRandom(loadNames("wolfAdjSuffix"));
+		
 		bearNames = new SRPlainRandom("Adalbero","Aloysius","Andy","Anuk","Arcadius","Arcot","Arkadios","Arktos","Armel","Arnbjorn","Arshag","Art","Artair","Artan","Arther","Arthfael","Arthmael","Arthog","Arthur","Artie","Artis","Arto","Artorius","Arttu","Artturi","Artur","Arturas","Arturo","Arty","Asbjorn","Attie","Atty","Auberon","Avery","Avonaco","Bam-Bam","Bamard","Bamey","Banjo","Barbell","Barend","Barley","Barnard","Barnea","Barney","Barnie","Barny","Barret","Barrett","Barry","Basil","Bastian","Beamard","Bear","Bearnabus","Bearnard","Behrend","Beirne","Bemelle","Bemot","Benard","Benat","Benno","Benton","Beorn","Beornheard","Beowulf","Ber","Beraco","Beranger","Beregiso","Berend","Berengar","Berengarius","Berenger","Berenguer","Berernger","Beringar","Beringarius","Berinhard","Bern","Bernaldino","Bernard","Bernardino","Bernardo","Bernardus","Bernardyn","Bernat","Bernd","Berndt","Berne","Berney","Bernfried","Bernhard","Bernhardt","Bernie","Bernon","Bernt","Bernward","Berny","Bero","Billie","Biorna","Bitsy","Bjarne","Bjarni","Bjoern","Bjorn","Bjornar","Bjorne","Blubber","Bobby","Bobo","Boo Boo","Boots","Burnard","Burney","Buttercup","Buttons","Calico","Capps","Caramel","Casey","Cedar","Chancie","Charlie","Chip","Coco","Cornelius","Dopey","Dov","Drogo","Dubi","Dusty","Eden","Edun","Einstein","Enyeto","Esben","Espen","Finley","Flubber","Fluffy","Frankie","Freddy","Garcia","Geoff","George","Georgie","Georgy","Gerben","Grumpy","Gunnbjorn","Hallbjorn","Hamilton","Happy","Hartz","Hausu","Henri","Henry","Hohots","Honaw","Honon","Horace","Howell","Humbert","Humphrey","Huslu","Jack","James","Jammy","Jasper","Joachim","Johnny","Jonsey","Jupiter","Justin","Kolbjorn","Kuma","Kuruk","Lannie","Lennie","Liwanu","Louis","Machk","Mahon","Marley","Marshmellow","Mathe","Mathuin","Matoskah","Mecho","Mitch","Molimo","Myr","Nanook","Nanuk","Nibbs","Niels","Norman","Notaku","O'Berry","Oberon","Oliver","Omar","Orion","Ors","Orsen","Orsin","Orsino","Orso","Orson","Osbeorn","Osborn","Osborne","Osbourne","Oscar","Otso","Ottille","Otto","Ourson","Panda","Pandy","Pat","Patches","Pebbles","Ponty","Popey","Preben","Pridbjorn","Quadro","Rio","Robbie","Rocky","Rolly","Rum","Sabby","Sammy","Scoot","Scottie","Sebastian","Sewati","Shorty","Sigbjorn","Skittle","Sleepy","Smokey","Snowball","Sonny","Sooty","Spencer","Spike","Spiky","Stormy","Sugar","Sunshine","Svenbjorn","Tabby","Talbert","Tarben","Tatty","Teddy","Telutci","Theo","Theodore","Thorben","Thorbern","Thorbjorn","Thorburn","Thorton","Tickles","Tims","Toby","Toffy","Tony","Torben","Torbern","Torbernus","Torbjorn","Tottles","Trevor","Trump","Tubby","Tuketu","Turi","Twinky","Ucumari","Uffo","Uigbiorn","Urs","Ursino","Ursinus","Ursus","Uther","Uzumati","Vemados","Vermundo","Vernados","Victor","Waffle","Walter","Willie","Winston","Woodsy","Wyborn","Yana","Zed","Abby","Angel","Apple-pie","Arcadia","Ariane","Armelle","Arthuretta","Arthurine","Arti","Averi","Averie","Avery","Ayla","Banjo","Barrett","Barretta","Beatrice","Bella","Bemadette","Bera","Beratrice","Berdine","Berengari","Berengaria","Berenice","Bern","Bernadea","Bernadete","Bernadett","Bernadette","Bernadina","Bernadine","Bernarda","Bernarde","Bernardete","Bernardetta","Bernardette","Bernardina","Bernardine","Bernardita","Berne","Berneen","Bernelle","Bitsy","Blubber","Bobo","Boo Boo","Boots","Bubbles","Buttercup","Buttons","Calico","Calista","Callista","Callisto","Caramel","Clymene","Coco","Dandelion","Dopey","Doris","Dusty","Eden","Eferhild","Eferhilda","Elizabeth","Emily","Fatima","Flubber","Fluffy","Georgy","Grumpy","Hagar","Happy","Hausu","Heltu","Honey","Irene","Isobel","Izzy","Jammy","Jane","Jerica","Jewel","Jupiter","Justine","Kuma","Louis","Louise","Lusela","Maggie","Mahtowa","Margaret","Marshmellow","Mecislava","Melanie","Miffy","Myr","Nadetta","Nadette","Nibbs","Nita","Orsa","Orsaline","Orse","Orsel","Orselina","Orseline","Orsina","Orsola","Orsolya","Osha","Ottilie","Pam","Panda","Pandy","Pat","Patches","Patricia","Peaches","Pebbles","Penny","Persephone","Poe","Polly","Puddles","Queenie","Rio","Rolly","Rosie","Roxie","Sabby","Samantha","Sammie","Sandra","Sapata","Sargie","Sienna","Skittle","Sleepy","Smokey","Snowball","Sugar","Sunshine","Susanna","Susie","Suzie","Tabby","Taffy","Tatty","Thorborg","Tickles","Toffy","Torborg","Tottles","Tubby","Twinky","Ursa","Ursala","Ursel","Ursella","Ursicina","Ursina","Ursine","Urska","Ursula","Ursule","Ursulina","Urszula","Uschi","Valerie","Venus","Veronica","Versula","Viola","Violet","Violette","Waffle","Wilhelmina","Winifred","Winnie","Winona");
 		batNames = new SRPlainRandom("Ace","Acrobat","Ajax","Angel","Apollo","Archangel","Artemis","Ash","Azar","Azral","Baltazar","Bandit","Bane","Basil","BatPitt","Batista","Batley","Baxter","Beaker","Bigglesworth","Bitz","Blackjack","Blade","Blaze","Blitz","Bloodwing","Blues","Booboo","Bruce","Brutus","Bubba","Bubbles","Bullet","Buster","Butch","Buttons","Chaos","Char","Chocula","Cole","Comet","Cookie","Count","Cupcake","Darkess","Darth","Dexter","Diablo","Dimitri","Ding","Dodge","Dodger","Doom","Drac","Dracula","Draculon","Drake","Echo","Equinox","Fangs","Flapper","Flappy","Flaps","Flash","Flicker","Fuzz","Gambat","Gargle","Gargles","Gargoyle","Gavalon","Ghost","Gizmo","Glider","Gloom","Glyde","Golbat","Gouge","Grey","Guano","Hannibal","Hawke","Hunter","Hyperion","Impaler","Jet","Kane","Khan","Kindle","Lecter","Lockjaw","Lucifer","Marble","Matrix","Merlin","Midas","Midnight","Mirage","Monty","Moon","Mothra","Muse","Nerf","Nibbles","Nightmare","Nightwing","Nugget","Nukem","Nyx","Onyx","Orion","Ozzy","Patch","Patches","Pebbles","Phantom","Pickle","Psych","Quickfang","Quilla","Rabies","Rainbow","Rascal","Remus","Render","Rhonin","Ripmaw","Rocky","Rufus","Sabath","Sawyer","Screech","Screechy","Shade","Shadow","Shreek","Shrike","Slate","Slithe","Snuffle","Sonar","Sonny","Spectre","Spitfire","Spudnik","Spuds","Swoops","Thunder","Tiberius","Titan","Twinkle","Umber","Vamp","Vlad","Vladimir","Vulkan","Wayne","Wiggles","Wingnut","Xanadu","Zion","Abby","Aerial","Aine","Alexia","Alexis","Amber","Angel","Angie","Apple","Ash","Atilla","Aura","Aurora","Azraelle","Azure","Azurys","Babes","Bandetta","Batsy","Batty","Beauty","Biscuit","Blaze","Breeze","Bubble","Bubbles","Buttercup","Buttons","Calypso","Cerulean","Chuckles","Cinderella","Cinnamon","Clementine","Cleo","Cookie","Cosmo","Cuddles","Cupcake","Dakota","Daphne","Dawn","Dawne","Dawnstar","Dot","Draculette","Ebony","Echo","Eclipse","Ember","Enigma","Equina","Equinox","Fang","Fangie","Faune","Fierra","Fizzle","Flappy","Fluffy","Flutters","Gadget","Gargles","Giggles","Grace","Guani","Harmony","Haze","Hazel","Honey","Huntress","Iggy","Illumina","Indigo","Iris","Ivory","Ivy","Jinx","Jynx","Lady","Liberty","Lucy","Lullaby","Luna","Mable","Marbles","Maya","Melody","Mirage","Mittens","Moonbeam","Moone","Moonlight","Morning","Morticia","Myst","Mystique","Nibbles","Nighte","Noodles","Nova","Nugget","Oracle","Peaches","Pebbles","Pepper","Phoenix","Pickle","Pickles","Plume","Precious","Princess","Psyche","Raine","Raven","Rebel","Rhyme","Rogue","Ruth","Sade","Sage","Scarlett","Shade","Shadow","Shay","Shine","Siren","Skye","Skylar","Snuffles","Sona","Sora","Star","Stardust","Starlight","Sugar","Tinkerbell","Trixie","Trixy","Twilight","Twinkle","Twinkles","Vanity","Velvet","Violet","Vixen","Wiggles","Xena");
 		entNames = new SRPlainRandom("Abies","Acacia","Acca","Acer","Adansonia","Aesculus","Agathis","Agonis","Albizia","Aleurites","Alianthus","Alnus","Amalanchier","Amborella","Amentotaxus","Anacardium","Annona","Anogeissus","Antiaris","Aralia","Araucaria","Arbutus","Ardisia","Areca","Arenga","Argania","Artocarpus","Asimina","Athrotaxis","Azadirachta","Baccharis","Bactris","Bauhinia","Betula","Bombax","Borassus","Bourreria","Brachylaena","Brahea","Brosimum","Broussonetia","Bucida","Bursera","Busus","Butia","Byrsonima","Caesalpinia","Callistemon","Callitris","Calocedrus","Calophyllum","Calyptranthes","Canella","Capparis","Caragana","Carica","Carpinus","Carya","Caryota","Cassia","Castanea","Castanopsis","Castilla","Casuarina","Catalpa","Cecropia","Cedrela","Cedrus","Ceiba","Celtis","Ceratonia","Cercis","Chamaecyparis","Chilopsis","Cinnamomum","Citrus","Cladrastis","Clethra","Clusia","Cocos","Coffea","Combretum","Copernicia","Cordia","Cordyline","Cornus","Corylus","Corymbia","Corypha","Crataehus","Cupressus","Cussonia","Cycas","Cyrilla","Dacrycarpus","Dacrydium","Delonix","Diospyros","Dracaena","Drypetes","Durio","Elaeagnus","Elaeis","Elliottia","Erica","Eriobotrya","Erythrina","Eucommia","Eugenia","Euonymus","Euphorbia","Fagus","Ficu","Firmiana","Fraxinus","Garcinia","Ginkgo","Gleditsia","Gonystylus","Gordonia","Grevillea","Guibourtia","Gymnanthes","Halesia","Hamamelis","Harpullia","Hevea","Hibiscus","Hippomane","Howea","Hymenaea","Hyophorbe","Ilex","Illicium","Inga","Jacaranda","Jubaea","Juglans","Juniperus","Kalopanax","Khaya","Kigelia","Kokia","Laburnum","Lagunaria","Laurus","Lecythis","Leucaena","Licaria","Liquidambar","Liriodendron","Litchi","Lithocarpus","Livistona","Lodoicea","Lysiloma","Machaerium","Maclura","Magnolia","Malpighia","Malus","Mangifera","Maranthes","Maytenus","Medusagyne","Melia","Meryta","Metopium","Michelia","Millettia","Mimosa","Moringa","Morus","Musa","Myoporum","Myrica","Myristica","Myrsine","Myrtus","Nectandra","Nerium","Nyssa","Olea","Ostrya","Palaquium","Parrotia","Paulownia","Peltogyne","Pentaclethra","Persea","Phellodendron","Phytelephas","Picea","Pinus","Piscidia","Pistacia","Platanus","Plumeria","Populus","Prosopis","Prunus","Psidium","Pyrus","Quercus","Radermachera","Raphia","Rhapis","Rhizophora","Rhododendron","Rhus","Robinia","Sabal","Salix","Salvadora","Sambucus","Sapium","Sassafras","Schaefferia","Schefflera","Senegalia","Sequioa","Serenoa","Shorea","Sideroxylon","Sondias","Sophora","Sorbus","Stewartia","Syagrus","Syringa","Tabebuia","Taiwania","Talipariti","Tamarix","Taxandria","Taxus","Tectona","Tetradium","Theobroma","Thevetia","Thuja","Tilia","Tipuana","Toona","Torreya","Trema","Triadica","Tristaniopsis","Ulmus","Vachellia","Vernicia","Vitex","Wodyetia","Wollemia","Xylosma","Yucca","Zelkova");
@@ -124,6 +139,48 @@ public class randomLists {
 		}
 		
 		return randMats.next();
+	}
+	
+	//names in files
+	public static final String[] namesManifest = new String[] {};
+	public static final List<String> namesManifestList = Arrays.asList(namesManifest);
+	
+	public static List<String> loadNames(String mask) {
+		try (Scanner fileInput = new Scanner (Oracle.class.getResourceAsStream(Oracle.rescLocation()+"/names/"+mask+".names"))){
+			List<String> list = new ArrayList<String>();
+			while (fileInput.hasNextLine()) {
+				String line = fileInput.nextLine();
+				list.add(line);
+			}
+			return list;
+		}
+		/*
+		if (mainGame.inEclipse) {
+			File f = Oracle.rescPath().toFile();
+			System.out.println(Oracle.rescPath().toAbsolutePath()+"/names/"+mask+".names");
+			f = new File(Oracle.rescPath().toAbsolutePath()+"/names/"+mask+".names");
+			try (Scanner fileInput = new Scanner (f)){
+				List<String> list = new ArrayList<String>();
+				while (fileInput.hasNextLine()) {
+					String line = fileInput.nextLine();
+					list.add(line);
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}else {
+			try (Scanner fileInput = new Scanner (Oracle.class.getResourceAsStream(Oracle.rescLocation()+"/names/"+mask+".names"))){
+				List<String> list = new ArrayList<String>();
+				while (fileInput.hasNextLine()) {
+					String line = fileInput.nextLine();
+					list.add(line);
+				}
+				return list;
+			}
+		}
+		return null;
+		*/
+		
 	}
 	
 	
@@ -213,7 +270,28 @@ public class randomLists {
 	
 	
 	public static String randomWolfName() {
-		return wolfNames.next();
+		switch (Rand.randRange(0,8)) {
+		default:
+		case 0:
+		case 1://one
+			return wolfNames.next();
+		case 2://one-two
+			return wolfPrefixes.next()+"-"+wolfSuffixes.next();
+		case 3://onetwo
+			return wolfPrefixes.next()+wolfSuffixes.next().toLowerCase();
+		case 4://"one two"
+			return wolfPrefixes.next()+" "+wolfSuffixes.next();
+		//front adjectives
+		case 5://adj-two
+			return wolfAdjPrefixes.next()+"-"+wolfSuffixes.next();
+		case 6://adjtwo
+			return wolfAdjPrefixes.next()+wolfSuffixes.next().toLowerCase();
+		//rear adjectives
+		case 7://one-adj
+			return wolfPrefixes.next()+"-"+wolfAdjSuffixes.next();
+		case 8://oneadj
+			return wolfPrefixes.next()+wolfAdjSuffixes.next().toLowerCase();
+		}
 	}
 	
 	public static String randomBearName() {
