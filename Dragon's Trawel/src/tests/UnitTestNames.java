@@ -14,9 +14,12 @@ public class UnitTestNames {
 			System.out.println(randomLists.randomWolfName());
 		}
 		for (int i = 0; i < 20; i++) {
+			System.out.println(randomLists.randomBearName());
+		}
+		for (int i = 0; i < 5; i++) {
 			System.out.println(randomLists.randomDrudgerStockName());
 		}
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 5; i++) {
 			System.out.println(randomLists.randomDrudgerHonorName());
 		}
 	}
