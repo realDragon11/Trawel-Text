@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -158,13 +159,17 @@ public class randomLists {
 	public static final List<String> namesManifestList = Arrays.asList(namesManifest);
 	
 	public static List<String> loadNames(String mask) {
-		try (Scanner fileInput = new Scanner (Oracle.class.getResourceAsStream(Oracle.rescLocation()+"/names/"+mask+".names"))){
-			List<String> list = new ArrayList<String>();
-			while (fileInput.hasNextLine()) {
-				String line = fileInput.nextLine();
-				list.add(line);
+		try {
+			try (Scanner fileInput = new Scanner (Oracle.class.getResourceAsStream(Oracle.rescLocation()+"names/"+mask+".names"))){
+				List<String> list = new ArrayList<String>();
+				while (fileInput.hasNextLine()) {
+					String line = fileInput.nextLine();
+					list.add(line);
+				}
+				return list;
 			}
-			return list;
+		}catch(Exception e){
+			return Collections.singletonList("Nameless");
 		}
 		/*
 		if (mainGame.inEclipse) {

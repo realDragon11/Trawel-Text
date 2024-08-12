@@ -125,10 +125,13 @@ public class Oracle extends Feature{ //extends feature later
 	}
 	
 	public static String rescLocation() {
+		return "/resource/";
+		/*
 		if (mainGame.inEclipse) {
 			return "/resource/";
 		}
 		return "/resc/resource/";
+		*/
 	}
 	
 	public static Path rescPath() {
