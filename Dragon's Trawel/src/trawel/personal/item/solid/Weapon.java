@@ -17,13 +17,13 @@ import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.extra;
+import trawel.personal.Person;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.magic.EnchantConstant;
 import trawel.personal.item.magic.EnchantHit;
-import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.people.Player;
 import trawel.threads.ThreadData;
 
@@ -369,9 +369,10 @@ public class Weapon extends Item implements IEffectiveLevel {
 			float weight = stance.getWeight(i);
 			double dam = 0;
 			for (int j = testSize-1; j >=0;j--) {
+				Person dummy = ThreadData.getDumInvs().get(j).atLevel(level);
 				for (int ta = 0; ta < battleTests;ta++) {
 					AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,this,null)
-							,ThreadData.getDumInvs().get(j).atLevel(level)
+							,dummy
 							);
 					dam+= ret.damage/ret.attack.getTime();
 					if (ret.type == ATK_ResultType.IMPACT) {
