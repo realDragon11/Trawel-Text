@@ -327,6 +327,27 @@ public class randomLists {
 		return drudgerStarters.next()+drudgerMiddles.next()+drudgerEnds.next();
 	}
 	
+	public static String extractDrudgerHouse(String name) {
+		return name.substring(0,4);
+	}
+	
+	public static String extractDrudgerPersonal(String name) {
+		return name.substring(5,8);
+	}
+	
+	public static String randomDrudgerHouse() {
+		return drudgerStarters.next();
+	}
+	public static String randomDrudgerPersonal() {
+		return drudgerMiddles.next();
+	}
+	public static String randomDrudgerHonor() {
+		return drudgerEnds.next();
+	}
+	public static String honorDrudgerName(String name) {
+		return name+drudgerEnds.next();
+	}
+	
 	/**
 	 * Returns a random adjective 50% of the time. Used to make 'weapon of X Y" statements fancier
 	 * @return String

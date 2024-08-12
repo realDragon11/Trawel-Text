@@ -19,10 +19,10 @@ import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
+import trawel.personal.NPCMutator;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
-import trawel.personal.classless.Perk;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
@@ -152,9 +152,7 @@ public class Docks extends Feature {
 								Person p = leader.getPerson();
 								//promote if was mook
 								if (p.getFlag(PersonFlag.IS_MOOK)) {
-									p.setPerk(Perk.NPC_PROMOTED);
-									p.clearEffects();//cure effects like curse
-									p.setFlag(PersonFlag.IS_MOOK, false);
+									NPCMutator.mutateHonorStockDrudger(p);
 								}
 								
 								continue;
@@ -502,8 +500,9 @@ public class Docks extends Feature {
 	private List<Person> makeDrudgerLeader() {
 		if (old_attackers.size() > 0) {
 			Person p = old_attackers.remove(0);
-			p.setFlag(PersonFlag.IS_MOOK, false);
-			p.setPerk(Perk.NPC_PROMOTED);
+			if (p.getFlag(PersonFlag.IS_MOOK)) {
+				NPCMutator.mutateHonorStockDrudger(p);
+			}
 			return p.getSelfOrAllies();
 		}
 		if (Rand.chanceIn(1,3)) {

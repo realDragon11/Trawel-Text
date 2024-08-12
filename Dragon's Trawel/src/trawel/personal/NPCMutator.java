@@ -4,6 +4,7 @@ import java.util.List;
 
 import trawel.core.Rand;
 import trawel.factions.HostileTask;
+import trawel.helper.methods.randomLists;
 import trawel.personal.Person.AIJob;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
@@ -185,6 +186,19 @@ public class NPCMutator {
 		p.setPerk(Perk.NPC_PROMOTED);
 		p.clearEffects();//cure effects like curse
 		p.hTask = HostileTask.BOSS;
+		return p;
+	}
+	
+	/**
+	 * should only be used on a stock drudger which already has no honorific
+	 * @param p
+	 * @return
+	 */
+	public static Person mutateHonorStockDrudger(Person p) {
+		p.setPerk(Perk.NPC_PROMOTED);
+		p.clearEffects();//cure effects like curse
+		p.setFlag(PersonFlag.IS_MOOK, false);
+		p.setFirstName(randomLists.honorDrudgerName(p.getNameNoTitle()));
 		return p;
 	}
 	

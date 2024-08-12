@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import trawel.battle.targets.TargetFactory;
+import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.factions.Faction;
 import trawel.factions.HostileTask;
@@ -1392,9 +1393,8 @@ public class RaceFactory {
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
 		w.setFlag(PersonFlag.CAN_LEARN,true);
 		w.setPersonType(PersonType.DRUDGER_GENERIC);
-		w.liteSetSkillHas(Archetype.FISH_MONSOON);
-		Agent a = new Agent(w);//is assigned in the agent code, required for archetype skill configs
-		w.addFeatPoint(level/2);//bonus feat points for magic
+		w.cleanSetSkillHas(Archetype.FISH_MONSOON);
+		w.setOrMakeAgentGoal(AgentGoal.NONE);//is assigned in the agent code, required for archetype skill configs
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("rusty iron"),WeaponType.NULL_WAND));//not a weapon
 		w.getBag().swapArmorSlot(new Armor(level,(byte)0,ArmorStyle.GEM.getMatFor(),ArmorStyle.GEM),0);//gem helmet for some reason
 		for (byte i=1;i<5;i++) {
@@ -1404,7 +1404,37 @@ public class RaceFactory {
 		}
 		w.getBag().addDrawBaneSilently(DrawBane.UNICORN_HORN);//maybe to represent wand?
 		w.setFirstName(randomLists.randomDrudgerHonorName());
-		w.setTitle(", Scion");
+		switch (Rand.randRange(0,3)) {
+			default:
+			case 0:
+				w.setTitle(", Scion of "+Print.capFirst(randomLists.randomDrudgerPersonal()));
+				w.cleanSetSkillHas(Feat.NOT_PICKY);
+				if (Rand.chanceIn(1,4)) {
+					w.cleanSetSkillHas(Perk.NPC_PROMOTED);
+					w.getBag().addDrawBaneSilently(DrawBane.GOLD);
+					w.getBag().addDrawBaneSilently(DrawBane.VIRGIN);
+				}
+				break;
+			case 1:
+				w.setTitle(", Steward of "+randomLists.extractDrudgerHouse(w.getNameNoTitle()));
+				w.cleanSetSkillHas(Feat.SHAMAN);
+				if (Rand.chanceIn(1,4)) {
+					w.cleanSetSkillHas(Perk.NPC_PROMOTED);
+					w.getBag().addDrawBaneSilently(DrawBane.TELESCOPE);
+					w.getBag().addDrawBaneSilently(DrawBane.VIRGIN);
+				}
+				break;
+			case 2:
+				w.setTitle("Sea Mage ");
+				w.cleanSetSkillHas(Archetype.ARCHMAGE);
+				if (Rand.chanceIn(1,4)) {
+					w.cleanSetSkillHas(Perk.NPC_PROMOTED);
+					w.getBag().addDrawBaneSilently(DrawBane.PROTECTIVE_WARD);
+					w.getBag().addDrawBaneSilently(DrawBane.VIRGIN);
+				}
+				break;
+		}
+		
 		w.hTask = HostileTask.MONSTER;
 		w.cleanseType = (byte)CleanseSideQuest.CleanseType.DRUDGER.ordinal();
 		w.finishGeneration();
