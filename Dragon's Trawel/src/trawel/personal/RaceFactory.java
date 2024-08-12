@@ -1362,7 +1362,7 @@ public class RaceFactory {
 		if (Rand.chanceIn(1,6)) {
 			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
-		w.setFirstName(randomLists.randomWaterName());
+		w.setFirstName(randomLists.randomDrudgerStockName());
 		w.hTask = HostileTask.MONSTER;
 		w.cleanseType = (byte)CleanseSideQuest.CleanseType.DRUDGER.ordinal();
 		w.finishGeneration();
@@ -1379,7 +1379,7 @@ public class RaceFactory {
 		if (Rand.chanceIn(1,2)) {
 			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
-		w.setFirstName(randomLists.randomWaterName());
+		w.setFirstName(randomLists.randomDrudgerHonorName());
 		w.setTitle("the "+randomLists.randomLargeName());
 		w.hTask = HostileTask.MONSTER;
 		w.cleanseType = (byte)CleanseSideQuest.CleanseType.DRUDGER.ordinal();
@@ -1403,8 +1403,8 @@ public class RaceFactory {
 			}
 		}
 		w.getBag().addDrawBaneSilently(DrawBane.UNICORN_HORN);//maybe to represent wand?
-		w.setFirstName(randomLists.randomWaterName());
-		w.setTitle("scion of "+randomLists.randomWaterName());
+		w.setFirstName(randomLists.randomDrudgerHonorName());
+		w.setTitle(", Scion");
 		w.hTask = HostileTask.MONSTER;
 		w.cleanseType = (byte)CleanseSideQuest.CleanseType.DRUDGER.ordinal();
 		w.finishGeneration();
