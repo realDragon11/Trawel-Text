@@ -16,6 +16,9 @@ public class UnitTestNames {
 		for (int i = 0; i < 20; i++) {
 			System.out.println(randomLists.randomBearName());
 		}
+		for (int i = 0; i < 20; i++) {
+			System.out.println(randomLists.randomBatName());
+		}
 		for (int i = 0; i < 5; i++) {
 			System.out.println(randomLists.randomDrudgerStockName());
 		}
