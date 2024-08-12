@@ -158,7 +158,7 @@ public enum Skill{
 		/**
 		 * NOTE: do not grant without ELEMENTALIST
 		 */
-		M_PYRO_BOOST("Ingite Boost","On Elemental Wound: Gain Parry."
+		M_PYRO_BOOST("Ignite Boost","On Elemental Wound: Gain Parry."
 				,StringTip.ELEMBOOST_TIP + " " + StringTip.PARRY_TIP
 				,Type.DEFENSE),
 		/**
