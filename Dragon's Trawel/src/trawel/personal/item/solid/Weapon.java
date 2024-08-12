@@ -61,15 +61,15 @@ public class Weapon extends Item implements IEffectiveLevel {
 	private Set<WeaponQual> qualList = EnumSet.noneOf(WeaponQual.class);
 	
 	public enum WeaponQual{
-		DESTRUCTIVE("Destructive","On Damage and Wound: Damages local armor by 1/3rd of total percent HP dealt.",1.1f,1.1f,2),
-		PENETRATIVE("Penetrative","Attack: The locally attacked armor counts for 3/5ths as much.",1f,1.1f,2),
-		PINPOINT("Pinpoint","Attack: Armor not in slots you are attacking counts for 2/3rds as much.",1f,1.1f,2),
-		RELIABLE("Reliable","On Armor Reduction/Block: Minimum damage equal to 1/2th WELVL. If blocked, does not become Impactful.",1f,1.2f,2), 
-		DUELING("Dueling","Attack: In large fights, attack the same opponent repeatedly.",1f,1f,1),
-		WEIGHTED("Weighted","On Damage: Less accurate attacks deal more damage.",1f,1.1f,1),
-		REFINED("Refined","On Damage: Deals bonus damage equal to 1/2th WELVL.",1f,1.2f,3),
-		ACCURATE("Accurate","Attack: Flat +%.10 accuracy bonus to attacks after all modifiers.",1f,1.2f,2),
-		CARRYTHROUGH("Carrythrough","On Miss/Dodge: Your next attack is 20% quicker.",1.1f,1.1f,2),
+		DESTRUCTIVE("Destructive","On Damage and Wound: Damages local armor by 1/3rd of total percent HP dealt.",1.1f,0.1f,2),
+		PENETRATIVE("Penetrative","Attack: The locally attacked armor counts for 3/5ths as much.",1f,0.1f,2),
+		PINPOINT("Pinpoint","Attack: Armor not in slots you are attacking counts for 2/3rds as much.",1f,0.1f,2),
+		RELIABLE("Reliable","On Armor Reduction/Block: Minimum damage equal to 1/2th WELVL. If blocked, does not become Impactful.",1f,0.2f,2), 
+		DUELING("Dueling","Attack: In large fights, attack the same opponent repeatedly.",1f,0f,1),
+		WEIGHTED("Weighted","On Damage: Less accurate attacks deal more damage.",1f,0.1f,1),
+		REFINED("Refined","On Damage: Deals bonus damage equal to 1/2th WELVL.",1f,0.2f,3),
+		ACCURATE("Accurate","Attack: Flat +%.10 accuracy bonus to attacks after all modifiers.",1f,0.2f,2),
+		CARRYTHROUGH("Carrythrough","On Miss/Dodge: Your next attack is 20% quicker.",1.1f,0.1f,2),
 		;
 		public final String name, desc;
 		public final int goodNegNeut;
@@ -77,7 +77,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 		 * mFit is the mechanical value for the effectiveness. It should be left at 1f for qualities that have effects reflected through damage,
 		 * because the fitness function includes that in the battlescore. This includes direct accuracy boosts.
 		 * <br>
-		 * mVal is used to represent trade value and is often higher for positive qualities but near the same for negative ones
+		 * mVal is used to represent trade value and is often higher for positive qualities but near the same for negative ones, additive
 		 * <br>
 		 * some qualities are considered 'convenient' in lore but that is not reflected in game, so the value is even higher,
 		 * such as sturdy and reliable
@@ -315,7 +315,15 @@ public class Weapon extends Item implements IEffectiveLevel {
 	 * @return base cost (int)
 	 */
 	public int getBaseCost() {
-		return (int) (getMat().cost*weap.cost*getUnEffectiveLevel() * (1 + .05f*qualTraitSum()));
+		return (int) (getMat().cost*weap.cost*getUnEffectiveLevel() * getQualCost());
+	}
+	
+	public float getQualCost() {
+		float val = 1f;
+		for (WeaponQual q: qualList) {
+			val += q.mVal;
+		}
+		return Math.max(0.5f,val);
 	}
 
 	
