@@ -1471,7 +1471,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		str += bag.getHand().getName()+";";
 		str += getBase_HP() + " LHP, " +Print.format(bag.getHealth())+ "xhp, "+Print.format(bag.getAim()) + "xaim, "+Print.format(bag.getDam()) + "xdam, "+Print.format(bag.getSpeed())+"xspd, " +Print.format(bag.getDodge())+"xdge;";
 		str += Print.format(bag.getSharpResist())+" "+Print.format(bag.getBluntResist())+" "+Print.format(bag.getPierceResist())+ " sbp";
-		System.out.println(str);
+		Print.debugPrint(str);
 	}
 	
 	public PersonType getPersonType() {

@@ -139,6 +139,13 @@ public class Print {
 		}
 		return str;
 	}
+	
+	/**
+	 * prints to System.out, but still strips printing of tags beforehand
+	 */
+	public static void debugPrint(String str) {
+		System.out.println(stripPrint(str));
+	}
 
 	public static void detectInputString(String str) {
 		if (str.length() > 1) {

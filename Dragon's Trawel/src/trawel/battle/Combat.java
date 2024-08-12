@@ -1281,7 +1281,7 @@ public class Combat {
 			attacker.takeDamage((int)(turns-(longBattleLength*totalFighters)));
 			defender.takeDamage((int)(turns-(longBattleLength*totalFighters)));
 			if (!battleIsLong) {
-				System.out.println("Resolving long battle...");
+				Print.debugPrint("Resolving long battle...");
 				battleIsLong = true;
 				if (mainGame.debug) {
 					for (Person p: completeList) {
