@@ -267,7 +267,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 	
 	@Override
 	public String getName() {
-		return getModiferNameColored(extra.clamp(qualTraitSum(), 0,12))+getLevelName() + " " +getNameNoTier();
+		return getModiferNameColored(qualTraitSum())+getLevelName() + " " +getNameNoTier();
 	}
 	
 	public int qualTraitSum() {

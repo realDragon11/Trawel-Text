@@ -339,7 +339,7 @@ public class Armor extends Item implements IEffectiveLevel{
 		//traits are now positive and negative for armors
 		//this doesn't impact how the ai sees them, but a player won't quite understand
 		//that the same statline without fragile is better without indicators like this
-		return getModiferNameColored(extra.clamp(5+qualTraitSum(),0,12))+getLevelName() + " " + getNameNoTier();
+		return getModiferNameColored(5+qualTraitSum())+getLevelName() + " " + getNameNoTier();
 	}
 	
 	public int qualTraitSum() {
