@@ -170,9 +170,10 @@ public class Town extends TContextOwner{
 		loreText = text;
 	}
 	
-	public void addPerson() {
+	public Agent addPerson() {
 		Agent o = RaceFactory.getDueler(Math.max(1,getTier()+Rand.randRange(-2,2))).setOrMakeAgentGoal(AgentGoal.NONE);
 		addOccupant(o);
+		return o;
 	}
 	
 	public boolean isFort() {
@@ -819,6 +820,10 @@ public class Town extends TContextOwner{
 	}
 	
 	public Agent popAnyOccupant(Agent occupant) {
+		if (occupants.isEmpty()) {
+			addPerson();
+			//fall through then just fetch them for simplicity
+		}
 		return occupants.remove(Rand.randRange(0,occupants.size()-1));
 	}
 	
@@ -862,6 +867,10 @@ public class Town extends TContextOwner{
 	public Agent getRandPersonableOccupant() {
 		List<Agent> agentList = new ArrayList<Agent>();
 		occupants.stream().filter(SuperPerson::isPersonable).forEach(agentList::add);
+		if (agentList.isEmpty()) {
+			//if empty, add to base list then return them
+			return addPerson();
+		}
 		return Rand.randList(agentList);
 	}
 	
