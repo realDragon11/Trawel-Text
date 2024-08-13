@@ -344,11 +344,11 @@ public class World extends TContextOwner{
 	}
 
 	public String moneyString(int money) {
-		return money + " " + moneyname;//for now always plural
+		return money + " [pay_money]"+moneyname+"[revert]";//for now always plural
 	}
 	
 	public String moneyString() {
-		return moneyname;//for now always plural
+		return " [pay_money]"+moneyname+"[revert]";//for now always plural
 	}
 
 	public boolean hasVisited() {
