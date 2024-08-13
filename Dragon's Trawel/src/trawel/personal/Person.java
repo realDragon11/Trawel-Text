@@ -1359,7 +1359,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (!mainGame.displayOwnName && isPlayer()) {
 			return "YOU";
 		}
-		if (title == "" || title == null) {
+		if (title.equals(" ") || title == null) {
 			return firstName;
 		}
 		if (title.startsWith(",")) {
