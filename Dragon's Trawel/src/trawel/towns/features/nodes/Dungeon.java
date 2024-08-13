@@ -519,7 +519,8 @@ public class Dungeon extends NodeFeature {
 		List<Agent> agents = new ArrayList<Agent>();
 		for (Person p: retain) {
 			SuperPerson s = p.getSuper();
-			if (s != null && s instanceof Agent) {
+			//must have a superperson, that is an agent, and assigned as a delve helper
+			if (s != null && s instanceof Agent && delve_helpers.contains(s)) {
 				Agent a = (Agent) s;
 				if (a.isCurrentBehaviorClass(AbandonPostBehavior.class)) {
 					a.setActionTimeMin(2*24*7);//2 weeks on use
