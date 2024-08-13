@@ -94,6 +94,7 @@ public class Race extends Item{
 		Print.println(internalName.name +", "+internalName.namePlural + ", " +internalName.adjective );
 		Print.println("Type: " + racialType);
 		Print.println("Legacy Sprite: " + raceClass.getLegacy().friendlyName());
+		Print.println("Wasdd Sprite: " + raceClass.getWasdd().friendlyName());
 		Print.println(TrawelColor.ITEM_DESC_PROP+"Blood: " + (emitsBlood ? TrawelColor.PRE_RED+"yes" : TrawelColor.PRE_WHITE +"no"));
 		Print.println("Rarity: " + Print.F_TWO_TRAILING.format(rarity));
 		Print.println(TrawelColor.ITEM_DESC_PROP+"Aiming: " +TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(aimMod));
