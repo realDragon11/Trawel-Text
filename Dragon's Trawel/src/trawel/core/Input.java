@@ -120,9 +120,18 @@ public class Input {
 			if (ini != -2) {//silent loading
 				Networking.sendStrong("Entry|Reset|");
 				if (ini == -4) {//redo, input was consumed for some other purpose
-					Print.println("Input: 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
+					if (max == 0 && alwaysNine) {
+						Print.println("Input: 9");
+					}else {
+						Print.println("Input: 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
+					}
+					
 				}else {//normal redo
-					Print.println("Please type a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
+					if (max == 0 && alwaysNine) {
+						Print.println("Please enter the number 9.");
+					}else {
+						Print.println("Please enter a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
+					}
 				}
 			}
 			
