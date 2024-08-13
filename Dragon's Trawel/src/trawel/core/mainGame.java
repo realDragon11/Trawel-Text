@@ -954,7 +954,7 @@ public class mainGame {
 		
 		Print.println(TrawelColor.STAT_HEADER+"Steam Assets:");
 		
-		Print.println("Achievement icons can be found on game-icons.net, modified using their website. They are CC BY 3.0");
+		Print.println("Achievement icons can be found on game-icons.net, modified using their website. These assets are also used in the Graphical UI Tray. They are CC BY 3.0 or CC0, depending on the author.");
 		Print.println(TrawelColor.ITEM_DESC_PROP+"Game-Icons.net list:");
 		Print.println(
 				"Lorc, http://lorcblog.blogspot.com; "
