@@ -1309,9 +1309,6 @@ public class RaceFactory {
 		w.setFlag(PersonFlag.CAN_LEARN,true);
 		w.setPersonType(PersonType.HARPY_GENERIC);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TALONS_GENERIC));
-		if (Rand.chanceIn(1,6)) {
-			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
-		}
 		if (Rand.chanceIn(1,50)) {
 			w.getBag().addDrawBaneSilently(DrawBane.GOLD);
 		}
@@ -1333,9 +1330,6 @@ public class RaceFactory {
 		w.setPersonType(PersonType.HARPY_GENERIC);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TALONS_GENERIC));
 		w.liteSetSkillHas(Perk.NPC_PROMOTED);
-		if (Rand.chanceIn(1,4)) {
-			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
-		}
 		if (Rand.chanceIn(1,5)) {
 			w.getBag().addDrawBaneSilently(DrawBane.GOLD);
 			w.addFeatPoint();//bonus feat for having gold
@@ -1360,9 +1354,6 @@ public class RaceFactory {
 				w.getBag().swapArmorSlot(new Armor(level,i,MaterialFactory.getMat("rusty iron"),null),i);
 			}
 		}
-		if (Rand.chanceIn(1,6)) {
-			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
-		}
 		w.setFirstName(randomLists.randomDrudgerStockName());
 		w.hTask = HostileTask.MONSTER;
 		w.cleanseType = (byte)CleanseSideQuest.CleanseType.DRUDGER.ordinal();
@@ -1376,9 +1367,9 @@ public class RaceFactory {
 		w.cleanSetSkillHas(Perk.STAND_TALL);//added to their 'fish tall' so they have some base strength
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat(Rand.choose("rusty iron","iron")),WeaponType.FISH_ANCHOR));
 		w.getBag().swapArmorSlot(new Armor(level,(byte)2,MaterialFactory.getMat("rusty iron"),null),2);
-		w.getBag().addDrawBaneSilently(DrawBane.MEAT);
-		if (Rand.chanceIn(1,2)) {
-			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
+		if (Rand.chanceIn(1,4)) {
+			w.cleanSetSkillHas(Perk.NPC_PROMOTED);
+			w.getBag().addDrawBaneSilently(DrawBane.VIRGIN);
 		}
 		w.setFirstName(randomLists.randomDrudgerHonorName());
 		w.setTitle("the "+randomLists.randomLargeName());
@@ -1674,6 +1665,7 @@ public class RaceFactory {
 		addWealth(WEALTH_WORKER,.5f, w);
 		w.hTask = HostileTask.LUMBER;
 		w.setFacLevel(Faction.FOREST,0,100);
+		w.getBag().addDrawBaneSilently(DrawBane.WOOD);
 		w.finishGeneration();
 		return w;
 	}
