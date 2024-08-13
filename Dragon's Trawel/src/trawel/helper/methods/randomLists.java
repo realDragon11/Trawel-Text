@@ -289,7 +289,7 @@ public class randomLists {
 	
 	
 	public static String randomWolfName() {
-		switch (Rand.randRange(0,8)) {
+		switch (Rand.randRange(2,8)) {
 		default:
 		case 0:
 		case 1://one
