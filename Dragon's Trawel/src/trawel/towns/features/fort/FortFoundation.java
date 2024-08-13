@@ -45,7 +45,7 @@ public class FortFoundation extends FortFeature {
 	
 	@Override
 	public String nameOfType() {
-		return "Forge";
+		return "Foundation";
 	}
 	
 	@Override
