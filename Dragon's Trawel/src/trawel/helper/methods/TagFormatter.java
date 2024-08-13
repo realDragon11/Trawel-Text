@@ -24,6 +24,11 @@ public class TagFormatter {
 		addTag("p_been",TrawelColor.COLOR_BEEN);
 		addTag("p_regrown",TrawelColor.COLOR_REGROWN);
 		
+		addTag("opt_a",TrawelColor.COLOR_OPTION_A);
+		addTag("opt_b",TrawelColor.COLOR_OPTION_B);
+		addTag("opt_c",TrawelColor.COLOR_OPTION_C);
+		addTag("opt_exit",TrawelColor.RESULT_WARN);
+		
 		addTag("a1",TrawelColor.ADVISE_1);
 		addTag("a2",TrawelColor.ADVISE_2);
 		addTag("a3",TrawelColor.ADVISE_3);

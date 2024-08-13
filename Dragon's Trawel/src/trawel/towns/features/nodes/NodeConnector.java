@@ -375,7 +375,7 @@ public class NodeConnector implements Serializable {
 
 					@Override
 					public String title() {
-						return TrawelColor.TIMID_RED + "exit " + parent.getName();
+						return "[opt_exit]Exit[revert] " + parent.getName();
 					}
 
 					@Override

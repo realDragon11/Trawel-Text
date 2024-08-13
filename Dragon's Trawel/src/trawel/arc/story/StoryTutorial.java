@@ -17,6 +17,7 @@ import trawel.personal.classless.Archetype;
 import trawel.personal.classless.Feat;
 import trawel.personal.classless.Perk;
 import trawel.personal.people.Player;
+import trawel.towns.data.FeatureData;
 import trawel.towns.data.WorldGen;
 import trawel.towns.features.Feature;
 import trawel.towns.features.fight.Arena;
@@ -79,13 +80,14 @@ public class StoryTutorial extends Story{
 		for (Feat a: Player.player.getPerson().getFeatSet()) {
 			Print.println("Starting Feat: " +a.getBriefText());
 		}
+		/*
 		Print.println();
 		Print.println("You come to your senses. Your student, " + killed.getName() + " is dead.");
 		Print.println("A wizard cast a curse on them, sending anyone who saw them into a blinding rage. But you are not where you were when you were afflicted...");
-		Print.println("You resolve to find out where you are, to start your life anew- it's not like anyone would believe you back home in Oblask, anyway.");
+		Print.println("You resolve to find out where you are, to start your life anew- it's not like anyone would believe you back home in Oblask, anyway.");*/
 		Print.println("1 start Trawel");
 		Input.inInt(1);
-		Print.println("You should head to the local arena. Your immortality will come in handy there.");
+		Print.println("You should head to the local "+FeatureData.getName(Arena.class,true,false)+". Your immortality will come in handy there.");
 		step = "gotoarena1";
 	}
 	
@@ -93,9 +95,10 @@ public class StoryTutorial extends Story{
 	public void startFight(boolean massFight) {
 		boolean disp = battleFam == 0;
 		if (disp) {
+			/*
 			Print.println("Oh jeez, it's been a while since you've fought a stranger, you feel weird.");
 			Print.println("A mysterious voice is telling you to \"Choose your attack below\"???");
-			Print.println("...");
+			Print.println("...");*/
 			
 			Print.println("Show the Combat Tutorial?");
 			disp = Input.yesNo();
@@ -119,12 +122,12 @@ public class StoryTutorial extends Story{
 		battleFam =2;
 		wins++;
 		if (step == "gotoarena2") {
-			Print.println("Congratulations on the arena victory! Next you should visit a Store to find better equipment.");
+			Print.println("Congratulations on the "+FeatureData.getName(Arena.class,true,false)+" victory! Next you should visit a "+FeatureData.getName(Store.class,true,false)+" to find better equipment.");
 			step = "gotostore1";
 		}
 		if (step == "anyfight1") {
-			Print.print("Congratulations on the victory. There's a lot of Combat to be had in Trawel, and it can be found it many places, both inside and outside of Towns.");
-			Print.println(" Next you should ingest questionable substances at an Inn. Compass, in the Player Menu under 'Player->Inventory->Map', can take you to 'Homa', the town you started in. 'Unun' is just a few hours walk from there, and it has an Inn.");
+			Print.print("Congratulations on the victory. There's a lot of [act_combat]Combat[revert] to be had in Trawel, and it can be found it many places, both inside and outside of Towns.");
+			Print.println(" Next you head to a "+FeatureData.getName(Inn.class,true,false)+". Compass, in the Player Menu under 'Player->Inventory->Map', can take you to 'Homa', the town you started in. 'Unun' is just a few hours walk from there, and it has [f_multi]Trailblazer's Tavern[revert].");
 			step = "gotoinn1";
 		}
 	}
@@ -168,11 +171,11 @@ public class StoryTutorial extends Story{
 	@Override
 	public void onDeathPart2() {
 		if (step == "gotoarena2") {
-			Print.println("While you may have lost that fight, you can come back for revenge! Visit a Store to find better equipment, and we'll continue.");
+			Print.println("While you may have lost that [act_combat]fight[revert], you can come back for revenge! Visit a "+FeatureData.getName(Store.class,true,false)+" to find better equipment, and we'll continue.");
 			step = "gotostore1";
 		}
 		if (step == "anyfight1") {
-			Print.println("You should keep trying to win a fight.");
+			Print.println("You should keep trying to win a [act_combat]fight[revert].");
 		}
 		switch (deaths) {
 		default:
@@ -188,44 +191,47 @@ public class StoryTutorial extends Story{
 			if (!(f instanceof Arena)) {
 				break;
 			}
-			Print.println("It looks like there's a fight about to take place here. You could wait to participate in it. Winner gets the loser's stuff, apparently.");
+			Print.println("It looks like there's a [act_combat]fight[revert] about to take place in this "+FeatureData.getName(Arena.class,true,false)+". You should participate in it, to try to get XP and loot.");
 			step = "gotoarena2";
 			return;//we will explain arenas again if they re-enter
 		case "gotostore1":
 			if (!(f instanceof Store)) {
 				break;
 			}
-			Print.println("Some stores sell equipment for Aether, which you mostly find by melting down other equipment you loot in the wild. Others sell DrawBanes for Currency. Stores are just one way to get equipment, but they can be more reliable than relying only on what you loot.");
-			Print.println("You should gear up in an equipment shop and then win a fight to continue!");
+			FeatureData store = FeatureData.getData(Store.class);
+			Print.println("Some "+store.fancyNamePlural()+" sell equipment for [pay_aether]Aether[revert], which you mostly find by melting down other equipment you loot in the wild. Others sell DrawBanes for [pay_money]Currency[revert]. "+store.fancyNamePlural()+" are just one way to get equipment, but they can be more reliable than using only on what you loot.");
+			Print.println("You should gear up in an equipment "+store.fancyName()+" and then win a [act_combat]fight[revert] to continue!");
 			step = "anyfight1";
 			return;//we will explain stores directly if they re-enter
 		case "gotoinn1":
 			if (!(f instanceof Inn)) {
 				break;
 			}
-			Print.println("The Inn has 'beer' (you hope it's actually beer) which can raise your HP for as many fights as you buy beer for... but somewhat more importantly, random side quests.");
-			Print.println("Browse the backrooms, and see if any quests suit your fancy. In general, its much more fun to explore, but sidequests can help you if you're having trouble justifying going into the scary wider world.");
-			Print.println("Guilds, Witch Huts, Districts, and a few other locations can also provide similar sidequests- and even more can be quest locations, like Mountains and Forests.");
-			Print.println("There are also areas meant for sub-exploration, such as Groves, Mines, Dungeons, and Graveyards. The Tower of Fate in Unun and the Staircase to Hell in another world entirely also have bosses. Try to enter one such feature next.");
+			Print.println(FeatureData.getData(Inn.class).fancyNamePlural()+" primarily provide room and board, as well random [act_quest]side quests[revert].");
+			Print.println("Browse the [act_quest]backrooms[revert], and see if any sidequests suit your fancy. You can complete them as you [act_explore]explore[revert] the wider world, then come back here for the reward.");
+			Print.println("[f_guild]Guilds[revert], "+FeatureData.getData(WitchHut.class).fancyNamePlural()+", "+FeatureData.getData(Slum.class).fancyNamePlural()+", and a few other locations can also provide similar [act_quest]sidequests[revert]- and even more can be quest locations, like "+FeatureData.getData(Mountain.class).fancyNamePlural()+" and "+FeatureData.getData(Forest.class).fancyNamePlural()+".");
+			Print.println("There are also areas meant for [act_explore]sub-exploration[revert], such as "+FeatureData.getData(Grove.class).fancyNamePlural()+", "+FeatureData.getData(Mine.class).fancyNamePlural()+", "+FeatureData.getData(Dungeon.class).fancyNamePlural()+", amongst other [f_node]Node Exploration[revert] types. The [f_node]Tower of Fate[revert] in Unun and the [f_node]Staircase to Hell[revert] in another world entirely also have bosses. Try to enter one such feature next.");
 			step = "gotonode1";
 			return;//we will explain inns again if they re-enter
 		case "gotonode1":
 			if (!(f instanceof NodeFeature)) {
 				break;
 			}
-			Print.println("These areas have a variable number of nodes, seen below. Each node has a link to other nodes, and the ability to 'interact' with it. Nodes can be "
+			Print.println("These areas have a variable number of nodes. Each node has a link to other nodes, and the ability to 'interact' with it. Nodes can be "
 					
-			+TrawelColor.COLOR_NEW+"{"+TrawelColor.VISIT_NEW+"} unseen,"+TrawelColor.PRE_WHITE
-			+TrawelColor.COLOR_SEEN+" {"+TrawelColor.VISIT_SEEN+"} seen,"+TrawelColor.PRE_WHITE
-			+TrawelColor.COLOR_BEEN+" {"+TrawelColor.VISIT_BEEN + "} been,"+TrawelColor.PRE_WHITE
-			+TrawelColor.COLOR_OWN+" {" +TrawelColor.VISIT_DONE + "} done, "+TrawelColor.PRE_WHITE
-			+TrawelColor.COLOR_OWN+" {"+TrawelColor.VISIT_OWN + "} owned, "+TrawelColor.PRE_WHITE+ "(usually used to indicate you've done an action that will change with time), "
-			+TrawelColor.PRE_WHITE+" and "+TrawelColor.COLOR_REGROWN+"{"+TrawelColor.VISIT_REGROWN+ "} regrown,"+TrawelColor.PRE_WHITE+" which means that they got replaced since you last visited them.");
-			Print.println("The order of nodes presented is often erratic, but the last node you were in will be marked by '(back)'. Some areas will also place nodes that are 'deeper' or 'higher' on the top. One such instance is the Tower of Fate in Unun, which loops back in on itself, but picking the highest choice will always take to up the tower until you reach the top floor.");
-			Print.println("While interacting, you might find yourself in a sub-menu, otherwise you can always leave the area by selecting the last option.");
+			+TrawelColor.COLOR_NEW+"{"+TrawelColor.VISIT_NEW+"} unseen[revert],"
+			+TrawelColor.COLOR_SEEN+" {"+TrawelColor.VISIT_SEEN+"} seen[revert],"
+			+TrawelColor.COLOR_BEEN+" {"+TrawelColor.VISIT_BEEN + "} been[revert],"
+			+TrawelColor.COLOR_OWN+" {" +TrawelColor.VISIT_DONE + "} done[revert], "
+			+TrawelColor.COLOR_OWN+" {"+TrawelColor.VISIT_OWN + "} owned[revert], "+ "(usually used to indicate you've done an action that will change with time), "
+			+TrawelColor.PRE_WHITE+" and "+TrawelColor.COLOR_REGROWN+"{"+TrawelColor.VISIT_REGROWN+ "} regrown[revert],"+" which means that they got replaced since you last visited them.");
+			Print.println("The order of nodes presented is often erratic, but the last node you were in will be marked by '([clear]back[revert])'. Some areas will also place nodes that are '[opt_a]deeper[revert]' or '[opt_b]higher[revert]' on the top. One such instance is the [f_node]Tower of Fate[revert] in Unun, which loops back in on itself, but picking the highest choice will always take to up the tower until you reach the top floor.");
+			Print.println("While interacting, you might find yourself in a sub-menu, otherwise you can always leave the area by selecting '[opt_exit]exit[revert]'.");
+			Print.println("The [f_node]Tower of Fate[revert] and some other features allow you to recruit fellow adventurers. They will only assist in [act_combat]mass battles[revert], and take a share of the loot.");
 			Print.println(" ");
 			Print.println("You have completed the tutorial section of this story. The game continues on as an open world, up to around level "+WorldGen.highestLevel+".");
 			Print.println("There is no more direct guidance to be had, but "+bossPerkTriggers.size() + " boss perks, "+worldPerkTriggers.size() + " world perks, and " + blessPerkTriggers.size() + " blessing perks are tracked by this story.");
+			Print.println("You can read about advanced topics and refresh on mechanics in the Manual, found under Player->Manual.");
 			Print.println("Happy Traweling!");
 			step = "end";
 			return;//we explain the subtypes differently if they re-enter
@@ -233,6 +239,12 @@ public class StoryTutorial extends Story{
 		}
 		if (!explained.contains(f.getClass())) {
 			explained.add(f.getClass());
+			
+			FeatureData data = FeatureData.getData(f.getClass());
+			if (data != null) {
+				data.tutorial();
+			}
+			/*
 			
 			if (f instanceof Lot) {
 				Print.println("A 'Lot' is a piece of owned, undeveloped land. You can pay both Currency and Aether to build something on that land.");
@@ -358,6 +370,7 @@ public class StoryTutorial extends Story{
 				}
 				return;
 			}
+			*/
 		}
 		
 	}
@@ -397,7 +410,7 @@ public class StoryTutorial extends Story{
 			switch (perk) {
 			case FATED:
 				if (bossPerkTriggers.contains(Perk.HELL_BARONESS_1)) {
-					Print.println("You've slain a Fatespinner and gotten the Fated perk... but can you Beat the Baron? Travel to the world of Greap through the teleporter in Repa, then seek out the Staircase to Hell.");
+					Print.println("You've slain a Fatespinner and gotten the Fated perk... but can you Beat the Baron? Travel to the world of Greap through the teleporter in Repa, then seek out the [f_node]Staircase to Hell[revert].");
 				}else {
 					Print.println("You've slain a Fatespinner and gained the Fated perk!");
 				}
