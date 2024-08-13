@@ -38,7 +38,7 @@ public class randomLists {
 			wolfNames,wolfPrefixes,wolfSuffixes,wolfAdjPrefixes,wolfAdjSuffixes,
 			bearAdjs, bearPrefixes, bearSuffixes,
 			batAdjs, batNames,
-			entNames,
+			entTrees,entThings,
 			drudgerStarters,drudgerMiddles,drudgerEnds,
 			fighterTypes,drifterTypes,thiefTypes,thugTypes,pirateTypes,collectTypes,theAlphaTitles,theLargeTitles, attackMisses, attackNegates, attackDodges
 			,hunterTitles,thingsToSlay,slayerTitleToSlay,dGuardTitles,oldTitles, colorListPrintable,
@@ -106,8 +106,7 @@ public class randomLists {
 		enchantHitFrost = new SRPlainRandom("freeze","frost","chilling","rime","freezing","hoarfrost","ice");
 		enchantHitElec = new SRPlainRandom("shock","lightning","shocking","sparks","thundering","zapping");
 		enchantHitKeen = new SRPlainRandom("keen","honed","whetted");
-		//https://www.fantasynamegenerators.com/scripts/wolfNames.js
-		//wolfNames = new SRPlainRandom("Ace","Akira","Alistair","Alpha","Apache","Apollo","Archer","Artemis","Astro","Athene","Atlas","Avalanche","Axis","Bandit","Bane","Baron","Beacon","Bear","Blaze","Blitz","Bolt","Bones","Boomer","Boon","Booth","Boulder","Brawn","Brick","Brock","Browne","Bruno","Brutus","Buck","Bud","Buddy","Bullet","Buster","Butch","Buzz","Caesar","Camelot","Chase","Chewy","Chronos","Cloud","Colt","Comet","Conan","Courage","Dagger","Dane","Danger","Dash","Delta","Dexter","Diablo","Digger","Drake","Duke","Dust","Dutch","Echo","Edge","Excalibur","Fang","Farkas","Flash","Frost","Fury","Ghost","Goliath","Gray","Grunt","Hannibal","Havoc","Hawke","Hawkeye","Hector","Hercules","Hooch","Hulk","Hunter","Hyde","Ice","Jaws","Jax","Jeckyll","Jethro","Judge","Kaine","Kane","Khan","Killer","King","Lad","Laika","Lecter","Lightning","Logan","Loki","Lupin","Lupus","Magnus","Mako","Mason","Maverick","Max","Maximus","Mayhem","Menace","Midnight","Miles","Murdoch","Myst","Nanook","Nero","Nightmare","Nova","Oak","Obsidian","Odin","Omega","Omen","Onyx","Orbit","Outlaw","Patriot","Phantom","Prince","Pyro","Quicksilver","Rage","Ralph","Ranger","Razor","Rebel","Rex","Rider","Riggs","Ripley","Riptide","Rogue","Rover","Scar","Scout","Shade","Shadow","Shepherd","Shredder","Silver","Skye","Slate","Sly","Smoke","Splinter","Steele","Storm","Striker","Summit","Tank","Thor","Thunder","Timber","Titan","Tooth","Trace","Trapper","Trouble","Tundra","Vapor","Whisper","Wolf","Acadia","Aiyana","Akita","Alaska","Alexia","Alexis","Alize","Alpine","Amber","Amethyst","Angel","Ares","Ari","Aspen","Astral","Athena","Atilla","Aura","Aurora","Avril","Babe","Banshee","Beauty","Blaze","Blitz","Blitzen","Blossom","Bo","Boone","Breeze","Charm","Chronis","Clarity","Cleo","Codex","Coral","Crystal","Dakota","Dash","Dawn","Delphi","Destiny","Dharma","Diva","Dodger","Dot","Duchess","Ebony","Echo","Eclipse","Enigma","Faith","Fern","Gemini","Gia","Girl","Grace","Hailey","Heather","Heaven","Helen","Hope","Ice","Indigo","Iris","Ivory","Ivy","Jade","Jasmine","Jewel","Jinx","June","Juno","Justice","Jynx","Karma","Kenya","Lady","Laika","Levi","Lexis","Liberty","Lore","Lotus","Luna","Maple","Maxima","Meadow","Mello","Melody","Mercy","Midnight","Mona","Moone","Myst","Mysti","Mystique","Myth","Nanook","Nova","Nymph","Nyx","Omen","Onyxia","Opal","Oracle","Pandora","Paws","Pearl","Pepper","Phantom","Phoenix","Precious","Princess","Pyro","Queen","Rags","Raine","Raven","Rogue","Sable","Saffron","Sapphire","Satin","Scarlet","Shade","Shadow","Silver","Snow","Snowball","Snowflake","Solstice","Star","Twilight","Vapor","Velvet","Violet","Vixen","Whisper","Willow","Winter","Xena","Zelda");
+		
 		wolfNames = new SRPlainRandom(loadNames("wolf"));
 		wolfPrefixes = new SRPlainRandom(loadNames("wolfPrefix"));
 		wolfSuffixes = new SRPlainRandom(loadNames("wolfSuffix"));
@@ -121,7 +120,10 @@ public class randomLists {
 		batAdjs = new SRPlainRandom(loadNames("batAdj"));
 		batNames = new SRPlainRandom(loadNames("bat"));
 		
-		entNames = new SRPlainRandom("Abies","Acacia","Acca","Acer","Adansonia","Aesculus","Agathis","Agonis","Albizia","Aleurites","Alianthus","Alnus","Amalanchier","Amborella","Amentotaxus","Anacardium","Annona","Anogeissus","Antiaris","Aralia","Araucaria","Arbutus","Ardisia","Areca","Arenga","Argania","Artocarpus","Asimina","Athrotaxis","Azadirachta","Baccharis","Bactris","Bauhinia","Betula","Bombax","Borassus","Bourreria","Brachylaena","Brahea","Brosimum","Broussonetia","Bucida","Bursera","Busus","Butia","Byrsonima","Caesalpinia","Callistemon","Callitris","Calocedrus","Calophyllum","Calyptranthes","Canella","Capparis","Caragana","Carica","Carpinus","Carya","Caryota","Cassia","Castanea","Castanopsis","Castilla","Casuarina","Catalpa","Cecropia","Cedrela","Cedrus","Ceiba","Celtis","Ceratonia","Cercis","Chamaecyparis","Chilopsis","Cinnamomum","Citrus","Cladrastis","Clethra","Clusia","Cocos","Coffea","Combretum","Copernicia","Cordia","Cordyline","Cornus","Corylus","Corymbia","Corypha","Crataehus","Cupressus","Cussonia","Cycas","Cyrilla","Dacrycarpus","Dacrydium","Delonix","Diospyros","Dracaena","Drypetes","Durio","Elaeagnus","Elaeis","Elliottia","Erica","Eriobotrya","Erythrina","Eucommia","Eugenia","Euonymus","Euphorbia","Fagus","Ficu","Firmiana","Fraxinus","Garcinia","Ginkgo","Gleditsia","Gonystylus","Gordonia","Grevillea","Guibourtia","Gymnanthes","Halesia","Hamamelis","Harpullia","Hevea","Hibiscus","Hippomane","Howea","Hymenaea","Hyophorbe","Ilex","Illicium","Inga","Jacaranda","Jubaea","Juglans","Juniperus","Kalopanax","Khaya","Kigelia","Kokia","Laburnum","Lagunaria","Laurus","Lecythis","Leucaena","Licaria","Liquidambar","Liriodendron","Litchi","Lithocarpus","Livistona","Lodoicea","Lysiloma","Machaerium","Maclura","Magnolia","Malpighia","Malus","Mangifera","Maranthes","Maytenus","Medusagyne","Melia","Meryta","Metopium","Michelia","Millettia","Mimosa","Moringa","Morus","Musa","Myoporum","Myrica","Myristica","Myrsine","Myrtus","Nectandra","Nerium","Nyssa","Olea","Ostrya","Palaquium","Parrotia","Paulownia","Peltogyne","Pentaclethra","Persea","Phellodendron","Phytelephas","Picea","Pinus","Piscidia","Pistacia","Platanus","Plumeria","Populus","Prosopis","Prunus","Psidium","Pyrus","Quercus","Radermachera","Raphia","Rhapis","Rhizophora","Rhododendron","Rhus","Robinia","Sabal","Salix","Salvadora","Sambucus","Sapium","Sassafras","Schaefferia","Schefflera","Senegalia","Sequioa","Serenoa","Shorea","Sideroxylon","Sondias","Sophora","Sorbus","Stewartia","Syagrus","Syringa","Tabebuia","Taiwania","Talipariti","Tamarix","Taxandria","Taxus","Tectona","Tetradium","Theobroma","Thevetia","Thuja","Tilia","Tipuana","Toona","Torreya","Trema","Triadica","Tristaniopsis","Ulmus","Vachellia","Vernicia","Vitex","Wodyetia","Wollemia","Xylosma","Yucca","Zelkova");
+		//https://en.wikipedia.org/wiki/List_of_tree_genera
+		//banana trees aren't trees apparently!
+		entTrees = new SRPlainRandom(loadNames("entTree"));
+		entThings = new SRPlainRandom(loadNames("entThing"));
 		
 		drudgerStarters = new SRPlainRandom(loadNames("drudgerStart"));
 		drudgerMiddles = new SRPlainRandom(loadNames("drudgerMiddle"));
@@ -321,7 +323,7 @@ public class randomLists {
 	}
 	
 	public static String randomEntName() {
-	return entNames.next();
+	return entTrees.next()+entThings.next();
 	}
 	
 	public static String randomDrudgerStockName() {
