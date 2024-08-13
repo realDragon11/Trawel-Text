@@ -2395,6 +2395,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		bag.graphicalDisplay(1,this);
 	}
 	
+	public void graphicalFriendly() {
+		bag.graphicalDisplay(-1,this);
+	}
+	
 	/**
 	 * uses uneffective level, use for npcs stuff
 	 * @param fac

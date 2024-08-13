@@ -331,6 +331,7 @@ public class NodeConnector implements Serializable {
 		}
 		Player.addTime(.1);
 		TrawelTime.globalPassTime();
+		Networking.charUpdate();
 		if (isForceGo(node) && !isForceGoProtection()) {
 			isForceGoIng = true;
 			if (!getFlag(node,NodeFlag.SILENT_FORCEGO_POSSIBLE)) {

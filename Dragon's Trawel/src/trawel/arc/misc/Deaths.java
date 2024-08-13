@@ -37,6 +37,7 @@ public class Deaths {
 			return;
 		}
 		die(Rand.choose("You revive after the battle.","You right your repaired body.","You stand after your corpse pulls itself together."));
+		Networking.charUpdate();
 	}
 	
 	/**

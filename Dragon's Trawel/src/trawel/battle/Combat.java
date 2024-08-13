@@ -2325,8 +2325,8 @@ public class Combat {
 		boolean hasPlayer = false;
 		assert !second_man.isPlayer();
 		if (first_man.isPlayer()) {
-			first_man.getBag().graphicalDisplay(-1,first_man);
-			second_man.getBag().graphicalDisplay(1,second_man);
+			first_man.graphicalFriendly();
+			second_man.graphicalFoe();
 			Networking.setBattle(Networking.BattleType.NORMAL);
 			Player.player.getStory().startFight(false);
 			Print.println("You are dueling " +second_man.getName()+".");
