@@ -7,15 +7,23 @@ import trawel.helper.constants.TrawelColor;
 
 public class Changelog {
 	//b__X is in development, b_X is the actual release of that version
-		public static final String VERSION_STRING = "v0.8.b__13";
-		public static final String VERSION_DATE = " updated Aug 1st 2024";
+		public static final String VERSION_STRING = "v0.8.b_13";
+		public static final String VERSION_DATE = " updated Aug 13th 2024";
 		public static final String[][] changelog = new String[][] {
 			//add to front, changeviewer cycles to older ones when used
 			{"b_13",
+				"Most Features now have tutorials available in the Manual. These adapt to the current game settings.",
+				"Punishment removing has been overhauled, Districts and Doctors cure Wounded, Enchanters and Oracles and Altars lift curse, Appraisers and Smiths fix Damaged, Libraries and Taverns rest off Fatigue. Wounded halves starting body condition instead of applying Bleed.",
+				"Altars accept most DrawBanes as offerings. Districts have a 'heat' system and crime level reacts better to player intervention.",
+				"Cheating saves can enable the 'No Punishments' gamemode which removes Punishments instantly after encounters, from the Game Settings menu.",
 				//talk about terminal only (for now) changes
 				"Terminal Only: Access special printouts by inputting 't' (tutorial) to display the current Feature's tutorial (if any) or the battle tutorial, 'i' to show the ally inventory (usually you), and 'o' to show your opponent's inventory (if visible). This should give the terminal more parity with the Graphical.",
-				//talk about graphical only (for now) changes
-				"Graphical Only: Added UI tray from hamburger menu in top left. Can change volume options, and displays Fancy/Autoscroll better."
+				//talk about graphical only changes- note that these can be changed in ini files as well, avoiding the need for using the GUI, but that is beyond the scope of this changelog
+				"Graphical Only: Added UI tray from hamburger menu in top left. Can change volume options, scrollspeed, and Fancy/Autoscroll.",
+				//talk about meat drawbane changed and related
+				"Sapient but non-personable species had Meat removed from their DrawBane drops. Lumberjacks had Wood added. Dryads come with Wood Armor.",
+				//talk about name overhauls and related
+				"Wolves, Bears, Bats, Ents, and Drudgers have custom name generators instead of single-roll names. Drudgers have recieved minor updates to their promotions and random chances to roll extra rewards and power on Honored Drudgers."
 			},
 			{"b_12",
 				//discuss death punishments
