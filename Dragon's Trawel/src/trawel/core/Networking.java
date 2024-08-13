@@ -288,7 +288,7 @@ public class Networking {
 		friendlyDisplay = Player.player.getPerson();
 		Player.bag.graphicalDisplay(-1,Player.player.getPerson());
 		//Networking.sendStrong("Discord|imagelarge|"+Player.bag.getRace().name+"|" + Player.player.getPerson().getName() + " level "+ Player.player.getPerson().getLevel() +"|/");//replace icon with player.player.race later
-		Networking.sendStrong("Discord|imagelarge|icon|" + Player.player.getPerson().getName() + " level "+ Player.player.getPerson().getLevel() +"|");//replace icon with player.player.race later
+		//Networking.sendStrong("Discord|imagelarge|icon|" + Player.player.getPerson().getName() + " level "+ Player.player.getPerson().getLevel() +"|");//replace icon with player.player.race later
 	}
 
 	public static void clearSides() {
@@ -309,7 +309,7 @@ public class Networking {
 	}
 	
 	public static void richDesc(String desc) {
-		Networking.sendStrong("Discord|desc|"+desc+"|");
+		//Networking.sendStrong("Discord|desc|"+desc+"|");
 	}
 	
 	public static void setBattle(BattleType battle) {
@@ -380,7 +380,7 @@ public class Networking {
 		}
 		updateTime();
 		if (current_area != area_type && Player.player.atFeature != null) {
-			Networking.sendStrong("Discord|imagesmall|store|"+Player.player.atFeature.getName()+"|");
+			//Networking.sendStrong("Discord|imagesmall|store|"+Player.player.atFeature.getName()+"|");
 		}
 		current_area = area_type;
 	}

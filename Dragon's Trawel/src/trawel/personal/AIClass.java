@@ -277,7 +277,7 @@ public class AIClass {
 	public static void loot(Inventory loot, Inventory stash, boolean aetherStuff, Person p,boolean canEverDisplay) {
 		boolean display = canEverDisplay && !Print.getPrint();
 		//still do graphical display quickly for the player if connected
-		boolean graphicalDisplay = p.isPlayer() && Networking.connected();
+		boolean graphicalDisplay = p.isPlayer() && !p.getFlag(PersonFlag.AUTOLOOT) && Networking.connected();
 		int i = 0;
 		boolean normalLoot = loot.getRace().racialType == Race.RaceType.PERSONABLE && p.isPersonable();
 		if (normalLoot) {
@@ -442,6 +442,8 @@ public class AIClass {
 			if (canAtomSmash) {
 				playerDispLootChanges();
 			}
+			//update after autolooting because autolooting suppresses per-loot item updating (to avoid overwhelming network)
+			Networking.charUpdate();
 			Networking.leaderboard("highest_aether", Player.bag.getAether());
 			return;
 		}
