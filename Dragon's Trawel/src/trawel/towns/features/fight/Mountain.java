@@ -218,7 +218,7 @@ public class Mountain extends ExploreFeature{
 				Player.addXp(Math.max(1,getTempLevel()/3));//can't use temp level due to difficulty thing
 			}else {
 				Print.println(TrawelColor.RESULT_FAIL+"The rocks crush you!");
-				Deaths.die("You pull yourself out from under the rocks, your armor is all dinged up.");
+				Deaths.die("[r_bad]You pull yourself out from under the rocks, your armor is all dinged up.");
 				Player.player.addPunishment(Effect.DAMAGED);
 				Player.player.addPunishment(Effect.BURNOUT);
 			}
@@ -229,7 +229,7 @@ public class Mountain extends ExploreFeature{
 				Player.addXp(Math.max(1,getTempLevel()/3));
 			}else {
 				Print.println(TrawelColor.RESULT_FAIL+"The rocks crush you!");
-				Deaths.die("You pull yourself out from under the rocks, your armor is all dinged up.");
+				Deaths.die("[r_bad]You pull yourself out from under the rocks, your armor is all dinged up.");
 				Player.player.addPunishment(Effect.DAMAGED);
 				Player.player.addPunishment(Effect.BURNOUT);
 			}
