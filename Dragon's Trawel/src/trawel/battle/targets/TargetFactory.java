@@ -94,8 +94,7 @@ public class TargetFactory {
 		t.addWound(DamageType.PIERCE, Wound.TEAR, weightMult);
 	}
 	
-	private void addStatueWounds(Target t) {
-		
+	private void setStatuePart(Target t) {
 		t.addWound(DamageType.SHARP, Wound.NEGATED, 3);
 		t.addWound(DamageType.BLUNT, Wound.NEGATED, 3);
 		t.addWound(DamageType.PIERCE, Wound.NEGATED, 3);
@@ -103,6 +102,13 @@ public class TargetFactory {
 		t.addWound(DamageType.SHARP, Wound.CRUSHED, 1);
 		t.addWound(DamageType.BLUNT, Wound.CRUSHED, 1);
 		t.addWound(DamageType.PIERCE, Wound.CRUSHED, 1);
+		
+		t.sharp = 1;
+		t.blunt = 1;
+		t.pierce = 1;
+		
+		t.condWound = Wound.CRUMBLE;
+		t.type = TargetType.STATUE;
 	}
 	
 	private void addMangled_Wounds(Target t, float weightMult) {
@@ -363,7 +369,7 @@ public class TargetFactory {
 		t.finish();
 		
 		t = new Target();
-		t.name = "finger";//might be able to?
+		t.name = "finger";
 		t.variants = new String[] {"thumb","index []","middle []","ring []","pinkie []"};
 		t.hit = .6;
 		t.sharp = 1;
@@ -497,7 +503,6 @@ public class TargetFactory {
 		t.finish();
 		
 		
-		
 		//quad
 
 		t = new Target();
@@ -578,49 +583,33 @@ public class TargetFactory {
 		t = new Target();
 		t.name = "head";
 		set_as_head(t);
-		t.condWound = null;
-		t.type = TargetType.STATUE;
-		addStatueWounds(t);
-		t.mappingNumber = 1;
+		setStatuePart(t);
 		t.finish();
 		
 		t = new Target();
 		t.name = "neck";
-		t.hit = .5;
-		t.sharp = 1;
-		t.blunt = 1;
-		t.pierce = 1;
-		t.rarity = .4;
-		t.slot = 0;
-		t.type = TargetType.STATUE;
-		addStatueWounds(t);
-		t.mappingNumber = 1;
+		set_as_neck(t);
+		setStatuePart(t);
 		t.finish();
 		
 		t = new Target();
 		t.name = "chest";
 		set_as_torso(t);
-		t.condWound = null;
-		t.type = TargetType.STATUE;
-		addStatueWounds(t);
+		setStatuePart(t);
 		t.finish();
 		
 		t = new Target();
 		t.name = "arm";
 		t.variants = new String[] {"right {}","left {}"};
 		set_as_arm(t);
-		t.condWound = null;
-		t.type = TargetType.STATUE;
-		addStatueWounds(t);
+		setStatuePart(t);
 		t.finish();
 		
 		t = new Target();
 		t.name = "leg";
 		t.variants = new String[] {"right {}","left {}"};
 		set_as_leg(t);
-		t.condWound = null;
-		t.type = TargetType.STATUE;
-		addStatueWounds(t);
+		setStatuePart(t);
 		t.finish();
 		
 		//fell reaver standing
@@ -646,16 +635,10 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "neck";
-		t.hit = .5;
-		t.sharp = 3;
-		t.blunt = .5;
-		t.pierce = 3;
-		t.rarity = .4;
-		t.slot = 0;
+		set_as_neck(t);
 		t.type = TargetType.C_REAVER;
 		add_neck_Winded(t, 1);
 		add_neck_Bleeds(t, .5f);
-		t.mappingNumber = 1;
 		t.finish();
 		
 		t = new Target();
@@ -704,15 +687,9 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "neck";
-		t.hit = .5;
-		t.sharp = 3;
-		t.blunt = .5;
-		t.pierce = 3;
-		t.rarity = .4;
-		t.slot = 0;
+		set_as_neck(t);
 		t.type = TargetType.UNDEAD_H;
 		add_neck_Winded(t, 1);
-		t.mappingNumber = 1;
 		t.finish();
 		
 		t = new Target();

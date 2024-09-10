@@ -96,7 +96,10 @@ public enum Wound{//TODO: make sure the reworked wounds are fully in
 	SHINE("Shine","Deals %1$d direct damage and burn defender's armor by %2$d%%."
 			,true,true,"Their body shines with holy flame!"),
 	GLOW("Glow","Applies %1$d%% compounding inaccuracy to the defender's next set of attacks and burn armor by %2$d%%."
-			,true,true,"Their body glows with holy light!")
+			,true,true,"Their body glows with holy light!"),
+	//statue condwound
+	CRUMBLE("Crumble","Deals %1$d direct damage."
+			,true,true,"Their stone skin crumbles!")
 	;
 	//done line
 	public final String name, desc, active;

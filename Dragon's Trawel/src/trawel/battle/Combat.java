@@ -1991,14 +1991,25 @@ public class Combat {
 				break;
 			case PUNCTURED:
 				defender2.removeEffect(Effect.PADDED);
+				//fall through
 			case RUPTURED:
 				defender2.getBag().damageArmor((nums[0]/100f),attack.getSlot());
+				if (desc != null) {
+					desc += "; "+nums[0]+"% burn";
+				}
 				break;
 			case STATIC:
 				elemBonusEffects(attacker2,defender2,retu);
 				defender2.removeEffectAll(Effect.ADVANTAGE_STACK);
 				defender2.removeEffectAll(Effect.BONUS_WEAP_ATTACK);
 				defender2.addEffectCount(Effect.SHAKY,nums[0]);
+				break;
+			case CRUMBLE:
+				defender2.takeDamage(nums[0]);
+				retu.bonus+=nums[0];
+				if (desc != null) {
+					desc += "; "+nums[0] + " damage";
+				}
 				break;
 			case NEGATED://no effect
 			case EMPTY:
@@ -2109,10 +2120,6 @@ public class Combat {
 		case FLAYED:
 			int fbstacks = bleedStackAmount(attacker, defender)/2;//can take null attacker
 			return new Integer[] {fbstacks,fbstacks+defender.effectCount(Effect.BLEED)};//damage based on bleed, just projected
-		case SHINE://undead condwound
-			return new Integer[] {attack.getTotalDam()/10,10};//10% bonus damage, 10% armor damage
-		case GLOW://undead condwound
-			return new Integer[] {40,10};//40% less accurate later, 10% armor damage
 		case PUNCTURED://*100 so it can be turned into a % later and we don't have decimal issues, also ignores and removes one padded
 			//1% armor damage per end result of damage, max 15%, plus ignore/damage padding
 			if (result == null) {
@@ -2121,6 +2128,12 @@ public class Combat {
 			return new Integer[] {Math.min(10,(result.damage*100*2)/defender.getMaxHp())};
 		case RUPTURED://1% armor damage per MHP threatened, max 20%
 			return new Integer[] {Math.min(20,(attack.getTotalDam()*150)/defender.getMaxHp())};
+		case SHINE://undead condwound
+			return new Integer[] {attack.getTotalDam()/10,10};//10% bonus damage, 10% armor damage
+		case GLOW://undead condwound
+			return new Integer[] {40,10};//40% less accurate later, 10% armor damage
+		case CRUMBLE://statue condwound
+			return new Integer[] {defender.getMaxHp()/10};//10% of max hp
 		}
 		return new Integer[0];
 	}
