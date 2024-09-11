@@ -1918,11 +1918,9 @@ public class Combat {
 					defender2.addEffect(Effect.BREATHING);
 				}
 				break;
-			case I_BLEED:
-				if (!defender2.hasEffect(Effect.CLOTTER)) {
-					defender2.addEffect(Effect.I_BLEED);
-					defender2.addEffect(Effect.I_BLEED);
-				}
+			case BLEEDOUT:
+				//condwound only, so bypasses clotter
+				defender2.addEffect(Effect.BLEEDOUT);
 				break;
 			case TEAR:
 				defender2.addEffect(Effect.TORN);
@@ -2104,8 +2102,8 @@ public class Combat {
 		case KO: case BRAINED:
 			//this does fixed damage on defender because it needs to recover, plus that's part of it's gimmick of felling mighty foes
 			return new Integer[] {IEffectiveLevel.cleanLHP(defender.getLevel(),.1)};
-		case I_BLEED:
-			return new Integer[] {2*bleedDam(attacker,defender),2*bleedDam(null,defender)};//can take null attacker
+		case BLEEDOUT:
+			return new Integer[] {defender.getMaxHp()/10};
 		case MAJOR_BLEED: case MAJOR_BLEED_BLUNT:
 		case BLEED: case BLEED_BLUNT:
 			int stacks = bleedStackAmount(attacker, defender);//can take null attacker

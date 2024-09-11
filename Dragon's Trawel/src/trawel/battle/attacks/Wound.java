@@ -52,9 +52,6 @@ public enum Wound{//TODO: make sure the reworked wounds are fully in
 			,false,false,"Their insides get smashed."),
 	MAJOR_BLEED_BLUNT("Fracture","Applies %1$d stacks of bleed and prevents bleed from healing."
 			,false,false,"Their insides get crushed!"),
-	//soft decap'd wounds, used mostly as weird condwounds
-	I_BLEED("Fracture","Applies a stacking %2$d bleed, expected %1$d for this stack against this attacker."
-			,true,true,"Their insides get crushed!"),
 	
 	//elemental
 	SCALDED("Scald","Deals %1$d direct damage and burns defender's armor by %2$d%%."
@@ -99,7 +96,10 @@ public enum Wound{//TODO: make sure the reworked wounds are fully in
 			,true,true,"Their body glows with holy light!"),
 	//statue condwound
 	CRUMBLE("Crumble","Deals %1$d direct damage."
-			,true,true,"Their stone skin crumbles!")
+			,true,true,"Their stone skin crumbles!"),
+	//mimic/other condwound
+	BLEEDOUT("Bleedout","Injury: Bleeds %1$d without recovering."
+			,true,true,"They start to bleed out!"),
 	;
 	//done line
 	public final String name, desc, active;

@@ -499,7 +499,7 @@ public class TargetFactory {
 		t.type = TargetType.OPEN_MIMIC;
 		addForcedMajorBleed(t, 1);
 		t.mappingNumber = 1;
-		t.condWound = Wound.I_BLEED;
+		t.condWound = Wound.BLEEDOUT;
 		t.finish();
 		
 		
