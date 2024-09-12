@@ -75,9 +75,9 @@ public enum Effect{
 	PADDED("Padded","1/5th chance of negating a wound per stack, once per stack.",false,true,2)
 	;
 	
-	private String name,desc;
-	private boolean lasts, stacks;
-	private int goodNegNeut;
+	private final String name,desc;
+	private final boolean lasts, stacks;
+	private final int goodNegNeut;
 	Effect(String name, String desc, boolean lasts, boolean stacks,int _goodNegNeut) {
 		this.name = name;
 		this.desc = desc;
