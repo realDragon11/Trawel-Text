@@ -1,8 +1,6 @@
 # Trawel-Text
 An Open-World Text-Adventure RPG built like you were playing it on a calcuator.
 
-As of July 2024, Release of version 0.8 is expected within a month.
-
 If you are vision impaired and using a screenreader for this text, the following portions have inline links. You can find a compiled version at "[real.itch.io/trawel](https://real.itch.io/trawel)", but that might be out of date.
 <br>
 <br>
