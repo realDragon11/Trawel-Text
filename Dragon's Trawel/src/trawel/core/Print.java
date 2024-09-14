@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.TagFormatter;
+import trawel.personal.people.Player;
 import trawel.threads.ThreadData;
 
 public class Print {
@@ -21,6 +22,13 @@ public class Print {
 	public static final DecimalFormat F_WHOLE = new java.text.DecimalFormat("0");
 	public static final DecimalFormat format1 = new java.text.DecimalFormat("0.0");
 	public static final DecimalFormat format2 = F_TWO_TRAILING;
+	
+	/**
+	 * input number used for logging <br>
+	 * 0 = not an input println <br>
+	 * 1-9 = corresponding input println
+	 */
+	public static int inputNum = 0;
 
 	/**
 	 * Takes a string and makes the first letter capital
@@ -90,9 +98,13 @@ public class Print {
 		if (!printMode || debugPrint) {
 			//mainGame.log(str);
 			printStuff+=str;
-			Networking.printlocalln(stripPrint(printStuff));
-			detectInputString(stripPrint(printStuff));
+			String stripped = stripPrint(printStuff);
+			Networking.printlocalln(stripped);
+			detectInputString(stripped);
 			Networking.printlnTo(formatTags(printStuff));
+			if (Player.hasRecord()) {
+				Player.printRecord(stripped);
+			}
 			printStuff = "";
 	
 			if (debugPrint) {
@@ -148,10 +160,11 @@ public class Print {
 	}
 
 	public static void detectInputString(String str) {
-		if (str.length() > 1) {
-			if (Character.isDigit(str.charAt(0)) && str.charAt(1) == " ".charAt(0)) {
-				Networking.send("Input|" + str.charAt(0) +"|"+str+"|");
-			}
+		if (str.length() > 1 && Character.isDigit(str.charAt(0)) && str.charAt(1) == " ".charAt(0)) {
+			Networking.send("Input|" + str.charAt(0) +"|"+str+"|");
+			inputNum = Integer.parseInt(str.charAt(0)+"");
+		}else {
+			inputNum = 0;
 		}
 	}
 

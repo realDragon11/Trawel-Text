@@ -3,6 +3,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -1428,6 +1429,12 @@ public class mainGame {
 			Player.player.getLocation().atTown();
 			TrawelTime.globalPassTime();
 		}
+		try {
+			Player.player.close();
+		} catch (IOException e) {
+			Print.println("Error closing Player Object.");
+		}
+		Player.player = null;
 		multiCanRun = false;
 		Print.println("You do not wake up.");
 	}

@@ -1,5 +1,11 @@
 package trawel.personal.people;
 import java.awt.Color;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,7 +83,7 @@ import trawel.towns.features.misc.Lot;
 import trawel.towns.features.misc.Altar;
 import trawel.towns.features.misc.Altar.AltarForce;
 
-public class Player extends SuperPerson{
+public class Player extends SuperPerson implements Closeable{
 
 	private static final long serialVersionUID = 1L;
 	private Person person;
@@ -113,7 +119,6 @@ public class Player extends SuperPerson{
 	public double globalFindTime = 0;
 	
 	public short beer;
-
 	
 	public int currentKFrags = 0, knowledgeFragments = 0, fragmentReq = 5;
 	
@@ -142,6 +147,9 @@ public class Player extends SuperPerson{
 	public int roadGracePeriod = 0;
 	
 	private TwinListMap<Serializable,String> achieveMap = new TwinListMap<Serializable,String>();
+	
+	private String recordFile = null;
+	private transient PrintWriter recordWriter = null;
 	
 	public Player() {
 		flask = null;
@@ -860,6 +868,29 @@ public class Player extends SuperPerson{
 													@Override
 													public boolean go() {
 														person.setFlag(PersonFlag.AUTOBATTLE, !person.getFlag(PersonFlag.AUTOBATTLE));
+														return false;
+													}});
+												list.add(new MenuSelect() {
+
+													@Override
+													public String title() {
+														return (recordFile == null ? "Create Record." : "Replace Record: "+recordFile);
+													}
+
+													@Override
+													public boolean go() {
+														if (recordFile == null) {
+															closeWriter();
+															if (createRecord()) {
+																Print.println("Record file created: "+recordFile);
+															}else {
+																Print.println("Record file creation failed.");
+															}
+														}else {
+															Print.println("Closing record file: "+recordFile);
+															closeWriter();
+															recordFile = null;
+														}
 														return false;
 													}});
 												list.add(new MenuBack());
@@ -2586,6 +2617,70 @@ public class Player extends SuperPerson{
 
 	public void setGameMode_NoPunishments(boolean gameMode_NoPunishments) {
 		this.gameMode_NoPunishments = gameMode_NoPunishments;
+	}
+	
+	public static boolean hasRecord() {
+		return player != null && player.recordFile != null;
+	}
+	
+	/**
+	 * if true, will have a valid record file created and stored in recordFile
+	 * @return false if errored
+	 */
+	public boolean createRecord() {
+		//if there is a current recordWriter, it will become invalid after this
+		closeWriter();
+		try {
+			int i = 0;
+			do{
+				recordFile = getPerson().getNameNoTitle()+"-"+i+"-record.txt";
+				File f = new File(recordFile);
+				if (f.createNewFile()) {
+					if (f.exists()) {
+						return true;
+					}
+					break;
+				}
+				i++;
+			}while(i < 999);//limit of 1k record files under same name to reduce insanity if stuff breaks
+		}catch (IOException e) {};
+		//if file was not successfully created for ANY reason, clear
+		recordFile = null;
+		return false;
+	}
+
+	public static void printRecord(String line) {
+		if (player == null) {
+			return;
+		}
+		if (!hasRecord()) {
+			if (!player.createRecord()) {
+				throw new RuntimeException("could not create player record");
+			}
+		}
+		if (player.recordWriter == null) {
+			FileOutputStream fos;
+			try {
+				fos = new FileOutputStream(player.recordFile);
+				player.recordWriter = new PrintWriter(fos);
+			}catch (FileNotFoundException e) {
+				throw new RuntimeException("Record file error: "+ e.fillInStackTrace());
+			}
+		}
+		player.recordWriter.println(line);
+	}
+
+	@Override
+	public void close() throws IOException {
+		closeWriter();
+	}
+	
+	private void closeWriter() {
+		if (recordWriter != null) {
+			recordWriter.flush();
+			recordWriter.close();
+			recordWriter = null;
+		}
 	}
 	
 }
