@@ -894,6 +894,12 @@ public class Player extends SuperPerson implements Closeable{
 														}
 														return false;
 													}});
+												list.add(new MenuLine() {
+
+													@Override
+													public String title() {
+														return "Record files record your character's story in a text file, including every choice you make. You can read them later or submit them to the dev manually for feedback. They might get very long and very big if you keep them running.";
+													}});
 												list.add(new MenuBack());
 												return list;
 											}});

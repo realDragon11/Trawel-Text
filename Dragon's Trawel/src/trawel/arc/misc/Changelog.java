@@ -7,10 +7,14 @@ import trawel.helper.constants.TrawelColor;
 
 public class Changelog {
 	//b__X is in development, b_X is the actual release of that version
-		public static final String VERSION_STRING = "v0.8.b_13";
-		public static final String VERSION_DATE = " updated Aug 13th 2024";
+		public static final String VERSION_STRING = "v0.8.b_14";
+		public static final String VERSION_DATE = " updated Sept 14th 2024";
 		public static final String[][] changelog = new String[][] {
 			//add to front, changeviewer cycles to older ones when used
+			{"b_14",
+				"Statues have condwound injuries, Crumble, which deals 10% of their MHP, as well as flat 1x damage mults on all parts. Mimics have a new tongue condwound injury, Bleedout, that deals 10% HP as bleeding damage.",
+				"Record feature added. After created for a character, it creates and updates a local text file with every action you take and every world thing you see. While intended as an alternative to video files for feedback, it is human readable and can be used by players wishing keep a personal record of their playthroughs. If you want to help with feedback, you can enable records and then upload these files to a host of your choosing."
+			},
 			{"b_13",
 				"Most Features now have tutorials available in the Manual. These adapt to the current game settings.",
 				"Punishment removing has been overhauled, Districts and Doctors cure Wounded, Enchanters and Oracles and Altars lift curse, Appraisers and Smiths fix Damaged, Libraries and Taverns rest off Fatigue. Wounded halves starting body condition instead of applying Bleed.",
