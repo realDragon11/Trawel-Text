@@ -817,12 +817,6 @@ public class Player extends SuperPerson implements Closeable{
 											@Override
 											public List<MenuItem> gen() {
 												List<MenuItem> list = new ArrayList<MenuItem>();
-												list.add(new MenuLine() {
-
-													@Override
-													public String title() {
-														return "AutoLoot will make the game use the NPC looting choices instead of your own for weapons and armor. Other choices are not affected, such as DrawBanes. It will only display changes. NPCs tend to understand how to compare weapons better than armor.";
-													}});
 												list.add(new MenuSelect() {
 
 													@Override
@@ -839,7 +833,7 @@ public class Player extends SuperPerson implements Closeable{
 
 													@Override
 													public String title() {
-														return "AutoLevel will make the game pick Archetypes/Feats randomly from the selected choices each level up. It will also make it reconfigure your Skill Configs every time.";
+														return "AutoLoot will make the game use the NPC looting choices instead of your own for weapons and armor. Other choices are not affected, such as DrawBanes. It will only display changes. NPCs tend to understand how to compare weapons better than armor.";
 													}});
 												list.add(new MenuSelect() {
 
@@ -857,7 +851,7 @@ public class Player extends SuperPerson implements Closeable{
 
 													@Override
 													public String title() {
-														return "AutoBattle will make the game use NPC logic to pick which attacks to use instead of displaying them to you. You must still advance the combat, but the 'back out' option works.";
+														return "AutoLevel will make the game pick Archetypes/Feats randomly from the selected choices each level up. It will also make it reconfigure your Skill Configs every time.";
 													}});
 												list.add(new MenuSelect() {
 
@@ -870,6 +864,12 @@ public class Player extends SuperPerson implements Closeable{
 													public boolean go() {
 														person.setFlag(PersonFlag.AUTOBATTLE, !person.getFlag(PersonFlag.AUTOBATTLE));
 														return false;
+													}});
+												list.add(new MenuLine() {
+
+													@Override
+													public String title() {
+														return "AutoBattle will make the game use NPC logic to pick which attacks to use instead of displaying them to you. You must still advance the combat, but the 'back out' option works.";
 													}});
 												list.add(new MenuSelect() {
 
