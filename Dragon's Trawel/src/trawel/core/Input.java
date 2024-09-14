@@ -21,8 +21,10 @@ public class Input {
 		backingQueue = 10;
 	}
 
-	public static final void linebreak() {
+	public static final void linebreak(int num) {
+		//FIXME: add an option to remove the graphical linebreak but not the internal effects
 		Print.println("------------");
+		Print.collectInputBucket(num);
 	}
 
 	public static final boolean yesNo() {
@@ -54,7 +56,7 @@ public class Input {
 				}
 				Print.println("1 yes");
 				Print.println("9 no");
-				ini=  Networking.nextInt();
+				ini = Networking.nextInt();
 				if (ini == -99 || ini == -1) {
 					Networking.unConnect();
 					throw new RuntimeException("invalid input stream error");
@@ -62,7 +64,7 @@ public class Input {
 	
 			}
 			Networking.sendStrong("Entry|Finish|");
-			Input.linebreak();
+			Input.linebreak(ini);
 			trawel.threads.BlockTaskManager.halt();
 			return ini == 1;
 	
@@ -148,7 +150,7 @@ public class Input {
 		}
 		Networking.sendStrong("Entry|Finish|");
 		trawel.threads.BlockTaskManager.halt();
-		Input.linebreak();
+		Input.linebreak(ini);
 		return ini;
 	}
 

@@ -1,7 +1,9 @@
 package trawel.core;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Stack;
 
 import trawel.helper.constants.TrawelColor;
@@ -29,6 +31,11 @@ public class Print {
 	 * 1-9 = corresponding input println
 	 */
 	public static int inputNum = 0;
+	public static List[] inputBuckets = null;
+	
+	static {
+		createInputBuckets();
+	}
 
 	/**
 	 * Takes a string and makes the first letter capital
@@ -103,7 +110,12 @@ public class Print {
 			detectInputString(stripped);
 			Networking.printlnTo(formatTags(printStuff));
 			if (Player.hasRecord()) {
-				Player.printRecord(stripped);
+				if (inputNum == 0) {
+					Player.printRecord(stripped);
+				}else {
+					//add the stripped line to the input bucket to be used later
+					inputBuckets[inputNum].add(stripped);
+				}
 			}
 			printStuff = "";
 	
@@ -163,9 +175,31 @@ public class Print {
 		if (str.length() > 1 && Character.isDigit(str.charAt(0)) && str.charAt(1) == " ".charAt(0)) {
 			Networking.send("Input|" + str.charAt(0) +"|"+str+"|");
 			inputNum = Integer.parseInt(str.charAt(0)+"");
-		}else {
-			inputNum = 0;
 		}
+		/*//doesn't revert back afterwards and instead catches the text after as in it's "input bucket". this doesn't always work because sometimes the text is in front, but it should work for important cases (like attacks)
+		 * else {
+			inputNum = 0;
+		}*/
+	}
+	
+	public static void createInputBuckets() {
+		//always created, but only added to and pulled from if there's an active record
+		inputBuckets = new List[10];
+		for (int i = 1; i < 10; i++) {
+			inputBuckets[i] = new ArrayList<String>();
+		}
+	}
+	
+	public static void collectInputBucket(int num) {
+		if (Player.hasRecord()) {
+			for (Object o: inputBuckets[num]) {
+				Player.printRecord((String)o);
+			}
+			//flush to save record progress
+			Player.printRecord(null);
+			createInputBuckets();
+		}
+		inputNum = 0;//reset to no input bucket
 	}
 
 	/**

@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -2649,6 +2650,10 @@ public class Player extends SuperPerson implements Closeable{
 		return false;
 	}
 
+	/**
+	 * line can be null to flush the stream instead of add to it
+	 * @param line
+	 */
 	public static void printRecord(String line) {
 		if (player == null) {
 			return;
@@ -2659,13 +2664,15 @@ public class Player extends SuperPerson implements Closeable{
 			}
 		}
 		if (player.recordWriter == null) {
-			FileOutputStream fos;
 			try {
-				fos = new FileOutputStream(player.recordFile);
-				player.recordWriter = new PrintWriter(fos);
-			}catch (FileNotFoundException e) {
+				player.recordWriter = new PrintWriter(new FileWriter(player.recordFile, true));
+			}catch (IOException e) {
 				throw new RuntimeException("Record file error: "+ e.fillInStackTrace());
 			}
+		}
+		if (line == null) {
+			player.recordWriter.flush();
+			return;
 		}
 		player.recordWriter.println(line);
 	}
@@ -2681,6 +2688,8 @@ public class Player extends SuperPerson implements Closeable{
 			recordWriter.close();
 			recordWriter = null;
 		}
+		//clear the input buckets either way
+		Print.createInputBuckets();
 	}
 	
 }

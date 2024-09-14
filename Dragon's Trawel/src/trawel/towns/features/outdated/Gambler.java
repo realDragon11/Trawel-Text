@@ -49,7 +49,7 @@ public class Gambler extends Feature{
 		Print.println("1 play " +type);
 		Print.println("2 leave");
 		int input =  Input.inInt(2);
-		Input.linebreak();
+		Input.linebreak(input);
 		if (input == 2){
 			return;
 		}
@@ -59,7 +59,7 @@ public class Gambler extends Feature{
 		}
 		Print.println("How much do you bid? They have " +gold + " gold to win.");
 		int in =  Input.inInt(gold);
-		Input.linebreak();
+		Input.linebreak(in);
 		Inventory bag = Player.player.getPerson().getBag();
 		int bid = Math.max(Math.min(bag.getGold(),Math.min(gold,in)),0);
 		Print.println("You bid " + bid + " gold.");
@@ -71,7 +71,7 @@ public class Gambler extends Feature{
 			Print.println("2 cup");
 			Print.println("3 cup");
 			in =  Input.inInt(3);
-			Input.linebreak();
+			Input.linebreak(in);
 			if (in == 1 || in ==2 || in ==3) {
 				if (Math.random()*3 < 1) {
 					Print.println("You win " + bid  + " gold!");
