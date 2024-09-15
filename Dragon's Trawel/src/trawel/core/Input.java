@@ -22,8 +22,9 @@ public class Input {
 	}
 
 	public static final void linebreak(int num) {
-		//FIXME: add an option to remove the graphical linebreak but not the internal effects
-		Print.println("------------");
+		if (mainGame.lineSep) {
+			Print.println("------------");
+		}
 		Print.collectInputBucket(num);
 	}
 

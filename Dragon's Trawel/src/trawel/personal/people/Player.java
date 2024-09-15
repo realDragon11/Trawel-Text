@@ -1190,7 +1190,11 @@ public class Player extends SuperPerson implements Closeable{
 								Print.println(i+ " slot:"+SaveManager.checkNameInFile(""+i));
 							}
 							int in = Input.inInt(8);
-							Print.println("Saving...");
+							if (mainGame.saveText) {
+								Print.println("Saving...");
+							}else {
+								Print.println("Saving.");
+							}
 							WorldGen.plane.prepareSave();
 							SaveManager.save(in+"");
 							

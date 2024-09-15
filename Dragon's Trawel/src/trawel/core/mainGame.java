@@ -108,6 +108,8 @@ public class mainGame {
 	public static boolean displayNodeDeeper;
 	public static boolean displayFeatureFluff;
 	public static boolean combatFeedbackNotes;
+	public static boolean saveText;
+	public static boolean lineSep;
 	public static GraphicStyle graphicStyle;
 
 	private static boolean doAutoSave = true;
@@ -668,7 +670,36 @@ public class mainGame {
 								advancedCombatDisplay = !advancedCombatDisplay;
 								prefs.setProperty("debug_attacks",advancedCombatDisplay+"");
 								return false;
-							}});
+							}
+						});
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Line Separator: "+lineSep+"  (If disabled, removes line separator after each input and boot ASCII.)";
+							}
+
+							@Override
+							public boolean go() {
+								lineSep = !lineSep;
+								prefs.setProperty("linesep_text",lineSep+"");
+								return false;
+							}
+						});
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Save Text: "+saveText+"  (If disabled, removes messages indicating a save was finished.)";
+							}
+
+							@Override
+							public boolean go() {
+								saveText = !saveText;
+								prefs.setProperty("nosave_text",saveText+"");
+								return false;
+							}
+						});
 						Input.menuGo(new ScrollMenuGenerator(list.size(), "last <> options", "next <> options") {
 							@Override
 							public List<MenuItem> forSlot(int i) {
@@ -1242,15 +1273,15 @@ public class mainGame {
 	}
 
 	public static String headerText() {
-		return ("Dragon's Trawel "+Changelog.VERSION_STRING+Changelog.VERSION_DATE)+"\r\n"+
-			(
+		return ("Dragon's Trawel "+Changelog.VERSION_STRING+Changelog.VERSION_DATE)+
+			(lineSep ? ("\r\n"+
 			        " ___________  ___  _    _ _____ _     \r\n" + 
 					"|_   _| ___ \\/ _ \\| |  | |  ___| |    \r\n" + 
 					"  | | | |_/ / /_\\ \\ |  | | |__ | |    \r\n" + 
 					"  | | |    /|  _  | |/\\| |  __|| |    \r\n" + 
 					"  | | | |\\ \\| | | \\  /\\  / |___| |____\r\n" + 
 			       "  \\_/ \\_| \\_\\_| |_/\\/  \\/\\____/\\_____/"
-			);
+			) : "");
 	}
 
 	public static void log(String str) {
@@ -1367,6 +1398,9 @@ public class mainGame {
 			displayNodeDeeper = Boolean.parseBoolean(prefs.getProperty("nodedeeper_text","TRUE"));
 			combatFeedbackNotes = Boolean.parseBoolean(prefs.getProperty("combatnotes_text","TRUE"));
 			graphicStyle = graphicStyleLookup(prefs.getProperty("graphic_style",GraphicStyle.WASDD.name()));
+			saveText = Boolean.parseBoolean(prefs.getProperty("save_text","TRUE"));
+			lineSep = Boolean.parseBoolean(prefs.getProperty("linesep_text","TRUE"));
+			
 
 			if (autoConnect) {
 				System.out.println("Please wait for the graphical to load...");
@@ -1441,7 +1475,12 @@ public class mainGame {
 	
 	public static void checkAutosave() {
 		if (doAutoSave && (new Date().getTime()-lastAutoSave.getTime() > 1000*60*2)) {
-			Print.println("Autosaving...");
+			if (saveText) {
+				Print.println("Autosaving...");
+			}else {
+				Print.println("Autosaving.");
+			}
+			
 			WorldGen.plane.prepareSave();
 			SaveManager.save("auto");
 			lastAutoSave = new Date();

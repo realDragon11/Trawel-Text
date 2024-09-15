@@ -122,9 +122,12 @@ public class SaveManager {
 			 ;
 			 pws.flush();
 			 SaveManager.savePlaneFury(WorldGen.plane,fos);
-		     Print.println("Saved!");
-		     File f = new File("trawel"+str+".save");
-		     Print.println("Slot "+str + ": "+f.length() + " bytes.");
+			 if (mainGame.saveText) {
+				 Print.println("Saved!");
+			     File f = new File("trawel"+str+".save");
+			     Print.println("Slot "+str + ": "+f.length() + " bytes.");
+			 }
+		     
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
