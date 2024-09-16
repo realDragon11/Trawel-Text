@@ -1,7 +1,9 @@
 package trawel.personal.classless;
 
+import trawel.core.Print;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
+import trawel.personal.people.Player;
 
 public class AttributeBox {
 	
@@ -176,5 +178,23 @@ public class AttributeBox {
 			return "{Clarity}";
 		}
 		throw new RuntimeException("invalid stat index: " + index);
+	}
+	
+	public static final String getStatNameByIndex(int index) {
+		switch (index) {
+		case 0:
+			return "Strength";
+		case 1:
+			return "Dexterity";
+		case 2:
+			return "Clarity";
+		}
+		throw new RuntimeException("invalid stat index: " + index);
+	}
+	
+	public static final String showPlayerContest(int index,int difficulty) {
+		int playerAttribute = Player.player.getPerson().getStatByIndex(index);
+		int chance = (100*playerAttribute)/(playerAttribute+difficulty);
+		return chance+"% ("+playerAttribute+" "+getStatNameByIndex(index)+" vs "+difficulty+") ";
 	}
 }

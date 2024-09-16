@@ -762,17 +762,18 @@ public class GenericNode implements NodeType {
 									return TrawelColor.RESULT_ERROR+"You are too burnt out to find a way to open the "+name+".";
 								}});
 						}else {
+							int difficulty = IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node));
 							list.add(new MenuSelect() {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Break down the "+name+". "+AttributeBox.getStatHintByIndex(0);
+									return TrawelColor.RESULT_WARN+"Break down the "+name+". "+AttributeBox.showPlayerContest(0,difficulty);
 								}
 
 								@Override
 								public boolean go() {
 									if (Player.player.getPerson().contestedRoll(
-										Player.player.getPerson().getStrength(), IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node)))
+										Player.player.getPerson().getStrength(),difficulty)
 										>=0){
 										//broke down door
 										Print.println(TrawelColor.RESULT_PASS+"You bash open the "+name+".");
@@ -792,13 +793,13 @@ public class GenericNode implements NodeType {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Lockpick the "+name+". "+AttributeBox.getStatHintByIndex(1);
+									return TrawelColor.RESULT_WARN+"Lockpick the "+name+". "+AttributeBox.showPlayerContest(1,difficulty);
 								}
 
 								@Override
 								public boolean go() {
 									if (Player.player.getPerson().contestedRoll(
-										Player.player.getPerson().getDexterity(), IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node)))
+										Player.player.getPerson().getDexterity(),difficulty)
 										>=0){
 										//lockpicked door
 										Print.println(TrawelColor.RESULT_PASS+"You pick open the "+name+".");
@@ -818,13 +819,13 @@ public class GenericNode implements NodeType {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Cast Knock on the "+name+". "+AttributeBox.getStatHintByIndex(2);
+									return TrawelColor.RESULT_WARN+"Cast Knock on the "+name+". "+AttributeBox.showPlayerContest(2,difficulty);
 								}
 
 								@Override
 								public boolean go() {
 									if (Player.player.getPerson().contestedRoll(
-										Player.player.getPerson().getClarity(), IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node)))
+										Player.player.getPerson().getClarity(),difficulty)
 										>=0){
 										//lockpicked door
 										Print.println(TrawelColor.RESULT_PASS+"You open the "+name+" with a Knock cantrip.");
@@ -1220,6 +1221,8 @@ public class GenericNode implements NodeType {
 			public List<MenuItem> gen() {
 				List<MenuItem> list = new ArrayList<MenuItem>();
 				int state = holder.getStateNum(node);
+				final int level = holder.getLevel(node);
+				final int knownTrapDifficulty = IEffectiveLevel.attributeChallengeEasy(level);
 				if (state == 3) {
 					list.add(new MenuLine() {
 
@@ -1253,7 +1256,6 @@ public class GenericNode implements NodeType {
 								}
 								holder.setStateNum(node,3);//set state which will get refreshed above
 								//TODO: do loot
-								int level = holder.getLevel(node);
 								//multiplier based on level and trap amount
 								float lootMult = (trapArray.length/3)*IEffectiveLevel.unclean(level);
 								//at least some gold is awarded even for different vault types
@@ -1371,25 +1373,26 @@ public class GenericNode implements NodeType {
 								return false;
 							}});
 						if (state < 2) {
+							
+							final int discoverDifficulty = IEffectiveLevel.attributeChallengeMedium(level);
 							list.add(new MenuSelect() {
 	
 								@Override
 								public String title() {
-									return TrawelColor.PRE_MAYBE_BATTLE+"Attempt to discover traps by "+tChamberLookup(lootArray[0],lootArray[3])[1]+ ". "+ AttributeBox.getStatHintByIndex(lootArray[0]);
+									return TrawelColor.PRE_MAYBE_BATTLE+"Attempt to discover traps by "+tChamberLookup(lootArray[0],lootArray[3])[1]+ ". "+ AttributeBox.showPlayerContest(lootArray[0],discoverDifficulty);
 								}
 	
 								@Override
 								public boolean go() {
 									int playerRoll = Player.player.getPerson().getStatByIndex(lootArray[0]);
-									int level = holder.getLevel(node);
 									Player.addTime(.3);//examining time
 									TrawelTime.globalPassTime();
-									if (Player.player.getPerson().contestedRoll(playerRoll, IEffectiveLevel.attributeChallengeMedium(level)) >=0) {
+									if (Player.player.getPerson().contestedRoll(playerRoll,discoverDifficulty) >=0) {
 										//passed check, learns traps
 										for (int i = 0; i < trapArray.length;i++) {
 											if (trapArray[i][2] == 0) {//if trap is not revealed
 												trapArray[i][2] = 1;//reveal it
-												Print.println(TrawelColor.RESULT_PASS+tChamberLookup(lootArray[0],lootArray[3])[2] +": "+ trapLookup(trapArray[i][0],trapArray[i][1])[4] + " " + AttributeBox.getStatHintByIndex(trapArray[i][0]));//print reveal fluff
+												Print.println(TrawelColor.RESULT_PASS+tChamberLookup(lootArray[0],lootArray[3])[2] +": "+ trapLookup(trapArray[i][0],trapArray[i][1])[4] + " " + AttributeBox.showPlayerContest(trapArray[i][0],knownTrapDifficulty));//print reveal fluff
 												break;//stop revealing
 											}
 											if (i == trapArray.length-1) {//if the last trap is already revealed
@@ -1413,7 +1416,7 @@ public class GenericNode implements NodeType {
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
-									return "Known Trap: "+trapLookup(trapArray[index][0],trapArray[index][1])[0] + " " + AttributeBox.getStatHintByIndex(trapArray[index][0]);//print name fluff
+									return "Known Trap: "+trapLookup(trapArray[index][0],trapArray[index][1])[0] + " " + AttributeBox.showPlayerContest(trapArray[index][0],knownTrapDifficulty);//print name fluff
 								}});
 						}
 					}
@@ -1439,7 +1442,7 @@ public class GenericNode implements NodeType {
 			againstRoll = IEffectiveLevel.attributeChallengeEasy(level);
 		}else {
 			//does not know about trap
-			againstRoll = 2*IEffectiveLevel.attributeChallengeHard(level);
+			againstRoll = IEffectiveLevel.attributeChallengeHard(level);
 		}
 		//after we encounter a trap, it is revealed either way
 		trapData[2] = 1;
@@ -1449,14 +1452,14 @@ public class GenericNode implements NodeType {
 			Player.addTime(.5);//half an hour of passing time
 			TrawelTime.globalPassTime();
 			//passed check
-			Print.println(TrawelColor.RESULT_NO_CHANGE_GOOD+trapFluff[3] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
+			Print.println(TrawelColor.RESULT_NO_CHANGE_GOOD+trapFluff[3] + " " + AttributeBox.showPlayerContest(trapData[0],againstRoll));
 			return true;
 		}else {
 			Player.addTime(1);//full hour of failing time
 			TrawelTime.globalPassTime();
 			//failed check, suffer burnout
 			Player.player.addPunishment(Effect.BURNOUT);
-			Print.println(TrawelColor.RESULT_FAIL+trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
+			Print.println(TrawelColor.RESULT_FAIL+trapFluff[2] + " " + AttributeBox.showPlayerContest(trapData[0],againstRoll));
 			TrapPunishment punishment = trapFluff[1] == null ? null : TrapPunishment.valueOf(trapFluff[1]);
 			switch (punishment) {//type of trap punishment
 			default:
