@@ -762,7 +762,7 @@ public class GenericNode implements NodeType {
 									return TrawelColor.RESULT_ERROR+"You are too burnt out to find a way to open the "+name+".";
 								}});
 						}else {
-							int difficulty = IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node));
+							final int difficulty = IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node));
 							list.add(new MenuSelect() {
 
 								@Override

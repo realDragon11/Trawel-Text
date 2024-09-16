@@ -488,17 +488,18 @@ public class BeachNode implements NodeType {
 									return TrawelColor.RESULT_ERROR+"You are too burnt out to find a way to open the "+chestname+".";
 								}});
 						}else {
+							final int difficulty = IEffectiveLevel.attributeChallengeMedium(holder.getLevel(node));
 							list.add(new MenuSelect() {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Smash open the "+chestname+". "+AttributeBox.getStatHintByIndex(0);
+									return TrawelColor.RESULT_WARN+"Smash open the "+chestname+". "+AttributeBox.showPlayerContest(0,difficulty);
 								}
 
 								@Override
 								public boolean go() {
 									if (Player.player.getPerson().contestedRoll(
-										Player.player.getPerson().getStrength(), IEffectiveLevel.attributeChallengeMedium(holder.getLevel(node)))
+										Player.player.getPerson().getStrength(),difficulty)
 										>=0){
 										//broke down door
 										Print.println(TrawelColor.RESULT_PASS+"You smash open the "+chestname+".");
@@ -518,13 +519,13 @@ public class BeachNode implements NodeType {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Lockpick the "+chestname+". "+AttributeBox.getStatHintByIndex(1);
+									return TrawelColor.RESULT_WARN+"Lockpick the "+chestname+". "+AttributeBox.showPlayerContest(1,difficulty);
 								}
 
 								@Override
 								public boolean go() {
 									if (Player.player.getPerson().contestedRoll(
-										Player.player.getPerson().getDexterity(), IEffectiveLevel.attributeChallengeMedium(holder.getLevel(node)))
+										Player.player.getPerson().getDexterity(),difficulty)
 										>=0){
 										//lockpicked door
 										Print.println(TrawelColor.RESULT_PASS+"You pick open the "+chestname+".");
@@ -544,13 +545,13 @@ public class BeachNode implements NodeType {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Cast Knock on the "+chestname+". "+AttributeBox.getStatHintByIndex(2);
+									return TrawelColor.RESULT_WARN+"Cast Knock on the "+chestname+". "+AttributeBox.showPlayerContest(2,difficulty);
 								}
 
 								@Override
 								public boolean go() {
 									if (Player.player.getPerson().contestedRoll(
-										Player.player.getPerson().getClarity(), IEffectiveLevel.attributeChallengeMedium(holder.getLevel(node)))
+										Player.player.getPerson().getClarity(),difficulty)
 										>=0){
 										//lockpicked door
 										Print.println(TrawelColor.RESULT_PASS+"You open the "+chestname+" with a Knock cantrip.");

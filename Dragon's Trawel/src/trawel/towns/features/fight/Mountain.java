@@ -438,16 +438,17 @@ public class Mountain extends ExploreFeature{
 							return true;
 						}});
 				}else {
+					final int barterDifficulty = IEffectiveLevel.attributeChallengeEasy(getTempLevel());
 					list.add(new MenuSelect() {
 
 						@Override
 						public String title() {
-							return TrawelColor.PRE_MAYBE_BATTLE+"See if they'll accept what you have. "+AttributeBox.getStatHintByIndex(2);
+							return TrawelColor.PRE_MAYBE_BATTLE+"See if they'll accept what you have. "+AttributeBox.showPlayerContest(2,barterDifficulty);
 						}
 
 						@Override
 						public boolean go() {
-							if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getClarity(),IEffectiveLevel.attributeChallengeEasy(getTempLevel())) >=0){
+							if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getClarity(),barterDifficulty) >=0){
 								int lower = Player.player.loseAether(tithe);
 								Print.println(TrawelColor.RESULT_PASS+"They accept the reduced tithe of "+lower+" aether.");
 							}else {
@@ -457,16 +458,17 @@ public class Mountain extends ExploreFeature{
 							return true;
 						}});
 				}
+				final int fleeDifficulty = leader.getDexterity();
 				list.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return TrawelColor.PRE_MAYBE_BATTLE+"Attempt to flee."+AttributeBox.getStatHintByIndex(1);
+						return TrawelColor.PRE_MAYBE_BATTLE+"Attempt to flee. "+AttributeBox.showPlayerContest(1,fleeDifficulty);
 					}
 
 					@Override
 					public boolean go() {
-						if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getDexterity(),leader.getDexterity()) >=0){
+						if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getDexterity(),fleeDifficulty) >=0){
 							Print.println(TrawelColor.RESULT_PASS+"You escape!");
 							return true;
 						}else {
@@ -479,11 +481,12 @@ public class Mountain extends ExploreFeature{
 					}}
 				);
 				if (!groupSmall) {//can only be chosen by larger cults
+					final int challengeDifficulty = leader.getClarity();
 					list.add(new MenuSelect() {
 
 						@Override
 						public String title() {
-							return TrawelColor.PRE_BATTLE+"Challenge the leader's divinity!"+AttributeBox.getStatHintByIndex(2);
+							return TrawelColor.PRE_BATTLE+"Challenge the leader's divinity! "+AttributeBox.showPlayerContest(2,challengeDifficulty);
 						}
 
 						@Override
@@ -491,9 +494,9 @@ public class Mountain extends ExploreFeature{
 							if (!leader.reallyFight("Really challenge")) {
 								return false;//can back out of it
 							}
-							if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getClarity(),IEffectiveLevel.attributeChallengeEasy(getTempLevel())) >=0){
+							if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getClarity(),challengeDifficulty) >=0){
 								//challenge successful
-								Print.println(TrawelColor.RESULT_PASS+"The engage in the ritual battle to determine who is truly chosen!");
+								Print.println(TrawelColor.RESULT_PASS+"They engage in the ritual battle to determine who is truly chosen!");
 								Combat c = Player.player.fightWith(leader);
 								if (c.playerWon() > 0) {
 									Print.println(TrawelColor.RESULT_GOOD+"The remaining cultist members declare you the new chosen one!");
