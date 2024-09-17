@@ -1471,8 +1471,8 @@ public class GenericNode implements NodeType {
 			Player.addTime(1);//full hour of failing time
 			TrawelTime.globalPassTime();
 			//failed check, suffer burnout
-			Player.player.addPunishment(Effect.BURNOUT);
 			Print.println(TrawelColor.RESULT_FAIL+trapFluff[2] + " " + AttributeBox.showPlayerContest(trapData[0],againstRoll));
+			Player.player.addPunishment(Effect.BURNOUT);
 			TrapPunishment punishment = trapFluff[1] == null ? null : TrapPunishment.valueOf(trapFluff[1]);
 			switch (punishment) {//type of trap punishment
 			default:
