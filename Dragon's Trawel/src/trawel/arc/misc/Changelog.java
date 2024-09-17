@@ -8,12 +8,17 @@ import trawel.helper.constants.TrawelColor;
 public class Changelog {
 	//b__X is in development, b_X is the actual release of that version
 		public static final String VERSION_STRING = "v0.8.b__14";
-		public static final String VERSION_DATE = " updated Sept 14th 2024";
+		public static final String VERSION_DATE = " updated Sept 16th 2024";
 		public static final String[][] changelog = new String[][] {
 			//add to front, changeviewer cycles to older ones when used
 			{"b_14",
+				//attribute contests
+				"World Attribute Contests (locks, trapped chambers, sky cult, etc) have a percent chance of success displayed. Locked objects have random modifiers to make certain attributes better or worse against them. Difficulty scaling fixed to be a portion of (20% for trival up to 100% for impossible) flat primary leveling of that attribute: 100 base +15 per level as 'on stat scaling'.",
+				//bodyplan changes
 				"Statues have condwound injuries, Crumble, which deals 10% of their MHP, as well as flat 1x damage mults on all parts. Mimics have a new tongue condwound injury, Bleedout, that deals 10% HP as bleeding damage.",
+				//records
 				"Record feature added. After created for a character, it creates and updates a local text file with every action you take and every world thing you see. While intended as an alternative to video files for feedback, it is human readable and can be used by players wishing keep a personal record of their playthroughs. If you want to help with feedback, you can enable records and then upload these files to a host of your choosing.",
+				//display indicators
 				"Save Text and Line Separator indicator options added to reduce narrator vomit."
 			},
 			{"b_13",
