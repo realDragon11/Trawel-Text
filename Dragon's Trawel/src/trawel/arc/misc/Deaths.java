@@ -17,7 +17,6 @@ public class Deaths {
 
 	public static void die(String deathMessage) {
 		Networking.statAddUpload("deaths","total_deaths",1);
-		//Networking.sendStrong("StatUp|deaths|1|");
 		Networking.leaderboard("most_deaths",++Player.player.deaths);
 		Networking.unlockAchievement("die1");
 		Player.player.getStory().onDeath();
@@ -32,12 +31,12 @@ public class Deaths {
 	
 	public static void dieFight() {
 		deathPenalty();
+		Networking.charUpdate();
 		if (Rand.chanceIn(1,3)) {
 			dieMisc();
-			return;
+		}else {
+			die(Rand.choose("You revive after the battle.","You right your repaired body.","You stand after your corpse pulls itself together."));
 		}
-		die(Rand.choose("You revive after the battle.","You right your repaired body.","You stand after your corpse pulls itself together."));
-		Networking.charUpdate();
 	}
 	
 	/**
@@ -47,7 +46,6 @@ public class Deaths {
 		if (Player.isGameMode_NoPunishments()) {
 			return;
 		}
-		//don't set burnout, for now, to see if it causes players to try to explore more?
 		List<Effect> penaltyList = new ArrayList<Effect>();
 		Person p = Player.player.getPerson();
 		if (!p.hasEffect(Effect.CURSE)) {
