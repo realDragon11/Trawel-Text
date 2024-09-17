@@ -31,6 +31,7 @@ public class Input {
 	public static final boolean yesNo() {
 		if (backingQueue > 0) {
 			backingQueue--;
+			Print.collectInputBucket(9);
 			return false;
 		}
 		trawel.threads.BlockTaskManager.start();
@@ -98,6 +99,7 @@ public class Input {
 			if (canBack) {
 				backingQueue--;
 				Networking.sendStrong("Entry|Finish|");
+				Print.collectInputBucket(9);
 				return 9;
 			}else {
 				backingQueue = 0;
