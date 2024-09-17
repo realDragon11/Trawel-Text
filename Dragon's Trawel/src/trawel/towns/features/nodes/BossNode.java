@@ -57,7 +57,8 @@ public class BossNode{
 			p.getBag().addDrawBaneSilently(DrawBane.TELESCOPE);
 			p.finishGeneration();
 			peeps.add(p);
-			refillFatespinnerList(peeps,null,level);	
+			refillFatespinnerList(peeps,null,level);
+			holder.parent.setBossName("Fatespinner");
 		break;
 		case GENERIC_DEMON_OVERLORD:
 			p = RaceFactory.makeDemonOverlord(level);
@@ -67,6 +68,7 @@ public class BossNode{
 			p.getBag().addDrawBaneSilently(DrawBane.LIVING_FLAME);
 			p.finishGeneration();
 			peeps.add(p);
+			holder.parent.setBossName("Hell-Baron");
 		break;
 		case YORE:
 			level = Math.max(7,level);
@@ -86,6 +88,7 @@ public class BossNode{
 			p.setFlag(PersonFlag.IS_MOOK, true);
 			p.cleanseType = -1;
 			peeps.add(p);
+			holder.parent.setBossName("Yore");
 		break;
 		case OLD_QUEEN:
 			p = RaceFactory.makeBoss(level);
@@ -97,6 +100,7 @@ public class BossNode{
 			p.finishGeneration();
 			peeps.add(p);
 			refillOldQueenList(peeps,null,level);
+			holder.parent.setBossName("Empress");
 			break;
 		case VARIABLE_GATE_BOSS:
 			//attempt to read the state of the note as a node itself, since the gate blocker will likely be applied first and thus rolled
@@ -215,7 +219,7 @@ public class BossNode{
 				GenericNode.setSimpleDeadPerson(holder, node, spinner);
 				Player.unlockPerk(Perk.FATED);
 				Networking.unlockAchievement("boss1");
-				setBossKilled(spinner.getName());
+				setBossKilled(spinner.getName(),holder);
 				Player.player.addAchieve("fatespinner","Owner of Their Own Fate");
 				heroRep(holder,node,1f);
 				addRubyPayout(holder, node, 1f);
@@ -248,7 +252,7 @@ public class BossNode{
 			GenericNode.setSimpleDeadPerson(holder, node, baron);
 			Networking.unlockAchievement("boss2");
 			Player.unlockPerk(Perk.HELL_BARONESS_1);
-			setBossKilled(baron.getName());
+			setBossKilled(baron.getName(),holder);
 			Player.player.addAchieve("hell_baron","Hell Baroness");
 			heroRep(holder,node,2f);
 			addRubyPayout(holder, node, 1f);
@@ -272,7 +276,7 @@ public class BossNode{
 			GenericNode.setSimpleDeadPerson(holder, node, yore);
 			Player.unlockPerk(Perk.STORYTELLER);
 			Networking.unlockAchievement("boss3");
-			setBossKilled(yore.getName());
+			setBossKilled(yore.getName(),holder);
 			Player.player.addAchieve("yore","Story Slayer");
 			//awards cleanse only on total kill
 			Player.player.questTrigger(TriggerType.CLEANSE,CleanseType.FELL.trigger,2);
@@ -310,7 +314,7 @@ public class BossNode{
 				GenericNode.setSimpleDeadPerson(holder, node, queen);
 				Player.unlockPerk(Perk.QUEENSLAYER);
 				Networking.unlockAchievement("boss4");
-				setBossKilled(queen.getName());
+				setBossKilled(queen.getName(),holder);
 				Player.player.addAchieve("old_queen","Ancient Queen Slayer");
 				heroRep(holder,node,2f);
 				addRubyPayout(holder, node, 1f);
@@ -390,8 +394,9 @@ public class BossNode{
 		throw new RuntimeException("Invalid boss");
 	}
 	
-	public static void setBossKilled(String bossname) {
+	public static void setBossKilled(String bossname, NodeConnector holder) {
 		Player.player.addGroupedAchieve("boss","Bosses",bossname);
+		holder.parent.killBossName();
 	}
 	
 	public static void setMiniBossKilled(String bossname) {

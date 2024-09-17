@@ -15,6 +15,11 @@ public abstract class NodeFeature extends Feature {
 
 	protected NodeConnector start;
 	protected double findTime = 0;
+	/**
+	 * used to display boss name in certain features, null = dead/not present
+	 * can only be used for a single boss which should be the final one of the area
+	 */
+	protected String bossname = null;
 	//protected boolean spreadTime = false;
 	
 	public enum Shape{
@@ -72,7 +77,9 @@ public abstract class NodeFeature extends Feature {
 	}
 
 	public String sizeDesc() {
-		return " S: " + start.getSize() + (start.highestLevel != 0 ? " L: "+start.lowestLevel+"-"+start.highestLevel : "");
+		return " S: " + start.getSize()
+		+ (start.highestLevel != 0 ? " L: "+start.lowestLevel+"-"+start.highestLevel : "")
+		+ (bossname != null ? " B: "+bossname : "");
 	}
 	
 	@Override
@@ -86,6 +93,13 @@ public abstract class NodeFeature extends Feature {
 	
 	public void retainAliveFighters(List<Person> retain){
 	
+	}
+	
+	public void setBossName(String name) {
+		bossname = name;
+	}
+	public void killBossName() {
+		bossname = null;
 	}
 
 }
