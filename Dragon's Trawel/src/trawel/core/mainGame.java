@@ -1455,22 +1455,25 @@ public class mainGame {
 	}
 
 	public static void adventureBody() {
-		lastAutoSave = new Date();
-		Player.isPlaying = true;
-		ThreadData.mainThreadDataUpdate();
-		while(Player.isPlaying) {
-			checkAutosave();
-			Player.player.getLocation().atTown();
-			TrawelTime.globalPassTime();
-		}
 		try {
-			Player.player.close();
-		} catch (IOException e) {
-			Print.println("Error closing Player Object.");
+			lastAutoSave = new Date();
+			Player.isPlaying = true;
+			ThreadData.mainThreadDataUpdate();
+			while(Player.isPlaying) {
+				checkAutosave();
+				Player.player.getLocation().atTown();
+				TrawelTime.globalPassTime();
+			}
+		} finally {
+			try {
+				Player.player.close();
+			} catch (IOException e) {
+				Print.println("Error closing Player Object.");
+			}
+			Player.player = null;
+			multiCanRun = false;
+			Print.println("You do not wake up.");
 		}
-		Player.player = null;
-		multiCanRun = false;
-		Print.println("You do not wake up.");
 	}
 	
 	public static void checkAutosave() {
