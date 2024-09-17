@@ -25,58 +25,46 @@ public interface IEffectiveLevel {
 	 */
 	
 	/**
-	 * 30 v 100 base, offstat scaling (+5)
+	 * primary scaling (+15), secondary scaling (+10) [15 * 2/3=10], offstat scaling (+5) [15/3=5], minimal scaling (+3) [15/5=3]
 	 */
-	default int getAttributeChallengeEasy() {
-		return 30+(5*getLevel());
-	}
 	
 	/**
-	 * 50 v 100 base, secondary stat scaling (+10)
-	 */
-	default int getAttributeChallengeMedium() {
-		return 50+(10*getLevel());
-	}
-	
-	/**
-	 * 50 v 100 base, primary stat scaling (+15)
-	 */
-	default int getAttributeChallengeHard() {
-		return 50+(15*getLevel());
-	}
-	
-	/**
-	 * 20 v 100 base, reduced offstat scaling (+3)
+	 * 20 v 100 base, +3<br>
+	 * 1/5th scaling
 	 */
 	public static int attributeChallengeTrival(int level) {
 		return 20+(3*level);
 	}
 	
 	/**
-	 * 30 v 100 base, offstat scaling (+5)
+	 * 30 v 100 base, +5<br>
+	 * 1/3rd scaling
 	 */
 	public static int attributeChallengeEasy(int level) {
 		return 30+(5*level);
 	}
 	
 	/**
-	 * 50 v 100 base, secondary stat scaling (+10)
+	 * 50 v 100 base, +7<br>
+	 * 1/2th scaling
 	 */
 	public static int attributeChallengeMedium(int level) {
-		return 50+(10*level);
+		return 50+(7*level);
 	}
 	
 	/**
-	 * 50 v 100 base, primary stat scaling (+15)
+	 * 70 v 100 base, +10<br>
+	 * 2/3rds scaling
 	 */
 	public static int attributeChallengeHard(int level) {
-		return 50+(15*level);
+		return 70+(10*level);
 	}
 	/**
-	 * 75 v 100 base, primary stat scaling (+15)
+	 * 100 v 100 base, +15<br>
+	 * 100% scaling
 	 */
 	public static int attributeChallengeImpossible(int level) {
-		return 75+(15*level);
+		return 100+(15*level);
 	}
 
 
