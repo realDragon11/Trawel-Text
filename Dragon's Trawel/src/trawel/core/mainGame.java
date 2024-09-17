@@ -201,6 +201,7 @@ public class mainGame {
 						}
 						Print.println("9 autosave: "+SaveManager.checkNameInFile("auto"));
 						int in = Input.inInt(9);
+						Print.println("Loading...");
 						SaveManager.load(in == 9 ? "auto" : in+"");
 						boolean runit;
 						try {
