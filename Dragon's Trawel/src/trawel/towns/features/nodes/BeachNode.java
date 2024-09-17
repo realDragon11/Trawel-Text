@@ -129,7 +129,7 @@ public class BeachNode implements NodeType {
 			GenericNode.setBasicRagePerson(holder,node,pirate,mugName,"The "+Print.capFirst(mugName) + " attacks you!");
 			break;
 		case 3://ashore locked chest
-			holder.setStorage(node,randomLists.randomChestAdjective() + "Chest");
+			holder.setStorage(node,new Object[] {Rand.randRange(0,lockedChestAdjs.length-1),Rand.randRange(0,lockedChestNames.length-1),GenericNode.contestModRoll()});
 			break;
 		case 4://variable fluff landmark, static state
 			int fluffType = Rand.randRange(0,2);
@@ -326,16 +326,7 @@ public class BeachNode implements NodeType {
 			return holder.getStorageFirstClass(node,GateNodeBehavior.class).getNodeName();
 		//2 pirate rager, generic
 		case 3:
-			switch (holder.getStateNum(node)) {
-				default: case 0:
-					return "Locked " + holder.getStorageFirstClass(node, String.class);
-				case 1:
-					return "Smashed " + holder.getStorageFirstClass(node, String.class);
-				case 2:
-					return "Picked " + holder.getStorageFirstClass(node, String.class);
-				case 3:
-					return "Opened " + holder.getStorageFirstClass(node, String.class);
-			}
+			return getChestName(holder,node);
 		case 4:
 			switch (holder.getStateNum(node)) {
 				default: case 0://sea glass
@@ -357,7 +348,7 @@ public class BeachNode implements NodeType {
 			return holder.getStorageFirstClass(node,GateNodeBehavior.class).getInteractText();
 		//2 pirate rager, generic
 		case 3://ashore chest
-			return (holder.getStateNum(node) == 0 ? "Open " : "Examine ") + holder.getStorageFirstClass(node, String.class);
+			return (holder.getStateNum(node) == 0 ? "Open " : "Examine ") + getChestName(holder,node);
 		case 4://variable fluff landmark, static state
 			switch (holder.getStateNum(node)) {
 			default: case 0://sea glass
@@ -463,9 +454,30 @@ public class BeachNode implements NodeType {
 		// TODO Auto-generated method stub
 	}
 	
+	private String[] lockedChestAdjs = new String[]{"Sunbleached","Waterlogged","Barnacled","Ornate"};
+	private String[] lockedChestNames = new String[]{"Chest","Chest","Chest","Crate","Crate","Cask","Basket","Amphorae","Box","Case","Container","Strongbox","Trunk","Barrel"};
+	
+	private String getChestName(NodeConnector holder,int node) {
+		final int modifier = (int)holder.getStorageAsArray(node)[2];
+		final String name = lockedChestAdjs[(int)holder.getStorageAsArray(node)[0]]+" "+lockedChestNames[(int)holder.getStorageAsArray(node)[1]];
+		//broke/picked/open are just fallbacks- it will be converted to misc text anyways
+		switch (holder.getStateNum(node)) {
+			default:
+			case 0://no interaction
+				return GenericNode.contestModNameLookup(modifier)+" "+name;
+			case 1://broke open
+				return "Broken "+GenericNode.contestModNameLookup(modifier)+" "+name;
+			case 2://lockpicked open
+				return "Picked "+GenericNode.contestModNameLookup(modifier)+" "+name;
+			case 3://magicked open
+				return "Opened "+GenericNode.contestModNameLookup(modifier)+" "+name;
+		}
+	}
 	
 	private void ashoreLockedChest(NodeConnector holder, int node) {
-		String chestname = holder.getStorageFirstClass(node, String.class);
+		final String chestname = getChestName(holder,node);
+		final int modifier = (int)holder.getStorageAsArray(node)[2];
+		final int level = holder.getLevel(node);
 		switch (holder.getStateNum(node)) {
 			default: case 0:
 				//only applies burnout on fail to prevent further attempts, no other penalty
@@ -488,25 +500,24 @@ public class BeachNode implements NodeType {
 									return TrawelColor.RESULT_ERROR+"You are too burnt out to find a way to open the "+chestname+".";
 								}});
 						}else {
-							final int difficulty = IEffectiveLevel.attributeChallengeMedium(holder.getLevel(node));
+							//base medium strength contest
+							final int smashDifficulty = GenericNode.contestModDifficultyLookup(modifier,0,2,level);
 							list.add(new MenuSelect() {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Smash open the "+chestname+". "+AttributeBox.showPlayerContest(0,difficulty);
+									return TrawelColor.RESULT_WARN+"Smash open the "+chestname+". "+AttributeBox.showPlayerContest(0,smashDifficulty);
 								}
 
 								@Override
 								public boolean go() {
-									if (Player.player.getPerson().contestedRoll(
-										Player.player.getPerson().getStrength(),difficulty)
-										>=0){
+									if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getStrength(),smashDifficulty)>=0){
 										//broke down door
 										Print.println(TrawelColor.RESULT_PASS+"You smash open the "+chestname+".");
 										holder.setStateNum(node,1);//broken open, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
-										GenericNode.setMiscText(holder, node,"Smashed "+chestname,"Examine "+chestname+".","This chest has already been smashed and looted.",chestname);
+										GenericNode.setMiscText(holder, node,"Smashed "+chestname,"Examine the smashed "+chestname+".","This chest has already been smashed and looted.",chestname);
 									}else {
 										//failed
 										Player.player.addPunishment(Effect.BURNOUT);
@@ -515,24 +526,24 @@ public class BeachNode implements NodeType {
 									}
 									return true;
 								}});
+							//base medium dexterity contest
+							final int pickDifficulty = GenericNode.contestModDifficultyLookup(modifier,1,2,level);
 							list.add(new MenuSelect() {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Lockpick the "+chestname+". "+AttributeBox.showPlayerContest(1,difficulty);
+									return TrawelColor.RESULT_WARN+"Lockpick the "+chestname+". "+AttributeBox.showPlayerContest(1,pickDifficulty);
 								}
 
 								@Override
 								public boolean go() {
-									if (Player.player.getPerson().contestedRoll(
-										Player.player.getPerson().getDexterity(),difficulty)
-										>=0){
+									if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getDexterity(),pickDifficulty)>=0){
 										//lockpicked door
 										Print.println(TrawelColor.RESULT_PASS+"You pick open the "+chestname+".");
 										holder.setStateNum(node,2);//picked open, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
-										GenericNode.setMiscText(holder, node,"Picked "+chestname,"Examine "+chestname+".","This chest has already been picked and looted.",chestname);
+										GenericNode.setMiscText(holder, node,"Picked "+chestname,"Examine the picked "+chestname+".","This chest has already been picked and looted.",chestname);
 									}else {
 										//failed
 										Player.player.addPunishment(Effect.BURNOUT);
@@ -541,24 +552,24 @@ public class BeachNode implements NodeType {
 									}
 									return true;
 								}});
+							//base medium clarity contest
+							final int knockDifficulty = GenericNode.contestModDifficultyLookup(modifier,2,2,level);
 							list.add(new MenuSelect() {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Cast Knock on the "+chestname+". "+AttributeBox.showPlayerContest(2,difficulty);
+									return TrawelColor.RESULT_WARN+"Cast Knock on the "+chestname+". "+AttributeBox.showPlayerContest(2,knockDifficulty);
 								}
 
 								@Override
 								public boolean go() {
-									if (Player.player.getPerson().contestedRoll(
-										Player.player.getPerson().getClarity(),difficulty)
-										>=0){
+									if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getClarity(),knockDifficulty)>=0){
 										//lockpicked door
 										Print.println(TrawelColor.RESULT_PASS+"You open the "+chestname+" with a Knock cantrip.");
 										holder.setStateNum(node,3);//opened, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
-										GenericNode.setMiscText(holder, node,"Opened "+chestname,"Examine "+chestname+".","This chest has already been opened and looted.",chestname);
+										GenericNode.setMiscText(holder, node,"Opened "+chestname,"Examine the opened "+chestname+".","This chest has already been opened and looted.",chestname);
 									}else {
 										//failed
 										Player.player.addPunishment(Effect.BURNOUT);
