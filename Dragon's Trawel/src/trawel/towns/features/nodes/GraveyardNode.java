@@ -244,7 +244,9 @@ public class GraveyardNode implements NodeType{
 		case 5:	return collector(holder,node);
 		case 6: return statue(holder,node);
 		case 7: return statueLoot(holder,node);
-		case 8: return GenericNode.trappedChamber(holder, node);
+		case 8:
+			Print.println("You enter the crypt.");
+			return GenericNode.trappedChamber(holder, node);
 		}
 		return false;
 	}
