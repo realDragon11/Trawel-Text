@@ -476,6 +476,7 @@ public class BeachNode implements NodeType {
 	
 	private void ashoreLockedChest(NodeConnector holder, int node) {
 		final String chestname = getChestName(holder,node);
+		final String coreName = lockedChestNames[(int)holder.getStorageAsArray(node)[1]].toLowerCase();
 		final int modifier = (int)holder.getStorageAsArray(node)[2];
 		final int level = holder.getLevel(node);
 		switch (holder.getStateNum(node)) {
@@ -497,7 +498,7 @@ public class BeachNode implements NodeType {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_ERROR+"You are too burnt out to find a way to open the "+chestname+".";
+									return TrawelColor.RESULT_ERROR+"You are too burnt out to find a way to open the "+coreName+".";
 								}});
 						}else {
 							//base medium strength contest
@@ -506,22 +507,22 @@ public class BeachNode implements NodeType {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Smash open the "+chestname+". "+AttributeBox.showPlayerContest(0,smashDifficulty);
+									return TrawelColor.RESULT_WARN+"Smash open the "+coreName+". "+AttributeBox.showPlayerContest(0,smashDifficulty);
 								}
 
 								@Override
 								public boolean go() {
 									if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getStrength(),smashDifficulty)>=0){
 										//broke down door
-										Print.println(TrawelColor.RESULT_PASS+"You smash open the "+chestname+".");
+										Print.println(TrawelColor.RESULT_PASS+"You smash open the "+coreName+".");
 										holder.setStateNum(node,1);//broken open, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
-										GenericNode.setMiscText(holder, node,"Smashed "+chestname,"Examine the smashed "+chestname+".","This chest has already been smashed and looted.",chestname);
+										GenericNode.setMiscText(holder, node,"Smashed "+chestname,"Examine the smashed "+coreName+".","This "+coreName+" has already been smashed and looted.",chestname);
 									}else {
 										//failed
 										Player.player.addPunishment(Effect.BURNOUT);
-										Print.println(TrawelColor.RESULT_FAIL+"You fail to bash open the "+chestname+".");
+										Print.println(TrawelColor.RESULT_FAIL+"You fail to bash open the "+coreName+".");
 										holder.findBehind(node,chestname);
 									}
 									return true;
@@ -532,22 +533,22 @@ public class BeachNode implements NodeType {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Lockpick the "+chestname+". "+AttributeBox.showPlayerContest(1,pickDifficulty);
+									return TrawelColor.RESULT_WARN+"Lockpick the "+coreName+". "+AttributeBox.showPlayerContest(1,pickDifficulty);
 								}
 
 								@Override
 								public boolean go() {
 									if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getDexterity(),pickDifficulty)>=0){
 										//lockpicked door
-										Print.println(TrawelColor.RESULT_PASS+"You pick open the "+chestname+".");
+										Print.println(TrawelColor.RESULT_PASS+"You pick open the "+coreName+".");
 										holder.setStateNum(node,2);//picked open, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
-										GenericNode.setMiscText(holder, node,"Picked "+chestname,"Examine the picked "+chestname+".","This chest has already been picked and looted.",chestname);
+										GenericNode.setMiscText(holder, node,"Picked "+chestname,"Examine the picked "+coreName+".","This "+coreName+" has already been picked and looted.",chestname);
 									}else {
 										//failed
 										Player.player.addPunishment(Effect.BURNOUT);
-										Print.println(TrawelColor.RESULT_FAIL+"You fail to lockpick the "+chestname+".");
+										Print.println(TrawelColor.RESULT_FAIL+"You fail to lockpick the "+coreName+".");
 										holder.findBehind(node,chestname);
 									}
 									return true;
@@ -558,22 +559,22 @@ public class BeachNode implements NodeType {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Cast Knock on the "+chestname+". "+AttributeBox.showPlayerContest(2,knockDifficulty);
+									return TrawelColor.RESULT_WARN+"Cast Knock on the "+coreName+". "+AttributeBox.showPlayerContest(2,knockDifficulty);
 								}
 
 								@Override
 								public boolean go() {
 									if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getClarity(),knockDifficulty)>=0){
 										//lockpicked door
-										Print.println(TrawelColor.RESULT_PASS+"You open the "+chestname+" with a Knock cantrip.");
+										Print.println(TrawelColor.RESULT_PASS+"You open the "+coreName+" with a Knock cantrip.");
 										holder.setStateNum(node,3);//opened, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
-										GenericNode.setMiscText(holder, node,"Opened "+chestname,"Examine the opened "+chestname+".","This chest has already been opened and looted.",chestname);
+										GenericNode.setMiscText(holder, node,"Opened "+chestname,"Examine the opened "+coreName+".","This "+coreName+" has already been opened and looted.",chestname);
 									}else {
 										//failed
 										Player.player.addPunishment(Effect.BURNOUT);
-										Print.println(TrawelColor.RESULT_FAIL+"Your Knock cantrip on the "+chestname+" fizzles.");
+										Print.println(TrawelColor.RESULT_FAIL+"Your Knock cantrip on the "+coreName+" fizzles.");
 										holder.findBehind(node,chestname);
 									}
 									return true;
@@ -584,16 +585,16 @@ public class BeachNode implements NodeType {
 					}});
 				return;
 			case 1:
-				Print.println("This chest has already been smashed and looted.");
+				Print.println("This "+coreName+" has already been smashed and looted.");
 				holder.findBehind(node,chestname);
 				return;
 			case 2:
-				Print.println("This chest has already been picked and looted.");
+				Print.println("This "+coreName+" has already been picked and looted.");
 				holder.findBehind(node,chestname);
 				return;
 			case 3:
 				Print.println();
-				Print.println("This chest has already been opened and looted.");
+				Print.println("This "+coreName+" has already been opened and looted.");
 				holder.findBehind(node,chestname);
 				return;
 		}
