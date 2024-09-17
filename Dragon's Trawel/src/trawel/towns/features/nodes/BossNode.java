@@ -345,6 +345,10 @@ public class BossNode{
 			//less payout
 			heroRep(holder,node,.5f);
 			addRubyPayout(holder, node,.5f);
+			//set area as completed if possible
+			if (holder.parent instanceof IUnlockableNodeFeature) {
+				((IUnlockableNodeFeature)holder.parent).addDoneUnlock();
+			}
 			return false;
 		}else {
 			return true;//lost, kick out

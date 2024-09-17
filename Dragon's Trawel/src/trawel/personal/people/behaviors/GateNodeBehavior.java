@@ -10,6 +10,7 @@ import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Behavior;
 import trawel.time.TimeEvent;
+import trawel.towns.features.nodes.IUnlockableNodeFeature;
 import trawel.towns.features.nodes.NodeFeature;
 
 public class GateNodeBehavior extends Behavior {
@@ -145,6 +146,10 @@ public class GateNodeBehavior extends Behavior {
 				Print.println("This map will reveal which hole to dig up.");break;
 			case 2:
 				Print.println("This key will show a secret door in a harpy nest.");break;
+		}
+		//add to area counter if possible
+		if (location instanceof IUnlockableNodeFeature) {
+			((IUnlockableNodeFeature)location).addNewUnlock();
 		}
 	}
 	

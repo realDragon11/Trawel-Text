@@ -6,7 +6,7 @@ import trawel.towns.contexts.Town;
 import trawel.towns.data.FeatureData;
 import trawel.towns.features.nodes.BossNode.BossType;
 
-public class Beach extends NodeFeature {
+public class Beach extends NodeFeature implements IUnlockableNodeFeature{
 	
 	static {
 		FeatureData.registerFeature(Beach.class,new FeatureData() {
@@ -49,6 +49,11 @@ public class Beach extends NodeFeature {
 	private static final long serialVersionUID = 1L;
 	private int size;
 	private BossType bossType;
+	
+	/**
+	 * number of sub-areas that have been unlocked/completed
+	 */
+	private int unlocksGot = 0, unlocksDone = 0;
 	
 	public Beach(String _name,Town t,int _size, int _tier, Shape s, BossType _bossType) {
 		name = _name;
@@ -98,5 +103,22 @@ public class Beach extends NodeFeature {
 	@Override
 	protected BossType bossType() {
 		return bossType;
+	}
+	
+	@Override
+	public String sizeDesc() {
+		if (shape != Shape.TREASURE_BEACH) {
+			return super.sizeDesc();
+		}
+		return super.sizeDesc() + " A: " +unlocksDone+"/"+unlocksGot;
+	}
+	
+	@Override
+	public void addNewUnlock() {
+		unlocksGot++;
+	}
+	@Override
+	public void addDoneUnlock() {
+		unlocksDone++;
 	}
 }
