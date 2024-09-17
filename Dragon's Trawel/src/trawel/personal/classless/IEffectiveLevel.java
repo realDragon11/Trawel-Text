@@ -46,6 +46,13 @@ public interface IEffectiveLevel {
 	}
 	
 	/**
+	 * 20 v 100 base, reduced offstat scaling (+3)
+	 */
+	public static int attributeChallengeTrival(int level) {
+		return 20+(3*level);
+	}
+	
+	/**
 	 * 30 v 100 base, offstat scaling (+5)
 	 */
 	public static int attributeChallengeEasy(int level) {
@@ -65,6 +72,13 @@ public interface IEffectiveLevel {
 	public static int attributeChallengeHard(int level) {
 		return 50+(15*level);
 	}
+	/**
+	 * 75 v 100 base, primary stat scaling (+15)
+	 */
+	public static int attributeChallengeImpossible(int level) {
+		return 75+(15*level);
+	}
+
 
 	public static float effective(int w_lvl) {
 		return w_lvl+10;

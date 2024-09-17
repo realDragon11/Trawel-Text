@@ -412,7 +412,7 @@ public class GenericNode implements NodeType {
 		case COLLECTOR:
 			return "Approach " +holder.getStorageFirstPerson(node).getName()+".";
 		case LOCKDOOR:
-			return "Look at the " + holder.getStorageFirstClass(node,String.class)+".";
+			return "Look at the "+getDoorName(holder, node)+".";
 		case PLANT_SPOT:
 			return "Examine (" + ((PlantSpot)holder.getStorage(node)).contains+")";
 		case CASUAL_PERSON:
@@ -465,7 +465,7 @@ public class GenericNode implements NodeType {
 		case COLLECTOR:
 			return holder.getStorageFirstPerson(node).getName();
 		case LOCKDOOR:
-			return holder.getStorageFirstClass(node,String.class);
+			return getDoorName(holder, node);
 		case PLANT_SPOT:
 			Seed contains = ((PlantSpot)holder.getStorage(node)).contains;
 			return contains == Seed.EMPTY ? "Plant Spot" : contains.toString();
@@ -726,18 +726,39 @@ public class GenericNode implements NodeType {
 		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.LOCKDOOR.ordinal());
-		holder.setStorage(node,Rand.choose("Locked Door","Barricaded Door","Padlocked Door"));
+		holder.setStorage(node,new Object[] {Rand.randRange(0,lockedDoorNames.length-1),contestModRoll()});
 		holder.setForceGo(node, true);
 	}
 	
+	private static String[] lockedDoorNames = new String[] {"Locked Door","Barricaded Door","Padlocked Door"};
+	
+	private String getDoorName(NodeConnector holder,int node) {
+		final int modifier = (int)holder.getStorageAsArray(node)[1];
+		final String baseName = lockedDoorNames[(int)holder.getStorageAsArray(node)[0]];
+		switch (holder.getStateNum(node)) {
+			default:
+			case 0://no interaction
+			case 1://(prior) owned
+				return contestModNameLookup(modifier)+" "+baseName;
+			case 2://broke open
+				return "Broken "+contestModNameLookup(modifier)+" "+baseName;
+			case 3://lockpicked open
+				return "Picked "+contestModNameLookup(modifier)+" "+baseName;
+			case 4://magicked open
+				return "Opened "+contestModNameLookup(modifier)+" "+baseName;
+		}
+	}
+	
 	private boolean goLockedDoor(NodeConnector holder,int node) {
+		final int modifier = (int)holder.getStorageAsArray(node)[1];
+		final String name = getDoorName(holder, node);
+		final int level = holder.getLevel(node);
 		if (holder.isForceGo(node)) {
 			if (holder.parent.getOwner() == Player.player) {
-				Print.println("You find the keyhole and then unlock the "+holder.getStorageFirstClass(node,String.class)+".");
+				Print.println("You find the keyhole and then unlock the "+name+".");
 				holder.setStateNum(node,1);//unlocked once
 				holder.findBehind(node,"unlocked door");
 			}else {
-				final String name = holder.getStorageFirstClass(node,String.class);
 				if (holder.getStateNum(node) == 1){//if you owned this prior
 					Print.println("Looks like they changed the locks!");
 					holder.setStateNum(node,0);//set back to locked so it doesn't say this again on this node
@@ -762,26 +783,23 @@ public class GenericNode implements NodeType {
 									return TrawelColor.RESULT_ERROR+"You are too burnt out to find a way to open the "+name+".";
 								}});
 						}else {
-							final int difficulty = IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node));
+							//easy base difficulty strength contest
+							final int breakDifficulty = contestModDifficultyLookup(modifier,0,1,level);
 							list.add(new MenuSelect() {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Break down the "+name+". "+AttributeBox.showPlayerContest(0,difficulty);
+									return TrawelColor.RESULT_WARN+"Break down the "+name+". "+AttributeBox.showPlayerContest(0,breakDifficulty);
 								}
 
 								@Override
 								public boolean go() {
-									if (Player.player.getPerson().contestedRoll(
-										Player.player.getPerson().getStrength(),difficulty)
-										>=0){
+									if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getStrength(),breakDifficulty)>=0){
 										//broke down door
 										Print.println(TrawelColor.RESULT_PASS+"You bash open the "+name+".");
 										holder.setStateNum(node,2);//broken open
 										holder.setForceGo(node, false);
-										String newName = "Broken " +name;
-										holder.findBehind(node,newName);
-										holder.setStorage(node,newName);
+										holder.findBehind(node,getDoorName(holder, node));
 									}else {
 										//failed
 										Player.player.addPunishment(Effect.BURNOUT);
@@ -789,25 +807,23 @@ public class GenericNode implements NodeType {
 									}
 									return true;
 								}});
+							//easy base difficulty dexterity contest
+							final int pickDifficulty = contestModDifficultyLookup(modifier,1,1,level);
 							list.add(new MenuSelect() {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Lockpick the "+name+". "+AttributeBox.showPlayerContest(1,difficulty);
+									return TrawelColor.RESULT_WARN+"Lockpick the "+name+". "+AttributeBox.showPlayerContest(1,pickDifficulty);
 								}
 
 								@Override
 								public boolean go() {
-									if (Player.player.getPerson().contestedRoll(
-										Player.player.getPerson().getDexterity(),difficulty)
-										>=0){
+									if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getDexterity(),pickDifficulty)>=0){
 										//lockpicked door
 										Print.println(TrawelColor.RESULT_PASS+"You pick open the "+name+".");
 										holder.setStateNum(node,3);//picked
 										holder.setForceGo(node, false);
-										String newName = "Picked " +name;
-										holder.findBehind(node,newName);
-										holder.setStorage(node,newName);
+										holder.findBehind(node,getDoorName(holder, node));
 									}else {
 										//failed
 										Player.player.addPunishment(Effect.BURNOUT);
@@ -815,25 +831,22 @@ public class GenericNode implements NodeType {
 									}
 									return true;
 								}});
+							final int knockDifficulty = contestModDifficultyLookup(modifier,2,1,level);
 							list.add(new MenuSelect() {
 
 								@Override
 								public String title() {
-									return TrawelColor.RESULT_WARN+"Cast Knock on the "+name+". "+AttributeBox.showPlayerContest(2,difficulty);
+									return TrawelColor.RESULT_WARN+"Cast Knock on the "+name+". "+AttributeBox.showPlayerContest(2,knockDifficulty);
 								}
 
 								@Override
 								public boolean go() {
-									if (Player.player.getPerson().contestedRoll(
-										Player.player.getPerson().getClarity(),difficulty)
-										>=0){
+									if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getClarity(),knockDifficulty)>=0){
 										//lockpicked door
 										Print.println(TrawelColor.RESULT_PASS+"You open the "+name+" with a Knock cantrip.");
 										holder.setStateNum(node,4);//opened
 										holder.setForceGo(node, false);
-										String newName = "Opened " +name;
-										holder.findBehind(node,newName);
-										holder.setStorage(node,newName);
+										holder.findBehind(node,getDoorName(holder, node));
 									}else {
 										//failed
 										Player.player.addPunishment(Effect.BURNOUT);
@@ -1563,6 +1576,62 @@ public class GenericNode implements NodeType {
 		Object[] trapChamberArray = holder.getStorageAsArray(node);
 		byte[] lootChamberArray = (byte[]) trapChamberArray[0];
 		return "Enter the " +tChamberLookup(lootChamberArray[0],lootChamberArray[3])[0];
+	}
+	
+	private static final Object[][] cModList = new Object[][] {
+		//one +1
+		{"Sturdy",1,0,0},
+		{"Complex",0,1,0},
+		{"Insulated",0,0,1},
+		//one -1, one +2
+		{"Rugged",2,-1,0},
+		{"Brutish",2,0,-1},
+		{"Fragile",-1,2,0},
+		{"Delicate",0,2,-1},
+		{"Proofed",-1,0,2},
+		{"Simple",0,-1,2},
+		//...
+		{"Enchanted",1,0,1}
+	};
+	
+	public static int contestModRoll() {
+		return Rand.randRange(0,cModList.length-1);
+	}
+	
+	public static String contestModNameLookup(int num) {
+		return (String)cModList[num][0];
+	}
+	
+	public static int contestModNumLookup(int num,int stat) {
+		assert stat >= 0;
+		assert stat <= 2;
+		return (int)cModList[num][stat+1];
+	}
+	
+	/**
+	 * base: 1 = easy, 2 = medium, 3 = hard <br>
+	 * extra base: 0 = trival, 4 = impossible
+	 * @param num - what index the contest mod is
+	 * @param stat - what stat to use
+	 * @param base - what scaling to use
+	 * @param level - level to scale to
+	 * @return
+	 */
+	public static int contestModDifficultyLookup(int num,int stat,int base,int level) {
+		assert level >= 1;
+		switch (extra.clamp(base+contestModNumLookup(num,stat),0,4)) {
+		case 0:
+			return IEffectiveLevel.attributeChallengeTrival(level);
+		case 1:
+			return IEffectiveLevel.attributeChallengeEasy(level);
+		case 2:
+			return IEffectiveLevel.attributeChallengeMedium(level);
+		case 3:
+			return IEffectiveLevel.attributeChallengeHard(level);
+		case 4:
+			return IEffectiveLevel.attributeChallengeImpossible(level);
+		}
+		throw new RuntimeException("Invalid level scaling: num:"+num+" stat: "+stat+" base: "+base+" level:"+level);
 	}
 	
 	/**
