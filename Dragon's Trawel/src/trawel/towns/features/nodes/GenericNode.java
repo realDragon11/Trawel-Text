@@ -1582,16 +1582,18 @@ public class GenericNode implements NodeType {
 		//one +1
 		{"Sturdy",1,0,0},
 		{"Complex",0,1,0},
-		{"Insulated",0,0,1},
+		{"Warded",0,0,1},
 		//one -1, one +2
 		{"Rugged",2,-1,0},
 		{"Brutish",2,0,-1},
 		{"Fragile",-1,2,0},
 		{"Delicate",0,2,-1},
-		{"Proofed",-1,0,2},
+		{"Sigiled",-1,0,2},
 		{"Simple",0,-1,2},
-		//...
-		{"Enchanted",1,0,1}
+		//two +1
+		{"Finicky",0,1,1},
+		{"Enchanted",1,0,1},
+		{"Hardened",1,1,0}
 	};
 	
 	public static int contestModRoll() {
