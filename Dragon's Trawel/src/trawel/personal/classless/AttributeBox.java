@@ -2,6 +2,7 @@ package trawel.personal.classless;
 
 import trawel.core.Print;
 import trawel.helper.methods.extra;
+import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.people.Player;
 
@@ -194,7 +195,17 @@ public class AttributeBox {
 	
 	public static final String showPlayerContest(int index,int difficulty) {
 		int playerAttribute = Player.player.getPerson().getStatByIndex(index);
-		int chance = (100*playerAttribute)/(playerAttribute+difficulty);
+		if (Player.player.getPerson().hasEffect(Effect.BURNOUT)) {
+			playerAttribute/=2;
+		}
+		//probability math figured out by maris
+		int chance;
+		if (playerAttribute >= difficulty) {
+			chance = (int) (100 *(1d - (difficulty/(2d*(1+playerAttribute)))));
+		}else {
+			chance = (int) (100 *(1d-(1d - (playerAttribute/(2d*(1+difficulty))))));
+		}
+		//int chance = (100*playerAttribute)/(playerAttribute+difficulty);
 		return chance+"% ("+playerAttribute+" "+getStatNameByIndex(index)+" vs "+difficulty+") ";
 	}
 }

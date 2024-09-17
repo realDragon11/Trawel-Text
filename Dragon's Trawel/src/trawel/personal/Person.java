@@ -2158,10 +2158,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 * typically, should use >= since engager wins ties
 	 */
 	public int contestedRoll(int mynum, int theirnum) {
-		int myroll = Rand.randRange(0,mynum);
-		if (hasEffect(Effect.BURNOUT)) {
-			myroll/=2;
-		}
+		int myroll = Rand.randRange(0,hasEffect(Effect.BURNOUT) ? mynum/2 : mynum);
 		int theirroll = Rand.randRange(0,theirnum);
 		return myroll-theirroll;
 	}
