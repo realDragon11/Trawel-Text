@@ -50,6 +50,7 @@ public class TagFormatter {
 		addTag("pay_flavor",TrawelColor.SERVICE_FLAVOR);
 		addTag("pay_rep",TrawelColor.SERVICE_REP);
 		addTag("pay_special",TrawelColor.SERVICE_SPECIAL_PAYMENT);
+		addTag("pay_time",TrawelColor.SERVICE_TIME);
 		
 		addTag("act_explore",TrawelColor.SERVICE_EXPLORE);
 		addTag("act_combat",TrawelColor.SERVICE_COMBAT);

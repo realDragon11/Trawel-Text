@@ -172,6 +172,8 @@ public class TrawelColor {
 	public static final String SERVICE_EXPLORE = inlineColor(colorMix(colorMix(Color.ORANGE,Color.BLUE,.3f),Color.WHITE,.5f));
 	//tweak, is currency indicator
 	public static final String SERVICE_REP = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.PINK,Color.GREEN,.2f),Color.WHITE,.5f));
+	//tweak, time passing indicator
+	public static final String SERVICE_TIME = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.PINK,Color.GREEN,.4f),Color.WHITE,.6f));
 	
 	public static final Color colorMix(Color c1, Color c2, float f) {
 		return new Color((int) extra.lerp(c1.getRed(),c2.getRed(), f),(int) extra.lerp(c1.getGreen(),c2.getGreen(), f),(int) extra.lerp(c1.getBlue(),c2.getBlue(), f));

@@ -18,11 +18,13 @@ import trawel.core.mainGame;
 import trawel.core.Networking.Area;
 import trawel.core.Print;
 import trawel.core.Rand;
+import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.NPCMutator;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
@@ -45,8 +47,8 @@ public class Docks extends Feature {
 			
 			@Override
 			public void tutorial() {
-				Print.println(fancyNamePlural()+" act as a "+TrawelColor.PRE_SHIP+"port"+TrawelColor.COLOR_RESET+" that has extended reach to "+TrawelColor.SERVICE_FREE+"travel"+TrawelColor.COLOR_RESET+" with."
-						+" Traveling to a far-flung port will require you to be of that town's level, and is blocked if Drudger armies control the "+fancyName()+"."
+				Print.println(fancyNamePlural()+" act as a "+TrawelColor.PRE_SHIP+"port"+TrawelColor.COLOR_RESET+" that has extended reach to "+TrawelColor.SERVICE_CURRENCY+"travel"+TrawelColor.COLOR_RESET+" with."
+						+" Traveling to a far-flung port will require you to be near that destination's level or in a higher level area, and is blocked if Drudger armies control the "+fancyName()+". Traveling this way carries no risk of being ambushed."
 						+" Townspeople reward help with "+TrawelColor.SERVICE_COMBAT+"defending or reclaiming "+TrawelColor.COLOR_RESET+fancyNamePlural()+" from Drudger armies."
 						+" It is possible to "+TrawelColor.SERVICE_EXPLORE+"wander"+TrawelColor.COLOR_RESET+" at sea and "+TrawelColor.SERVICE_FLAVOR+"admire"+TrawelColor.COLOR_RESET+" secured "+fancyNamePlural()+".");
 			}
@@ -304,7 +306,7 @@ public class Docks extends Feature {
 
 						@Override
 						public String title() {
-							return TrawelColor.SERVICE_FREE+"Travel to Far Flung Ports.";
+							return TrawelColor.SERVICE_CURRENCY+"Travel to Far Flung Ports.";
 						}
 
 						@Override
@@ -440,30 +442,46 @@ public class Docks extends Feature {
 			public List<MenuItem> forSlot(int i) {
 				List<MenuItem> list = new ArrayList<MenuItem>();
 				Town t = tList.get(i);
+				//can go up to one level higher, and always go backwards from higher level areas to lower level ones
+				final boolean outOfScoped = t.getTier() > Player.player.getPerson().getLevel()+1 && t.getTier() > getLevel();
+				//cost is the uneffective level of the destination and this feature, minus one, then rounded to an int
+				//minimum dock level is 2 which is 1.3x, minimum town is 1 which is 1.1x
+				final int cost = Math.round((IEffectiveLevel.unclean(t.getTier())+getUnEffectiveLevel()-1.4f));
+				final int playerGold = Player.player.getGold();
+				final boolean canAfford = playerGold >= cost;
 				list.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return t.displayLine(Docks.this.town) + " ("+(t.getTier() > Player.player.getPerson().getLevel() ? ""+TrawelColor.TIMID_RED+"Out of Scope" : Connection.displayTime(timeList.get(i))) + ")";
+						return t.displayLine(Docks.this.town) +" [pay_time]fee: "+cost+" [clear]("+(outOfScoped ? ""+TrawelColor.TIMID_RED+"Out of Scope[clear]" : TrawelColor.SERVICE_TIME+Connection.displayTime(timeList.get(i))) + "[clear])";
 					}
 
 					@Override
 					public boolean go() {
 						// needs to be clickable even if can't go, for scroll reasons
-						if (t.getTier() > Player.player.getPerson().getLevel()) {
-							Print.println("Too high level!");
+						if (outOfScoped) {
+							//not really a good excuse at this point
+							Print.println("[r_error]The journey would be too dangerous!");
 							return false;
 						}
+						if (!canAfford) {
+							Print.println("[r_error]You can't afford that! (Have "+playerGold+", need "+cost+".)");
+						}
+						Player.player.addGold(-cost);
 						//can either take naive time or use a*
 						if (mainGame.displayTravelText) {
-							Print.println("You start the voyage to "+t.getName()+".");
+							Print.println("[r_pass]You pay "+World.currentMoneyDisplay(cost)+" and start the voyage to "+t.getName()+".");
 						}
 						Player.addTime(timeList.get(i));
 						TrawelTime.globalPassTime();
 						Player.player.setLocation(t);
-						town.dockWander(true);
+						//town.dockWander(true);//no wander chance since that's the point of payment
 						if (mainGame.displayTravelText) {
-							Print.println("You arrive in "+t.getName()+".");
+							Print.println("[r_pass]You arrive in "+t.getName()+".");
+						}
+						if (mainGame.displayFlavorText) {
+							//attempt to display some flavor for the town you are arriving in
+							TownFlavorFactory.go(.2f,t);
 						}
 						return true;
 					}});
