@@ -1,5 +1,6 @@
 package trawel.towns.features.nodes;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.github.yellowstonegames.core.WeightedTable;
@@ -439,7 +440,8 @@ public class GraveyardNode implements NodeType{
 
 										@Override
 										public boolean go() {
-											Oracle.tip("gravedigger");
+											Print.println("\""+Oracle.tipStringExt("gravedigger","a","Gravedigger","Gravediggers","Gravedigger",holder.parent.getTown().getName(),
+													Arrays.asList(new String[] {"Vampires","Graverobbers","Skeletons"}))+"\"");
 											return false;
 										}});
 									list.add(new MenuSelect() {
