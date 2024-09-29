@@ -1,6 +1,10 @@
 package trawel.personal;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import trawel.core.Rand;
 import trawel.factions.HostileTask;
@@ -9,6 +13,7 @@ import trawel.personal.Person.AIJob;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
 import trawel.personal.RaceFactory.CultType;
+import trawel.personal.classless.Feat;
 import trawel.personal.classless.Perk;
 import trawel.personal.item.solid.DrawBane;
 
@@ -201,6 +206,114 @@ public class NPCMutator {
 		p.setFlag(PersonFlag.IS_MOOK, false);
 		p.setFirstName(randomLists.honorDrudgerName(p.getNameNoTitle()));
 		return p;
+	}
+	
+	/**
+	 * defaults to no feat, however drawbanes that aren't listed in this can't be added
+	 */
+	private static final Map<DrawBane,Feat> harpyAddFeats = new HashMap<DrawBane,Feat>();
+	/**
+	 * defaults to a weight of 1
+	 */
+	private static final Map<DrawBane,Double> harpyAddWeights = new HashMap<DrawBane,Double>();
+	
+	static {
+		harpyAddFeats.put(DrawBane.WOOD,Feat.NOT_PICKY);
+		harpyAddWeights.put(DrawBane.WOOD,2d);
+		harpyAddFeats.put(DrawBane.CLOTH,Feat.NOT_PICKY);
+		harpyAddWeights.put(DrawBane.CLOTH,2d);
+		
+		harpyAddFeats.put(DrawBane.APPLE,Feat.GLUTTON);
+		harpyAddFeats.put(DrawBane.PUMPKIN,Feat.GLUTTON);
+		harpyAddFeats.put(DrawBane.EGGCORN,Feat.GLUTTON);
+		harpyAddWeights.put(DrawBane.EGGCORN,0.5d);
+		harpyAddFeats.put(DrawBane.MEAT,Feat.GLUTTON);
+		harpyAddFeats.put(DrawBane.TRUFFLE,Feat.GLUTTON);
+		harpyAddWeights.put(DrawBane.TRUFFLE,0.2d);
+		harpyAddFeats.put(DrawBane.HONEY,Feat.GLUTTON);
+		harpyAddWeights.put(DrawBane.HONEY,0.5d);
+		harpyAddFeats.put(DrawBane.GARLIC,Feat.GLUTTON);
+		harpyAddWeights.put(DrawBane.GARLIC,0.5d);
+		
+		harpyAddFeats.put(DrawBane.BLOOD,Feat.HEMOVORE);
+		
+		harpyAddFeats.put(DrawBane.PROTECTIVE_WARD,Feat.SHAMAN);
+		harpyAddWeights.put(DrawBane.PROTECTIVE_WARD,0.1d);
+		harpyAddFeats.put(DrawBane.UNICORN_HORN,Feat.SHAMAN);
+		harpyAddWeights.put(DrawBane.UNICORN_HORN,0.1d);
+		
+		harpyAddFeats.put(DrawBane.BAT_WING,Feat.SWIFT);
+		harpyAddFeats.put(DrawBane.MIMIC_GUTS,Feat.ARMORPAINTER);
+		harpyAddFeats.put(DrawBane.TELESCOPE,Feat.UNDERHANDED);
+		
+		harpyAddFeats.put(DrawBane.GOLD,null);
+		harpyAddWeights.put(DrawBane.GOLD,0.2d);
+		harpyAddFeats.put(DrawBane.SILVER,null);
+		harpyAddWeights.put(DrawBane.SILVER,0.5d);
+		
+		harpyAddFeats.put(DrawBane.CEON_STONE,Feat.UNBREAKABLE);
+		harpyAddWeights.put(DrawBane.CEON_STONE,0.1d);
+		
+		
+		
+		harpyAddFeats.put(DrawBane.WAX,Feat.COCOONED);
+		
+		harpyAddFeats.put(DrawBane.GRAVE_DIRT,Feat.WITCHY);
+		harpyAddWeights.put(DrawBane.GRAVE_DIRT,0.5d);
+		harpyAddFeats.put(DrawBane.GRAVE_DUST,Feat.WITCHY);
+		harpyAddWeights.put(DrawBane.GRAVE_DUST,0.3d);
+		
+		harpyAddFeats.put(DrawBane.REPEL,Feat.AMBUSHER);
+		harpyAddWeights.put(DrawBane.REPEL,0.5d);
+	}
+	
+	public static boolean mutateAddFindHarpy(Person p) {
+		List<DrawBane> finds = new ArrayList<DrawBane>();
+		List<Double> weights = new ArrayList<Double>();
+		List<DrawBane> has = p.getBag().getDrawBanes();
+		double totalWeight = 0;
+		for (DrawBane d: harpyAddFeats.keySet()) {
+			//can only add drawbanes they don't have already
+			if (!has.contains(d)) {
+				finds.add(d);
+				double weight = harpyAddWeights.getOrDefault(d,1d);
+				weights.add(weight);
+				totalWeight+=weight;
+			}
+		}
+		if (finds.isEmpty()) {
+			//return false because there's nothing else to add to their inventory
+			return false;
+		}
+		//roll a weight
+		totalWeight *= Rand.getRand().nextDouble();
+		DrawBane add;
+		for (int i = weights.size()-1; true; i--) {
+			totalWeight -= weights.get(i);
+			//if this is the last case (rounding error) or we rolled this add, set it
+			if (totalWeight <= 0 || i == 0) {
+				add = finds.get(i);
+				break;
+			}
+		}
+		assert add != null;
+		p.getBag().addDrawBaneSilently(add);
+		Feat feat = harpyAddFeats.getOrDefault(add,null);//get the feat allocated with the drawbane
+		if (feat == null) {
+			//if there is no assigned feat, add a feat point instead
+			p.addFeatPoint();
+			p.finishGeneration();
+		}else {
+			if (p.hasFeat(feat)) {//if they already have the feat, also add a feat point
+				p.addFeatPoint();
+				p.finishGeneration();
+			}else {
+				//otherwise set the feat
+				p.setFeat(feat);
+			}
+		}
+		//skills already updated so don't need to call the function for that
+		return true;
 	}
 	
 

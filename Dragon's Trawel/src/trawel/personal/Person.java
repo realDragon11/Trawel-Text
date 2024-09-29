@@ -1528,9 +1528,19 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public String xpString() {
 		return xp + "/" + level*level;
 	}
-	
+
+	/*
+	 * returns the xp they need to obtain on their current amount to reach the next level up
+	 */
 	public int xpToNext() {
 		return (level*level)-xp;
+	}
+	
+	/**
+	 * returns the xp that they need to meet for their next level up (ignoring current xp)
+	 */
+	public int xpInNext() {
+		return (level*level);
 	}
 
 	public int getMaxHp() {
