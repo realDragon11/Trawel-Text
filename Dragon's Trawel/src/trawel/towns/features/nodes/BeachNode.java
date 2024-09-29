@@ -356,7 +356,7 @@ public class BeachNode implements NodeType {
 			if (holder.getStateNum(node) == 0) {
 				return "Empty Harpy Nest";
 			}
-			return Item.getModiferNameColored(holder.getStateNum(node)) + " Harpy Nest";
+			return Item.getModiferNameColoredCapital(holder.getStateNum(node)) + " Harpy Nest";
 		}
 		return null;
 	}
@@ -465,6 +465,10 @@ public class BeachNode implements NodeType {
 		case 7://accumulating harpy nest
 			if (holder.getStateNum(node) == 0) {//no harpy present
 				Print.println("[r_same]The nest is abandoned.");
+				Print.println("[r_warn]Destroy the nest to drive off the harpies?");
+				if (Input.yesNo()) {
+					GenericNode.setMiscText(holder,node,"Trashed Harpy Nest","Examine destroyed nest.","You smashed this nest to drive off the harpies roosting here.","destroyed nest");
+				}
 			}else {//harpy present
 				Print.println("A harpy is tending to their things in the nest.");
 				Person harpy = holder.getStorageFirstPerson(node);

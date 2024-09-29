@@ -80,40 +80,44 @@ public abstract class Item implements java.io.Serializable{
 	
 	private static String[] modifiersColored = new String[] {
 			//0
-			TrawelColor.inlineColor(new Color(60,60,60))+"broken"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(new Color(60,60,60))+"Broken"+TrawelColor.COLOR_RESET,
 			//1
-			TrawelColor.inlineColor(new Color(80,80,80))+"crude"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(new Color(80,80,80))+"Crude"+TrawelColor.COLOR_RESET,
 			//2
-			TrawelColor.inlineColor(new Color(140,140,140))+"shoddy"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(new Color(140,140,140))+"Shoddy"+TrawelColor.COLOR_RESET,
 			//3
-			TrawelColor.inlineColor(new Color(180,180,180))+"poor"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(new Color(180,180,180))+"Poor"+TrawelColor.COLOR_RESET,
 			//4
-			TrawelColor.inlineColor(new Color(220,220,220))+"subpar"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(new Color(220,220,220))+"Subpar"+TrawelColor.COLOR_RESET,
 			//5
-			TrawelColor.inlineColor(new Color(240,240,240))+"fine"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(new Color(240,240,240))+"Fine"+TrawelColor.COLOR_RESET,
 			//6
-			TrawelColor.inlineColor(TrawelColor.colorMix(Color.GREEN,Color.WHITE,.5f))+"good"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(TrawelColor.colorMix(Color.GREEN,Color.WHITE,.5f))+"Good"+TrawelColor.COLOR_RESET,
 			//7
-			TrawelColor.inlineColor(TrawelColor.colorMix(Color.BLUE,Color.WHITE,.5f))+"great"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(TrawelColor.colorMix(Color.BLUE,Color.WHITE,.5f))+"Great"+TrawelColor.COLOR_RESET,
 			//8
-			TrawelColor.inlineColor(TrawelColor.colorMix(Color.MAGENTA,Color.WHITE,.5f))+"amazing"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(TrawelColor.colorMix(Color.MAGENTA,Color.WHITE,.5f))+"Amazing"+TrawelColor.COLOR_RESET,
 			//9
-			TrawelColor.inlineColor(TrawelColor.colorMix(Color.YELLOW,Color.WHITE,.5f))+"heroic"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(TrawelColor.colorMix(Color.YELLOW,Color.WHITE,.5f))+"Heroic"+TrawelColor.COLOR_RESET,
 			//10
-			TrawelColor.inlineColor(TrawelColor.colorMix(Color.ORANGE,Color.WHITE,.5f))+"masterwork"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(TrawelColor.colorMix(Color.ORANGE,Color.WHITE,.5f))+"Masterwork"+TrawelColor.COLOR_RESET,
 			//11
-			TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED,Color.WHITE,.5f))+"legendary"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED,Color.WHITE,.5f))+"Legendary"+TrawelColor.COLOR_RESET,
 			//12, -.5 * 4
-			TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED,Color.WHITE,.3f))+"artifact"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED,Color.WHITE,.3f))+"Artifact"+TrawelColor.COLOR_RESET,
 			//13, -.5 * 3
-			TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED,Color.WHITE,.15f))+"artifact"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED,Color.WHITE,.15f))+"Artifact"+TrawelColor.COLOR_RESET,
 			//14, -.5 * 2
-			TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED,Color.WHITE,.05f))+"artifact"+TrawelColor.COLOR_RESET,
+			TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED,Color.WHITE,.05f))+"Artifact"+TrawelColor.COLOR_RESET,
 			//15+ -.5 * 1
-			TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED,Color.WHITE,0f))+"artifact"+TrawelColor.COLOR_RESET
+			TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED,Color.WHITE,0f))+"Artifact"+TrawelColor.COLOR_RESET
 	};
 	
 	public static String getModiferNameColored(int inlevel) {
+		return modifiersColored[extra.clamp(inlevel,0,15)].toLowerCase();
+	}
+	
+	public static String getModiferNameColoredCapital(int inlevel) {
 		return modifiersColored[extra.clamp(inlevel,0,15)];
 	}
 	
