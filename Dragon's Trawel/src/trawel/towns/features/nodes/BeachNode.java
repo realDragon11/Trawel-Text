@@ -11,17 +11,21 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.battle.Combat;
 import trawel.core.Input;
+import trawel.core.Networking;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.randomLists;
 import trawel.personal.AIClass;
 import trawel.personal.Effect;
+import trawel.personal.NPCMutator;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.AttributeBox;
 import trawel.personal.classless.IEffectiveLevel;
+import trawel.personal.item.Item;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.item.solid.MaterialFactory;
@@ -55,7 +59,9 @@ public class BeachNode implements NodeType {
 				//5: message in a bottle
 				1f,
 				//6: beachcomber (generic casual with bonus drawbane)
-				1f
+				1f,
+				//7: accumulating harpy nest
+				.5f
 		});
 		beachEntryRoller = new WeightedTable(new float[] {
 				//1: skeleton pirate blocker
@@ -69,7 +75,9 @@ public class BeachNode implements NodeType {
 				//5: message in a bottle
 				1f,
 				//6: beachcomber (generic casual with bonus drawbane)
-				1f
+				1f,
+				//7: accumulating harpy nest
+				.5f
 		});
 		//beach regrowth avoids placing things that can't regrow
 		beachRegrowRoller = new WeightedTable(new float[] {
@@ -84,7 +92,9 @@ public class BeachNode implements NodeType {
 				//5: message in a bottle
 				1f,
 				//6: beachcomber (generic casual with bonus drawbane)
-				1f
+				1f,
+				//7: accumulating harpy nest
+				.5f
 		});
 	}
 	
@@ -156,6 +166,11 @@ public class BeachNode implements NodeType {
 		case 6://beachcomber
 			//https://en.wikipedia.org/wiki/Beachcombing
 			GenericNode.setBasicCasual(holder,node,RaceFactory.makeBeachcomber(holder.getLevel(node)));
+			break;
+		case 7://accumulating harpy nest
+			//waits 12h to 2d12h for first accumulation chance
+			holder.setStorage(node,new Object[] {12d+Rand.randRange(0f,48f),RaceFactory.makeHarpy(holder.getLevel(node))});
+			holder.setStateNum(node,1);//occupied but no bonus loot
 			break;
 		}
 	}
@@ -337,6 +352,11 @@ public class BeachNode implements NodeType {
 			}
 		case 5:
 			return "Bottle";
+		case 7://accumulating harpy nest
+			if (holder.getStateNum(node) == 0) {
+				return "Empty Harpy Nest";
+			}
+			return Item.getModiferNameColored(holder.getStateNum(node)) + " Harpy Nest";
 		}
 		return null;
 	}
@@ -360,6 +380,8 @@ public class BeachNode implements NodeType {
 			}
 		case 5:
 			return "Uncork bottled message.";
+		case 7://accumulating harpy nest
+			return "Approach nest.";
 		}
 		return null;
 	}
@@ -440,6 +462,30 @@ public class BeachNode implements NodeType {
 			}
 			GenericNode.setMiscText(holder, node,"Broken Bottle","Examine broken glass.","There was a message in a bottle here, but not anymore.","broken glass");
 			return false;
+		case 7://accumulating harpy nest
+			if (holder.getStateNum(node) == 0) {//no harpy present
+				Print.println("[r_same]The nest is abandoned.");
+			}else {//harpy present
+				Print.println("A harpy is tending to their things in the nest.");
+				Person harpy = holder.getStorageFirstPerson(node);
+				harpy.graphicalFoe();
+				if (harpy.reallyAttack()) {
+					Combat c = Player.player.fightWith(harpy);
+					if (c.playerWon() > 0) {
+						holder.setStateNum(node,0);//no harpy present
+						//delete harpy and set next regen for 12h+2d randomly
+						holder.setStorage(node,new Object[] {12d+Rand.randRange(0f,48f),null});
+						//player can choose to destroy the next
+						Print.println("[r_warn]Destroy the nest to drive off the harpies?");
+						if (Input.yesNo()) {
+							GenericNode.setMiscText(holder,node,"Trashed Harpy Nest","Examine destroyed nest.","You smashed this nest to drive off the harpies roosting here.","destroyed nest");
+						}
+						//otherwise can fall through and leave
+					}
+				}
+			}//end harpy present
+			//harpy cannot kick player out of node exploration, so always returns false
+			return false;
 		}
 		return false;
 	}
@@ -451,7 +497,50 @@ public class BeachNode implements NodeType {
 
 	@Override
 	public void passTime(NodeConnector holder, int node, double time, TimeContext calling) {
-		// TODO Auto-generated method stub
+		switch (holder.getEventNum(node)) {
+			case 7://accumulating harpy nest
+				Object[] harpyStorage = holder.getStorageAsArray(node);
+				if (harpyStorage[0] == null) {
+					//can set the double to null to stop checking
+					break;
+				}
+				//subtract the current time from the timer
+				double harpyTime = ((double)harpyStorage[0])-time;
+				if (harpyTime <= 0) {
+					int harpyState = holder.getStateNum(node);
+					if (harpyState == 0) {
+						//empty, harpy was killed, so just make a new one with a new timer
+						//waits 12h to 2d12h for first accumulation chance
+						//add the harpy time to account for overshooting the goal time
+						holder.setStorage(node,new Object[] {harpyTime+12d+Rand.randRange(0f,48f),RaceFactory.makeHarpy(holder.getLevel(node))});
+						holder.setStateNum(node,1);
+						break;
+					}else {
+						//harpy is present, add to them instead
+						Person harpy = (Person) harpyStorage[1];
+						boolean added = NPCMutator.mutateAddFindHarpy(harpy);
+						if (added) {
+							//successfully added, increment harpy counter
+							holder.setStateNum(node,harpyState+1);
+							//roll a random chance to be the peak of this harpy, otherwise they keep finding loot up to a cap of 11 which is a 'legendary' harpy
+							if (Rand.chanceIn(harpyState,11)) {//uses harpy state before adding, so last chance is a 10 in 11 chance to not become legendary
+								harpyStorage[0] = null;//cannot find more drawbanes
+								break;
+							}else {
+								//otherwise we can just set the new time stored, we have a reference to the underlying array so use that
+								//and the harpy had the drawbane added directly to it
+								//add the harpy time to account for overshooting the goal time
+								harpyStorage[0] = harpyTime+12d+Rand.randRange(0f,48f);
+							}
+						}else {
+							harpyStorage[0] = null;//cannot find more drawbanes
+						}
+					}
+				}else {
+					harpyStorage[0] = harpyTime;//update the stored time with the time passing
+				}
+				break;
+		}
 	}
 	
 	private String[] lockedChestAdjs = new String[]{"Sunbleached","Waterlogged","Barnacled","Ornate"};
