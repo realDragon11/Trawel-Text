@@ -61,7 +61,7 @@ public class BeachNode implements NodeType {
 				//6: beachcomber (generic casual with bonus drawbane)
 				1f,
 				//7: accumulating harpy nest
-				.5f
+				.8f
 		});
 		beachEntryRoller = new WeightedTable(new float[] {
 				//1: skeleton pirate blocker
@@ -168,8 +168,8 @@ public class BeachNode implements NodeType {
 			GenericNode.setBasicCasual(holder,node,RaceFactory.makeBeachcomber(holder.getLevel(node)));
 			break;
 		case 7://accumulating harpy nest
-			//waits 12h to 2d12h for first accumulation chance
-			holder.setStorage(node,new Object[] {12d+Rand.randRange(0f,48f),RaceFactory.makeHarpy(holder.getLevel(node))});
+			//waits 12h to 2d12h for first accumulation chance, starts with 0 times replenished, and the harpy is made
+			holder.setStorage(node,new Object[] {12d+Rand.randRange(0f,48f),0,RaceFactory.makeHarpy(holder.getLevel(node))});
 			holder.setStateNum(node,1);//occupied but no bonus loot
 			break;
 		}
@@ -468,6 +468,7 @@ public class BeachNode implements NodeType {
 				Print.println("[r_warn]Destroy the nest to drive off the harpies?");
 				if (Input.yesNo()) {
 					GenericNode.setMiscText(holder,node,"Trashed Harpy Nest","Examine destroyed nest.","You smashed this nest to drive off the harpies roosting here.","destroyed nest");
+					return false;
 				}
 			}else {//harpy present
 				Print.println("A harpy is tending to their things in the nest.");
@@ -477,12 +478,20 @@ public class BeachNode implements NodeType {
 					Combat c = Player.player.fightWith(harpy);
 					if (c.playerWon() > 0) {
 						holder.setStateNum(node,0);//no harpy present
+						//increase amount of times destroyed by 1
+						int destructions = (int) holder.getStorageAsArray(node)[1]+1;
+						if (destructions > 3 || Rand.chanceIn(destructions,3)) {//hard cap of three harpies per nest
+							Print.println("[r_change]The nest was wrecked during the battle.");
+							GenericNode.setMiscText(holder,node,"Wrecked Harpy Nest","Examine destroyed nest.","The nest was destroyed by battle.","destroyed nest");
+							return false;//exit
+						}
 						//delete harpy and set next regen for 12h+2d randomly
-						holder.setStorage(node,new Object[] {12d+Rand.randRange(0f,48f),null});
-						//player can choose to destroy the next
+						holder.setStorage(node,new Object[] {12d+Rand.randRange(0f,48f),destructions,null});
+						//player can choose to destroy the nest if not automatically destroyed
 						Print.println("[r_warn]Destroy the nest to drive off the harpies?");
 						if (Input.yesNo()) {
 							GenericNode.setMiscText(holder,node,"Trashed Harpy Nest","Examine destroyed nest.","You smashed this nest to drive off the harpies roosting here.","destroyed nest");
+							return false;
 						}
 						//otherwise can fall through and leave
 					}
@@ -516,12 +525,13 @@ public class BeachNode implements NodeType {
 						//empty, harpy was killed, so just make a new one with a new timer
 						//waits 12h to 2d12h for first accumulation chance
 						//add the harpy time to account for overshooting the goal time
-						holder.setStorage(node,new Object[] {harpyTime+12d+Rand.randRange(0f,48f),RaceFactory.makeHarpy(holder.getLevel(node))});
+						//keep the number of times the harpy was killed
+						holder.setStorage(node,new Object[] {harpyTime+12d+Rand.randRange(0f,48f),harpyStorage[1],RaceFactory.makeHarpy(holder.getLevel(node))});
 						holder.setStateNum(node,1);
 						break;
 					}else {
 						//harpy is present, add to them instead
-						Person harpy = (Person) harpyStorage[1];
+						Person harpy = holder.getStorageFirstPerson(node);
 						boolean added = NPCMutator.mutateAddFindHarpy(harpy);
 						if (added) {
 							//successfully added, increment harpy counter

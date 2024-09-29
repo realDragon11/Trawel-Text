@@ -74,6 +74,7 @@ public class TagFormatter {
 		addTag("r_same",TrawelColor.RESULT_NO_CHANGE_NONE);
 		addTag("r_warn",TrawelColor.RESULT_WARN);
 		addTag("r_error",TrawelColor.RESULT_ERROR);
+		addTag("r_change",TrawelColor.RESULT_WARN);
 	}
 	
 	private static final void addTag(String code, String full) {
