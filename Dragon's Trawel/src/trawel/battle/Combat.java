@@ -1547,7 +1547,8 @@ public class Combat {
 				//extra.print(" They advance closer to the action.");
 			}
 			if (defender.hasSkill(Skill.LIVING_ARMOR)) {
-				defender.getBag().buffArmorAdd(.08d);
+				defender.addEffect(Effect.PARRY);
+				//defender.getBag().buffArmorAdd(.08d);
 				atr.addNote("Living Armor!");
 				//extra.print(" Their armor reacts to the blow.");
 			}

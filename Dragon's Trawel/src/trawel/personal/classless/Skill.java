@@ -83,7 +83,7 @@ public enum Skill{
 				,"Curse halves HP. Cure at a Shaman or Doctor. Lasts between battles."
 				, Type.SOCIAL),
 		KILLHEAL("Vampiric Spirit","On Kill: Gain 5% of dead's LHP."
-				,"Dead LHP caps at 2 levels higher than your own. 'Kill' means being the last person to attack the target before they die."
+				,"Can overheal. Dead LHP caps at 2 levels higher than your own. 'Kill' means being the last person to attack the target before they die."
 				,Type.OFFENSE),
 		SPUNCH("Sucker Punch","On Impact: Slow down target's next action by 2% of their total time."
 				,StringTip.IMPACT_TIP
@@ -92,7 +92,7 @@ public enum Skill{
 				,"Max HP is closely aligned to how much HP they start with, but can go higher. Must be part of an 'Impactful' action."
 				,Type.OFFENSE),
 		BLOODTHIRSTY("Bloodthirsty","On Impact: Heal HP equal to the lower of 1% attacker's LHP and defender's LHP."
-				,"Cannot bring you above your MHP."
+				,"Cannot overheal."
 				,Type.OFFENSE),
 		ARMOR_TUNING("Armor Tuning","Armor is 20% stronger at the start of every battle."
 				,StringTip.ARMOR_TIP
@@ -101,7 +101,7 @@ public enum Skill{
 				,"Applies once per attack."
 				,Type.DEFENSE),//defense not speed, speed is more 'fast in mobility'
 		ARMORHEART("Armor Heart","On Armor Block: Gain 2% of attacker's LHP."
-				,"Caps at your MHP. Attacker's LHP caps at 4 levels higher than your own. Applies once per attack."
+				,"Cannot overheal. Attacker's LHP caps at 4 levels higher than your own. Applies once per attack."
 				,Type.DEFENSE),
 		MESMER_ARMOR("Mesmer Armor","When attacked for no Impact, Roll a contested Clarity vs highest attribute to confuse the attacker."
 				,"Attacks with no impact typically are dodged, miss, or are blocked by armor. Confuse makes the target's next attack capable of friendly fire."
@@ -122,7 +122,7 @@ public enum Skill{
 				,StringTip.CRIT_TIP+" "+StringTip.ADV_TIP
 				,Type.SPEED),
 		BLOODDRINKER("Blood Drinker","When Attacked: Gain HP equal to half attacker's bleed damage tick that attack."
-				,"Stacks with other sources of bleed healing. Not capped by your MHP."
+				,"Can overheal. Stacks with other sources of bleed healing.."
 				,Type.SOCIAL),
 		NIGHTVISION("Nightvision","Can see in the dark."
 				,"Helps determine things in Graveyards."
@@ -248,8 +248,8 @@ public enum Skill{
 		AGGRESS_PARRY("Aggress Parry","On Any Crit: Grants Parry."
 				,StringTip.CRIT_TIP+" "+StringTip.PARRY_TIP
 				,Type.DEFENSE),
-		LIVING_ARMOR("Living Armor","On Armor Block: Boost your armor by +8% flat."
-				,StringTip.ARMOR_TIP
+		LIVING_ARMOR("Living Armor","On Armor Block: Grants Parry."
+				,StringTip.PARRY_TIP
 				,Type.DEFENSE),
 		SALVAGE("Salvage","On Impactful Crit: Boost your armor by +12% flat."
 				,StringTip.CRIT_TIP+" "+StringTip.ARMOR_TIP
