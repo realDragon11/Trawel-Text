@@ -683,9 +683,11 @@ public class Armor extends Item implements IEffectiveLevel{
 			+ " " + TrawelColor.ITEM_DESC_PROP+TrawelChar.CHAR_PIERCE+TrawelColor.ITEM_WANT_HIGHER+Print.format(this.getPierceResist())
 			+ " "+TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_WEIGHT+": "+TrawelColor.ITEM_WANT_LOWER+getWeight()
 			+ " "+TrawelChar.DISP_AMP+": "+TrawelColor.ITEM_WANT_LOWER+ Print.F_TWO_TRAILING.format(getAgiPenMult())+"x"
+			/*no longer used
 			+TrawelColor.ITEM_DESC_PROP+ " ignite mult: "+TrawelColor.ITEM_WANT_LOWER+ Print.F_TWO_TRAILING.format(getFireMod())+"x"
 			+TrawelColor.ITEM_DESC_PROP+ " frost mult: "+TrawelColor.ITEM_WANT_LOWER+ Print.F_TWO_TRAILING.format(getFreezeMod())+"x"
 			+TrawelColor.ITEM_DESC_PROP+ " elec mult: "+TrawelColor.ITEM_WANT_LOWER+ Print.F_TWO_TRAILING.format(getShockMod())+"x"
+			*/
 			+TrawelColor.ITEM_DESC_PROP+ " aether: " +TrawelColor.ITEM_VALUE+ (int)(this.getAetherValue()*markup));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);

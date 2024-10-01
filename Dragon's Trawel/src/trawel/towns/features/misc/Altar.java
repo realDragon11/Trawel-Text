@@ -257,7 +257,7 @@ public class Altar extends Feature{
 				break;
 			case VIRGIN:
 				addRelation(4f);
-				Print.println(TrawelColor.ADVISE_6+"You spend hours preparing your great sacrifice, and stab the innocent when the time is right. The "+getForceName()+" gives a gift back... but the unspoken message that it would accept this gift for itself lingers in your mind.");
+				Print.println(TrawelColor.ADVISE_6+"You spend hours preparing your great sacrifice, and stab the innocent when the time is right. The "+getForceName()+" gives a gift back... but the unspoken message that it would accept this gift as a further sacrifice lingers in your mind.");
 				Player.addTime(24d);
 				Player.bag.addNewDrawBanePlayer(DrawBane.BEATING_HEART);
 				specialInteraction = true;

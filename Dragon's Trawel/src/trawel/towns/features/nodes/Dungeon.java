@@ -495,6 +495,7 @@ public class Dungeon extends NodeFeature {
 								left_helpers.add(rem.agent.getPerson().getName() + " ("+rem.agent.getPerson().getLevel()+")");
 								if (rem.putInTown) {
 									town.addOccupant(rem.agent);//can be instant
+									assert !rem.agent.isCurrentBehaviorClass(AbandonPostBehavior.class);//added assert since bug seems to come from agents with the behavior but not in the list, which should be impossible unless they get removed without removing the behavior
 								}
 							}else {
 								throw new RuntimeException("Trying to remove " + rem.agent + " from " + rem.feature +" in dungeon party, but they weren't there!");

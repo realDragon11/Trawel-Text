@@ -26,5 +26,4 @@ public class AbandonPostBehavior extends Behavior{
 		user.onlyGoal(AgentGoal.NONE);
 		return Collections.singletonList(event);
 	}
-
 }

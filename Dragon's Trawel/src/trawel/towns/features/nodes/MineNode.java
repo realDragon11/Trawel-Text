@@ -544,7 +544,7 @@ public class MineNode implements NodeType{
 				list.add(new MenuBack("Leave the altar area."));
 				return list;
 			}});
-		
+		Networking.clearSide(1);
 		return false;//never kicks out, if attacking sets force go first, which forces you to see the above attack code
 	}
 	
