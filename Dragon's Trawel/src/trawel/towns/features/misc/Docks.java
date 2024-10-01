@@ -142,7 +142,7 @@ public class Docks extends Feature {
 							//always attempt to now
 							if (leader == null) {
 								leaderLevel = mylevel;
-								leader = old_attackers.get(i).setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
+								leader = old_attackers.remove(i).setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
 								continue;
 							}else {
 								Person me = old_attackers.remove(i);

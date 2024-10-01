@@ -1404,5 +1404,23 @@ public class Inventory implements java.io.Serializable{
 			}
 		}
 	}
+	/**
+	 * used for asserts, returns false if inventory is invalid and this person shouldn't be being passed around
+	 * @return
+	 */
+	public boolean validInventory() {
+		if (hand == null) {
+			return false;
+		}
+		if (race == null) {
+			return false;
+		}
+		for (Armor a: armorSlots) {
+			if (a == null) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 }
