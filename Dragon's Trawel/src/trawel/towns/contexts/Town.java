@@ -311,11 +311,11 @@ public class Town extends TContextOwner{
 		}
 		World w = island.getWorld();
 		Player.updateWorld(w);
-		if (Player.player.lastTown != this) { 
-			if (visited < 2 && mainGame.displayFlavorText && loreText != null) {
-				Print.println(loreText);
-			}
+		//if (Player.player.lastTown != this) {//will set visited to 2 if less than two, so don't need to worry about this printing multiple times
+		if (visited < 2 && mainGame.displayFlavorText && loreText != null) {
+			Print.println(loreText);
 		}
+		//}
 		townProcess();//works because the menu generator below always backs out
 		Player.player.lastTown = this;
 		String visitColor = TrawelColor.PRE_WHITE;

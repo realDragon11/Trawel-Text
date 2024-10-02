@@ -136,6 +136,10 @@ public class Agent extends SuperPerson{
 			if (current == null) {
 				return list;
 			}
+			if (current.getTimeTo() == Double.NaN) {
+				//new behavior can't pass time, return what we have thus far, it can return null on the next call
+				return list;
+			}
 		}
 		current.passTime(d, calling);
 		return list;

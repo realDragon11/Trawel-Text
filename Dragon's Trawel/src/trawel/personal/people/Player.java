@@ -582,15 +582,15 @@ public class Player extends SuperPerson implements Closeable{
 	}
 	@Override
 	public void setGoal(AgentGoal none) {
-		throw new RuntimeException("player cannot take agent goals");
+		throw new RuntimeException("player cannot set agent goals");
 	}
 	@Override
 	public void onlyGoal(AgentGoal none) {
-		throw new RuntimeException("player cannot take agent goals");
+		throw new RuntimeException("player cannot onlyset agent goals");
 	}
 	@Override
 	public boolean removeGoal(AgentGoal none) {
-		throw new RuntimeException("player cannot take agent goals");
+		throw new RuntimeException("player cannot remove agent goals");
 	}
 	@Override
 	public boolean hasGoal(AgentGoal goal) {
@@ -608,8 +608,14 @@ public class Player extends SuperPerson implements Closeable{
 	public boolean everDeathCheated() {
 		return true;//the player is the biggest deathcheater of them all
 	}
+	/**
+	 * Place person as an occupant in the player's current town
+	 */
 	public static void placeAsOccupant(Person p) {
+		/*//this is supposed to place them as a town occupant at the player's current town, not this
 		Player.player.getWorld().addReoccuring(new Agent(p));
+		*/
+		player.getLocation().addOccupant(p.setOrMakeAgentGoal(AgentGoal.NONE));
 	}
 	public boolean caresAboutCapacity() {
 		return caresAboutCapacity;
