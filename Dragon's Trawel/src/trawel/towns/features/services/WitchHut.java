@@ -415,12 +415,10 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		int food = meats + apples + garlics + honeys + (2*pumpkins) + eggcorns+truffles + virgins;//virgin counts 4x due to meat
 		int total = reagents.size();
 		
-		if (Player.hasSkill(Skill.P_BREWER)) {
-			filler+=2;
-		}
 		if (Player.hasSkill(Skill.TOXIC_BREWS)) {
-			filler+=1;
+			filler+=botch;
 		}
+		
 		//section used for transmutation
 		if ((ents > 0 && meats >= 2) || (eons > 0 && virgins > 0)) {//kinda even more horrifying now
 			transmuteMisc();
@@ -506,100 +504,121 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		}
 		
 		//transmutation ended, roll botching
+		Effect override = null;
+		
 		if (Rand.chanceIn(botch, 10)) {
-			Player.player.setFlask(new Potion(Effect.CURSE,1+filler));
-			actualPotion();
-			return true;
+			//set override
+			override = Effect.CURSE;
 		}
 		
 		//priority potions
 		if (bloods > 0 && virgins > 0) {//note that a ceon stone will prevent this because virgins are food, not friends :D
-			Player.player.setFlask(new Potion(Effect.B_MARY,bloods+virgins+filler));
-			actualPotion();
+			setFlask(Effect.B_MARY, override, bloods+virgins+filler);
 			return true;
 		}
 		
 		//this section is for normal potions which have food ingredients, which should bypass the 'stew chance'
 		if (waxs > 0 && honeys > 0) {
 			Player.player.setFlask(new Potion(Effect.BEE_SHROUD,honeys+filler));
-			actualPotion();
+			setFlask(Effect.BEE_SHROUD, override, honeys+filler,true);
 			return true;
 		}
 		if (lflames > 0 && food >=1) {
-			Player.player.setFlask(new Potion(Effect.FORGED,lflames+food+filler));
-			actualPotion();
+			setFlask(Effect.FORGED, override, lflames+food+filler,true);
 			return true;
 		}
 		if (truffles > 0 && gravedirts >= 1) {
 			//note that it requires dirt not dust, to make it more distinct from grave armor
-			Player.player.setFlask(new Potion(Effect.STERN_STUFF,truffles+grave_subtance+filler));
-			actualPotion();
+			setFlask(Effect.STERN_STUFF, override, truffles+grave_subtance+filler,true);
 			return true;
 		}
+		
+		//can randomly bee-come beeeees if more than two honeys are used
+		//can't overcome curse, can overcome the stew chance
+		if (override != Effect.CURSE && honeys >= 2 && Rand.chanceIn(honeys,total)) {
+			override = Effect.BEES;
+		}
+		
 		//'stew chance', any potion with food as an ingredient that isn't above
 		//might turn into HEARTY even if it would be something else
-		if (food >= 1 && Rand.chanceIn(food,20)) {
-			Player.player.setFlask(new Potion(Effect.HEARTY,(total+food+foodless_filler) * (Player.hasSkill(Skill.CHEF) ? 2 : 1)));
-			actualPotion();
+		//can't overcome bees or curse
+		if (override == null && food >= 1 && Rand.chanceIn(food,20)) {
+			//Player.player.setFlask(new Potion(Effect.HEARTY,(total+food+foodless_filler) * (Player.hasSkill(Skill.CHEF) ? 2 : 1)));
+			override = Effect.HEARTY;
 			return true;
 		}
 		
 		//section used for normal potions
 		if (lflames > 0 && gravedusts > 0) {
 			//note it requires DUST to start but can use all grave substances for amount, which includes 2*dirt
-			Player.player.setFlask(new Potion(Effect.SIP_GRAVE_ARMOR,lflames+grave_subtance+filler));
-			actualPotion();
+			setFlask(Effect.SIP_GRAVE_ARMOR, override, lflames+grave_subtance+filler);
 			return true;
 		}
 		if (bloods > 0 && grave_subtance >= 2) {
-			Player.player.setFlask(new Potion(Effect.CLOTTER,bloods+grave_subtance+filler));
-			actualPotion();
+			setFlask(Effect.CLOTTER, override, bloods+grave_subtance+filler);
 			return true;
 		}
 		if (batWings > 0 && telescopes > 0) {
-			Player.player.setFlask(new Potion(Effect.TELESCOPIC,batWings+telescopes+filler));
-			actualPotion();
+			setFlask(Effect.TELESCOPIC, override, batWings+telescopes+filler);
 			return true;
 		}
 		if (mGuts > 0 && telescopes > 0) {
-			Player.player.setFlask(new Potion(Effect.R_AIM,telescopes+mGuts+filler));
-			actualPotion();
+			setFlask(Effect.R_AIM, override, telescopes+mGuts+filler);
 			return true;
 		}
 		if (mGuts > 0 && batWings > 0) {
-			Player.player.setFlask(new Potion(Effect.SUDDEN_START,mGuts+batWings+filler));
-			actualPotion();
+			setFlask(Effect.SUDDEN_START, override, mGuts+batWings+filler);
 			return true;
 		}
 		//note that 2 or more sinews would run a risk of becoming food
 		if (batWings > 0 && sinews > 0) {
-			Player.player.setFlask(new Potion(Effect.HASTE,batWings+sinews+filler));
-			actualPotion();
+			setFlask(Effect.HASTE, override, batWings+sinews+filler);
 			return true;
 		}
 		
 		//final chance for a normal stew
 		//if not all reagents are food, chance of failure, unless the ones that are food are the 'heavier' foods
 		if (food > 0 && Rand.chanceIn(food,total)) {
-			Player.player.setFlask(new Potion(Effect.HEARTY,(total+food+foodless_filler) * (Player.hasSkill(Skill.CHEF) ? 2 : 1)));
-			actualPotion();
+			//Player.player.setFlask(new Potion(Effect.HEARTY,(total+food+foodless_filler) * (Player.hasSkill(Skill.CHEF) ? 2 : 1)));
+			setFlask(Effect.HEARTY, override, total+food+foodless_filler);
 			return true;
 		}
 		
-		//but your stew was actually BEEEEES
+		//but your stew was actually BEEEEES (the stew failed but it could potentially be bees)
 		if (honeys > 0) {
-			Player.player.setFlask(new Potion(Effect.BEES,total+food+foodless_filler));
-			actualPotion();
+			setFlask(Effect.BEES,override,total+food+foodless_filler,true);
+			//Player.player.setFlask(new Potion(Effect.BEES,total+food+foodless_filler));
 			return true;
 		}
 		
 		//failed all, so curse
-		Player.player.setFlask(new Potion(Effect.CURSE,1+total+filler));
-		actualPotion();
+		setFlask(Effect.CURSE,null,1+total+filler);
 		return true;
 	}
 	
-	public void actualPotion() {
+	public static void setFlask(Effect effect, Effect override, int amount) {
+		setFlask(effect, override, amount,false);
+	}
+	
+	public static void setFlask(Effect effect, Effect override, int amount, boolean bypassNonCurse) {
+		if (Player.hasSkill(Skill.P_BREWER)) {
+			amount *=2;
+		}
+		if (override != null && (override == Effect.CURSE || !bypassNonCurse)) {
+			if (override == Effect.HEARTY && Player.hasSkill(Skill.CHEF)) {
+				amount *=2;
+			}
+			Player.player.setFlask(new Potion(override,amount));
+		}else {
+			if (effect == Effect.HEARTY && Player.hasSkill(Skill.CHEF)) {
+				amount *=2;
+			}
+			Player.player.setFlask(new Potion(effect,amount));
+		}
+		actualPotion(effect,amount);
+	}
+	
+	public static void actualPotion(Effect guess, int amount) {
 		Networking.sendStrong("PlayDelay|sound_potiondone|1|");
 		Networking.unlockAchievement("brew1");
 		//small chance on brewing an actual potion to collect brew aligned collect quest items
@@ -608,20 +627,21 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		if (gain != null) {
 			Print.println("You find "+1+" " + gain.getName() + " pieces while brewing!");
 		}
-		Print.println("You finish brewing your potion, and put it in your flask... now to test it out!");
+		//this can be wrong if a potion override occurs
+		Print.println("You finish brewing your "+guess.getName()+" potion ("+amount+" sips), and put it in your flask... now to test it out!");
 		actualPotionMade = true;
 	}
 	
-	public void transmute(DrawBane from, DrawBane into,int count) {
+	public static void transmute(DrawBane from, DrawBane into,int count) {
 		transmuteMisc();
 		Print.println("You manage to turn the "+from.getName()+" into " + (count > 1 ? count + " " : "") + into.getName()+"!");
 	}
-	public void transmute(String from, DrawBane into,int count) {
+	public static void transmute(String from, DrawBane into,int count) {
 		transmuteMisc();
 		Print.println("You manage to turn the "+from+" into " + (count > 1 ? count + " " : "") + into.getName()+"!");
 	}
 	
-	public void transmuteMisc() {
+	public static void transmuteMisc() {
 		Networking.unlockAchievement("transmute1");
 		//higher chance since transmutations are harder to activate
 		DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.TRANSMUTE_ALIGN,.3f,1);

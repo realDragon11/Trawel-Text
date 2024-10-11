@@ -8,6 +8,7 @@ import trawel.helper.constants.StringTip;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.Effect;
 import trawel.personal.Person;
+import trawel.personal.item.solid.DrawBane;
 
 public enum Skill{
 	
@@ -73,11 +74,11 @@ public enum Skill{
 		DODGEREF("Refreshing Dodge","On Dodge: Gain 1% of attacker's LHP."
 				,"Uncapped total HP gain, can exceed MHP. Attacker's LHP caps at 2 levels higher than your own. Does not apply to misses."
 				,Type.SPEED),
-		P_BREWER("Brewer","Created potions can be sipped two more times before running out."
-				,"Stacks with normal filler ingredients."
+		P_BREWER("Brewer","Created potions can be sipped twice as many times before running out."
+				,""
 				,Type.CRAFT),
-		TOXIC_BREWS("Toxic Brews","When drinking a "+Effect.CURSE.getName()+" potion, gain up to 3 random minor positive potion effects. After drinking "+Effect.CURSE.getName()+" in battle, only lose 25% MHP. Created potions can be sipped one more time."
-				,"Stacks with normal filler ingredients."
+		TOXIC_BREWS("Toxic Brews","When drinking a "+Effect.CURSE.getName()+" potion, gain up to 3 random minor positive potion effects. After drinking "+Effect.CURSE.getName()+" in battle, only lose 25% MHP. All created potions can be sipped one extra time per Botch reagent."
+				,"Botch reagants can create "+Effect.CURSE.getName()+" potions, like "+DrawBane.WOOD.getName()+"."
 				,Type.CRAFT),
 		CURSE_MAGE("Curse Whisperer","On Death: Curse Killer."
 				,"Curse halves HP. Cure at a Shaman or Doctor. Lasts between battles."
