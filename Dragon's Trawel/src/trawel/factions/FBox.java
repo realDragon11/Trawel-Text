@@ -337,6 +337,9 @@ public class FBox implements java.io.Serializable{
 			}
 			str +=TrawelColor.ITEM_DESC_PROP+ (s.name.name + TrawelColor.ITEM_VALUE + ": " +TrawelColor.ITEM_VALUE+ Print.F_TWO_TRAILING.format(s.forFac - s.againstFac));
 		}
+		if (str.equals("")) {
+			str = "They have no reputation.";
+		}
 		Print.println(str);
 	}
 	

@@ -374,21 +374,27 @@ public class Player extends SuperPerson implements Closeable{
 		return flask;
 	}
 	public void showQuests() {
-		
-		
 		Input.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
-				List<MenuItem> mList = new ArrayList<MenuItem>();
-				
+				List<MenuItem> list = new ArrayList<MenuItem>();
 				for (Quest q: sideQuests) {
-					mList.add(new ExamineQuest(q));
+					list.add(new ExamineQuest(q));
 				}
-				mList.add(new MenuBack());
-				return mList;
-			}});
-		
+				if (list.isEmpty()) {
+					list.add(new MenuLine() {
+						
+						@Override
+						public String title() {
+							return "You have no quests.";
+						}
+					});
+				}
+				list.add(new MenuBack());
+				return list;
+			}}
+		);
 	}
 	
 	public class AbandonQuest extends MenuSelect {
@@ -2406,6 +2412,10 @@ public class Player extends SuperPerson implements Closeable{
 															return true;
 														}
 														WorldGen.pathToTown(t);
+														if (t.equals(Player.player.getLocation())) {
+															//can't travel to the town you're already at, so don't even prompt for it
+															return false;
+														}
 														Print.println("Travel to " + t.getName()+"?");
 														if (Input.yesNo()) {
 															WorldGen.travelToTown(t);
