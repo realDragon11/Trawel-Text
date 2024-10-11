@@ -1021,16 +1021,19 @@ public class AIClass {
 		if (attacker.isPlayer()) {
 			if (attacker.getFlag(PersonFlag.AUTOBATTLE)) {
 				ImpairedAttack att = AIClass.attackTest(attacks, 4, combat, attacker, defender);
-				Input.menuGo(new MenuGenerator() {
+				if (mainGame.displayAutoBattle) {
+					Input.menuGo(new MenuGenerator() {
 
-					@Override
-					public List<MenuItem> gen() {
-						List<MenuItem> list = new ArrayList<MenuItem>();
-						list.add(new MenuBack("AI chose "+att.getName()+"."));
-						//used so player can use 10 back out code instead of
-						//having to mash 1 if they want
-						return list;
-					}});
+						@Override
+						public List<MenuItem> gen() {
+							List<MenuItem> list = new ArrayList<MenuItem>();
+							list.add(new MenuBack("AI chose "+att.getName()+"."));
+							//used so player can use 10 back out code instead of
+							//having to mash 1 if they want
+							return list;
+						}}
+					);
+				}
 				return att;
 			}
 			

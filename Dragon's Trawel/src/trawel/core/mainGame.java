@@ -110,6 +110,7 @@ public class mainGame {
 	public static boolean combatFeedbackNotes;
 	public static boolean saveText;
 	public static boolean lineSep;
+	public static boolean displayAutoBattle;
 	
 	public static boolean cdAutoLoot;
 	public static boolean cdAutoLevel;
@@ -709,6 +710,19 @@ public class mainGame {
 								return false;
 							}
 						});
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Display AutoBattle: "+displayAutoBattle + " (If disabled, will not display the AI's choices when using AutoBattle.)";
+							}
+
+							@Override
+							public boolean go() {
+								displayAutoBattle = !displayAutoBattle;
+								prefs.setProperty("displayAutoBattle",displayAutoBattle+"");
+								return false;
+							}});
 						Input.menuGo(new ScrollMenuGenerator(list.size(), "last <> options", "next <> options") {
 							@Override
 							public List<MenuItem> forSlot(int i) {
@@ -1499,6 +1513,7 @@ public class mainGame {
 			graphicStyle = graphicStyleLookup(prefs.getProperty("graphic_style",GraphicStyle.WASDD.name()));
 			saveText = Boolean.parseBoolean(prefs.getProperty("save_text","TRUE"));
 			lineSep = Boolean.parseBoolean(prefs.getProperty("linesep_text","TRUE"));
+			displayAutoBattle = Boolean.parseBoolean(prefs.getProperty("displayAutoBattle","TRUE"));
 			
 			cdAutoLoot = Boolean.parseBoolean(prefs.getProperty("cdAutoLoot","FALSE"));
 			cdAutoLevel = Boolean.parseBoolean(prefs.getProperty("cdAutoLevel","FALSE"));
