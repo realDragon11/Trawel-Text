@@ -110,6 +110,14 @@ public class mainGame {
 	public static boolean combatFeedbackNotes;
 	public static boolean saveText;
 	public static boolean lineSep;
+	
+	public static boolean cdAutoLoot;
+	public static boolean cdAutoLevel;
+	public static boolean cdAutoBattle;
+	public static boolean cdAutoSip;
+	public static boolean cdAutoRecord;
+	
+	
 	public static GraphicStyle graphicStyle;
 
 	private static boolean doAutoSave = true;
@@ -839,7 +847,97 @@ public class mainGame {
 							}});
 						return false;
 					}});
+				mList.add(new MenuSelect() {
 
+					@Override
+					public String title() {
+						return "Character Option Defaults";
+					}
+
+					@Override
+					public boolean go() {
+						Input.menuGo(new MenuGenerator() {
+							
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "These settings set the default Character Options for newly created characters. Descriptions are in the in-run toggle menu. They do not effect existing characters.";
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "AutoLoot: "+cdAutoLoot;
+									}
+
+									@Override
+									public boolean go() {
+										cdAutoLoot = !cdAutoLoot;
+										prefs.setProperty("cdAutoLoot",cdAutoLoot+"");
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "AutoLevel: "+cdAutoLevel;
+									}
+
+									@Override
+									public boolean go() {
+										cdAutoLevel = !cdAutoLevel;
+										prefs.setProperty("cdAutoLevel",cdAutoLevel+"");
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "AutoBattle: "+cdAutoBattle;
+									}
+
+									@Override
+									public boolean go() {
+										cdAutoBattle = !cdAutoBattle;
+										prefs.setProperty("cdAutoBattle",cdAutoBattle+"");
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "AutoSip: "+cdAutoSip;
+									}
+
+									@Override
+									public boolean go() {
+										cdAutoSip = !cdAutoSip;
+										prefs.setProperty("cdAutoSip",cdAutoSip+"");
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "AutoRecord: "+cdAutoRecord;
+									}
+
+									@Override
+									public boolean go() {
+										cdAutoRecord = !cdAutoRecord;
+										prefs.setProperty("cdAutoRecord",cdAutoRecord+"");
+										return false;
+									}});
+								list.add(new MenuBack());
+								return list;
+							}
+						});
+						return false;
+					}});
 				mList.add(new MenuBack());
 				return mList;
 			}
@@ -1401,6 +1499,12 @@ public class mainGame {
 			graphicStyle = graphicStyleLookup(prefs.getProperty("graphic_style",GraphicStyle.WASDD.name()));
 			saveText = Boolean.parseBoolean(prefs.getProperty("save_text","TRUE"));
 			lineSep = Boolean.parseBoolean(prefs.getProperty("linesep_text","TRUE"));
+			
+			cdAutoLoot = Boolean.parseBoolean(prefs.getProperty("cdAutoLoot","FALSE"));
+			cdAutoLevel = Boolean.parseBoolean(prefs.getProperty("cdAutoLevel","FALSE"));
+			cdAutoBattle = Boolean.parseBoolean(prefs.getProperty("cdAutoBattle","FALSE"));
+			cdAutoSip = Boolean.parseBoolean(prefs.getProperty("cdAutoSip","FALSE"));
+			cdAutoRecord = Boolean.parseBoolean(prefs.getProperty("cdAutoRecord","FALSE"));
 			
 
 			if (autoConnect) {

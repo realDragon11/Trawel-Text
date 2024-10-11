@@ -164,10 +164,21 @@ public class Player extends SuperPerson implements Closeable{
 		moneymappings = new ArrayList<World>();
 	}
 	
+	/**
+	 * also sets defaults
+	 */
 	public void setPerson(Person p) {
 		person = p;
 		bag = p.getBag();
 		p.setSuper(this);
+		//set player defaults
+		p.setFlag(PersonFlag.AUTOLOOT,mainGame.cdAutoLoot);
+		p.setFlag(PersonFlag.AUTOLEVEL,mainGame.cdAutoLevel);
+		p.setFlag(PersonFlag.AUTOBATTLE,mainGame.cdAutoBattle);
+		autoSip = mainGame.cdAutoSip;
+		if (mainGame.cdAutoRecord) {
+			createRecord();
+		}
 	}
 	@Override
 	public void setLocation(Town location) {
