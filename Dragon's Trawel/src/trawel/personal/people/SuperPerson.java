@@ -632,6 +632,10 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		return knowsFlask;
 	}
 	
+	/**
+	 * can be passed null to reset
+	 * @param pot
+	 */
 	public void setFlask(Potion pot) {
 		knowsFlask = false;
 		flask = pot;

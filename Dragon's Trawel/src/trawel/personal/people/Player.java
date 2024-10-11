@@ -906,7 +906,7 @@ public class Player extends SuperPerson implements Closeable{
 
 													@Override
 													public String title() {
-														return "AutoSip will cause your character to drink from their Flash without prompting, regardless of what's in it.";
+														return "AutoSip will cause your character to drink from their Potion without prompting, regardless of what's in it.";
 													}});
 												list.add(new MenuSelect() {
 
@@ -1123,15 +1123,18 @@ public class Player extends SuperPerson implements Closeable{
 
 									@Override
 									public String title() {
-										return "Map";
+										return "Potion: "+(hasFlask() ? (knowsPotion() ? peekFlask().getName() : "Unknown") + " ("+getFlaskUses()+" sips)" : "None")+" (Discard?)";
 									}
 
 									@Override
 									public boolean go() {
-										Print.println("You take out your personal map of known towns.");
-										mapScrollMenu();
-										if (exitMenu) {
-											return true;
+										if (!hasFlask()) {
+											Print.println("You have no Potion.");
+											return false;
+										}
+										Print.println("Discard your "+(hasFlask() ? (knowsPotion() ? peekFlask().getName() : "Unknown") + " ("+getFlaskUses()+" sips)" : "None")+ " Potion?");
+										if (Input.yesNo()) {
+											setFlask(null);
 										}
 										return false;
 									}});
@@ -1159,7 +1162,7 @@ public class Player extends SuperPerson implements Closeable{
 
 					@Override
 					public String title() {
-						return "Society";
+						return "World";
 					}
 
 					@Override
@@ -1169,6 +1172,22 @@ public class Player extends SuperPerson implements Closeable{
 							@Override
 							public List<MenuItem> gen() {
 								List<MenuItem> socList = new ArrayList<MenuItem>();
+								socList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Map";
+									}
+
+									@Override
+									public boolean go() {
+										Print.println("You take out your personal map of known towns.");
+										mapScrollMenu();
+										if (exitMenu) {
+											return true;
+										}
+										return false;
+									}});
 								socList.add(new MenuSelect() {
 
 									@Override
