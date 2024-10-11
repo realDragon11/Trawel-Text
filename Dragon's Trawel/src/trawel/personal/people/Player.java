@@ -142,6 +142,8 @@ public class Player extends SuperPerson implements Closeable{
 	public int currentNode;
 	public Feature atFeature;
 	public boolean forceGoProtection;
+	
+	private boolean autoSip = false;
 	/**
 	 * used by QuestReactionFactory to lessen the odds of back-to-back QuestReactions
 	 */
@@ -327,12 +329,23 @@ public class Player extends SuperPerson implements Closeable{
 	@Override
 	public Effect doSip() {
 		if (flask != null) {
-			if (knowsFlask) {
-				Print.println("Take a sip of your "+flask.effect.getName()+TrawelColor.PRE_WHITE+" potion? ("+TrawelColor.ITEM_VALUE+ flask.sips+TrawelColor.PRE_WHITE+" left)");
+			boolean doSip;
+			if (autoSip) {
+				if (knowsFlask) {
+					Print.println("You take a sip of your "+flask.effect.getName()+" potion. ("+TrawelColor.ITEM_VALUE+ flask.sips+TrawelColor.COLOR_RESET+" sips)");
+				}else {
+					Print.println("You take a sip of your unknown potion. ("+flask.sips+" sips)");
+				}
+				doSip = true;
 			}else {
-				Print.println("Take a sip of your potion? ("+flask.sips+" left)");
+				if (knowsFlask) {
+					Print.println("Take a sip of your "+flask.effect.getName()+" potion? ("+TrawelColor.ITEM_VALUE+ flask.sips+TrawelColor.COLOR_RESET+" left)");
+				}else {
+					Print.println("Take a sip of your potion? ("+flask.sips+" left)");
+				}
+				doSip = Input.yesNo();
 			}
-			if (Input.yesNo()) {
+			if (doSip) {
 				knowsFlask = true;
 				Effect e = flask.effect;
 				flask.sip(person);
@@ -876,6 +889,24 @@ public class Player extends SuperPerson implements Closeable{
 													@Override
 													public String title() {
 														return "AutoBattle will make the game use NPC logic to pick which attacks to use instead of displaying them to you. You must still advance the combat, but the 'back out' option works.";
+													}});
+												list.add(new MenuSelect() {
+
+													@Override
+													public String title() {
+														return " AutoSip: " + autoSip;
+													}
+
+													@Override
+													public boolean go() {
+														autoSip = !autoSip;
+														return false;
+													}});
+												list.add(new MenuLine() {
+
+													@Override
+													public String title() {
+														return "AutoSip will cause your character to drink from their Flash without prompting, regardless of what's in it.";
 													}});
 												list.add(new MenuSelect() {
 
