@@ -7,8 +7,8 @@ import trawel.helper.constants.TrawelColor;
 
 public class Changelog {
 	//b__X is in development, b_X is the actual release of that version
-		public static final String VERSION_STRING = "v0.8.b_14";
-		public static final String VERSION_DATE = " updated Sept 27th 2024";
+		public static final String VERSION_STRING = "v0.8.b__15";
+		public static final String VERSION_DATE = " updated Oct 10th 2024";
 		public static final String[][] changelog = new String[][] {
 			//add to front, changeviewer cycles to older ones when used
 			{"b_14",
