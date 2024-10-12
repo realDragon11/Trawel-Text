@@ -1834,6 +1834,17 @@ public class RaceFactory {
 		return w;
 	}
 	
+	public static Person makeSkeletonKnight(int level) {
+		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,RaceFlag.NONE,false,AIJob.KNIGHT,RaceFactory.getRace(RaceID.SKELETON_NON_BEASTLY));
+		addWealth(WEALTH_WELL_OFF,.4f, w);
+		w.getBag().addDrawBaneSilently(DrawBane.GRAVE_DUST);
+		w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);
+		w.hTask = HostileTask.GUARD_DUNGEON;
+		w.setTitle(randomLists.randomTitleFormat(randomLists.randomWarrior()));//MAYBELATER TODO
+		w.finishGeneration();
+		return w;
+	}
+	
 	public static Person makeSkeletonPirate(int level) {
 		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,RaceFlag.NONE,false,AIJob.PIRATE,RaceFactory.getRace(RaceID.SKELETON_NON_BEASTLY));
 		addWealth(WEALTH_WELL_OFF,.4f, w);

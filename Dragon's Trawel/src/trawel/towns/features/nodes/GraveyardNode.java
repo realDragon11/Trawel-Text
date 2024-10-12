@@ -238,7 +238,7 @@ public class GraveyardNode implements NodeType{
 			holder.setStateNum(node,Rand.chanceIn(1,4) ? 1 : 0);//25% chance to have a skeleton instead of loot
 			break;
 		case 10://wandering skeleton
-			Person wSkele = RaceFactory.makeSkeletonPirate(holder.getLevel(node));
+			Person wSkele = RaceFactory.makeSkeletonKnight(holder.getLevel(node));
 			String wNodeName,wInteract,wInteractDesc,wFindName;
 			switch (Rand.randRange(0,1)) {
 			case 0: default:
@@ -872,7 +872,7 @@ public class GraveyardNode implements NodeType{
 			//set skeleton
 			GenericNode.morphSetup(holder, node);
 			holder.setEventNum(node,10);//multi skeleton
-			holder.setStorage(node,new Object[] {RaceFactory.makeSkeletonPirate(holder.getLevel(node)),nodeName,interact,interactDesc,findName});
+			holder.setStorage(node,new Object[] {RaceFactory.makeSkeletonKnight(holder.getLevel(node)),nodeName,interact,interactDesc,findName});
 			//set state to 1 so that the skeleton has loot after being killed
 			holder.setStateNum(node,1);
 			return wanderingSkeleMulti(holder, node);
