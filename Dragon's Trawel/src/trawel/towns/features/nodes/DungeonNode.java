@@ -168,57 +168,71 @@ public class DungeonNode implements NodeType{
 			int stair_level = -10;
 			//DOLATER: fix order of nodes if that is still an issue
 			while (curSize < size) {
+				var paths = 2;
+				var pathLength = 2;
+				
 				lastNode = stair;
 				stair_level = holder.getLevel(stair);
 				if (++levelUp >= 3) {
 					levelUp =0;
 					++stair_level;
 				}
-				curStair = getNode(holder,stair,floor,stair_level);//stair as from is tentative
-				floor++;
+				
+				int initFloor = floor+1;
+				int nextFlight = initFloor+pathLength;
+				
+				//??next stair we're going into??
+				curStair = getNode(holder,stair,nextFlight,stair_level);//stair as from is tentative
+				//floor++;
 				holder.setStair(curStair);
 				holder.setEventNum(curStair, 1);
 				
 				stair_level = holder.getLevel(curStair);
 				
 				curFloor = new ArrayList<Integer>();
-				for (int j = 0; j < 2;j++) {
-					for (int i = 0;i <2; i++) {
+				
+				for (int j = 0; j < paths;j++) {
+					floor = initFloor;
+					for (int i = 0;i <pathLength; i++) {
 						curNode = getNode(holder,0,floor,stair_level);
 						//holder.setFloor(curNode, floor);//already set in getNode by the guess
 						holder.setMutualConnect(lastNode, curNode);
 						//lastNode.reverseConnections();
 						lastNode = curNode;
 						curFloor.add(lastNode);
-						if (i == 1) {
+						if (i == pathLength-1) {
 							holder.setMutualConnect(lastNode, curStair);
 						}
-						if (floor > 1 && floors.size()%2==0) {//every other floor past the first two depths, chance to overwrite what spawned
-							//guard floor
-							if (Rand.chanceIn(3,4)) {//linking nodes have a 3/4ths chance to become a guard of some sort
-								holder.setEventNum(lastNode,GUARD_NUMBERS[dungeonGuardRoller.random(Rand.getRand())]);
-							}
-						}else {
-							if (Rand.chanceIn(1,2)) {//linking nodes have a 50% chance to become a loot of some sort
-								//might not be a safe loot
-								holder.setEventNum(lastNode,LOOT_NUMBERS[dungeonLootRoller.random(Rand.getRand())]);
+						if (floor > 1) {//past the first two depths
+							if (floors.size()%2==0) {//every other floor, chance to overwrite what spawned with a different thing
+								//guard floor
+								if (Rand.chanceIn(3,4)) {//linking nodes have a 3/4ths chance to become a guard of some sort
+									holder.setEventNum(lastNode,GUARD_NUMBERS[dungeonGuardRoller.random(Rand.getRand())]);
+								}
+							}else {
+								if (Rand.chanceIn(1,2)) {//linking nodes have a 50% chance to become a loot of some sort
+									//might not be a safe loot
+									holder.setEventNum(lastNode,LOOT_NUMBERS[dungeonLootRoller.random(Rand.getRand())]);
+								}
 							}
 						}
+						
 						floor++;
 					}
-					floor-=2;
+					//floor-=2;
 					//curStair.getConnects().add(lastNode);
 					
 					lastNode = stair;
 				}
-				floor +=10;
+				//floor +=10;
+				floor = nextFlight;
 				curFloor.add(curStair);
 				floors.add(curFloor);
 				curSize +=curFloor.size();
 				//reverse order of stair connects
 				//stair.reverseConnections();
 				//curStair.setFloor(floor);
-				holder.setFloor(curStair, floor);
+				//??holder.setFloor(curStair, floor);
 				
 				//move onto next floor
 				stair = curStair;
