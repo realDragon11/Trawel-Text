@@ -802,8 +802,8 @@ public class GenericNode implements NodeType {
 										holder.findBehind(node,getDoorName(holder, node));
 									}else {
 										//failed
-										Player.player.addPunishment(Effect.BURNOUT);
 										Print.println(TrawelColor.RESULT_FAIL+"You fail to bash open the "+name+".");
+										Player.player.addPunishment(Effect.BURNOUT);
 									}
 									return true;
 								}});
@@ -826,8 +826,8 @@ public class GenericNode implements NodeType {
 										holder.findBehind(node,getDoorName(holder, node));
 									}else {
 										//failed
-										Player.player.addPunishment(Effect.BURNOUT);
 										Print.println(TrawelColor.RESULT_FAIL+"You fail to lockpick the "+name+".");
+										Player.player.addPunishment(Effect.BURNOUT);
 									}
 									return true;
 								}});
@@ -849,8 +849,8 @@ public class GenericNode implements NodeType {
 										holder.findBehind(node,getDoorName(holder, node));
 									}else {
 										//failed
-										Player.player.addPunishment(Effect.BURNOUT);
 										Print.println(TrawelColor.RESULT_FAIL+"Your Knock cantrip on the "+name+" fizzles.");
+										Player.player.addPunishment(Effect.BURNOUT);
 									}
 									return true;
 								}});
@@ -1481,29 +1481,29 @@ public class GenericNode implements NodeType {
 			case DAMAGE_KILL:
 				Deaths.die("You revive outside the trapped chamber.");
 				Print.println(TrawelColor.RESULT_FAIL+"Your equipment is damaged!");
-				Player.player.getPerson().addEffect(Effect.DAMAGED);
+				Player.player.addPunishment(Effect.DAMAGED);
 				break;
 			case WOUND_KILL:
 				Deaths.die("You revive outside the trapped chamber.");
 				Print.println(TrawelColor.RESULT_FAIL+"Your body is broken!");
-				Player.player.getPerson().addEffect(Effect.WOUNDED);
+				Player.player.addPunishment(Effect.WOUNDED);
 				break;
 			case FATIGUE:
 				Print.println(TrawelColor.RESULT_FAIL+"You are overcome with fatigue!");
-				Player.player.getPerson().addEffect(Effect.TIRED);
+				Player.player.addPunishment(Effect.TIRED);
 				break;
 			case BEES:
 				Print.println(TrawelColor.RESULT_FAIL+"Bees pursue you!");
-				Player.player.getPerson().addEffect(Effect.BEES);
+				Player.player.addPunishment(Effect.BEES);
 				break;
 			case CURSE:
 				Print.println(TrawelColor.RESULT_FAIL+"You are cursed!");
-				Player.player.getPerson().addEffect(Effect.CURSE);
+				Player.player.addPunishment(Effect.CURSE);
 				break;
 			case CURSE_KILL:
 				Deaths.die("You revive outside the trapped chamber.");
 				Print.println(TrawelColor.RESULT_FAIL+"You are cursed!");
-				Player.player.getPerson().addEffect(Effect.CURSE);
+				Player.player.addPunishment(Effect.CURSE);
 				break;
 			}
 			return false;

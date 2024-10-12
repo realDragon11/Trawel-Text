@@ -806,8 +806,8 @@ public class GraveyardNode implements NodeType{
 								returnHolder[0] = lockedCoffinSkeleEncounter(holder, node,"Forced "+coffinName,"Examine the forced open "+coreName+".","This "+coreName+" has already been forced open and looted.",coreName);
 							}else {
 								//failed
-								Player.player.addPunishment(Effect.BURNOUT);
 								Print.println(TrawelColor.RESULT_FAIL+"You fail to pry open the "+coreName+".");
+								Player.player.addPunishment(Effect.BURNOUT);
 								holder.findBehind(node,coffinName);
 							}
 							return true;
@@ -829,8 +829,8 @@ public class GraveyardNode implements NodeType{
 								returnHolder[0] = lockedCoffinSkeleEncounter(holder, node,"Picked "+coffinName,"Examine the picked "+coreName+".","This "+coreName+" has already been picked and looted.",coreName);
 							}else {
 								//failed
-								Player.player.addPunishment(Effect.BURNOUT);
 								Print.println(TrawelColor.RESULT_FAIL+"You fail to lockpick the "+coreName+".");
+								Player.player.addPunishment(Effect.BURNOUT);
 								holder.findBehind(node,coffinName);
 							}
 							return true;
@@ -852,8 +852,8 @@ public class GraveyardNode implements NodeType{
 								returnHolder[0] = lockedCoffinSkeleEncounter(holder, node,"Opened "+coffinName,"Examine the opened "+coreName+".","This "+coreName+" has already been opened and looted.",coreName);
 							}else {
 								//failed
-								Player.player.addPunishment(Effect.BURNOUT);
 								Print.println(TrawelColor.RESULT_FAIL+"Your Knock cantrip on the "+coreName+" fizzles.");
+								Player.player.addPunishment(Effect.BURNOUT);
 								holder.findBehind(node,coffinName);
 							}
 							return true;

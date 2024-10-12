@@ -1094,9 +1094,9 @@ public class GroveNode implements NodeType{
 	}
 	private boolean beeHive(NodeConnector holder,int node) {
 		Print.print("You destroy the natural hive... ");
-		Player.player.addPunishment(Effect.BEES);//BEEEEEEEEEEEEEEEEEEEEEES
 		Networking.unlockAchievement("bees_hive");
 		Print.println("The BEEEEEES!!!! They're angry!");
+		Player.player.addPunishment(Effect.BEES);//BEEEEEEEEEEEEEEEEEEEEEES
 		GenericNode.setPlantSpot(holder, node,Seed.SEED_BEE);
 		
 		Player.bag.addNewDrawBanePlayer(DrawBane.HONEY);

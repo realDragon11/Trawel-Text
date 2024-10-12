@@ -2685,6 +2685,7 @@ public class Player extends SuperPerson implements Closeable{
 		if (getPerson().hasEffect(punishment) && !punishment.stacks()) {
 			return false;
 		}
+		Print.println("[r_punish]You suffer "+punishment.getName()+"!");
 		getPerson().addEffect(punishment);
 		return true;
 	}
