@@ -12,6 +12,7 @@ import trawel.core.Rand;
 import trawel.personal.AIClass;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.IEffectiveLevel;
+import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
@@ -65,7 +66,7 @@ public class LootTables {
 				int amberAmount = IEffectiveLevel.cleanRangeReward(level,Gem.AMBER.reward(2f,theme.gem == Gem.AMBER), .5f);
 				Gem.AMBER.changeGem(amberAmount);
 				Print.println("[r_good]You find a Hunter's cache with " + amberAmount + " Amber and a "+silvered.getName()+"!");
-				AIClass.findItem(silvered, Player.player.getPerson());
+				AIClass.playerFindItem(silvered);
 			}
 		});
 		
@@ -85,6 +86,26 @@ public class LootTables {
 				Gem.RUBY.changeGem(rubyAmount);
 				Gem.SAPPHIRE.changeGem(sapphireAmount);
 				Print.println("[r_good]You find a Gem cache with " + emeraldAmount + " Emeralds, "+rubyAmount + " Rubies, and " + sapphireAmount + " Sapphires!");
+			}
+		});
+		
+		//enchanted equipment soaked in aether
+		addChance(LootType.BEACH_CHEST,.5f);
+		addChance(LootType.GRAVEYARD_COFFIN,1f);
+		addChance(LootType.UNLOCKED_DUNGEON_CHEST,.5f);
+		registerEvent(new LootEvent() {
+			
+			@Override
+			public void loot(int level, LootTheme theme) {
+				int aetherReward = IEffectiveLevel.cleanRangeReward(level,1000,.5f);
+				Player.bag.addAether(aetherReward);
+				Print.println("You find some armor soaking in "+aetherReward+" Aether!");
+				for (int i = 0; i < 3;i++) {
+					Armor a = new Armor(level);
+					//try to enchant it or improve the enchantment if it already has one- won't try to enchant unenchantable stuff but it's fine to have that as loot
+					a.improveEnchantChance(a.getLevel());
+					AIClass.playerFindItem(a);
+				}
 			}
 		});
 		

@@ -1006,7 +1006,7 @@ public class GroveNode implements NodeType{
 					Print.println("As you pull on it, the "+w.getBaseName()+" slowly slips free, and the rock crumbles!");
 				}
 				holder.setStateNum(node,1);
-				AIClass.findItem(w,Player.player.getPerson());
+				AIClass.playerFindItem(w);
 				GenericNode.setMiscText(holder, node,"Rock Fragments", "Look at rock fragments.", "Crumbled rock lies on the forest floor.", "rock fragments");
 			}else {
 				Print.println("You leave it alone.");

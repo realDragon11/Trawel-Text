@@ -1273,12 +1273,23 @@ public class AIClass {
 	/**
 	 * find a single item, player only
 	 */
-	public static void findItem(Item found, Person person) {
+	public static void playerFindItem(Item found) {
 		//Item current = person.getBag().itemCounterpart(found);
-		Item done = askDoSwap(found,null,true);
-		if (done != null) {
-			Services.aetherifyItem(done,person.getBag(),true);
+		Item done;
+		if (Player.player.getPerson().getFlag(PersonFlag.AUTOLOOT)) {
+			if (compareItem(Player.bag,found,Player.player.getPerson())) {
+				done = Player.bag.swapItem(found);
+				Print.println("AutoLoot: TOOK " + found.getName() + " OVER " + done.getName()+".");
+			}else {
+				done = found;//aetherify the found item
+			}
+		}else {
+			done = askDoSwap(found,null,true);
 		}
+		if (done != null) {
+			Services.aetherifyItem(done,Player.bag,true);
+		}
+		Player.player.getPerson().resetCapacity();
 		Networking.charUpdate();
 		Networking.leaderboard("highest_aether", Player.bag.getAether());
 	}
