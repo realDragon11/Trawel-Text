@@ -58,7 +58,11 @@ public class GraveyardNode implements NodeType{
 				//7: non attacking statue
 				.5f,
 				//8: trapped chamber
-				.5f
+				.5f,
+				//9: locked coffin (can have skeleton)
+				1f,
+				//10: wandering skeleton
+				1f
 		});
 		entryGraveyardRoller = new WeightedTable(new float[] {
 				//1: gravedigger
@@ -76,6 +80,10 @@ public class GraveyardNode implements NodeType{
 				//7: non attacking statue
 				.5f,
 				//8: trapped chamber
+				0f,
+				//9: locked coffin (can have skeleton)
+				1f,
+				//10: wandering skeleton
 				0f
 		});
 	}
@@ -148,16 +156,16 @@ public class GraveyardNode implements NodeType{
 	//note that you can't use generic nodes if you want shadowy behavior
 	
 	@Override
-	public void apply(NodeConnector holder,int madeNode) {
-		switch (holder.getEventNum(madeNode)) {
+	public void apply(NodeConnector holder,int node) {
+		switch (holder.getEventNum(node)) {
 		case 1: 
-			holder.setStorage(madeNode, RaceFactory.makeGravedigger(holder.getLevel(madeNode)));
+			holder.setStorage(node, RaceFactory.makeGravedigger(holder.getLevel(node)));
 			break;
 		case 2:
-			holder.setStorage(madeNode, RaceFactory.makeGraverobber(holder.getLevel(madeNode)));
+			holder.setStorage(node, RaceFactory.makeGraverobber(holder.getLevel(node)));
 			break;
 		case 3: 
-			int startBLevel = holder.getLevel(madeNode);
+			int startBLevel = holder.getLevel(node);
 			/*
 			int batLevel = startBLevel;
 			int batAmount = 2;
@@ -175,13 +183,13 @@ public class GraveyardNode implements NodeType{
 			for (int i = 0;i < batAmount;i++) {
 				list.add(RaceFactory.makeSwarmBat(batLevel));
 			}*/
-			holder.setStorage(madeNode,RaceFactory.makeGroupOrDefault(startBLevel,3, 8,
+			holder.setStorage(node,RaceFactory.makeGroupOrDefault(startBLevel,3, 8,
 					RaceFactory.getMakerForID(RaceID.B_SWARMBAT), RaceFactory.getMakerForID(RaceID.B_BAT)));
-			holder.setForceGo(madeNode, true);
+			holder.setForceGo(node, true);
 		;break;
 		case 4:
-			int level = holder.getLevel(madeNode)+1;
-			holder.setLevel(madeNode, level);//now increases node level
+			int level = holder.getLevel(node)+1;
+			holder.setLevel(node, level);//now increases node level
 			float spare = 0;
 			if (level > 3) {
 				//FIXME: idk how to use this properly yet, plus it needs to be fixed
@@ -202,25 +210,48 @@ public class GraveyardNode implements NodeType{
 			vamp.cleanseType = -1;
 			List<Person> vampBats = RaceFactory.wrapMakeGroupForLeader(vamp,
 					RaceFactory.getMakerForID(RaceID.B_SWARMBAT),spare, 1, 4);
-			holder.setStorage(madeNode, vampBats);
+			holder.setStorage(node, vampBats);
 			;break;
 		case 5:
-			GenericNode.applyCollector(holder, madeNode);
-			holder.setFlag(madeNode,NodeFlag.GENERIC_OVERRIDE,false);//we call it ourselves
-			holder.setEventNum(madeNode, 5);//set event back from generic's, since we call it ourselves
+			GenericNode.applyCollector(holder, node);
+			holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,false);//we call it ourselves
+			holder.setEventNum(node, 5);//set event back from generic's, since we call it ourselves
 			break;
 		case 6://will set the state to the times it is seen until it will attack +10 after seen once
 			//will attack instantly if attempting to loot
-			holder.setFlag(madeNode,NodeFlag.SILENT_FORCEGO_POSSIBLE,true);
-			holder.setForceGo(madeNode, true);
+			holder.setFlag(node,NodeFlag.SILENT_FORCEGO_POSSIBLE,true);
+			holder.setForceGo(node, true);
 			//fall through
 		case 7: //non hostile statue which will show but never attack
-			holder.setStorage(madeNode, RaceFactory.makeStatue(holder.getLevel(madeNode)));
+			holder.setStorage(node, RaceFactory.makeStatue(holder.getLevel(node)));
 			break;
 		case 8://trapped chamber
-			GenericNode.applyTrappedChamber(holder, madeNode);
-			holder.setFlag(madeNode,NodeFlag.GENERIC_OVERRIDE,false);//we call it ourselves
-			holder.setEventNum(madeNode,8);//set event back from generic's, since we call it ourselves
+			GenericNode.applyTrappedChamber(holder, node);
+			holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,false);//we call it ourselves
+			holder.setEventNum(node,8);//set event back from generic's, since we call it ourselves
+			break;
+		case 9://locked coffin (potential skeleton)
+			holder.setStorage(node,new Object[] {Rand.randRange(0,lockedCoffinAdjs.length-1),Rand.randRange(0,lockedCoffinNames.length-1),GenericNode.contestModRoll()});
+			holder.setStateNum(node,Rand.chanceIn(1,4) ? 1 : 0);//25% chance to have a skeleton instead of loot
+			break;
+		case 10://wandering skeleton
+			Person wSkele = RaceFactory.makeSkeletonPirate(holder.getLevel(node));
+			String wNodeName,wInteract,wInteractDesc,wFindName;
+			switch (Rand.randRange(0,1)) {
+			case 0: default:
+				wNodeName = "Unmarked Grave";
+				wInteract = "Examine the unmarked grave.";
+				wInteractDesc = "There is a shallow grave here.";
+				wFindName = "grave";
+				break;
+			case 1:
+				wNodeName = "Gravestone";
+				wInteract = "Examine the gravestone.";
+				wInteractDesc = "The text of the gravestone is so faded it's unreadable.";
+				wFindName = "grave";
+				break;
+			}//TODO more flavor here
+			holder.setStorage(node,new Object[] {wSkele,wNodeName,wInteract,wInteractDesc,wFindName});
 			break;
 		}
 	}
@@ -250,6 +281,8 @@ public class GraveyardNode implements NodeType{
 		case 8:
 			Print.println("You enter the crypt.");
 			return GenericNode.trappedChamber(holder, node);
+		case 9: return lockedCoffinSkele(holder, node);
+		case 10: return wanderingSkeleMulti(holder, node);
 		}
 		return false;
 	}
@@ -287,6 +320,10 @@ public class GraveyardNode implements NodeType{
 			return "Loot " +quietName + " Statue";
 		case 8://trapped chamber
 			return GenericNode.getTChamberInteract(holder, node);
+		case 9://locked coffin (skeleton)
+			return "Open " +getLockedCoffinName(holder, node);
+		case 10://multi wandering skeleton
+			return "Approach skeleton";
 		}
 		return null;
 	}
@@ -372,6 +409,10 @@ public class GraveyardNode implements NodeType{
 			return quietName + " Statue";
 		case 8://trapped chamber
 			return "Crypt with " +GenericNode.getTChamberName(holder, node);
+		case 9://locked coffin (skeleton)
+			return getLockedCoffinName(holder, node);
+		case 10://multi wandering skeleton
+			return "Skeleton";
 		}
 		return null;
 	}
@@ -710,8 +751,8 @@ public class GraveyardNode implements NodeType{
 	}
 	
 	//locked coffins
-	private String[] lockedCoffinAdjs = new String[]{"Sunbleached","Waterlogged","Barnacled","Ornate"};
-	private String[] lockedCoffinNames = new String[]{"Chest","Chest","Chest","Crate","Crate","Cask","Basket","Amphorae","Box","Case","Container","Strongbox","Trunk","Barrel"};
+	private String[] lockedCoffinAdjs = new String[]{"Dour","Cracked","Overgrown","Ornate"};
+	private String[] lockedCoffinNames = new String[]{"Coffin","Coffin","Coffin","Casket","Casket"};
 	
 	private String getLockedCoffinName(NodeConnector holder,int node) {
 		final int modifier = (int)holder.getStorageAsArray(node)[2];
@@ -719,11 +760,12 @@ public class GraveyardNode implements NodeType{
 		return GenericNode.contestModNameLookup(modifier)+" "+name;
 	}
 	
-	private void lockedCoffinSkele(NodeConnector holder, int node) {
+	private boolean lockedCoffinSkele(NodeConnector holder, int node) {
 		final String coffinName = getLockedCoffinName(holder,node);
 		final String coreName = lockedCoffinNames[(int)holder.getStorageAsArray(node)[1]].toLowerCase();
 		final int modifier = (int)holder.getStorageAsArray(node)[2];
 		final int level = holder.getLevel(node);
+		final Boolean[] returnHolder = new Boolean[] {false};
 		//only applies burnout on fail to prevent further attempts, no other penalty
 		Input.menuGo(new MenuGenerator() {
 
@@ -758,7 +800,7 @@ public class GraveyardNode implements NodeType{
 							if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getStrength(),smashDifficulty)>=0){
 								//broke down door
 								Print.println(TrawelColor.RESULT_PASS+"You pry open the "+coreName+".");
-								lockedCoffinSkeleEncounter(holder, node,"Forced "+coffinName,"Examine the forced open "+coreName+".","This "+coreName+" has already been forced open and looted.",coffinName);
+								returnHolder[0] = lockedCoffinSkeleEncounter(holder, node,"Forced "+coffinName,"Examine the forced open "+coreName+".","This "+coreName+" has already been forced open and looted.",coreName);
 							}else {
 								//failed
 								Player.player.addPunishment(Effect.BURNOUT);
@@ -781,7 +823,7 @@ public class GraveyardNode implements NodeType{
 							if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getDexterity(),pickDifficulty)>=0){
 								//lockpicked door
 								Print.println(TrawelColor.RESULT_PASS+"You pick open the "+coreName+".");
-								lockedCoffinSkeleEncounter(holder, node,"Picked "+coffinName,"Examine the picked "+coreName+".","This "+coreName+" has already been picked and looted.",coffinName);
+								returnHolder[0] = lockedCoffinSkeleEncounter(holder, node,"Picked "+coffinName,"Examine the picked "+coreName+".","This "+coreName+" has already been picked and looted.",coreName);
 							}else {
 								//failed
 								Player.player.addPunishment(Effect.BURNOUT);
@@ -804,7 +846,7 @@ public class GraveyardNode implements NodeType{
 							if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getClarity(),knockDifficulty)>=0){
 								//lockpicked door
 								Print.println(TrawelColor.RESULT_PASS+"You open the "+coreName+" with a Knock cantrip.");
-								lockedCoffinSkeleEncounter(holder, node,"Opened "+coffinName,"Examine the opened "+coreName+".","This "+coreName+" has already been opened and looted.",coffinName);
+								returnHolder[0] = lockedCoffinSkeleEncounter(holder, node,"Opened "+coffinName,"Examine the opened "+coreName+".","This "+coreName+" has already been opened and looted.",coreName);
 							}else {
 								//failed
 								Player.player.addPunishment(Effect.BURNOUT);
@@ -818,6 +860,7 @@ public class GraveyardNode implements NodeType{
 				return list;
 			}}
 		);
+		return returnHolder[0];
 	}
 	
 	private boolean lockedCoffinSkeleEncounter(NodeConnector holder, int node, String nodeName,String interact, String interactDesc, String findName) {
@@ -832,6 +875,7 @@ public class GraveyardNode implements NodeType{
 		}else {
 			//loot
 			//TODO
+			Print.println("TODO LOOT");
 			holder.findBehind(node,findName);
 			GenericNode.setMiscText(holder, node,nodeName,interact,interactDesc,findName);
 			return false;
@@ -844,7 +888,7 @@ public class GraveyardNode implements NodeType{
 		String nodeName = (String) stored[1];
 		String interact = (String) stored[2];
 		String interactDesc  = (String) stored[3];
-		String findName  = (String) stored[3];
+		String findName  = (String) stored[4];
 		
 		Print.println("There is a skeleton wandering around a "+findName+" here.");
 		Print.println("[battle]The skeleton attacks you!");
@@ -856,6 +900,7 @@ public class GraveyardNode implements NodeType{
 			return false;
 		}else {
 			//skeleton wins
+			holder.setForceGo(node,true);//if they won, they were revealed so can forcego now
 			return true;
 		}
 		
