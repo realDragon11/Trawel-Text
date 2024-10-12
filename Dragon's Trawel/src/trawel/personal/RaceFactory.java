@@ -1339,6 +1339,8 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomFirstName());
 		w.hTask = HostileTask.MONSTER;
 		w.cleanseType = (byte)CleanseSideQuest.CleanseType.HARPY.ordinal();
+		
+		NPCMutator.mutateAddFindHarpy(w);
 		w.finishGeneration();
 		return w;
 	}
