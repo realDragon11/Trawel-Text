@@ -530,7 +530,7 @@ public class RaceFactory {
 		misc.hpMod = .8;
 		misc.speedMod = 1.2;
 		//+.1 total
-		misc.rarity = .4;
+		misc.rarity = 0d;//disabled for normal spawns
 		misc.insultList.add("Rattle your bones somewhere else!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("0");

@@ -18,10 +18,12 @@ import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.AIClass;
+import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceID;
+import trawel.personal.classless.AttributeBox;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
@@ -313,8 +315,10 @@ public class GraveyardNode implements NodeType{
 		case 5://collector
 		case 6://attacking statue
 		case 7://normal statue
+		case 10://wandering skeleton
 			return 1;
 		case 8://trapped chamber
+		case 9://locked skele coffin
 			return 2;
 		}
 		return 0;
@@ -395,7 +399,7 @@ public class GraveyardNode implements NodeType{
 			Print.println("You come across a weary gravedigger, warding against undead during a break.");
 		}
 		Person p = holder.getStorageFirstPerson(node);
-		p.getBag().graphicalDisplay(1, p);
+		p.graphicalFoe();
 		if (state == 10) {//fine with
 			
 			Input.menuGo(new MenuGenerator() {
@@ -512,7 +516,7 @@ public class GraveyardNode implements NodeType{
 			Print.println("A Graverobber is poking around some headstones.");
 		}
 		Person p = holder.getStorageFirstPerson(node);
-		p.getBag().graphicalDisplay(1, p);
+		p.graphicalFoe();
 		if (state == 10) {//might be fine with
 			int react = p.facRep.getReactionAgainst(p,Player.player.getPerson());
 			if (react > 0) {
@@ -704,6 +708,159 @@ public class GraveyardNode implements NodeType{
 		}
 		return GenericNode.goCollector(holder, node);
 	}
+	
+	//locked coffins
+	private String[] lockedCoffinAdjs = new String[]{"Sunbleached","Waterlogged","Barnacled","Ornate"};
+	private String[] lockedCoffinNames = new String[]{"Chest","Chest","Chest","Crate","Crate","Cask","Basket","Amphorae","Box","Case","Container","Strongbox","Trunk","Barrel"};
+	
+	private String getLockedCoffinName(NodeConnector holder,int node) {
+		final int modifier = (int)holder.getStorageAsArray(node)[2];
+		final String name = lockedCoffinAdjs[(int)holder.getStorageAsArray(node)[0]]+" "+lockedCoffinNames[(int)holder.getStorageAsArray(node)[1]];
+		return GenericNode.contestModNameLookup(modifier)+" "+name;
+	}
+	
+	private void lockedCoffinSkele(NodeConnector holder, int node) {
+		final String coffinName = getLockedCoffinName(holder,node);
+		final String coreName = lockedCoffinNames[(int)holder.getStorageAsArray(node)[1]].toLowerCase();
+		final int modifier = (int)holder.getStorageAsArray(node)[2];
+		final int level = holder.getLevel(node);
+		//only applies burnout on fail to prevent further attempts, no other penalty
+		Input.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "There is a locked "+coffinName+" here.";
+					}});
+				if (Player.player.getPerson().hasEffect(Effect.BURNOUT)) {
+					list.add(new MenuLine() {
+
+						@Override
+						public String title() {
+							return TrawelColor.RESULT_ERROR+"You are too burnt out to find a way to open the "+coreName+".";
+						}});
+				}else {
+					//base medium strength contest
+					final int smashDifficulty = GenericNode.contestModDifficultyLookup(modifier,0,2,level);
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return TrawelColor.RESULT_WARN+"Pry open the "+coreName+". "+AttributeBox.showPlayerContest(0,smashDifficulty);
+						}
+
+						@Override
+						public boolean go() {
+							if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getStrength(),smashDifficulty)>=0){
+								//broke down door
+								Print.println(TrawelColor.RESULT_PASS+"You pry open the "+coreName+".");
+								lockedCoffinSkeleEncounter(holder, node,"Forced "+coffinName,"Examine the forced open "+coreName+".","This "+coreName+" has already been forced open and looted.",coffinName);
+							}else {
+								//failed
+								Player.player.addPunishment(Effect.BURNOUT);
+								Print.println(TrawelColor.RESULT_FAIL+"You fail to pry open the "+coreName+".");
+								holder.findBehind(node,coffinName);
+							}
+							return true;
+						}});
+					//base medium dexterity contest
+					final int pickDifficulty = GenericNode.contestModDifficultyLookup(modifier,1,2,level);
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return TrawelColor.RESULT_WARN+"Lockpick the "+coreName+". "+AttributeBox.showPlayerContest(1,pickDifficulty);
+						}
+
+						@Override
+						public boolean go() {
+							if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getDexterity(),pickDifficulty)>=0){
+								//lockpicked door
+								Print.println(TrawelColor.RESULT_PASS+"You pick open the "+coreName+".");
+								lockedCoffinSkeleEncounter(holder, node,"Picked "+coffinName,"Examine the picked "+coreName+".","This "+coreName+" has already been picked and looted.",coffinName);
+							}else {
+								//failed
+								Player.player.addPunishment(Effect.BURNOUT);
+								Print.println(TrawelColor.RESULT_FAIL+"You fail to lockpick the "+coreName+".");
+								holder.findBehind(node,coffinName);
+							}
+							return true;
+						}});
+					//base medium clarity contest
+					final int knockDifficulty = GenericNode.contestModDifficultyLookup(modifier,2,2,level);
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return TrawelColor.RESULT_WARN+"Cast Knock on the "+coreName+". "+AttributeBox.showPlayerContest(2,knockDifficulty);
+						}
+
+						@Override
+						public boolean go() {
+							if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getClarity(),knockDifficulty)>=0){
+								//lockpicked door
+								Print.println(TrawelColor.RESULT_PASS+"You open the "+coreName+" with a Knock cantrip.");
+								lockedCoffinSkeleEncounter(holder, node,"Opened "+coffinName,"Examine the opened "+coreName+".","This "+coreName+" has already been opened and looted.",coffinName);
+							}else {
+								//failed
+								Player.player.addPunishment(Effect.BURNOUT);
+								Print.println(TrawelColor.RESULT_FAIL+"Your Knock cantrip on the "+coreName+" fizzles.");
+								holder.findBehind(node,coffinName);
+							}
+							return true;
+						}});
+				}
+				list.add(new MenuBack());
+				return list;
+			}}
+		);
+	}
+	
+	private boolean lockedCoffinSkeleEncounter(NodeConnector holder, int node, String nodeName,String interact, String interactDesc, String findName) {
+		final boolean hasSkele = holder.getStateNum(node) > 0;
+		if (hasSkele) {
+			//set skeleton
+			GenericNode.morphSetup(holder, node);
+			holder.setEventNum(node,10);//multi skeleton
+			holder.setStorage(node,new Object[] {RaceFactory.makeSkeletonPirate(holder.getLevel(node)),nodeName,interact,interactDesc,findName});
+			//no loot, just had a skeleton
+			return wanderingSkeleMulti(holder, node);
+		}else {
+			//loot
+			//TODO
+			holder.findBehind(node,findName);
+			GenericNode.setMiscText(holder, node,nodeName,interact,interactDesc,findName);
+			return false;
+		}
+	}
+	
+	private boolean wanderingSkeleMulti(NodeConnector holder, int node) {
+		Person skeleton = holder.getStorageFirstPerson(node);
+		Object[] stored = holder.getStorageAsArray(node);
+		String nodeName = (String) stored[1];
+		String interact = (String) stored[2];
+		String interactDesc  = (String) stored[3];
+		String findName  = (String) stored[3];
+		
+		Print.println("There is a skeleton wandering around a "+findName+" here.");
+		Print.println("[battle]The skeleton attacks you!");
+		
+		Combat c = Player.player.fightWith(skeleton);
+		if (c.playerWon() > 0) {
+			Print.println("The skeleton crumbles to dust.");
+			GenericNode.setMiscText(holder, node,nodeName,interact,interactDesc,findName);
+			return false;
+		}else {
+			//skeleton wins
+			return true;
+		}
+		
+	}
+	//end locked coffin related methods
 	
 	@Override
 	public DrawBane[] dbFinds() {

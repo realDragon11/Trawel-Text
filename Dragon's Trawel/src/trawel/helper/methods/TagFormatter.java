@@ -17,6 +17,8 @@ public class TagFormatter {
 	static {
 		addTag("clear",TrawelColor.PRE_WHITE);
 		//revert hardcoded
+		addTag("battle",TrawelColor.PRE_BATTLE);
+		addTag("maybe_battle",TrawelColor.PRE_MAYBE_BATTLE);
 		
 		addTag("p_new",TrawelColor.COLOR_NEW);
 		addTag("p_seen",TrawelColor.COLOR_SEEN);
