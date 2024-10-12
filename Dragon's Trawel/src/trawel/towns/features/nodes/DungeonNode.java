@@ -625,9 +625,11 @@ public class DungeonNode implements NodeType{
 			}
 			Print.println("You loot the statue...");
 			AIClass.playerLoot(p.getBag(),true);
-			holder.setStateNum(node,1);
+			holder.setStateNum(node,1);//unused
+			String name = holder.getStorageFirstPerson(node).getBag().getRace().renderName(false);
+			GenericNode.setMiscText(holder,node,"Looted "+name+" Statue","Examine "+name+" statue.","The "+name+" statue has already been looted","statue");
 			return false;
-		}else {
+		}else {//unused now
 			Print.println("The " + holder.getStorageFirstPerson(node).getBag().getRace().renderName(false) + " statue has already been looted.");
 			holder.findBehind(node,"statue");
 			return false;
