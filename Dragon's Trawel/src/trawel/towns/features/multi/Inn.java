@@ -279,7 +279,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 												Player.player.getPerson().washAll();
 												Player.player.getPerson().bathEffects();
 												Networking.unlockAchievement("tavern1");
-												if (rentTime <= 0) {
+												if (rentTime <= 0  && !playerOwns) {
 													return true;
 												}
 												return false;
