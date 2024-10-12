@@ -1,5 +1,6 @@
 package trawel.towns.features.misc;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -75,7 +76,7 @@ public class Lot extends Feature {
 	
 	@Override
 	public String getTitle() {
-		return getName() + (construct != null ? " ("+construct.realName+" in "+Print.F_WHOLE.format(getConstructTime())+" hours)":"");
+		return getName() + (construct != null ? " ("+getTypeName(construct)+" in "+Print.F_WHOLE.format(getConstructTime())+" hours)":"");
 	}
 	
 	@Override
@@ -97,7 +98,7 @@ public class Lot extends Feature {
 			@Override
 			public Feature makeFeature(Lot from) {
 				from.getTown().helpCommunity(1);
-				return new Inn(Player.player.getPerson().getNameNoTitle()+"'s Inn in " + from.getTown().getName(),from.getLevel(),from.getTown(),Player.player);
+				return new Inn(Player.player.getPerson().getNameNoTitle()+"'s "+FeatureData.getName(Inn.class,false,false)+" in " + from.getTown().getName(),from.getLevel(),from.getTown(),Player.player);
 			}
 
 			@Override
@@ -109,7 +110,7 @@ public class Lot extends Feature {
 			@Override
 			public Feature makeFeature(Lot from) {
 				from.getTown().helpCommunity(1);
-				return new Arena(Player.player.getPerson().getNameNoTitle()+"'s Arena in " + from.getTown().getName(),from.getLevel(),1,24d,0d,0,Player.player);
+				return new Arena(Player.player.getPerson().getNameNoTitle()+"'s "+FeatureData.getName(Arena.class,false,false)+" in " + from.getTown().getName(),from.getLevel(),1,24d,0d,0,Player.player);
 			}
 
 			@Override
@@ -121,7 +122,7 @@ public class Lot extends Feature {
 			@Override
 			public Feature makeFeature(Lot from) {
 				from.getTown().helpCommunity(1);
-				Mine m = new Mine(Player.player.getPerson().getNameNoTitle()+"'s Mine in " + from.getTown().getName(), from.getTown()
+				Mine m = new Mine(Player.player.getPerson().getNameNoTitle()+"'s "+FeatureData.getName(Mine.class,false,false)+" in " + from.getTown().getName(), from.getTown()
 						,40,from.getLevel(),Shape.NONE,BossType.NONE);
 				m.setOwner(Player.player);
 				return m;
@@ -136,7 +137,7 @@ public class Lot extends Feature {
 			@Override
 			public Feature makeFeature(Lot from) {
 				from.getTown().helpCommunity(1);
-				Garden g = new Garden(from.town,Player.player.getPerson().getNameNoTitle()+"'s Garden in " + from.getTown().getName(),0,PlantFill.NONE);
+				Garden g = new Garden(from.town,Player.player.getPerson().getNameNoTitle()+"'s "+FeatureData.getName(Garden.class,false,false)+" in " + from.getTown().getName(),0,PlantFill.NONE);
 				g.setOwner(Player.player);
 				return g;
 			}
@@ -182,12 +183,12 @@ public class Lot extends Feature {
 					if (f instanceof Lot) {
 						Lot la = (Lot)f;
 						if (la.construct != null && la.construct == this) {
-							Print.println("You already have "+nameString+" underway in "+t.getName()+"!");
+							Print.println("You already have one "+getTypeName(this)+" underway in "+t.getName()+"!");
 							return false;
 						}
 					}
 					if (f.getOwner() == Player.player && blockingType.isInstance(f)) {
-						Print.println("You already have "+nameString+" in "+t.getName()+"!");
+						Print.println("You already have one "+getTypeName(this)+" in "+t.getName()+"!");
 						return false;
 					}
 				}
@@ -199,7 +200,7 @@ public class Lot extends Feature {
 					if (!Player.player.getCanBuy(aether,money)) {
 						return false;
 					}
-					Print.println("Build "+nameString +" for "+aether + " Aether and "+World.currentMoneyDisplay(money)+"?");
+					Print.println("Build one "+getTypeName(this) +" for "+aether + " Aether and "+World.currentMoneyDisplay(money)+"?");
 				}else {
 					//just money no aether
 					int money = getMCost(tier);
@@ -207,7 +208,7 @@ public class Lot extends Feature {
 						Print.println(TrawelColor.RESULT_ERROR+"Not Enough "+World.currentMoneyString() + ", have only " +Player.bag.getGold()+".");
 						return false;
 					}
-					Print.println("Build "+nameString +" for "+World.currentMoneyDisplay(money)+"?");
+					Print.println("Build one "+getTypeName(this) +" for "+World.currentMoneyDisplay(money)+"?");
 				}
 			}else {
 				if (aCost != 0) {//just aether no money
@@ -216,10 +217,10 @@ public class Lot extends Feature {
 						Print.println(TrawelColor.RESULT_ERROR+"Not enough Aether, have only " + Player.bag.getAether()+".");
 						return false;
 					}
-					Print.println("Build "+nameString +" for "+aether + " Aether?");
+					Print.println("Build one "+getTypeName(this) +" for "+aether + " Aether?");
 				}else {
 					//is free
-					Print.println("Build "+nameString+"?");
+					Print.println("Build one "+getTypeName(this)+"?");
 				}
 				
 			}
@@ -276,17 +277,27 @@ public class Lot extends Feature {
 		construct = type;
 		type.create.doNow(this);
 		if (constructTime > 0) {
-			Print.println("Your "+type.realName + " will be built in " + Print.F_TWO_TRAILING.format(constructTime) + " hours.");
+			Print.println("Your "+getTypeName(type)+ " will be built in " + Print.F_TWO_TRAILING.format(constructTime) + " hours.");
 		}else {
-			Print.println("Built: " + type.realName);
+			Print.println("Built: " + getTypeName(type));
 		}
 		
+	}
+	
+	private static String getTypeName(LotType type){
+		return type.blockingType == null ? type.realName : FeatureData.getName(type.blockingType,true,false);
 	}
 
 	@Override
 	public void go() {
 		if (construct == null) {
-			Input.menuGo(new ScrollMenuGenerator(LotType.values().length, "last <>", "next <>") {
+			final List<LotType> validTypes = new ArrayList<Lot.LotType>();
+			for (LotType lt: LotType.values()) {
+				if (validToBuild(town,lt.blockingType)) {
+					validTypes.add(lt);
+				}
+			}
+			Input.menuGo(new ScrollMenuGenerator(validTypes.size(), "last <>", "next <>") {
 				
 				@Override
 				public List<MenuItem> header() {
@@ -300,7 +311,7 @@ public class Lot extends Feature {
 
 				@Override
 				public List<MenuItem> forSlot(int i) {
-					final LotType type = LotType.values()[i];
+					final LotType type = validTypes.get(i);
 					return Collections.singletonList(
 							new MenuSelect() {
 
@@ -318,7 +329,7 @@ public class Lot extends Feature {
 											color = TrawelColor.SERVICE_BOTH_PAYMENT;
 										}
 									}
-									return "Build "+color+type.nameString+TrawelColor.PRE_WHITE
+									return "Build "+color+getTypeName(type)
 											+ (aether > 0 ? " "+aether +" Aether" :"")
 											+ (money > 0 ? " "+World.currentMoneyDisplay(money) :"")
 											+".";
@@ -342,7 +353,7 @@ public class Lot extends Feature {
 				}
 			});
 		}else {
-			Print.println("Your " + construct.realName + " is being built. "+Print.F_TWO_TRAILING.format(constructTime)+" hours remain.");
+			Print.println("Your " + getTypeName(construct) + " is being built. "+Print.F_TWO_TRAILING.format(constructTime)+" hours remain.");
 		}
 	}
 
@@ -360,6 +371,24 @@ public class Lot extends Feature {
 	
 	public double getConstructTime() {
 		return constructTime;
+	}
+	
+	private static boolean validToBuild(Town t, Class<? extends Feature> blockingType) {
+		if (blockingType == null) {
+			return true;
+		}
+		for (Feature f: t.getFeatures()) {
+			if (f instanceof Lot) {
+				Lot la = (Lot)f;
+				if (la.construct != null && la.construct.blockingType.equals(blockingType)) {
+					return false;
+				}
+			}
+			if (f.getOwner() == Player.player && blockingType.isInstance(f)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
