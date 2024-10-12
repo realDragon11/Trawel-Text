@@ -41,7 +41,8 @@ public class LootTables {
 		
 		//basic pile of money and aether
 		addChance(LootType.BEACH_CHEST,1f);
-		addChance(LootType.BEACH_CHEST,1f);
+		addChance(LootType.GRAVEYARD_COFFIN,1f);
+		addChance(LootType.UNLOCKED_DUNGEON_CHEST,3f);
 		registerEvent(new LootEvent() {
 
 			@Override
@@ -71,6 +72,7 @@ public class LootTables {
 		//misc gem stash
 		addChance(LootType.BEACH_CHEST,2f);
 		addChance(LootType.GRAVEYARD_COFFIN,1f);
+		addChance(LootType.UNLOCKED_DUNGEON_CHEST,3f);
 		registerEvent(new LootEvent() {
 			
 			@Override
@@ -119,10 +121,25 @@ public class LootTables {
 	}
 	
 	public enum LootType{
-		BEACH_CHEST, GRAVEYARD_COFFIN;
+		BEACH_CHEST, GRAVEYARD_COFFIN, UNLOCKED_DUNGEON_CHEST;
 	}
 	public enum LootTheme{
-		SKILLED(Gem.SAPPHIRE),HARVEST(Gem.EMERALD),BOSS(Gem.RUBY),HUNT(Gem.AMBER);
+		/**
+		 * use attribute contest skill actions
+		 */
+		SKILLED(Gem.SAPPHIRE),
+		/**
+		 * explore/harvest
+		 */
+		EXPLORE(Gem.EMERALD),
+		/**
+		 * boss/fight
+		 */
+		BOSS(Gem.RUBY),
+		/**
+		 * hunt/fight
+		 */
+		HUNT(Gem.AMBER);
 		public final Gem gem;
 		private LootTheme(Gem _gem) {
 			gem = _gem;

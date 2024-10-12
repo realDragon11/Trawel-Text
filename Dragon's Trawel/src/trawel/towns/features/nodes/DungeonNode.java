@@ -11,6 +11,9 @@ import trawel.core.Networking;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
+import trawel.helper.methods.LootTables;
+import trawel.helper.methods.LootTables.LootTheme;
+import trawel.helper.methods.LootTables.LootType;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.AIClass;
@@ -26,7 +29,7 @@ import trawel.towns.features.fort.elements.SubSkill;
 
 public class DungeonNode implements NodeType{
 
-	private WeightedTable dungeonGuardRoller, dungeonLootRoller, dungeonNoneRoller, dungeonRegrowRoller;
+	private WeightedTable dungeonGuardRoller, dungeonLootRoller, dungeonNoneRoller, dungeonEntryRoller, dungeonRegrowRoller;
 	
 	/*
 	 * FOR MULTIFIGHT DUNGEONS ONLY
@@ -62,15 +65,31 @@ public class DungeonNode implements NodeType{
 				0f,//12 BOSS: yore
 				0f,//13 MINIBOSS: variable gate reward
 		});
+		//unlike other areas, the entrance is more locked down rather than less locked down, to protect the more frequently exposed loot later on
+		dungeonEntryRoller = new WeightedTable(new float[] {
+				0f,//1 ladder
+				4f,//2 single guard
+				0f,//3 multi guard
+				1f,//4 door
+				0f,//5 chest
+				0f,//6 mimic
+				0f,//7 statue
+				0f,//8 living statue
+				0f,//9 trapped treasure chamber
+				0f,//10 BOSS: fatespinner
+				0f,//11 BOSS: old queen
+				0f,//12 BOSS: yore
+				0f,//13 MINIBOSS: variable gate reward
+		});
 		dungeonRegrowRoller = new WeightedTable(new float[] {
 				0f,//1 ladder
 				3f,//2 single guard
 				0f,//3 multi guard
 				0f,//4 door
-				0f,//5 chest
+				.1f,//5 chest
 				.5f,//6 mimic
-				0f,//7 statue
-				0f,//8 living statue
+				.1f,//7 statue
+				.5f,//8 living statue
 				0f,//9 trapped treasure chamber
 				0f,//10 BOSS: fatespinner
 				0f,//11 BOSS: old queen
@@ -86,9 +105,15 @@ public class DungeonNode implements NodeType{
 	
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
-		byte idNum = (byte) (dungeonNoneRoller.random(Rand.getRand())+1);//1 is ladder
+		byte idNum;
 		if (guessDepth == 0) {
 			idNum = 4;//starting node can only be a door
+		}else {
+			if (guessDepth == 1) {//first set of nodes after entrance are more blocking
+				idNum = (byte) (dungeonEntryRoller.random(Rand.getRand())+1);//starts at 1, ladder
+			}else {
+				idNum = (byte) (dungeonNoneRoller.random(Rand.getRand())+1);//starts at 1, ladder
+			}
 		}
 		int ret = holder.newNode(NodeType.NodeTypeNum.DUNGEON.ordinal(),idNum,tier);
 		holder.setFloor(ret, guessDepth);
@@ -143,7 +168,6 @@ public class DungeonNode implements NodeType{
 			int stair_level = -10;
 			//DOLATER: fix order of nodes if that is still an issue
 			while (curSize < size) {
-				floor++;
 				lastNode = stair;
 				stair_level = holder.getLevel(stair);
 				if (++levelUp >= 3) {
@@ -151,6 +175,7 @@ public class DungeonNode implements NodeType{
 					++stair_level;
 				}
 				curStair = getNode(holder,stair,floor,stair_level);//stair as from is tentative
+				floor++;
 				holder.setStair(curStair);
 				holder.setEventNum(curStair, 1);
 				
@@ -159,9 +184,8 @@ public class DungeonNode implements NodeType{
 				curFloor = new ArrayList<Integer>();
 				for (int j = 0; j < 2;j++) {
 					for (int i = 0;i <2; i++) {
-						floor++;
 						curNode = getNode(holder,0,floor,stair_level);
-						holder.setFloor(curNode, floor);
+						//holder.setFloor(curNode, floor);//already set in getNode by the guess
 						holder.setMutualConnect(lastNode, curNode);
 						//lastNode.reverseConnections();
 						lastNode = curNode;
@@ -169,7 +193,7 @@ public class DungeonNode implements NodeType{
 						if (i == 1) {
 							holder.setMutualConnect(lastNode, curStair);
 						}
-						if (floors.size()%2==0) {//every other floor
+						if (floor > 1 && floors.size()%2==0) {//every other floor past the first two depths, chance to overwrite what spawned
 							//guard floor
 							if (Rand.chanceIn(3,4)) {//linking nodes have a 3/4ths chance to become a guard of some sort
 								holder.setEventNum(lastNode,GUARD_NUMBERS[dungeonGuardRoller.random(Rand.getRand())]);
@@ -180,7 +204,7 @@ public class DungeonNode implements NodeType{
 								holder.setEventNum(lastNode,LOOT_NUMBERS[dungeonLootRoller.random(Rand.getRand())]);
 							}
 						}
-						
+						floor++;
 					}
 					floor-=2;
 					//curStair.getConnects().add(lastNode);
@@ -284,7 +308,7 @@ public class DungeonNode implements NodeType{
 						holder.setEventNum(cur_node, 100);
 						keeper.registerBattleConWithNode(skillcon_list.remove(0), cur_node);
 					}else {
-						if (i == this_length-2) {//improved guard post
+						if (i == this_length-2) {//guard post
 							holder.setLevel(cur_node, holder.getLevel(cur_node)+1);
 							holder.setEventNum(cur_node, 2);
 						}
@@ -520,35 +544,14 @@ public class DungeonNode implements NodeType{
 		}
 		Person p = holder.getStorageFirstPerson(node);
 		p.getBag().graphicalDisplay(1,p);
-		Print.println("Really open the " + holder.getStorageFirstClass(node,String.class) + "?");
+		Print.println("[r_warn]Really open the " + holder.getStorageFirstClass(node,String.class) + "?");
 		if (Input.yesNo()) {
-			holder.setStateNum(node,1);
-			if (Rand.chanceIn(5,6)) {
-				int gold = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),RaceFactory.WEALTH_HIGH, .2f);
-				Player.player.addGold(gold);
-				Print.println("You open the " +holder.getStorageFirstClass(node,String.class) + " and find " + World.currentMoneyDisplay(gold) + ".");
-			}else {
-				Gem gem = null;
-				boolean themed = false;
-				switch (Rand.randRange(1,4)) {
-				case 1: 
-					gem = Gem.EMERALD;
-					themed = true;
-					break;
-				case 2: default:
-					gem = Gem.RUBY;
-					break;
-				case 3:
-					gem = Gem.SAPPHIRE;
-					break;
-				case 4:
-					gem = Gem.AMBER;
-					break;
-				}
-				int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),gem.reward(1.5f, themed), .5f);
-				gem.changeGem(gemAmount);
-				Print.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find "+gemAmount+" "+gem.fancyName(gemAmount)+"!");
-			}
+			holder.setStateNum(node,1);//now unused
+			Print.println("You open the chest...");
+			LootTables.doLoot(holder.getLevel(node),LootType.UNLOCKED_DUNGEON_CHEST,LootTheme.EXPLORE);
+			holder.findBehind(node,"chest");
+			String name = holder.getStorageFirstClass(node,String.class);
+			GenericNode.setMiscText(holder,node,"Opened "+name,"Examine opened "+name+".","The "+name+" has already been opened.","chest");
 			Networking.clearSide(1);
 			return false;
 		}else {
@@ -562,8 +565,9 @@ public class DungeonNode implements NodeType{
 
 		Person p = holder.getStorageFirstPerson(node);
 		p.getBag().graphicalDisplay(1,p);
-		Print.println("Really open the " + holder.getStorageFirstClass(node,String.class) + "?");
+		Print.println("[r_warn]Really open the " + holder.getStorageFirstClass(node,String.class) + "?");
 		if (Input.yesNo()) {
+			Print.println("You open the chest...");
 			Print.println(TrawelColor.PRE_BATTLE+"The mimic attacks you!");
 			Combat c = Player.player.fightWith(p);
 			if (c.playerWon() > 0) {
