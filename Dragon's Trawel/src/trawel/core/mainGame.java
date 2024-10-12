@@ -33,6 +33,7 @@ import trawel.battle.attacks.StyleFactory;
 import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
+import trawel.helper.methods.LootTables;
 import trawel.helper.methods.randomLists;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
@@ -86,7 +87,6 @@ public class mainGame {
 	public static boolean logStreamIsErr = false;
 
 
-	private static boolean finalSetup1 = false;
 	private static boolean basicSetup1 = false;
 
 	public static boolean multiCanRun = false;
@@ -1155,6 +1155,8 @@ public class mainGame {
 			new TownFlavorFactory();
 			new QuestReactionFactory();
 			//WorldGen.initDummyInvs();
+			randomLists.init();
+			LootTables.initLootTables();
 			DummyInventory.dummyAttackInv = new DummyInventory();
 			SaveManager.trawelRegisterFury();
 			basicSetup1 = true;
@@ -1163,10 +1165,6 @@ public class mainGame {
 
 	public static void forceSetup() {
 		baseSetup1();
-		if (!finalSetup1) {
-			randomLists.init();
-			finalSetup1 = true;
-		}
 	}
 
 	public static void unitTestSetup() {
@@ -1612,10 +1610,6 @@ public class mainGame {
 
 	public static void adventure1(boolean cheaty, boolean displayFight, boolean rerolls, boolean advancedDisplay, boolean debug){
 		baseSetup1();
-		if (!finalSetup1) {
-			randomLists.init();
-			finalSetup1 = true;
-		}
 		Networking.richDesc("Character Select");
 		World world = null;//WorldGen.eoano();
 		Player player = new Player();

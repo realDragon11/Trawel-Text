@@ -17,6 +17,9 @@ import trawel.core.Networking;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
+import trawel.helper.methods.LootTables;
+import trawel.helper.methods.LootTables.LootTheme;
+import trawel.helper.methods.LootTables.LootType;
 import trawel.helper.methods.randomLists;
 import trawel.personal.AIClass;
 import trawel.personal.Effect;
@@ -704,34 +707,7 @@ public class BeachNode implements NodeType {
 	}
 	
 	private void beachChestLoot(int level) {
-		switch (Rand.randRange(0,3)) {
-			default: case 0: case 1://basic loot
-				int moneyReward = IEffectiveLevel.cleanRangeReward(level,RaceFactory.WEALTH_HIGH,.7f);
-				int aetherReward = IEffectiveLevel.cleanRangeReward(level,1000,.5f);
-				Player.bag.addAether(aetherReward);
-				Player.player.addGold(moneyReward);
-				Print.println(TrawelColor.RESULT_GOOD+"Inside the chest you find "+World.currentMoneyDisplay(moneyReward) + " and "+aetherReward + " Aether!");
-				return;
-			case 2://hunter stash
-				//silver weapon
-				Weapon silvered = new Weapon(level,MaterialFactory.getMat("silver"),Rand.choose(WeaponType.MACE,WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.SPEAR));
-				//amber
-				int amberAmount = IEffectiveLevel.cleanRangeReward(level,Gem.AMBER.reward(2f,false), .5f);
-				Gem.AMBER.changeGem(amberAmount);
-				Print.println("You find a Hunter's cache with " + amberAmount + " Amber and a "+silvered.getName()+"!");
-				AIClass.findItem(silvered, Player.player.getPerson());
-				return;
-			case 3://misc gem stash
-				int emeraldAmount = IEffectiveLevel.cleanRangeReward(level,Gem.EMERALD.reward(1f,false), .5f);
-				int rubyAmount = IEffectiveLevel.cleanRangeReward(level,Gem.RUBY.reward(1f,false), .5f);
-				//higher amount because skill based action
-				int sapphireAmount = IEffectiveLevel.cleanRangeReward(level,Gem.SAPPHIRE.reward(1f,true), .5f);
-				Gem.EMERALD.changeGem(emeraldAmount);
-				Gem.RUBY.changeGem(rubyAmount);
-				Gem.SAPPHIRE.changeGem(sapphireAmount);
-				Print.println("You find a Gem cache with " + emeraldAmount + " Emeralds, "+rubyAmount + " Rubies, and " + sapphireAmount + " Sapphires!");
-				return;
-		}
+		LootTables.doLoot(level,LootType.BEACH_CHEST,LootTheme.SKILLED);
 	}
 
 }

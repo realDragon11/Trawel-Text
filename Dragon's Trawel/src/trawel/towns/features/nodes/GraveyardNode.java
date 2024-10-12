@@ -16,6 +16,9 @@ import trawel.core.Networking;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.helper.constants.TrawelColor;
+import trawel.helper.methods.LootTables;
+import trawel.helper.methods.LootTables.LootTheme;
+import trawel.helper.methods.LootTables.LootType;
 import trawel.helper.methods.extra;
 import trawel.personal.AIClass;
 import trawel.personal.Effect;
@@ -870,12 +873,12 @@ public class GraveyardNode implements NodeType{
 			GenericNode.morphSetup(holder, node);
 			holder.setEventNum(node,10);//multi skeleton
 			holder.setStorage(node,new Object[] {RaceFactory.makeSkeletonPirate(holder.getLevel(node)),nodeName,interact,interactDesc,findName});
-			//no loot, just had a skeleton
+			//set state to 1 so that the skeleton has loot after being killed
+			holder.setStateNum(node,1);
 			return wanderingSkeleMulti(holder, node);
 		}else {
 			//loot
-			//TODO
-			Print.println("TODO LOOT");
+			LootTables.doLoot(holder.getLevel(node),LootType.GRAVEYARD_COFFIN,LootTheme.SKILLED);
 			holder.findBehind(node,findName);
 			GenericNode.setMiscText(holder, node,nodeName,interact,interactDesc,findName);
 			return false;
@@ -896,6 +899,10 @@ public class GraveyardNode implements NodeType{
 		Combat c = Player.player.fightWith(skeleton);
 		if (c.playerWon() > 0) {
 			Print.println("The skeleton crumbles to dust.");
+			//if was found over a coffin, get loot from that, but give hunt loot instead of skill loot
+			if (holder.getStateNum(node) == 1) {
+				LootTables.doLoot(node,LootType.GRAVEYARD_COFFIN,LootTheme.HUNT);
+			}
 			GenericNode.setMiscText(holder, node,nodeName,interact,interactDesc,findName);
 			return false;
 		}else {
