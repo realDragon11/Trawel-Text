@@ -13,6 +13,7 @@ import trawel.personal.AIClass;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.Armor;
+import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
@@ -53,7 +54,8 @@ public class LootTables {
 				Player.bag.addAether(aetherReward);
 				Player.player.addGold(moneyReward);
 				Print.println("[r_good]You find "+World.currentMoneyDisplay(moneyReward) + " and "+aetherReward + " Aether!");
-			}});
+			}}
+		);
 		
 		//hunter stash with silver weapon
 		addChance(LootType.BEACH_CHEST,0.5f);
@@ -108,6 +110,20 @@ public class LootTables {
 				}
 			}
 		});
+		
+		//knowledge fragment and money
+		addChance(LootType.GRAVEYARD_COFFIN,0.5f);
+		addChance(LootType.UNLOCKED_DUNGEON_CHEST,.05f);
+		registerEvent(new LootEvent() {
+
+			@Override
+			public void loot(int level, LootTheme theme) {
+				int moneyReward = IEffectiveLevel.cleanRangeReward(level,RaceFactory.WEALTH_WELL_OFF,.7f);
+				Player.player.addGold(moneyReward);
+				Print.println("[r_good]You find "+World.currentMoneyDisplay(moneyReward) + " and a piece of paper!");
+				Player.bag.addNewDrawBanePlayer(DrawBane.KNOW_FRAG);
+			}}
+		);
 		
 		//finished adding, can finalize tables
 		tables.clear();
