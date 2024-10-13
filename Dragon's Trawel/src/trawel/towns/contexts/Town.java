@@ -680,6 +680,7 @@ public class Town extends TContextOwner{
 						@Override
 						public boolean go() {
 							//attempt a bumper event
+							TrawelTime.addPassTime(Rand.randRange(.3f,.7f));
 							if (!wander(1,0)) {
 								//attempt a flavor event
 								if (!TownFlavorFactory.go(.2f,Town.this)) {
@@ -700,6 +701,7 @@ public class Town extends TContextOwner{
 						@Override
 						public boolean go() {
 							//attempt a bumper event
+							TrawelTime.addPassTime(Rand.randRange(.3f,.7f));
 							if (!wander(1,1)) {
 								//attempt a flavor event
 								if (!TownFlavorFactory.go(.2f,Town.this)) {

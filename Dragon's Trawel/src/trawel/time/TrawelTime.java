@@ -7,6 +7,11 @@ import trawel.personal.people.Player;
 import trawel.towns.data.WorldGen;
 
 public class TrawelTime {
+	
+	public static void addPassTime(double time) {
+		Player.addTime(time);
+		globalPassTime();
+	}
 
 	/**
 	 * note that some events, like the player generating gold, ignore normal restrictions

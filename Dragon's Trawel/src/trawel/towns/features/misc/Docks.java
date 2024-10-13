@@ -355,6 +355,7 @@ public class Docks extends Feature {
 
 					@Override
 					public boolean go() {
+						TrawelTime.addPassTime(Rand.randRange(.3f,.7f));
 						if (!town.dockWander(false)) {
 							//attempt a flavor event
 							if (!TownFlavorFactory.go(.2f,town)) {
