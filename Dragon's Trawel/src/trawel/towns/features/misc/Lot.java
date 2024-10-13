@@ -22,11 +22,19 @@ import trawel.towns.contexts.World;
 import trawel.towns.data.FeatureData;
 import trawel.towns.features.Feature;
 import trawel.towns.features.fight.Arena;
+import trawel.towns.features.fight.Forest;
 import trawel.towns.features.misc.Garden.PlantFill;
 import trawel.towns.features.multi.Inn;
+import trawel.towns.features.nodes.Beach;
 import trawel.towns.features.nodes.BossNode.BossType;
+import trawel.towns.features.nodes.Grove;
 import trawel.towns.features.nodes.Mine;
 import trawel.towns.features.nodes.NodeFeature.Shape;
+import trawel.towns.features.services.Appraiser;
+import trawel.towns.features.services.Doctor;
+import trawel.towns.features.services.Enchanter;
+import trawel.towns.features.services.Oracle;
+import trawel.towns.features.services.WitchHut;
 
 public class Lot extends Feature {
 	
@@ -93,7 +101,28 @@ public class Lot extends Feature {
 	}
 	
 	private enum LotType{
-		INN("Inn","an Inn",300,2500,Inn.class,new LotCreateFunctionLater() {
+		TRAVEL("Community Stall","a Community Stall",0,0,null,new LotCreateFunctionInstant() {
+
+			@Override
+			public Feature makeFeature(Lot from) {
+				from.getTown().helpCommunity(3);
+				return new TravelingFeature(from.getTown());
+			}}, new AlwaysValidTownFunction())
+		,DOCTOR("Doctor","a Doctor",200,2000,Doctor.class,new LotCreateFunctionLater() {
+
+			@Override
+			public Feature makeFeature(Lot from) {
+				from.getTown().helpCommunity(2);				
+				Doctor d = new Doctor(Player.player.getPerson().getNameNoTitle()+"'s "+FeatureData.getName(Doctor.class,false,false)+" in " + from.getTown().getName(),from.getTown());
+				d.setOwner(Player.player);
+				return d;
+			}
+
+			@Override
+			public int constructTime() {
+				return 24*5;
+			}}, new AlwaysValidTownFunction())
+		,INN("Inn","an Inn",300,2500,Inn.class,new LotCreateFunctionLater() {
 
 			@Override
 			public Feature makeFeature(Lot from) {
@@ -103,8 +132,50 @@ public class Lot extends Feature {
 
 			@Override
 			public int constructTime() {
+				return 24*7;
+			}}, new AlwaysValidTownFunction())
+		,APPRAISER("Appraiser","an Appraiser",100,1000,Appraiser.class,new LotCreateFunctionLater() {
+
+			@Override
+			public Feature makeFeature(Lot from) {
+				from.getTown().helpCommunity(1);				
+				Appraiser ap = new Appraiser(Player.player.getPerson().getNameNoTitle()+"'s "+FeatureData.getName(Appraiser.class,false,false)+" in " + from.getTown().getName(),from.getLevel());
+				ap.setOwner(Player.player);
+				return ap;
+			}
+
+			@Override
+			public int constructTime() {
 				return 24*4;
-			}})
+			}}, new AlwaysValidTownFunction())
+		,ORACLE("Oracle","an Oracle",50,1000,Oracle.class,new LotCreateFunctionLater() {
+
+			@Override
+			public Feature makeFeature(Lot from) {
+				from.getTown().helpCommunity(1);				
+				Oracle o = new Oracle(Player.player.getPerson().getNameNoTitle()+"'s "+FeatureData.getName(Oracle.class,false,false)+" in " + from.getTown().getName(),from.getLevel());
+				o.setOwner(Player.player);
+				return o;
+			}
+
+			@Override
+			public int constructTime() {
+				return 24*3;
+			}}, new AlwaysValidTownFunction())
+		,WITCH_HUT("Witch Hut","a Witch Hut",150,3000,WitchHut.class,new LotCreateFunctionLater() {
+
+			@Override
+			public Feature makeFeature(Lot from) {
+				from.getTown().helpCommunity(1);				
+				WitchHut wh = new WitchHut(Player.player.getPerson().getNameNoTitle()+"'s "+FeatureData.getName(WitchHut.class,false,false)+" in " + from.getTown().getName(),from.getTown());
+				wh.setOwner(Player.player);
+				return wh;
+			}
+
+			@Override
+			public int constructTime() {
+				return 24*5;
+			}}, new AlwaysValidTownFunction())
 		,ARENA("Arena","an Arena",100,1000,Arena.class,new LotCreateFunctionLater() {
 
 			@Override
@@ -115,8 +186,22 @@ public class Lot extends Feature {
 
 			@Override
 			public int constructTime() {
-				return 24*2;
-			}})
+				return 24*3;
+			}}, new AlwaysValidTownFunction())
+		,ENCHANTER("Enchanter","an Enchanter",200,5000,Enchanter.class,new LotCreateFunctionLater() {
+
+			@Override
+			public Feature makeFeature(Lot from) {
+				from.getTown().helpCommunity(1);				
+				Enchanter e = new Enchanter(Player.player.getPerson().getNameNoTitle()+"'s "+FeatureData.getName(Enchanter.class,false,false)+" in " + from.getTown().getName(),from.getLevel());
+				e.setOwner(Player.player);
+				return e;
+			}
+
+			@Override
+			public int constructTime() {
+				return 24*5;
+			}}, new AlwaysValidTownFunction())
 		,MINE("Mine","a Mine",300,5000,Mine.class,new LotCreateFunctionLater() {
 
 			@Override
@@ -130,8 +215,80 @@ public class Lot extends Feature {
 
 			@Override
 			public int constructTime() {
+				return 24*12;
+			}}, new ValidTownFunction() {
+
+				@Override
+				public boolean isValid(Lot from) {
+					switch (from.getTown().getIsland().getIslandType()) {
+						default: case ISLAND:
+							return true;
+						case POCKET://can't make mines in pocket dimensions
+							return false;
+					}
+				}})
+		,BEACH("Beach","a Beach",100,4000,Beach.class,new LotCreateFunctionLater() {
+
+			@Override
+			public Feature makeFeature(Lot from) {
+				from.getTown().helpCommunity(1);
+				Beach b = new Beach(Player.player.getPerson().getNameNoTitle()+"'s "+FeatureData.getName(Beach.class,false,false)+" in " + from.getTown().getName(),from.getTown(),30,from.getLevel(),Shape.NONE,BossType.NONE);
+				b.setOwner(Player.player);
+				return b;
+			}
+
+			@Override
+			public int constructTime() {
+				return 24*9;
+			}}, new ValidTownFunction() {
+
+				@Override
+				public boolean isValid(Lot from) {
+					return from.getTown().hasPort();//can only make beaches on towns with port connections
+				}})
+		,GROVE("Grove","a Grove",100,3000,Grove.class,new LotCreateFunctionLater() {
+
+			@Override
+			public Feature makeFeature(Lot from) {
+				from.getTown().helpCommunity(1);
+				Grove g = new Grove(Player.player.getPerson().getNameNoTitle()+"'s "+FeatureData.getName(Grove.class,false,false)+" in " + from.getTown().getName(),from.getTown(),30,from.getLevel());
+				g.setOwner(Player.player);
+				return g;
+			}
+
+			@Override
+			public int constructTime() {
 				return 24*7;
-			}})
+			}}, new ValidTownFunction() {
+
+				@Override
+				public boolean isValid(Lot from) {
+					for (Feature f: from.getTown().getFeatures()) {
+						if (f instanceof Forest) {
+							return true;// can only be made in towns with a forest (without a grove already)
+						}
+					}
+					return false;//no forest, can't make
+				}})
+		,DOCKS("Docks","a Docks",150,1500,Docks.class,new LotCreateFunctionLater() {
+
+			@Override
+			public Feature makeFeature(Lot from) {
+				from.getTown().helpCommunity(1);
+				Docks d = new Docks(Player.player.getPerson().getNameNoTitle()+"'s "+FeatureData.getName(Docks.class,false,false)+" in " + from.getTown().getName(),from.getTown());
+				d.setOwner(Player.player);
+				return d;
+			}
+
+			@Override
+			public int constructTime() {
+				return 24*5;
+			}}, new ValidTownFunction() {
+
+				@Override
+				public boolean isValid(Lot from) {
+					return from.getTown().hasPort();//can only make beaches on towns with port connections
+				}})
 		,GARDEN("Garden","a Garden",20,500,Garden.class,new LotCreateFunctionLater() {
 
 			@Override
@@ -145,27 +302,22 @@ public class Lot extends Feature {
 			@Override
 			public int constructTime() {
 				return 24;
-			}})
-		,TRAVEL("Community Stall","a Community Stall",0,0,null,new LotCreateFunctionInstant() {
-
-			@Override
-			public Feature makeFeature(Lot from) {
-				from.getTown().helpCommunity(3);
-				return new TravelingFeature(from.getTown());
-			}})
+			}}, new AlwaysValidTownFunction())
 		;
 		
 		public final String realName, nameString;
 		public final int mCost, aCost;
 		public final LotCreateFunction create;
+		public final ValidTownFunction check;
 		public final Class<? extends Feature> blockingType;
-		LotType(String _name,String _nameString, int _mCost, int _aCost, Class<? extends Feature> _block,LotCreateFunction _create){
+		LotType(String _name,String _nameString, int _mCost, int _aCost, Class<? extends Feature> _block,LotCreateFunction _create,ValidTownFunction _check){
 			realName = _name;
 			nameString = _nameString;
 			mCost = _mCost;
 			aCost = _aCost;
 			create = _create;
 			blockingType = _block;
+			check = _check;
 		}
 		
 		private int getACost(int tier) {
@@ -226,6 +378,18 @@ public class Lot extends Feature {
 			}
 			//displayed question prior
 			return Input.yesNo();
+		}
+	}
+	
+	@FunctionalInterface
+	private static interface ValidTownFunction{
+		public boolean isValid(Lot from);
+	}
+	
+	private static class AlwaysValidTownFunction implements ValidTownFunction{
+		@Override
+		public boolean isValid(Lot from) {
+			return true;
 		}
 	}
 	
@@ -293,7 +457,7 @@ public class Lot extends Feature {
 		if (construct == null) {
 			final List<LotType> validTypes = new ArrayList<Lot.LotType>();
 			for (LotType lt: LotType.values()) {
-				if (validToBuild(town,lt.blockingType)) {
+				if (validToBuild(town,lt.blockingType) && lt.check.isValid(this)) {
 					validTypes.add(lt);
 				}
 			}
@@ -384,7 +548,8 @@ public class Lot extends Feature {
 					return false;
 				}
 			}
-			if (f.getOwner() == Player.player && blockingType.isInstance(f)) {
+			//no longer needs to own to block making another
+			if (blockingType.isInstance(f)) {//f.getOwner() == Player.player && 
 				return false;
 			}
 		}

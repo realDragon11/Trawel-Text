@@ -110,6 +110,8 @@ public class Island extends TContextOwner{
 	public String getLocDesc() {
 		return type.locDesc;
 	}
-
+	public IslandType getIslandType() {
+		return type;
+	}
 	
 }
