@@ -237,6 +237,7 @@ public class Docks extends Feature {
 							@Override
 							public boolean go() {
 								Print.println("The Docks are currently clear of invaders, so you gaze out over the town.");
+								TrawelTime.addPassTime(Rand.randRange(.1f,.3f));
 								TownFlavorFactory.go(.1f,town);
 								return false;
 							}});
