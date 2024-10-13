@@ -73,13 +73,6 @@ public class StoryTutorial extends Story{
 	@Override
 	public void storyStart() {
 		battleFam = 0;
-		Print.println("You are now " + Player.player.getPerson().getName() +".");
-		for (Archetype a: Player.player.getPerson().getArchSet()) {
-			Print.println("Starting Archetype: " +a.getBriefText());
-		}
-		for (Feat a: Player.player.getPerson().getFeatSet()) {
-			Print.println("Starting Feat: " +a.getBriefText());
-		}
 		/*
 		Print.println();
 		Print.println("You come to your senses. Your student, " + killed.getName() + " is dead.");
@@ -419,7 +412,7 @@ public class StoryTutorial extends Story{
 				Print.println("You've slain a Hell Baron and gained their throne perk!");
 				break;
 			case STORYTELLER:
-				Print.println("You've outlived out a legend and gained the Storyteller perk!");
+				Print.println("You've outlived a legend and gained the Storyteller perk!");
 				break;
 			case QUEENSLAYER:
 				Print.println("You've slain an ancient evil empress and gained the Queenslayer perk!");

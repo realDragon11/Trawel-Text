@@ -39,7 +39,9 @@ import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.Archetype;
+import trawel.personal.classless.Feat;
 import trawel.personal.classless.IHasSkills;
+import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.DummyInventory;
 import trawel.personal.item.magic.EnchantConstant;
@@ -1699,6 +1701,7 @@ public class mainGame {
 				Player.player.getPerson().getBag().addAether(999999);
 			}
 		}
+		displayPlayerStart();
 		player.getStory().storyStart();
 
 		WorldGen.plane.setPlayer(player);
@@ -1707,6 +1710,19 @@ public class mainGame {
 
 		//player.getPerson().playerLevelUp();
 		adventureBody();
+	}
+	
+	private static void displayPlayerStart() {
+		Print.println("You are now " + Player.player.getPerson().getName() +".");
+		for (Archetype a: Player.player.getPerson().getArchSet()) {
+			Print.println("Starting Archetype: " +a.getBriefText());
+		}
+		for (Feat a: Player.player.getPerson().getFeatSet()) {
+			Print.println("Starting Feat: " +a.getBriefText());
+		}
+		for (Perk a: Player.player.getPerson().getPerkSet()) {
+			Print.println("Starting Perk: " +a.getBriefText());
+		}
 	}
 
 
