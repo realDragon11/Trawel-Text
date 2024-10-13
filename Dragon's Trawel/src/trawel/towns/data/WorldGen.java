@@ -500,7 +500,7 @@ public class WorldGen {
 		addConnection(peana,xeyn,ConnectType.SHIP,"Hellsalts Shipments");
 		addConnection(pipa,xeyn,ConnectType.ROAD,"The Bread and Barley Path");
 		xeyn.addFeature(new Docks("Ferrysteads",xeyn));
-		xeyn.addFeature(new Garden(xeyn,"Communal Gardens", 0, PlantFill.FOOD));
+		xeyn.addFeature(new Garden(xeyn,"Communal Gardens",1.0f, PlantFill.FOOD));
 		xeyn.addFeature(new Store("Foodstuffs and Tack",10,10));
 		xeyn.addFeature(new Forest("Horizon of Mouths",13));
 		xeyn.addFeature(new Store("Homegrown Meals",14,10));
@@ -513,7 +513,7 @@ public class WorldGen {
 		addConnection(pipa,mikol,ConnectType.CARV,"Twin Thrones Road");
 		addConnection(xeyn,mikol,ConnectType.CARV,"Well Traveled Route");
 		mikol.addFeature(new Dungeon("Eerie Palace Portal",mikol,40,15, Shape.TOWER,BossType.OLD_QUEEN));
-		mikol.addFeature(new Garden(mikol,"Royal Gardens",0,PlantFill.FOOD));
+		mikol.addFeature(new Garden(mikol,"Royal Gardens",1.0f,PlantFill.FOOD));
 		mikol.addFeature(new HeroGuild("Empyphic Palace",12));//empyphic - empyrean + seraphic
 		mikol.addFeature(new MerchantGuild("Central Tariff Offices",13));
 		mikol.addFeature(new Store(12));

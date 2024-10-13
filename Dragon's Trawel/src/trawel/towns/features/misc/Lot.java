@@ -20,6 +20,7 @@ import trawel.time.TimeEvent;
 import trawel.towns.contexts.Town;
 import trawel.towns.contexts.World;
 import trawel.towns.data.FeatureData;
+import trawel.towns.data.TownTag;
 import trawel.towns.features.Feature;
 import trawel.towns.features.fight.Arena;
 import trawel.towns.features.fight.Forest;
@@ -289,12 +290,30 @@ public class Lot extends Feature {
 				public boolean isValid(Lot from) {
 					return from.getTown().hasPort();//can only make beaches on towns with port connections
 				}})
-		,GARDEN("Garden","a Garden",20,500,Garden.class,new LotCreateFunctionLater() {
+		,GARDEN("Garden","a Garden",50,1000,Garden.class,new LotCreateFunctionLater() {
 
 			@Override
 			public Feature makeFeature(Lot from) {
 				from.getTown().helpCommunity(1);
-				Garden g = new Garden(from.town,Player.player.getPerson().getNameNoTitle()+"'s "+FeatureData.getName(Garden.class,false,false)+" in " + from.getTown().getName(),0,PlantFill.NONE);
+				Garden g;
+				String name = Player.player.getPerson().getNameNoTitle()+"'s "+FeatureData.getName(Garden.class,false,false)+" in " + from.getTown().getName();
+				
+				List<TownTag> tags = from.getTown().tTags;
+				float growthMult = tags.contains(TownTag.BARREN) ? (tags.contains(TownTag.FARMS) ? .5f : .2f) : (tags.contains(TownTag.FARMS) ? 1.1f : 1f);
+				//filled by town over time, doesn't start filled
+				if (tags.contains(TownTag.ALCHEMY) || tags.contains(TownTag.DRUIDIC) || tags.contains(TownTag.UNSETTLING)) {
+					//witch town
+					g = new Garden(from.getTown(),name,growthMult,PlantFill.WITCH,false);
+				}else {
+					if (tags.contains(TownTag.BARREN)) {
+						//barren food town
+						g = new Garden(from.getTown(),name,growthMult,PlantFill.BAD_HARVEST,false);
+					}else {
+						//standard town
+						g = new Garden(from.getTown(),name,growthMult,PlantFill.FOOD,false);
+					}
+					
+				}
 				g.setOwner(Player.player);
 				return g;
 			}

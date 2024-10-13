@@ -219,24 +219,25 @@ public class Garden extends Feature {
 	private float growMult;
 	private double reTimer = 0;
 	private PlantFill filler;
-	public Garden(Town town,String _name, float _growMult, PlantFill defaultFill) {
+	public Garden(Town town,String _name, float _growMult, PlantFill defaultFill, boolean startsFilled) {
 		filler = defaultFill;
 		this.town = town;
 		this.tier = town.getTier();
-		if (_growMult == 0) {
-			growMult = (1f+(tier/100f));
-		}else {
-			growMult = _growMult;
-		}
+		growMult = _growMult;
 		tier = town.getTier();
 		name = _name;
 		for (int i = 0; i < 6;i++) {
 			plants.add(new PlantSpot(tier));
-			plants.get(i).contains = defaultFill.roll();
-			//delay starting growth randomly
-			plants.get(i).timer = -(20+(50*Rand.randFloat()));
+			if (startsFilled) {
+				plants.get(i).contains = defaultFill.roll();
+				//delay starting growth randomly
+				plants.get(i).timer = -(20+(50*Rand.randFloat()));
+			}
 		}
 		background_variant = 1;
+	}
+	public Garden(Town town,String _name, float _growMult, PlantFill defaultFill) {
+		this(town,_name,_growMult,defaultFill,true);
 	}
 	
 	@Override
