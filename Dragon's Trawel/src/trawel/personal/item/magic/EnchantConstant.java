@@ -7,6 +7,7 @@ import derg.strings.random.SRFrontBackedRandom;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.core.mainGame;
+import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
@@ -566,7 +567,7 @@ public class EnchantConstant extends Enchant {
 			case 4:	d = getDodgeMod(); str = "dodge";break;
 			}
 			if (d != 1) {
-				Print.println("  " +TrawelColor.colorBasedAtOne(d,TrawelColor.TIMID_GREEN,TrawelColor.TIMID_RED,TrawelColor.PRE_WHITE) + "x " + str);
+				Print.println(TrawelChar.DISP_INDENT+TrawelColor.colorBasedAtOne(d,TrawelColor.TIMID_GREEN,TrawelColor.TIMID_RED,TrawelColor.PRE_WHITE) + "x " + str);
 			}
 		
 		}

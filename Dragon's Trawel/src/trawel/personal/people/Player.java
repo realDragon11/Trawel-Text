@@ -1116,7 +1116,7 @@ public class Player extends SuperPerson implements Closeable{
 
 									@Override
 									public String title() {
-										return "Extended Bag";
+										return "Pouch";
 									}
 
 									@Override

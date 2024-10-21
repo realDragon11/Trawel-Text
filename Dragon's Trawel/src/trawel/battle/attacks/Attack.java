@@ -6,6 +6,7 @@ import trawel.battle.attacks.WeaponAttackFactory.DamageTier;
 import trawel.battle.targets.TargetFactory;
 import trawel.battle.targets.TargetFactory.TypeBody.TargetReturn;
 import trawel.core.Print;
+import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;
@@ -381,7 +382,7 @@ public class Attack implements IAttack{
 		String g = TrawelColor.ITEM_WANT_HIGHER;
 		String b = TrawelColor.ITEM_WANT_LOWER;
 		Print.println(
-			" "+TrawelColor.STAT_HEADER+Print.cutPadLenFront(8,name)+TrawelColor.PRE_WHITE+"="
+				TrawelChar.DISP_INDENT+TrawelColor.STAT_HEADER+Print.cutPadLenFront(8,name)+TrawelColor.PRE_WHITE+"="
 			+p+" Raw DPI:" +g+Print.cutPadLenError(5, Print.F_TWO_TRAILING.format((totalDam/getSpeed()))) 
 			//+" Against Equity DPI: " + extra.F_WHOLE.format(dpi/expectedAverage)
 			+p+" Rarity:" +TrawelColor.ITEM_VALUE+ Print.cutPadLenError(5, Print.formatPerSubOne(holdingStance.getRarity(this)))
@@ -391,7 +392,7 @@ public class Attack implements IAttack{
 			+p+" Total Delay:"+b + Print.cutPadLenError(4, Print.F_WHOLE.format(warmup+cooldown))
 			);
 		Print.println(
-				TrawelColor.STAT_HEADER+"  Base Damage"+TrawelColor.PRE_WHITE+"="
+				TrawelChar.DISP_INDENT+TrawelColor.STAT_HEADER+"  Base Damage"+TrawelColor.PRE_WHITE+"="
 				+(sharp > 0 ? p+" Sharp: " +g+ Print.F_WHOLE.format(sharp) : "")
 				+(blunt > 0 ? p+" Blunt: " +g+ Print.F_WHOLE.format(blunt) : "")
 				+(pierce > 0 ? p+" Pierce: " +g+ Print.F_WHOLE.format(pierce) : "")

@@ -55,6 +55,8 @@ public class TrawelChar {
 	public static String DAM_I_SOME = null;
 	public static String DAM_I_HEAVY = null;
 	public static String DAM_I_KILL = null;
+	
+	public static String DISP_INDENT = "  ";
 
 	public static void charSwitchNone() {
 		CHAR_INSTANTS = "_";

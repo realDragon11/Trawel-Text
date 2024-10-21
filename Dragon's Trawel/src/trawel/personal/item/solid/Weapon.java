@@ -474,8 +474,9 @@ public class Weapon extends Item implements IEffectiveLevel {
 		break;
 		case 1://used for comparing and in stores
 		case 3:
-			Print.println(this.getName()
-			+ TrawelColor.ITEM_DESC_PROP+" ic/bd/wa"+TrawelColor.PRE_WHITE+": "
+			Print.println(this.getName()+":");
+			Print.println(
+			TrawelChar.DISP_INDENT+ TrawelColor.ITEM_DESC_PROP+"ic/bd/wa"+TrawelColor.PRE_WHITE+": "
 			+TrawelColor.ITEM_WANT_HIGHER
 			+ Print.formatPerSubOne(this.scoreImpact())
 			+ "/" + Print.format(this.scoreBest())
@@ -491,7 +492,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 				this.getEnchant().display(1);
 			}
 			for (WeaponQual wq: qualList) {
-				Print.println(" " +TrawelColor.TIMID_GREEN+wq.name +TrawelColor.PRE_WHITE+": "+wq.desc);
+				Print.println(TrawelChar.DISP_INDENT +TrawelColor.TIMID_GREEN+wq.name +TrawelColor.PRE_WHITE+": "+wq.desc);
 			}
 			;break;
 		case 4:
@@ -502,12 +503,12 @@ public class Weapon extends Item implements IEffectiveLevel {
 			float expectedAverage = (1f/getMartialStance().getAttackCount());
 			Print.println(getName() +":");
 			Print.println(TrawelColor.STAT_HEADER+"Tested Stats:");
-			Print.println(TrawelColor.ITEM_DESC_PROP+" Impact Chance (ic)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+ Print.formatPerSubOne(scoreImpact()));
-			Print.println(TrawelColor.ITEM_DESC_PROP+" Best DPI (bd)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER + Print.format(scoreBest()));
-			Print.println(TrawelColor.ITEM_DESC_PROP+" Weighted DPI (wa)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER + Print.format(scoreWeight()));
+			Print.println(TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_INDENT+"Impact Chance (ic)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+ Print.formatPerSubOne(scoreImpact()));
+			Print.println(TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_INDENT+"Best DPI (bd)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER + Print.format(scoreBest()));
+			Print.println(TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_INDENT+"Weighted DPI (wa)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER + Print.format(scoreWeight()));
 			Print.println(TrawelColor.STAT_HEADER+"Value and Usage:");
-			Print.println(TrawelColor.ITEM_DESC_PROP+" Aether"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_VALUE + (int)(getAetherValue()*markup));
-			Print.println(TrawelColor.ITEM_DESC_PROP+" Infused kills"+TrawelColor.PRE_WHITE+": " +getKills());
+			Print.println(TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_INDENT+"Aether"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_VALUE + (int)(getAetherValue()*markup));
+			Print.println(TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_INDENT+"Infused kills"+TrawelColor.PRE_WHITE+": " +getKills());
 			
 			if (isEnchantedConstant()) {
 				Print.println(TrawelColor.STAT_HEADER+"Constant Enchantment:");
@@ -520,12 +521,12 @@ public class Weapon extends Item implements IEffectiveLevel {
 			if (qualList.size() > 0) {
 				Print.println(TrawelColor.STAT_HEADER+"Qualities:");
 				for (WeaponQual wq: qualList) {
-					Print.println(" " +TrawelColor.TIMID_GREEN+wq.name +TrawelColor.PRE_WHITE+": "+wq.desc);
+					Print.println(TrawelChar.DISP_INDENT+TrawelColor.TIMID_GREEN+wq.name +TrawelColor.PRE_WHITE+": "+wq.desc);
 				}
 			}
 			Print.println(TrawelColor.STAT_HEADER+"Tested Equity DPI:");
-			Print.println(TrawelColor.ITEM_DESC_PROP+" Highest"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_LOWER+Print.F_WHOLE.format(scoreHighestContribution()/expectedAverage)+TrawelColor.PRE_WHITE+"% of perfect equity");
-			Print.println(TrawelColor.ITEM_DESC_PROP+" Lowest"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+Print.F_WHOLE.format(scoreLowestContribution()/expectedAverage)+TrawelColor.PRE_WHITE+"% of perfect equity");
+			Print.println(TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_INDENT+"Highest"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_LOWER+Print.F_WHOLE.format(scoreHighestContribution()/expectedAverage)+TrawelColor.PRE_WHITE+"% of perfect equity");
+			Print.println(TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_INDENT+"Lowest"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+Print.F_WHOLE.format(scoreLowestContribution()/expectedAverage)+TrawelColor.PRE_WHITE+"% of perfect equity");
 			Print.println(TrawelColor.STAT_HEADER+"Raw Untested Attacks"+TrawelColor.PRE_WHITE+":");
 			WeaponAttackFactory.getStance(this.weap).display(this);
 			;break;

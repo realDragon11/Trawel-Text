@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import trawel.core.Print;
 import trawel.core.Rand;
+import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.randomLists;
 
@@ -71,7 +72,7 @@ public class EnchantHit extends Enchant {
 	@Override
 	public void display(int i) {
 		if (isKeen) {
-			Print.println(TrawelColor.ITEM_WANT_HIGHER+" Keen");
+			Print.println(TrawelChar.DISP_INDENT+TrawelColor.ITEM_WANT_HIGHER+"Keen");
 		}
 		double d = 0;
 		String str = null;
@@ -82,7 +83,7 @@ public class EnchantHit extends Enchant {
 		case 2:	d = getFreezeMod(); str = colorSaved+"frost";break;
 		}
 		if (d != 0) {
-			Print.println("  "+TrawelColor.ITEM_WANT_HIGHER +Print.format(d) + "x " + str);
+			Print.println(TrawelChar.DISP_INDENT+TrawelColor.ITEM_WANT_HIGHER +Print.format(d) + "x " + str);
 		}
 		
 		}

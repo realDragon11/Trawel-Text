@@ -648,9 +648,9 @@ public class AIClass {
 				boolean canSwap = true;
 				if (store != null) {
 					int delta = -store.getDelta(current,thinking,Player.player);
-					Print.println("Buy the");
+					Print.print("Buy the ");
 					thinking.display(store,true,3);
-					Print.println("replacing your");
+					Print.print("Replacing your ");
 					current.display(store,false,3);
 					displayChange(current,thinking,Player.player.getPerson(),store);
 					int buyPower = Player.bag.getAether();//Player.player.getTotalBuyPower(store.aetherPerMoney(Player.player.getPerson()));
@@ -659,9 +659,9 @@ public class AIClass {
 						canSwap = false;
 					}
 				}else {
-					Print.println("Use the");
+					Print.print("Use the ");
 					thinking.display(1);
-					Print.println("instead of your");
+					Print.print("Instead of your ");
 					current.display(1);
 					displayChange(current,thinking, Player.player.getPerson());
 				}
@@ -672,7 +672,7 @@ public class AIClass {
 
 					@Override
 					public String title() {
-						return "Take " + thinking.getName()+".";
+						return "Equip " + thinking.getName()+" and [r_warn]discard[revert] old item.";
 					}
 
 					@Override
@@ -741,7 +741,7 @@ public class AIClass {
 
 							@Override
 							public String title() {
-								return "Put in bag.";
+								return "Put "+thinking.getName()+" in pouch.";
 							}
 
 							@Override
@@ -757,7 +757,7 @@ public class AIClass {
 							//1+2+3+2+1 limit so should be exact
 							@Override
 							public String title() {
-								return "Take and Put "+current.getName()+" in Bag.";
+								return "Equip new item and put "+current.getName()+" in pouch.";
 							}
 
 							@Override
@@ -775,7 +775,7 @@ public class AIClass {
 
 							@Override
 							public String title() {
-								return "Manage Bag.";
+								return "Manage Pouch.";
 							}
 
 							@Override
@@ -794,7 +794,7 @@ public class AIClass {
 
 					@Override
 					public String title() {
-						return "Reject " + thinking.getName() +".";
+						return "[r_warn]Reject[revert] " + thinking.getName() +".";
 					}
 
 					@Override
@@ -882,7 +882,7 @@ public class AIClass {
 			if (Player.getTutorial()) {
 				Print.println("SBP = sharp, blunt, pierce");
 			}
-			Print.println(" "+
+			Print.println(TrawelChar.DISP_INDENT+
 			TrawelColor.ITEM_DESC_PROP+TrawelChar.CHAR_SHARP
 			+" "+TrawelColor.hardColorDelta1Elide(toArm.getSharpResist(),hasArm.getSharpResist())
 			+ TrawelColor.PRE_WHITE+" / "
@@ -900,8 +900,8 @@ public class AIClass {
 			if (hasItem.getEnchant() != null || toReplace.getEnchant() != null) {
 				displayEnchantDiff(hasItem.getEnchant(),toReplace.getEnchant());
 			}
-			hasArm.getQuals().stream().filter(q -> !toArm.getQuals().contains(q)).forEach(q -> Print.println(" -"+q.removeText()));
-			toArm.getQuals().stream().filter(q -> !hasArm.getQuals().contains(q)).forEach(q -> Print.println(" +"+q.addText()));
+			hasArm.getQuals().stream().filter(q -> !toArm.getQuals().contains(q)).forEach(q -> Print.println(TrawelChar.DISP_INDENT+"-"+q.removeText()));
+			toArm.getQuals().stream().filter(q -> !hasArm.getQuals().contains(q)).forEach(q -> Print.println(TrawelChar.DISP_INDENT+"+"+q.addText()));
 		}else {
 			if (Weapon.class.isInstance(hasItem)) {
 				Weapon hasWeap = (Weapon)hasItem;
@@ -1013,7 +1013,7 @@ public class AIClass {
 	
 	private static void enchantDiff(float has, float get, String name) {
 		if (has-get != 0) {
-			Print.println(" " +TrawelColor.hardColorDelta2(get,has) + " " + name + " mult");
+			Print.println(TrawelChar.DISP_INDENT+TrawelColor.hardColorDelta2(get,has) + " " + name + " mult");
 		}
 	}
 	

@@ -661,12 +661,12 @@ public class Armor extends Item implements IEffectiveLevel{
 		case 3:
 			Print.println(this.getName() + ":");
 			Print.println(
-			" " +TrawelColor.ITEM_DESC_PROP+ TrawelChar.CHAR_SHARP+TrawelColor.ITEM_WANT_HIGHER+Print.format(this.getSharpResist())
-			+ " "+TrawelColor.ITEM_DESC_PROP + TrawelChar.CHAR_BLUNT+TrawelColor.ITEM_WANT_HIGHER+Print.format(this.getBluntResist())
-			+ " "+TrawelColor.ITEM_DESC_PROP + TrawelChar.CHAR_PIERCE+TrawelColor.ITEM_WANT_HIGHER+Print.format(this.getPierceResist())
-			+ (Player.player.caresAboutCapacity() ? " "+TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_WEIGHT+": "+TrawelColor.ITEM_WANT_LOWER+getWeight() : "")
-			+ (Player.player.caresAboutAMP() ? " "+TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_AMP+": "+TrawelColor.ITEM_WANT_LOWER+ Print.F_TWO_TRAILING.format(getAgiPenMult())+"x" : "")
-			+" "+TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_AETHER+": " +TrawelColor.ITEM_VALUE+ Print.F_WHOLE.format(Math.ceil(getAetherValue()*markup)));
+			  TrawelChar.DISP_INDENT +TrawelColor.ITEM_DESC_PROP+ TrawelChar.CHAR_SHARP+TrawelColor.ITEM_WANT_HIGHER+Print.format(this.getSharpResist())
+			+ TrawelChar.DISP_INDENT+TrawelColor.ITEM_DESC_PROP + TrawelChar.CHAR_BLUNT+TrawelColor.ITEM_WANT_HIGHER+Print.format(this.getBluntResist())
+			+ TrawelChar.DISP_INDENT+TrawelColor.ITEM_DESC_PROP + TrawelChar.CHAR_PIERCE+TrawelColor.ITEM_WANT_HIGHER+Print.format(this.getPierceResist())
+			+ (Player.player.caresAboutCapacity() ? TrawelChar.DISP_INDENT+TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_WEIGHT+": "+TrawelColor.ITEM_WANT_LOWER+getWeight() : "")
+			+ (Player.player.caresAboutAMP() ? TrawelChar.DISP_INDENT+TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_AMP+": "+TrawelColor.ITEM_WANT_LOWER+ Print.F_TWO_TRAILING.format(getAgiPenMult())+"x" : "")
+			+TrawelChar.DISP_INDENT+TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_AETHER+": " +TrawelColor.ITEM_VALUE+ Print.F_WHOLE.format(Math.ceil(getAetherValue()*markup)));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
@@ -678,17 +678,17 @@ public class Armor extends Item implements IEffectiveLevel{
 		case 2://full examine
 			Print.println(
 			this.getName()
-			+ " " + TrawelColor.ITEM_DESC_PROP+TrawelChar.CHAR_SHARP+TrawelColor.ITEM_WANT_HIGHER+Print.format(this.getSharpResist())
-			+ " " + TrawelColor.ITEM_DESC_PROP+TrawelChar.CHAR_BLUNT+TrawelColor.ITEM_WANT_HIGHER+Print.format(this.getBluntResist())
-			+ " " + TrawelColor.ITEM_DESC_PROP+TrawelChar.CHAR_PIERCE+TrawelColor.ITEM_WANT_HIGHER+Print.format(this.getPierceResist())
-			+ " "+TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_WEIGHT+": "+TrawelColor.ITEM_WANT_LOWER+getWeight()
-			+ " "+TrawelChar.DISP_AMP+": "+TrawelColor.ITEM_WANT_LOWER+ Print.F_TWO_TRAILING.format(getAgiPenMult())+"x"
+			+ TrawelChar.DISP_INDENT + TrawelColor.ITEM_DESC_PROP+TrawelChar.CHAR_SHARP+TrawelColor.ITEM_WANT_HIGHER+Print.format(this.getSharpResist())
+			+ TrawelChar.DISP_INDENT + TrawelColor.ITEM_DESC_PROP+TrawelChar.CHAR_BLUNT+TrawelColor.ITEM_WANT_HIGHER+Print.format(this.getBluntResist())
+			+ TrawelChar.DISP_INDENT + TrawelColor.ITEM_DESC_PROP+TrawelChar.CHAR_PIERCE+TrawelColor.ITEM_WANT_HIGHER+Print.format(this.getPierceResist())
+			+ TrawelChar.DISP_INDENT+TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_WEIGHT+": "+TrawelColor.ITEM_WANT_LOWER+getWeight()
+			+ TrawelChar.DISP_INDENT+TrawelChar.DISP_AMP+": "+TrawelColor.ITEM_WANT_LOWER+ Print.F_TWO_TRAILING.format(getAgiPenMult())+"x"
 			/*no longer used
 			+TrawelColor.ITEM_DESC_PROP+ " ignite mult: "+TrawelColor.ITEM_WANT_LOWER+ Print.F_TWO_TRAILING.format(getFireMod())+"x"
 			+TrawelColor.ITEM_DESC_PROP+ " frost mult: "+TrawelColor.ITEM_WANT_LOWER+ Print.F_TWO_TRAILING.format(getFreezeMod())+"x"
 			+TrawelColor.ITEM_DESC_PROP+ " elec mult: "+TrawelColor.ITEM_WANT_LOWER+ Print.F_TWO_TRAILING.format(getShockMod())+"x"
 			*/
-			+TrawelColor.ITEM_DESC_PROP+ " aether: " +TrawelColor.ITEM_VALUE+ (int)(this.getAetherValue()*markup));
+			+TrawelColor.ITEM_DESC_PROP+ TrawelChar.DISP_INDENT+"aether: " +TrawelColor.ITEM_VALUE+ (int)(this.getAetherValue()*markup));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
@@ -712,7 +712,7 @@ public class Armor extends Item implements IEffectiveLevel{
 	
 	public void printQuals() {
 		for (ArmorQuality aq: quals) {
-			Print.println(" "+aq.addText());
+			Print.println(TrawelChar.DISP_INDENT+aq.addText());
 			/*
 			if (aq.goodNegNeut < 0) {
 				extra.println(" Flaw: "+aq.addText());
@@ -731,10 +731,10 @@ public class Armor extends Item implements IEffectiveLevel{
 	public String storeString(double markup, int canShow) {
 		if (canShow > 0) {
 			return this.getName() 
-				+ TrawelColor.ITEM_DESC_PROP+" "+TrawelChar.CHAR_SHARP + Print.F_WHOLE.format(this.getSharpResist())
-				+ TrawelColor.ITEM_DESC_PROP+" "+TrawelChar.CHAR_BLUNT + Print.F_WHOLE.format(this.getBluntResist())
-				+ TrawelColor.ITEM_DESC_PROP+" "+TrawelChar.CHAR_PIERCE + Print.F_WHOLE.format(this.getPierceResist())
-				+ TrawelColor.ITEM_DESC_PROP+" cost"+TrawelColor.PRE_WHITE+": " +TrawelColor.ITEM_VALUE+Print.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
+				+ TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_INDENT+TrawelChar.CHAR_SHARP + Print.F_WHOLE.format(this.getSharpResist())
+				+ TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_INDENT+TrawelChar.CHAR_BLUNT + Print.F_WHOLE.format(this.getBluntResist())
+				+ TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_INDENT+TrawelChar.CHAR_PIERCE + Print.F_WHOLE.format(this.getPierceResist())
+				+ TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_INDENT+"cost"+TrawelColor.PRE_WHITE+": " +TrawelColor.ITEM_VALUE+Print.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
 				+ (canShow == 1 ?TrawelColor.TIMID_RED+" (raw deal)" : "");
 		}
 		String base = getBaseName();
