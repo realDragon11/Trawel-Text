@@ -7,10 +7,24 @@ import trawel.helper.constants.TrawelColor;
 
 public class Changelog {
 	//b__X is in development, b_X is the actual release of that version
-		public static final String VERSION_STRING = "v0.8.b__15";
-		public static final String VERSION_DATE = " updated Oct 10th 2024";
+		public static final String VERSION_STRING = "v0.8.b_15";
+		public static final String VERSION_DATE = " updated Oct 22nd 2024";
 		public static final String[][] changelog = new String[][] {
 			//add to front, changeviewer cycles to older ones when used
+			{"b_15",
+				//talk about standardized loot
+				"Standardized loot tables have been created for chests in Dungeons and Beaches, as well as Coffins in Graveyards. This increases the variety of loot in each area while increasing the consistency across different areas. Each type of loot object has different chances (or none at all) of different kinds of loot.",
+				//talk about harpies and skeletons
+				"Harpies may spawn with added DrawBanes, granting them free Feats, and had nests added to Beaches. Skeleton Knights added to Graveyards, wandering and in coffins.",
+				//talk about menu changes
+				"Map moved to the old 'Society' menu, now renamed 'World'. Potion added to inventory menu.",
+				//talk about lot building changes
+				"More types of Features can be built in Lots, covering all Punishments. Lot Features are now exclusive with normal town Features, not just owned Features, take longer to build, and some (Mines, Groves, Docks, Beaches) have requirements to be built.",
+				//talk about new options
+				"AutoSip option automatically consumes your Potion before each battle. Display options include character defaults, which set the 'Auto-' options newly created characters have toggled. 'Display Autobattle' makes AutoBattling not wait for player input on each attack selected by the autobattler.",
+				//high level QoL improvements
+				"Brewing potions display what type you attempted to make (even if not successfully made). Punishments inform you when you suffer them."
+			},
 			{"b_14",
 				//attribute contests
 				"World Attribute Contests (locks, trapped chambers, sky cult, etc) have a percent chance of success displayed. Locked objects have random modifiers to make certain attributes better or worse against them. Difficulty scaling fixed to be a portion of (20% for trival up to 100% for impossible) flat primary leveling of that attribute: 100 base +15 per level as 'on stat scaling'.",
